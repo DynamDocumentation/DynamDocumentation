@@ -4,21 +4,21 @@ Esse projeto busca facilitar a leitura de documentações de diversos projetos e
 
 Poderemos escolher a linguagem que queremos visualizar, as bibliotecas dessas linguagem e, em seguida, as classes e funções dessa biblioteca.
 
-#O que usaremos
+# O que usaremos
 - Vuejs
 - Ktor
 - MariaDB
 
-#Requistos
-##Vuejs
+# Requistos
+## Vuejs
 + Install Node.js version 18.3 or higher
 '''bash
 npm create vue@latest
 '''
 
-##Ktor
+## Ktor
 + JDK 8+ installed
 + Gradle or Maven for dependency management
 
-##MariaDB
+## MariaDB
 No requirements
