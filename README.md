@@ -22,3 +22,10 @@ npm create vue@latest
 
 ## MariaDB
 No requirements
+
+## Ciclos
+
+### Ciclo 1
+- Usar uma biblioteca, talvez duas para popular o DB
+- Planejar a estrutura do DB e criar uma no MariaDB
+- Criar um projeto Ktor e ReactJS, e fazer a integração
