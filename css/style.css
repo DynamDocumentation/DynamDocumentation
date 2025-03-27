@@ -1,0 +1,23 @@
+body {
+  background-color: #181818;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+#my_box {
+  background: white;
+  width: 60%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
