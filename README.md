@@ -26,6 +26,6 @@ No requirements
 ## Ciclos
 
 ### Ciclo 1
-- Usar uma biblioteca, talvez duas para popular o DB
-- Planejar a estrutura do DB e criar uma no MariaDB
+- Planejar o tamanho do projeto (quanto vai cobrir)
 - Criar um projeto Ktor e ReactJS, e fazer a integração
+- Diagrama de Classes
