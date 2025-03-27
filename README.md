@@ -20,3 +20,12 @@ Poderemos escolher a linguagem que queremos visualizar, as bibliotecas dessas li
 
 ## MariaDB
 No requirements
+
+
+# Diagramas de Classe
+
+## Diagrama Simples
+![simples](./images/simple.png)
+
+## Digrama Completo
+![completo](./images/DiagramaCompleto.png)
