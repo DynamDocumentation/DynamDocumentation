@@ -10,11 +10,9 @@ Poderemos escolher a linguagem que queremos visualizar, as bibliotecas dessas li
 - MariaDB
 
 # Requistos
-## Vuejs
+## ReactJS
 + Install Node.js version 18.3 or higher
-'''bash
-npm create vue@latest
-'''
+
 
 ## Ktor
 + JDK 8+ installed
