@@ -29,3 +29,10 @@ No requirements
 
 ## Digrama Completo
 ![completo](./images/DiagramaCompleto.png)
+
+## Ciclos
+
+### Ciclo 1
+- Planejar o tamanho do projeto (quanto vai cobrir)
+- Criar um projeto Ktor e ReactJS, e fazer a integração
+- Diagrama de Classes 🚀🌌✅
