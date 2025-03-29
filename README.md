@@ -28,4 +28,12 @@ No requirements
 ### Ciclo 1
 - Planejar o tamanho do projeto (quanto vai cobrir)
 - Criar um projeto Ktor e ReactJS, e fazer a integração
-- Diagrama de Classes
+- Diagrama de Classes 🚀🌌✅
+
+# Diagramas de Classe
+
+## Diagrama Simples
+![simples](./images/simple.png)
+
+## Digrama Completo
+![completo](./images/DiagramaCompleto.png)
