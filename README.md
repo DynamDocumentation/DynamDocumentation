@@ -18,6 +18,12 @@ Poderemos escolher a linguagem que queremos visualizar, as bibliotecas dessas li
 + JDK 8+ installed
 + Gradle or Maven for dependency management
 
++ Para rodar, usar comandos: 
+~~~bash
+./gradlew clean
+./gradlew build
+./gradlew run --args="-port=8080"
+~~~
 ## MariaDB
 No requirements
 
