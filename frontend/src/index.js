@@ -1,13 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import App from './App';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    // mode: "light",
+    // primary: {
+    //   main: "#697565",
+    // },
+    // background: {
+    //   default: "#181C14",
+    // },
+    // text: {
+    //   primary: "#ECDFCC",
+    // },
+    // divider: "#697565",
+  },
+
+  // components: {
+  //   MuiAppBar: {
+  //     styleOverrides: {
+  //       colorPrimary: {
+  //         backgroundColor: "#181C14",
+  //       },
+  //     },
+  //   },
+  // },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
