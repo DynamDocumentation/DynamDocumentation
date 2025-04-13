@@ -1,14 +1,16 @@
-// src/main/kotlin/com/dynam/Application.kt
 package com.dynam
 
-import io.ktor.server.application.*                  // Application, call
-import io.ktor.server.response.*                     // respond
-import io.ktor.server.routing.*                      // routing, Route
-import io.ktor.server.plugins.contentnegotiation.*   // ContentNegotiation
-import io.ktor.serialization.kotlinx.json.*          // json()
-import io.ktor.server.plugins.statuspages.*          // StatusPages, exception
-import io.ktor.http.*                                // HttpStatusCode
+import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.response.* // Adicione esta linha
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.http.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.routing.*
+import io.ktor.server.plugins.callloging.CallLogging // Import correto
+
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 
 import com.dynam.database.DatabaseSimulator
 import com.dynam.routes.UserRoutes
@@ -17,32 +19,37 @@ fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
-    // 1) JSON
+    // 0) Logs
+    install(CallLogging) // Instalação correta
+
+    // 1) CORS
     install(CORS) {
-        anyHost() // ⚠️ Apenas para desenvolvimento! Não use isso em produção.
+        allowHost("localhost:3000") // Frontend React
         allowMethod(HttpMethod.Get)
-        allowMethod(HttpMethod.Post)
-        allowMethod(HttpMethod.Put)
-        allowMethod(HttpMethod.Delete)
         allowHeader(HttpHeaders.ContentType)
     }
+
+    // 2) JSON
     install(ContentNegotiation) {
-        json()
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+            explicitNulls = false
+        })
     }
 
-    // 2) Tratamento de erros
+    // 3) Tratamento de erros
     install(StatusPages) {
-        // assinatura correta em 2.x: (call, cause) -> Unit
         exception<Throwable> { call, cause ->
             call.respond(HttpStatusCode.InternalServerError, cause.localizedMessage)
         }
     }
 
-    // 3) Instancia o simulador
-    // 4) Registra rotas (register é extensão em Route)
-   val db = DatabaseSimulator()
+    // 4) Banco de dados simulado
+    val db = DatabaseSimulator()
+
+    // 5) Rotas
     routing {
         UserRoutes(db).registerRoutes(this)
     }
-  }
-
+}

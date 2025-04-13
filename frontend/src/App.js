@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -18,15 +17,19 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Usuários</h1>
+        <h1>Lista de Usuários</h1>
         {users.length === 0 ? (
           <p>Carregando usuários...</p>
         ) : (
-          <ul>
-            {users.map((user, idx) => (
-              <li key={idx}>{JSON.stringify(user)}</li>
+          <div className="user-list">
+            {users.map((user) => (
+              <div key={user.id} className="user-card">
+                <h2>{user.name}</h2>
+                <p>ID: {user.id}</p>
+                <p>Email: {user.email}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </header>
     </div>
@@ -34,4 +37,3 @@ function App() {
 }
 
 export default App;
-

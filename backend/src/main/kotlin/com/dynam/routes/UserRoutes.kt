@@ -1,19 +1,24 @@
 // src/main/kotlin/com/dynam/routes/UserRoutes.kt
 package com.dynam.routes
 
-import io.ktor.server.application.*   // traz `call`
-import io.ktor.server.response.*     // traz `respond`
-import io.ktor.server.routing.*      // traz `Route`, `route`, `get`
 import com.dynam.database.DatabaseSimulator
+import com.dynam.models.User
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode 
 
 class UserRoutes(private val db: DatabaseSimulator) {
-    // método que registra as rotas no Route passado
     fun registerRoutes(route: Route) {
-        route.route("/users") {
-            get {
+        route.get("/users") {
+            try {
                 call.respond(db.fetchUsers())
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to "Falha ao buscar usuários")
+                )
             }
         }
     }
 }
-
