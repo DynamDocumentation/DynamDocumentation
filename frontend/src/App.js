@@ -1,37 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router";
+import Layout from "./pages/Layout";
+import Login from "./pages/Test";
 
-function App() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data);
-      })
-      .catch((err) => {
-        console.error("Erro ao buscar usuários:", err);
-      });
-  }, []);
-
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Lista de Usuários</h1>
-        {users.length === 0 ? (
-          <p>Carregando usuários...</p>
-        ) : (
-          <div className="user-list">
-            {users.map((user) => (
-              <div key={user.id} className="user-card">
-                <h2>{user.name}</h2>
-                <p>ID: {user.id}</p>
-                <p>Email: {user.email}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Login />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
