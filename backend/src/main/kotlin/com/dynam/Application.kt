@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import io.ktor.server.plugins.callloging.CallLogging // Import correto
+import io.ktor.server.http.content.*
 
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -50,6 +51,10 @@ fun Application.module() {
 
     // 5) Rotas
     routing {
+        singlePageApplication {
+            react("../frontend/build")
+        }
+
         UserRoutes(db).registerRoutes(this)
     }
 }
