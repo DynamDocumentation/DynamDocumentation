@@ -15,6 +15,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import { Link } from 'react-router-dom';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
@@ -170,6 +171,11 @@ export default function Layout() {
                 </DrawerHeader>
                 <Divider />
                 <List>
+                     <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/users">
+                          <ListItemText primary="Users" />
+                        </ListItemButton>
+                      </ListItem>
                     {options.map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
