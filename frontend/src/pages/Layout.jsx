@@ -13,12 +13,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+<<<<<<< Updated upstream
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+=======
+>>>>>>> Stashed changes
 import { Outlet } from 'react-router';
 
 /*
@@ -124,6 +127,16 @@ export default function Layout() {
         setOpen(false);
     };
 
+<<<<<<< Updated upstream
+=======
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8080/docs').then((response) => {
+            setData(response.data);
+            console.log(response.data);
+        });
+    }, []);
+
+>>>>>>> Stashed changes
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />

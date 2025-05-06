@@ -44,11 +44,19 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
     implementation("ch.qos.logback:logback-classic:1.4.5")
+
+    implementation("org.jetbrains.exposed:exposed-core:0.50.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.50.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.50.1")
+
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.3")
+    implementation("io.insert-koin:koin-ktor:4.0.4")
+    implementation("com.zaxxer:HikariCP:6.3.0")
     
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
-    testImplementation(kotlin("test"))
+    // testImplementation(kotlin("test"))
 
 }
 
