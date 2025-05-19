@@ -1,0 +1,87 @@
+Placa #47
+	Nome: alsa_card.pci-0000_01_00.1
+	Driver: alsa
+	Módulo proprietário: n/d
+	Propriedades:
+		api.acp.auto-port = "false"
+		api.acp.auto-profile = "false"
+		api.alsa.card = "1"
+		api.alsa.card.longname = "HDA NVidia at 0xf7080000 irq 17"
+		api.alsa.card.name = "HDA NVidia"
+		api.alsa.path = "hw:1"
+		api.alsa.use-acp = "true"
+		api.dbus.ReserveDevice1 = "Audio1"
+		device.api = "alsa"
+		device.bus = "pci"
+		device.bus_path = "pci-0000:01:00.1"
+		device.description = "TU116 High Definition Audio Controller"
+		device.enum.api = "udev"
+		device.icon_name = "audio-card-analog-pci"
+		device.name = "alsa_card.pci-0000_01_00.1"
+		device.nick = "HDA NVidia"
+		device.plugged.usec = "7176620"
+		device.product.id = "0x1aeb"
+		device.product.name = "TU116 High Definition Audio Controller"
+		device.subsystem = "sound"
+		sysfs.path = "/devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card1"
+		device.vendor.id = "0x10de"
+		device.vendor.name = "NVIDIA Corporation"
+		media.class = "Audio/Device"
+		factory.id = "14"
+		client.id = "37"
+		object.id = "46"
+		object.serial = "47"
+		object.path = "alsa:pcm:1"
+		alsa.card = "1"
+		alsa.card_name = "HDA NVidia"
+		alsa.long_card_name = "HDA NVidia at 0xf7080000 irq 17"
+		alsa.driver_name = "snd_hda_intel"
+		alsa.mixer_name = "Nvidia GPU 99 HDMI/DP"
+		alsa.components = "HDA:10de0099,196e1365,00100100"
+		alsa.id = "NVidia"
+		device.string = "1"
+	Perfis:
+		off: Off (destino: 0, fontes: 0, prioridade: 0, disponível: sim)
+		output:hdmi-stereo: Digital Stereo (HDMI) Output (destino: 1, fontes: 0, prioridade: 5900, disponível: sim)
+		output:hdmi-stereo-extra1: Digital Stereo (HDMI 2) Output (destino: 1, fontes: 0, prioridade: 5700, disponível: sim)
+		output:hdmi-stereo-extra2: Digital Stereo (HDMI 3) Output (destino: 1, fontes: 0, prioridade: 5700, disponível: não)
+		output:hdmi-stereo-extra3: Digital Stereo (HDMI 4) Output (destino: 1, fontes: 0, prioridade: 5700, disponível: não)
+		output:hdmi-surround-extra2: Digital Surround 5.1 (HDMI 3) Output (destino: 1, fontes: 0, prioridade: 600, disponível: não)
+		output:hdmi-surround71-extra2: Digital Surround 7.1 (HDMI 3) Output (destino: 1, fontes: 0, prioridade: 600, disponível: não)
+		output:hdmi-surround-extra3: Digital Surround 5.1 (HDMI 4) Output (destino: 1, fontes: 0, prioridade: 600, disponível: não)
+		output:hdmi-surround71-extra3: Digital Surround 7.1 (HDMI 4) Output (destino: 1, fontes: 0, prioridade: 600, disponível: não)
+		pro-audio: Pro Audio (destino: 4, fontes: 0, prioridade: 1, disponível: sim)
+	Perfil ativo: output:hdmi-stereo
+	Portas:
+		hdmi-output-0: HDMI / DisplayPort (tipo: HDMI, prioridade: 5900, mudança da latência: 0 usec, grupo de disponibilidade: Legacy 1, disponível)
+			Propriedades:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 1"
+				device.icon_name = "video-display"
+				card.profile.port = "0"
+				device.product.name = "PHL 242V8
+   "
+			Parte de perfil/perfis: output:hdmi-stereo
+		hdmi-output-1: HDMI / DisplayPort 2 (tipo: HDMI, prioridade: 5800, mudança da latência: 0 usec, grupo de disponibilidade: Legacy 2, disponível)
+			Propriedades:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 2"
+				device.icon_name = "video-display"
+				card.profile.port = "1"
+				device.product.name = "SMT22A550
+   "
+			Parte de perfil/perfis: output:hdmi-stereo-extra1
+		hdmi-output-2: HDMI / DisplayPort 3 (tipo: HDMI, prioridade: 5700, mudança da latência: 0 usec, grupo de disponibilidade: Legacy 3, não disponível)
+			Propriedades:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 3"
+				device.icon_name = "video-display"
+				card.profile.port = "2"
+			Parte de perfil/perfis: output:hdmi-stereo-extra2, output:hdmi-surround-extra2, output:hdmi-surround71-extra2
+		hdmi-output-3: HDMI / DisplayPort 4 (tipo: HDMI, prioridade: 5600, mudança da latência: 0 usec, grupo de disponibilidade: Legacy 4, não disponível)
+			Propriedades:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 4"
+				device.icon_name = "video-display"
+				card.profile.port = "3"
+			Parte de perfil/perfis: output:hdmi-stereo-extra3, output:hdmi-surround-extra3, output:hdmi-surround71-extra3
