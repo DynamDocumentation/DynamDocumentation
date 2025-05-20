@@ -27,8 +27,10 @@ fun Application.module() {
     // 1) CORS
     install(CORS) {
         allowHost("localhost:3000") // Frontend React
+        allowHost("127.0.0.1:3000")
         allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.ContentType)
+        allowCredentials = true
     }
 
     // 2) JSON

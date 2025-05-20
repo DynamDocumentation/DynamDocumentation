@@ -13,16 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-<<<<<<< Updated upstream
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-=======
->>>>>>> Stashed changes
 import { Outlet } from 'react-router';
+import axios from 'axios'
+import { useEffect } from 'react';
+
+import NamespaceAccordion from '../components/NamespaceAccordion';
 
 /*
 
@@ -104,20 +101,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-const options = [
-    "seaborn.despine",
-    "seaborn.move_legend",
-    "seaborn.saturate",
-    "seaborn.desaturate",
-    "seaborn.set_hls_values",
-    "seaborn.load_dataset",
-    "seaborn.get_dataset_names",
-    "seaborn.get_data_home"
-]
-
 export default function Layout() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const [data, setData] = React.useState(null);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -127,8 +114,6 @@ export default function Layout() {
         setOpen(false);
     };
 
-<<<<<<< Updated upstream
-=======
     useEffect(() => {
         axios.get('http://127.0.0.1:8080/docs').then((response) => {
             setData(response.data);
@@ -136,7 +121,6 @@ export default function Layout() {
         });
     }, []);
 
->>>>>>> Stashed changes
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -182,15 +166,7 @@ export default function Layout() {
                 </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List>
-                    {options.map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
+                <NamespaceAccordion data={data} />
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
