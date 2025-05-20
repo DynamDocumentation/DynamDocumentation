@@ -10,7 +10,7 @@ export default function Details() {
     const [data, setData] = React.useState(null);
     
     useEffect(() => {
-        axios.get('http://127.0.0.1:8080/users/' + namespace).then((response) => {
+        axios.get('http://127.0.0.1:8080/docs/' + namespace).then((response) => {
             setData(response.data);
             console.log(response.data);
         });

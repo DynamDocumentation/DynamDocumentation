@@ -13,9 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
 import { Outlet } from 'react-router';
 import axios from 'axios'
 import { useEffect } from 'react';
@@ -116,7 +115,7 @@ export default function Layout() {
     };
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8080/users').then((response) => {
+        axios.get('http://127.0.0.1:8080/docs').then((response) => {
             setData(response.data);
             console.log(response.data);
         });

@@ -13,8 +13,9 @@ import io.ktor.server.http.content.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-import com.dynam.database.DatabaseSimulator
-import com.dynam.routes.UserRoutes
+import com.dynam.database.*
+import com.dynam.routes.*
+import com.dynam.models.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -37,7 +38,7 @@ fun Application.module() {
         json(Json {
             prettyPrint = true
             isLenient = true
-            explicitNulls = false
+            explicitNulls = true
         })
     }
 
@@ -48,15 +49,39 @@ fun Application.module() {
         }
     }
 
-    // 4) Banco de dados simulado
-    val db = DatabaseSimulator()
+    configureDatabases()
 
-    // 5) Rotas
+    val namespaceModel = NamespaceModel()
+    val classModel = ClassModel()
+    val functionModel = FunctionModel()
+
     routing {
         singlePageApplication {
             react("../frontend/build")
         }
 
-        UserRoutes(db).registerRoutes(this)
+        get("/docs") {
+            try {
+                val namespaces = namespaceModel.getAllNamespaces()
+                var response = namespaces.map { namespace -> NamespaceResponse(namespace, classModel.getAllEntityNamesFrom(namespace) + functionModel.getAllEntityNamesFrom(namespace)) }
+                call.respond(response)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to e)
+                )
+            }
+        }
+        get("/docs/{namespace}") {
+            try {
+                var response = functionModel.getDetailsOf(call.parameters["namespace"])
+                call.respond(response)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf("error" to e)
+                )
+            }
+        }
     }
 }

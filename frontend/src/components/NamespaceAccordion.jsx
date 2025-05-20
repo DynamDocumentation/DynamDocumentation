@@ -60,12 +60,12 @@ export default function NamespaceAccordion({ data }) {
                 data.map((entry, key) => 
                     <Accordion expanded={expanded === 'panel' + key} onChange={handleChange('panel' + key)}>
                     <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Typography component="span">{entry.namespace}</Typography>
+                        <Typography component="span">{entry.namespace.name}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Stack direction='column'>
                             {entry.children.map(name => 
-                                <NavLink to={entry.namespace + '.' + name}>{name}</NavLink>
+                                <NavLink to={entry.namespace.name + '.' + name}>{name}</NavLink>
                             )}
                         </Stack>
                     </AccordionDetails>
