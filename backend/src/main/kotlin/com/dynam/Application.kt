@@ -14,6 +14,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 import com.dynam.database.*
+import com.dynam.controllers.*
 import com.dynam.routes.*
 import com.dynam.models.*
 
@@ -51,7 +52,7 @@ fun Application.module() {
 
     configureDatabases()
 
-    val namespaceModel = NamespaceModel()
+    val navigationController = NavigationController();
     val classModel = ClassModel()
     val functionModel = FunctionModel()
 
@@ -60,27 +61,29 @@ fun Application.module() {
             react("../frontend/build")
         }
 
-        get("/docs") {
-            try {
-                val namespaces = namespaceModel.getAllNamespaces()
-                var response = namespaces.map { namespace -> NamespaceResponse(namespace, classModel.getAllEntityNamesFrom(namespace) + functionModel.getAllEntityNamesFrom(namespace)) }
-                call.respond(response)
-            } catch (e: Exception) {
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf("error" to e)
-                )
+        route("/docs") {
+            get {
+                try {
+                    val response = navigationController.getAllPathsForNavigation()
+                    call.respond(response)
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e)
+                    )
+                }
             }
-        }
-        get("/docs/{namespace}") {
-            try {
-                var response = functionModel.getDetailsOf(call.parameters["namespace"])
-                call.respond(response)
-            } catch (e: Exception) {
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf("error" to e)
-                )
+
+            get("/{namespace}") {
+                try {
+                    var response = functionModel.getDetailsOf(call.parameters["namespace"])
+                    call.respond(response)
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e)
+                    )
+                }
             }
         }
     }

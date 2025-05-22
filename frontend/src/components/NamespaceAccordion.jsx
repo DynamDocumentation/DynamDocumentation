@@ -56,24 +56,31 @@ export default function NamespaceAccordion({ data }) {
 
     return (
         <div>
-            {data != null ? 
-                data.map((entry, key) => 
-                    <Accordion expanded={expanded === 'panel' + key} onChange={handleChange('panel' + key)}>
-                    <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Typography component="span">{entry.namespace.name}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Stack direction='column'>
-                            {entry.children.map(name => 
-                                <NavLink to={entry.namespace.name + '.' + name}>{name}</NavLink>
-                            )}
-                        </Stack>
-                    </AccordionDetails>
+            { data != null ?
+                Object.entries(data).map(([namespace, details], key) =>
+                    <Accordion expanded={expanded === 'panel' + key} onChange={handleChange('panel' + key)} key={key}>
+                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                            <Typography component="span">{namespace}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Stack direction='column'>
+                                { details.classes && details.classes.length > 0 &&
+                                    details.classes.map((name, idx) =>
+                                        <NavLink key={"cls-" + idx} to={`${namespace}.${name}`}>{name}</NavLink>
+                                    )
+                                }
+                                { details.functions && details.functions.length > 0 &&
+                                    details.functions.map((name, idx) =>
+                                        <NavLink key={"fn-" + idx} to={`${namespace}.${name}`}>{name}</NavLink>
+                                    )
+                                }
+                            </Stack>
+                        </AccordionDetails>
                     </Accordion>
-                ) :
+                )
+                :
                 <Typography variant="body1" />
             }
-            
         </div>
     ); 
 }
