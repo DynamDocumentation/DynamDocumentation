@@ -1,0 +1,386 @@
+{
+    "fft": {
+        "description": "Compute the one-dimensional discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex."
+            },
+            {
+                "nint, optional": "Length of the transformed axis of the output.\nIfnis smaller than the length of the input, the input is cropped.\nIf it is larger, the input is padded with zeros.  Ifnis not given,\nthe length of the input along the axis specified byaxisis used."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the FFT.  If not given, the last axis is\nused."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.",
+        "notes": "",
+        "examples": ""
+    },
+    "ifft": {
+        "description": "Compute the one-dimensional inverse discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex."
+            },
+            {
+                "nint, optional": "Length of the transformed axis of the output.\nIfnis smaller than the length of the input, the input is cropped.\nIf it is larger, the input is padded with zeros.  Ifnis not given,\nthe length of the input along the axis specified byaxisis used.\nSee notes about padding issues."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the inverse DFT.  If not given, the last\naxis is used."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.",
+        "notes": "",
+        "examples": ""
+    },
+    "fft2": {
+        "description": "Compute the 2-dimensional discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex"
+            },
+            {
+                "ssequence of ints, optional": "Shape (length of each transformed axis) of the output\n(s[0]refers to axis 0,s[1]to axis 1, etc.).\nThis corresponds tonforfft(x,n).\nAlong each axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes specified\nbyaxesis used.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the FFT.  If not given, the last two\naxes are used.  A repeated index inaxesmeans the transform over\nthat axis is performed multiple times.  A one-element sequence means\nthat a one-dimensional FFT is performed. Default:(-2,-1).Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust not beNone."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence only the\nlast axis can havesnot equal to the shape at that axis).New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or the last two axes ifaxesis not given.",
+        "notes": "",
+        "examples": ""
+    },
+    "ifft2": {
+        "description": "Compute the 2-dimensional inverse discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex."
+            },
+            {
+                "ssequence of ints, optional": "Shape (length of each axis) of the output (s[0]refers to axis 0,s[1]to axis 1, etc.).  This corresponds tonforifft(x,n).\nAlong each axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes specified\nbyaxesis used.  See notes for issue onifftzero padding.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the FFT.  If not given, the last two\naxes are used.  A repeated index inaxesmeans the transform over\nthat axis is performed multiple times.  A one-element sequence means\nthat a one-dimensional FFT is performed. Default:(-2,-1).Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust not beNone."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence is\nincompatible with passing in all but the trivials).New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or the last two axes ifaxesis not given.",
+        "notes": "",
+        "examples": ""
+    },
+    "fftn": {
+        "description": "Compute the N-dimensional discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex."
+            },
+            {
+                "ssequence of ints, optional": "Shape (length of each transformed axis) of the output\n(s[0]refers to axis 0,s[1]to axis 1, etc.).\nThis corresponds tonforfft(x,n).\nAlong any axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes specified\nbyaxesis used.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the FFT.  If not given, the lastlen(s)axes are used, or all axes ifsis also not specified.\nRepeated indices inaxesmeans that the transform over that axis is\nperformed multiple times.Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust be explicitly specified too."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence is\nincompatible with passing in all but the trivials).New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or by a combination ofsanda,\nas explained in the parameters section above.",
+        "notes": "",
+        "examples": ""
+    },
+    "ifftn": {
+        "description": "Compute the N-dimensional inverse discrete Fourier Transform.",
+        "params": [
+            {
+                "aarray_like": "Input array, can be complex."
+            },
+            {
+                "ssequence of ints, optional": "Shape (length of each transformed axis) of the output\n(s[0]refers to axis 0,s[1]to axis 1, etc.).\nThis corresponds tonforifft(x,n).\nAlong any axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes specified\nbyaxesis used. See notes for issue onifftzero padding.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the IFFT.  If not given, the lastlen(s)axes are used, or all axes ifsis also not specified.\nRepeated indices inaxesmeans that the inverse transform over that\naxis is performed multiple times.Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust be explicitly specified too."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence is\nincompatible with passing in all but the trivials).New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or by a combination ofsora,\nas explained in the parameters section above.",
+        "notes": "",
+        "examples": ""
+    },
+    "rfft": {
+        "description": "Compute the one-dimensional discrete Fourier Transform for real input.",
+        "params": [
+            {
+                "aarray_like": "Input array"
+            },
+            {
+                "nint, optional": "Number of points along transformation axis in the input to use.\nIfnis smaller than the length of the input, the input is cropped.\nIf it is larger, the input is padded with zeros. Ifnis not given,\nthe length of the input along the axis specified byaxisis used."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the FFT. If not given, the last axis is\nused."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.\nIfnis even, the length of the transformed axis is(n/2)+1.\nIfnis odd, the length is(n+1)/2.",
+        "notes": "",
+        "examples": ""
+    },
+    "irfft": {
+        "description": "Computes the inverse ofrfft.",
+        "params": [
+            {
+                "aarray_like": "The input array."
+            },
+            {
+                "nint, optional": "Length of the transformed axis of the output.\nFornoutput points,n//2+1input points are necessary.  If the\ninput is longer than this, it is cropped.  If it is shorter than this,\nit is padded with zeros.  Ifnis not given, it is taken to be2*(m-1)wheremis the length of the input along the axis\nspecified byaxis."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the inverse FFT. If not given, the last\naxis is used."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.\nThe length of the transformed axis isn, or, ifnis not given,2*(m-1)wheremis the length of the transformed axis of the\ninput. To get an odd number of output points,nmust be specified.",
+        "notes": "",
+        "examples": ""
+    },
+    "rfft2": {
+        "description": "Compute the 2-dimensional FFT of a real array.",
+        "params": [
+            {
+                "aarray": "Input array, taken to be real."
+            },
+            {
+                "ssequence of ints, optional": "Shape of the FFT.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the FFT. Default:(-2,-1).Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust not beNone."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for the last inverse transform.\nincompatible with passing in all but the trivials).New in version 2.0.0."
+            }
+        ],
+        "return": "outndarrayThe result of the real 2-D FFT.",
+        "notes": "",
+        "examples": ""
+    },
+    "irfft2": {
+        "description": "Computes the inverse ofrfft2.",
+        "params": [
+            {
+                "aarray_like": "The input array"
+            },
+            {
+                "ssequence of ints, optional": "Shape of the real output to the inverse FFT.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "The axes over which to compute the inverse fft.\nDefault:(-2,-1), the last two axes.Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust not beNone."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for the last transformation.New in version 2.0.0."
+            }
+        ],
+        "return": "outndarrayThe result of the inverse real 2-D FFT.",
+        "notes": "",
+        "examples": ""
+    },
+    "rfftn": {
+        "description": "Compute the N-dimensional discrete Fourier Transform for real input.",
+        "params": [
+            {
+                "aarray_like": "Input array, taken to be real."
+            },
+            {
+                "ssequence of ints, optional": "Shape (length along each transformed axis) to use from the input.\n(s[0]refers to axis 0,s[1]to axis 1, etc.).\nThe final element ofscorresponds tonforrfft(x,n), while\nfor the remaining axes, it corresponds tonforfft(x,n).\nAlong any axis, if the given shape is smaller than that of the input,\nthe input is cropped. If it is larger, the input is padded with zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes specified\nbyaxesis used.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the FFT.  If not given, the lastlen(s)axes are used, or all axes ifsis also not specified.Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust be explicitly specified too."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for all axes (and hence is\nincompatible with passing in all but the trivials).New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or by a combination ofsanda,\nas explained in the parameters section above.\nThe length of the last axis transformed will bes[-1]//2+1,\nwhile the remaining transformed axes will have lengths according tos, or unchanged from the input.",
+        "notes": "",
+        "examples": ""
+    },
+    "irfftn": {
+        "description": "Computes the inverse ofrfftn.",
+        "params": [
+            {
+                "aarray_like": "Input array."
+            },
+            {
+                "ssequence of ints, optional": "Shape (length of each transformed axis) of the output\n(s[0]refers to axis 0,s[1]to axis 1, etc.).sis also the\nnumber of input points used along this axis, except for the last axis,\nwheres[-1]//2+1points of the input are used.\nAlong any axis, if the shape indicated bysis smaller than that of\nthe input, the input is cropped.  If it is larger, the input is padded\nwith zeros.Changed in version 2.0:If it is-1, the whole input is used (no padding/trimming).Ifsis not given, the shape of the input along the axes\nspecified by axes is used. Except for the last axis which is taken to\nbe2*(m-1)wheremis the length of the input along that axis.Deprecated since version 2.0:Ifsis notNone,axesmust not beNoneeither.Deprecated since version 2.0:smust contain onlyints, notNonevalues.Nonevalues currently mean that the default value fornis used\nin the corresponding 1-D transform, but this behaviour is\ndeprecated."
+            },
+            {
+                "axessequence of ints, optional": "Axes over which to compute the inverse FFT. If not given, the lastlen(s)axes are used, or all axes ifsis also not specified.\nRepeated indices inaxesmeans that the inverse transform over that\naxis is performed multiple times.Deprecated since version 2.0:Ifsis specified, the correspondingaxesto be transformed\nmust be explicitly specified too."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype for the last transformation.New in version 2.0.0."
+            }
+        ],
+        "return": "outndarrayThe truncated or zero-padded input, transformed along the axes\nindicated byaxes, or by a combination ofsora,\nas explained in the parameters section above.\nThe length of each transformed axis is as given by the corresponding\nelement ofs, or the length of the input in every axis except for the\nlast one ifsis not given.  In the final transformed axis the length\nof the output whensis not given is2*(m-1)wheremis the\nlength of the final transformed axis of the input.  To get an odd\nnumber of output points in the final axis,smust be specified.",
+        "notes": "",
+        "examples": ""
+    },
+    "hfft": {
+        "description": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real\nspectrum.",
+        "params": [
+            {
+                "aarray_like": "The input array."
+            },
+            {
+                "nint, optional": "Length of the transformed axis of the output. Fornoutput\npoints,n//2+1input points are necessary.  If the input is\nlonger than this, it is cropped.  If it is shorter than this, it is\npadded with zeros.  Ifnis not given, it is taken to be2*(m-1)wheremis the length of the input along the axis specified byaxis."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the FFT. If not given, the last\naxis is used."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.\nThe length of the transformed axis isn, or, ifnis not given,2*m-2wheremis the length of the transformed axis of\nthe input. To get an odd number of output points,nmust be\nspecified, for instance as2*m-1in the typical case,",
+        "notes": "",
+        "examples": ""
+    },
+    "ihfft": {
+        "description": "Compute the inverse FFT of a signal that has Hermitian symmetry.",
+        "params": [
+            {
+                "aarray_like": "Input array."
+            },
+            {
+                "nint, optional": "Length of the inverse FFT, the number of points along\ntransformation axis in the input to use.  Ifnis smaller than\nthe length of the input, the input is cropped.  If it is larger,\nthe input is padded with zeros. Ifnis not given, the length of\nthe input along the axis specified byaxisis used."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the inverse FFT. If not given, the last\naxis is used."
+            },
+            {
+                "norm{“backward”, “ortho”, “forward”}, optional": "Normalization mode (seenumpy.fft). Default is “backward”.\nIndicates which direction of the forward/backward pair of transforms\nis scaled and with what normalization factor.New in version 1.20.0:The “backward”, “forward” values were added."
+            },
+            {
+                "outcomplex ndarray, optional": "If provided, the result will be placed in this array. It should be\nof the appropriate shape and dtype.New in version 2.0.0."
+            }
+        ],
+        "return": "outcomplex ndarrayThe truncated or zero-padded input, transformed along the axis\nindicated byaxis, or the last one ifaxisis not specified.\nThe length of the transformed axis isn//2+1.",
+        "notes": "",
+        "examples": ""
+    },
+    "fftfreq": {
+        "description": "Return the Discrete Fourier Transform sample frequencies.",
+        "params": [
+            {
+                "nint": "Window length."
+            },
+            {
+                "dscalar, optional": "Sample spacing (inverse of the sampling rate). Defaults to 1."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default:None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            }
+        ],
+        "return": "fndarrayArray of lengthncontaining the sample frequencies.",
+        "notes": "",
+        "examples": "f = [0, 1, ...,   n/2-1,     -n/2, ..., -1] / (d*n)   if n is even\nf = [0, 1, ..., (n-1)/2, -(n-1)/2, ..., -1] / (d*n)   if n is odd"
+    },
+    "rfftfreq": {
+        "description": "Return the Discrete Fourier Transform sample frequencies\n(for usage with rfft, irfft).",
+        "params": [
+            {
+                "nint": "Window length."
+            },
+            {
+                "dscalar, optional": "Sample spacing (inverse of the sampling rate). Defaults to 1."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default:None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            }
+        ],
+        "return": "fndarrayArray of lengthn//2+1containing the sample frequencies.",
+        "notes": "",
+        "examples": "f = [0, 1, ...,     n/2-1,     n/2] / (d*n)   if n is even\nf = [0, 1, ..., (n-1)/2-1, (n-1)/2] / (d*n)   if n is odd"
+    },
+    "fftshift": {
+        "description": "Shift the zero-frequency component to the center of the spectrum.",
+        "params": [
+            {
+                "xarray_like": "Input array."
+            },
+            {
+                "axesint or shape tuple, optional": "Axes over which to shift.  Default is None, which shifts all axes."
+            }
+        ],
+        "return": "yndarrayThe shifted array.",
+        "notes": "",
+        "examples": ""
+    },
+    "ifftshift": {
+        "description": "The inverse offftshift. Although identical for even-lengthx, the\nfunctions differ by one sample for odd-lengthx.",
+        "params": [
+            {
+                "xarray_like": "Input array."
+            },
+            {
+                "axesint or shape tuple, optional": "Axes over which to calculate.  Defaults to None, which shifts all axes."
+            }
+        ],
+        "return": "yndarrayThe shifted array.",
+        "notes": "",
+        "examples": ""
+    }
+}

@@ -1,0 +1,2168 @@
+{
+    "MaskType": {
+        "description": "alias ofbool",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_array": {
+        "description": "alias ofMaskedArray",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "array": {
+        "description": "An array class with possibly masked values.",
+        "params": [
+            {
+                "dataarray_like": "Input data."
+            },
+            {
+                "masksequence, optional": "Mask. Must be convertible to an array of booleans with the same\nshape asdata. True indicates a masked (i.e. invalid) data."
+            },
+            {
+                "dtypedtype, optional": "Data type of the output.\nIfdtypeis None, the type of the data argument (data.dtype)\nis used. Ifdtypeis not None and different fromdata.dtype,\na copy is performed."
+            },
+            {
+                "copybool, optional": "Whether to copy the input data (True), or to use a reference instead.\nDefault is False."
+            },
+            {
+                "subokbool, optional": "Whether to return a subclass ofMaskedArrayif possible (True) or a\nplainMaskedArray. Default is True."
+            },
+            {
+                "ndminint, optional": "Minimum number of dimensions. Default is 0."
+            },
+            {
+                "fill_valuescalar, optional": "Value used to fill in the masked values when necessary.\nIf None, a default based on the data-type is used."
+            },
+            {
+                "keep_maskbool, optional": "Whether to combinemaskwith the mask of the input data, if any\n(True), or to use onlymaskfor the output (False). Default is True."
+            },
+            {
+                "hard_maskbool, optional": "Whether to use a hard mask or not. With a hard mask, masked values\ncannot be unmasked. Default is False."
+            },
+            {
+                "shrinkbool, optional": "Whether to force compression of an empty mask. Default is True."
+            },
+            {
+                "order{‘C’, ‘F’, ‘A’}, optional": "Specify the order of the array.  If order is ‘C’, then the array\nwill be in C-contiguous order (last-index varies the fastest).\nIf order is ‘F’, then the returned array will be in\nFortran-contiguous order (first-index varies the fastest).\nIf order is ‘A’ (default), then the returned array may be\nin any order (either C-, Fortran-contiguous, or even discontiguous),\nunless a copy is required, in which case it will be C-contiguous."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": "x = MaskedArray(data, mask=nomask, dtype=None, copy=False, subok=True,\n                ndmin=0, fill_value=None, keep_mask=True, hard_mask=None,\n                shrink=True, order=None)"
+    },
+    "copy": {
+        "description": "method",
+        "params": [
+            {
+                "order{‘C’, ‘F’, ‘A’, ‘K’}, optional": "Controls the memory layout of the copy. ‘C’ means C-order,\n‘F’ means F-order, ‘A’ means ‘F’ ifais Fortran contiguous,\n‘C’ otherwise. ‘K’ means match the layout ofaas closely\nas possible. (Note that this function andnumpy.copyare very\nsimilar but have different default values for their order=\narguments, and this function always passes sub-classes through.)"
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "frombuffer": {
+        "description": "Interpret a buffer as a 1-dimensional array.",
+        "params": [
+            {
+                "bufferbuffer_like": "An object that exposes the buffer interface."
+            },
+            {
+                "dtypedata-type, optional": "Data-type of the returned array; default: float."
+            },
+            {
+                "countint, optional": "Number of items to read.-1means all data in the buffer."
+            },
+            {
+                "offsetint, optional": "Start reading the buffer from this offset (in bytes); default: 0."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "out: MaskedArray",
+        "notes": "",
+        "examples": ">>> dt = np.dtype(int)\n>>> dt = dt.newbyteorder('>')\n>>> np.frombuffer(buf, dtype=dt)"
+    },
+    "fromfunction": {
+        "description": "Construct an array by executing a function over each coordinate.",
+        "params": [
+            {
+                "functioncallable": "The function is called with N parameters, where N is the rank ofshape.  Each parameter represents the coordinates of the array\nvarying along a specific axis.  For example, ifshapewere(2,2), then the parameters would bearray([[0,0],[1,1]])andarray([[0,1],[0,1]])"
+            },
+            {
+                "shape(N,) tuple of ints": "Shape of the output array, which also determines the shape of\nthe coordinate arrays passed tofunction."
+            },
+            {
+                "dtypedata-type, optional": "Data-type of the coordinate arrays passed tofunction.\nBy default,dtypeis float."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "fromfunction: MaskedArrayThe result of the call tofunctionis passed back directly.\nTherefore the shape offromfunctionis completely determined byfunction.  Iffunctionreturns a scalar value, the shape offromfunctionwould not match theshapeparameter.",
+        "notes": "",
+        "examples": ""
+    },
+    "diagflat": {
+        "description": "Create a two-dimensional array with the flattened input as a diagonal.",
+        "params": [
+            {
+                "varray_like": "Input data, which is flattened and set as thek-th\ndiagonal of the output."
+            },
+            {
+                "kint, optional": "Diagonal to set; 0, the default, corresponds to the “main” diagonal,\na positive (negative)kgiving the number of the diagonal above\n(below) the main."
+            }
+        ],
+        "return": "outndarrayThe 2-D output array.",
+        "notes": "",
+        "examples": ""
+    },
+    "empty": {
+        "description": "Return a new array of given shape and type, without initializing entries.",
+        "params": [
+            {
+                "shapeint or tuple of int": "Shape of the empty array, e.g.,(2,3)or2."
+            },
+            {
+                "dtypedata-type, optional": "Desired output data-type for the array, e.g,numpy.int8. Default isnumpy.float64."
+            },
+            {
+                "order{‘C’, ‘F’}, optional, default: ‘C’": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default:None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of uninitialized (arbitrary) data of the given shape, dtype, and\norder.  Object arrays will be initialized to None.",
+        "notes": "",
+        "examples": ""
+    },
+    "empty_like": {
+        "description": "Return a new array with the same shape and type as a given array.",
+        "params": [
+            {
+                "prototypearray_like": "The shape and data-type ofprototypedefine these same attributes\nof the returned array."
+            },
+            {
+                "dtypedata-type, optional": "Overrides the data type of the result."
+            },
+            {
+                "order{‘C’, ‘F’, ‘A’, or ‘K’}, optional": "Overrides the memory layout of the result. ‘C’ means C-order,\n‘F’ means F-order, ‘A’ means ‘F’ ifprototypeis Fortran\ncontiguous, ‘C’ otherwise. ‘K’ means match the layout ofprototypeas closely as possible."
+            },
+            {
+                "subokbool, optional.": "If True, then the newly created array will use the sub-class\ntype ofprototype, otherwise it will be a base-class array. Defaults\nto True."
+            },
+            {
+                "shapeint or sequence of ints, optional.": "Overrides the shape of the result. If order=’K’ and the number of\ndimensions is unchanged, will try to keep order, otherwise,\norder=’C’ is implied."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default: None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of uninitialized (arbitrary) data with the same\nshape and type asprototype.",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_all": {
+        "description": "Empty masked array with all elements masked.",
+        "params": [
+            {
+                "shapeint or tuple of ints": "Shape of the required MaskedArray, e.g.,(2,3)or2."
+            },
+            {
+                "dtypedtype, optional": "Data type of the output."
+            }
+        ],
+        "return": "aMaskedArrayA masked array with all data masked.",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_all_like": {
+        "description": "Empty masked array with the properties of an existing array.",
+        "params": [
+            {
+                "arrndarray": "An array describing the shape and dtype of the required MaskedArray."
+            }
+        ],
+        "return": "aMaskedArrayA masked array with all data masked.",
+        "notes": "",
+        "examples": ""
+    },
+    "ones": {
+        "description": "Return a new array of given shape and type, filled with ones.",
+        "params": [
+            {
+                "shapeint or sequence of ints": "Shape of the new array, e.g.,(2,3)or2."
+            },
+            {
+                "dtypedata-type, optional": "The desired data-type for the array, e.g.,numpy.int8.  Default isnumpy.float64."
+            },
+            {
+                "order{‘C’, ‘F’}, optional, default: C": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default: None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of ones with the given shape, dtype, and order.",
+        "notes": "",
+        "examples": ""
+    },
+    "ones_like": {
+        "description": "Return an array of ones with the same shape and type as a given array.",
+        "params": [
+            {
+                "aarray_like": "The shape and data-type ofadefine these same attributes of\nthe returned array."
+            },
+            {
+                "dtypedata-type, optional": "Overrides the data type of the result."
+            },
+            {
+                "order{‘C’, ‘F’, ‘A’, or ‘K’}, optional": "Overrides the memory layout of the result. ‘C’ means C-order,\n‘F’ means F-order, ‘A’ means ‘F’ ifais Fortran contiguous,\n‘C’ otherwise. ‘K’ means match the layout ofaas closely\nas possible."
+            },
+            {
+                "subokbool, optional.": "If True, then the newly created array will use the sub-class\ntype ofa, otherwise it will be a base-class array. Defaults\nto True."
+            },
+            {
+                "shapeint or sequence of ints, optional.": "Overrides the shape of the result. If order=’K’ and the number of\ndimensions is unchanged, will try to keep order, otherwise,\norder=’C’ is implied."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default: None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of ones with the same shape and type asa.",
+        "notes": "",
+        "examples": ""
+    },
+    "zeros": {
+        "description": "Return a new array of given shape and type, filled with zeros.",
+        "params": [
+            {
+                "shapeint or tuple of ints": "Shape of the new array, e.g.,(2,3)or2."
+            },
+            {
+                "dtypedata-type, optional": "The desired data-type for the array, e.g.,numpy.int8.  Default isnumpy.float64."
+            },
+            {
+                "order{‘C’, ‘F’}, optional, default: ‘C’": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of zeros with the given shape, dtype, and order.",
+        "notes": "",
+        "examples": ""
+    },
+    "zeros_like": {
+        "description": "Return an array of zeros with the same shape and type as a given array.",
+        "params": [
+            {
+                "aarray_like": "The shape and data-type ofadefine these same attributes of\nthe returned array."
+            },
+            {
+                "dtypedata-type, optional": "Overrides the data type of the result."
+            },
+            {
+                "order{‘C’, ‘F’, ‘A’, or ‘K’}, optional": "Overrides the memory layout of the result. ‘C’ means C-order,\n‘F’ means F-order, ‘A’ means ‘F’ ifais Fortran contiguous,\n‘C’ otherwise. ‘K’ means match the layout ofaas closely\nas possible."
+            },
+            {
+                "subokbool, optional.": "If True, then the newly created array will use the sub-class\ntype ofa, otherwise it will be a base-class array. Defaults\nto True."
+            },
+            {
+                "shapeint or sequence of ints, optional.": "Overrides the shape of the result. If order=’K’ and the number of\ndimensions is unchanged, will try to keep order, otherwise,\norder=’C’ is implied."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default: None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            }
+        ],
+        "return": "outMaskedArrayArray of zeros with the same shape and type asa.",
+        "notes": "",
+        "examples": ""
+    },
+    "all": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "any": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "count": {
+        "description": "method",
+        "params": [
+            {
+                "axisNone or int or tuple of ints, optional": "Axis or axes along which the count is performed.\nThe default, None, performs the count over all\nthe dimensions of the input array.axismay be negative, in\nwhich case it counts from the last to the first axis.\nIf this is a tuple of ints, the count is performed on multiple\naxes, instead of a single axis or all the axes as before."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+            }
+        ],
+        "return": "resultndarray or scalarAn array with the same shape as the input array, with the specified\naxis removed. If the array is a 0-d array, or ifaxisis None, a\nscalar is returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "count_masked": {
+        "description": "Count the number of masked elements along the given axis.",
+        "params": [
+            {
+                "arrarray_like": "An array with (possibly) masked elements."
+            },
+            {
+                "axisint, optional": "Axis along which to count. If None (default), a flattened\nversion of the array is used."
+            }
+        ],
+        "return": "countint, ndarrayThe total number of masked elements (axis=None) or the number\nof masked elements along each slice of the given axis.",
+        "notes": "",
+        "examples": ""
+    },
+    "getmask": {
+        "description": "Return the mask of a masked array, or nomask.",
+        "params": [
+            {
+                "aarray_like": "InputMaskedArrayfor which the mask is required."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "getmaskarray": {
+        "description": "Return the mask of a masked array, or full boolean array of False.",
+        "params": [
+            {
+                "arrarray_like": "InputMaskedArrayfor which the mask is required."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "getdata": {
+        "description": "Return the data of a masked array as an ndarray.",
+        "params": [
+            {
+                "aarray_like": "InputMaskedArray, alternatively a ndarray or a subclass thereof."
+            },
+            {
+                "subokbool": "Whether to force the output to be apurendarray (False) or to\nreturn a subclass of ndarray if appropriate (True, default)."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "nonzero": {
+        "description": "method",
+        "params": [
+            {
+                "None": ""
+            }
+        ],
+        "return": "tuple_of_arraystupleIndices of elements that are non-zero.",
+        "notes": "",
+        "examples": "a[a.nonzero()]\n\n\n\nnp.transpose(a.nonzero())"
+    },
+    "shape": {
+        "description": "Return the shape of an array.",
+        "params": [
+            {
+                "aarray_like": "Input array."
+            }
+        ],
+        "return": "shapetuple of intsThe elements of the shape tuple give the lengths of the\ncorresponding array dimensions.",
+        "notes": "",
+        "examples": ""
+    },
+    "size": {
+        "description": "Return the number of elements along a given axis.",
+        "params": [
+            {
+                "aarray_like": "Input data."
+            },
+            {
+                "axisint, optional": "Axis along which the elements are counted.  By default, give\nthe total number of elements."
+            }
+        ],
+        "return": "element_countintNumber of elements along the specified axis.",
+        "notes": "",
+        "examples": ""
+    },
+    "is_masked": {
+        "description": "Determine whether input has masked values.",
+        "params": [
+            {
+                "xarray_like": "Array to check for masked values."
+            }
+        ],
+        "return": "resultboolTrue ifxis a MaskedArray with masked values, False otherwise.",
+        "notes": "",
+        "examples": ""
+    },
+    "is_mask": {
+        "description": "Return True if m is a valid, standard mask.",
+        "params": [
+            {
+                "marray_like": "Array to test."
+            }
+        ],
+        "return": "resultboolTrue ifm.dtype.typeis MaskType, False otherwise.",
+        "notes": "",
+        "examples": ""
+    },
+    "isMaskedArray": {
+        "description": "Test whether input is an instance of MaskedArray.",
+        "params": [
+            {
+                "xobject": "Object to test."
+            }
+        ],
+        "return": "resultboolTrue ifxis a MaskedArray.",
+        "notes": "",
+        "examples": ""
+    },
+    "isMA": {
+        "description": "Test whether input is an instance of MaskedArray.",
+        "params": [
+            {
+                "xobject": "Object to test."
+            }
+        ],
+        "return": "resultboolTrue ifxis a MaskedArray.",
+        "notes": "",
+        "examples": ""
+    },
+    "isarray": {
+        "description": "Test whether input is an instance of MaskedArray.",
+        "params": [
+            {
+                "xobject": "Object to test."
+            }
+        ],
+        "return": "resultboolTrue ifxis a MaskedArray.",
+        "notes": "",
+        "examples": ""
+    },
+    "isin": {
+        "description": "Calculateselement in test_elements, broadcasting overelementonly.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "in1d": {
+        "description": "Test whether each element of an array is also present in a second\narray.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "unique": {
+        "description": "Finds the unique elements of an array.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "ravel": {
+        "description": "method",
+        "params": [
+            {
+                "order{‘C’, ‘F’, ‘A’, ‘K’}, optional": "The elements ofaare read using this index order. ‘C’ means to\nindex the elements in C-like order, with the last axis index\nchanging fastest, back to the first axis index changing slowest.\n‘F’ means to index the elements in Fortran-like index order, with\nthe first index changing fastest, and the last index changing\nslowest. Note that the ‘C’ and ‘F’ options take no account of the\nmemory layout of the underlying array, and only refer to the order\nof axis indexing.  ‘A’ means to read the elements in Fortran-like\nindex order ifmis Fortrancontiguousin memory, C-like order\notherwise.  ‘K’ means to read the elements in the order they occur\nin memory, except for reversing the data when strides are negative.\nBy default, ‘C’ index order is used.\n(Masked arrays currently use ‘A’ on the data when ‘K’ is passed.)"
+            }
+        ],
+        "return": "MaskedArrayOutput view is of shape(self.size,)(or(np.ma.product(self.shape),)).",
+        "notes": "",
+        "examples": ""
+    },
+    "reshape": {
+        "description": "method",
+        "params": [
+            {
+                "shapeint or tuple of ints": "The new shape should be compatible with the original shape. If an\ninteger is supplied, then the result will be a 1-D array of that\nlength."
+            },
+            {
+                "order{‘C’, ‘F’}, optional": "Determines whether the array data should be viewed as in C\n(row-major) or FORTRAN (column-major) order."
+            }
+        ],
+        "return": "reshaped_arrayarrayA new view on the array.",
+        "notes": "",
+        "examples": ""
+    },
+    "resize": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "flatten": {
+        "description": "method",
+        "params": [
+            {
+                "order{‘C’, ‘F’, ‘A’, ‘K’}, optional": "‘C’ means to flatten in row-major (C-style) order.\n‘F’ means to flatten in column-major (Fortran-\nstyle) order. ‘A’ means to flatten in column-major\norder ifais Fortrancontiguousin memory,\nrow-major order otherwise. ‘K’ means to flattenain the order the elements occur in memory.\nThe default is ‘C’."
+            }
+        ],
+        "return": "yndarrayA copy of the input array, flattened to one dimension.",
+        "notes": "",
+        "examples": ""
+    },
+    "swapaxes": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "transpose": {
+        "description": "method",
+        "params": [
+            {
+                "axesNone, tuple of ints, ornints": "None or no argument: reverses the order of the axes.tuple of ints:iin thej-th place in the tuple means that the\narray’si-th axis becomes the transposed array’sj-th axis.nints: same as an n-tuple of the same ints (this form is\nintended simply as a “convenience” alternative to the tuple form)."
+            }
+        ],
+        "return": "pndarrayView of the array with its axes suitably permuted.",
+        "notes": "",
+        "examples": ""
+    },
+    "atleast_1d": {
+        "description": "Convert inputs to arrays with at least one dimension.",
+        "params": [
+            {
+                "arys1, arys2, …array_like": "One or more input arrays."
+            }
+        ],
+        "return": "retndarrayAn array, or tuple of arrays, each witha.ndim>=1.\nCopies are made only if necessary.",
+        "notes": "",
+        "examples": ""
+    },
+    "atleast_2d": {
+        "description": "View inputs as arrays with at least two dimensions.",
+        "params": [
+            {
+                "arys1, arys2, …array_like": "One or more array-like sequences.  Non-array inputs are converted\nto arrays.  Arrays that already have two or more dimensions are\npreserved."
+            }
+        ],
+        "return": "res, res2, …ndarrayAn array, or tuple of arrays, each witha.ndim>=2.\nCopies are avoided where possible, and views with two or more\ndimensions are returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "atleast_3d": {
+        "description": "View inputs as arrays with at least three dimensions.",
+        "params": [
+            {
+                "arys1, arys2, …array_like": "One or more array-like sequences.  Non-array inputs are converted to\narrays.  Arrays that already have three or more dimensions are\npreserved."
+            }
+        ],
+        "return": "res1, res2, …ndarrayAn array, or tuple of arrays, each witha.ndim>=3.  Copies are\navoided where possible, and views with three or more dimensions are\nreturned.  For example, a 1-D array of shape(N,)becomes a view\nof shape(1,N,1), and a 2-D array of shape(M,N)becomes a\nview of shape(M,N,1).",
+        "notes": "",
+        "examples": ""
+    },
+    "expand_dims": {
+        "description": "Expand the shape of an array.",
+        "params": [
+            {
+                "aarray_like": "Input array."
+            },
+            {
+                "axisint or tuple of ints": "Position in the expanded axes where the new axis (or axes) is placed.Deprecated since version 1.13.0:Passing an axis whereaxis>a.ndimwill be treated asaxis==a.ndim, and passingaxis<-a.ndim-1will\nbe treated asaxis==0. This behavior is deprecated."
+            }
+        ],
+        "return": "resultndarrayView ofawith the number of dimensions increased.",
+        "notes": "",
+        "examples": ""
+    },
+    "squeeze": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "stack": {
+        "description": "Join a sequence of arrays along a new axis.",
+        "params": [
+            {
+                "arrayssequence of ndarrays": "Each array must have the same shape. In the case of a single ndarray\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+            },
+            {
+                "axisint, optional": "The axis in the result array along which the input arrays are stacked."
+            },
+            {
+                "outndarray, optional": "If provided, the destination to place the result. The shape must be\ncorrect, matching that of what stack would have returned if no\nout argument were specified."
+            },
+            {
+                "dtypestr or dtype": "If provided, the destination array will have this dtype. Cannot be\nprovided together without.New in version 1.24."
+            },
+            {
+                "casting{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional": "Controls what kind of data casting may occur. Defaults to ‘same_kind’.New in version 1.24."
+            }
+        ],
+        "return": "stackedndarrayThe stacked array has one more dimension than the input arrays.",
+        "notes": "",
+        "examples": ""
+    },
+    "column_stack": {
+        "description": "Stack 1-D arrays as columns into a 2-D array.",
+        "params": [
+            {
+                "tupsequence of 1-D or 2-D arrays.": "Arrays to stack. All of them must have the same first dimension."
+            }
+        ],
+        "return": "stacked2-D arrayThe array formed by stacking the given arrays.",
+        "notes": "",
+        "examples": ""
+    },
+    "concatenate": {
+        "description": "Concatenate a sequence of arrays along the given axis.",
+        "params": [
+            {
+                "arrayssequence of array_like": "The arrays must have the same shape, except in the dimension\ncorresponding toaxis(the first, by default)."
+            },
+            {
+                "axisint, optional": "The axis along which the arrays will be joined. Default is 0."
+            }
+        ],
+        "return": "resultMaskedArrayThe concatenated array with any masked entries preserved.",
+        "notes": "",
+        "examples": ""
+    },
+    "dstack": {
+        "description": "Stack arrays in sequence depth wise (along third axis).",
+        "params": [
+            {
+                "tupsequence of arrays": "The arrays must have the same shape along all but the third axis.\n1-D or 2-D arrays must have the same shape."
+            }
+        ],
+        "return": "stackedndarrayThe array formed by stacking the given arrays, will be at least 3-D.",
+        "notes": "",
+        "examples": ""
+    },
+    "hstack": {
+        "description": "Stack arrays in sequence horizontally (column wise).",
+        "params": [
+            {
+                "tupsequence of ndarrays": "The arrays must have the same shape along all but the second axis,\nexcept 1-D arrays which can be any length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+            },
+            {
+                "dtypestr or dtype": "If provided, the destination array will have this dtype. Cannot be\nprovided together without.New in version 1.24."
+            },
+            {
+                "casting{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional": "Controls what kind of data casting may occur. Defaults to ‘same_kind’.New in version 1.24."
+            }
+        ],
+        "return": "stackedndarrayThe array formed by stacking the given arrays.",
+        "notes": "",
+        "examples": ""
+    },
+    "hsplit": {
+        "description": "Split an array into multiple sub-arrays horizontally (column-wise).",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "mr_": null,
+    "vstack": {
+        "description": "Stack arrays in sequence vertically (row wise).",
+        "params": [
+            {
+                "tupsequence of ndarrays": "The arrays must have the same shape along all but the first axis.\n1-D arrays must have the same length. In the case of a single\narray_like input, it will be treated as a sequence of arrays; i.e.,\neach element along the zeroth axis is treated as a separate array."
+            },
+            {
+                "dtypestr or dtype": "If provided, the destination array will have this dtype. Cannot be\nprovided together without.New in version 1.24."
+            },
+            {
+                "casting{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional": "Controls what kind of data casting may occur. Defaults to ‘same_kind’.New in version 1.24."
+            }
+        ],
+        "return": "stackedndarrayThe array formed by stacking the given arrays, will be at least 2-D.",
+        "notes": "",
+        "examples": ""
+    },
+    "append": {
+        "description": "Append values to the end of an array.",
+        "params": [
+            {
+                "aarray_like": "Values are appended to a copy of this array."
+            },
+            {
+                "barray_like": "These values are appended to a copy ofa.  It must be of the\ncorrect shape (the same shape asa, excludingaxis).  Ifaxisis not specified,bcan be any shape and will be flattened\nbefore use."
+            },
+            {
+                "axisint, optional": "The axis along whichvare appended.  Ifaxisis not given,\nbothaandbare flattened before use."
+            }
+        ],
+        "return": "appendMaskedArrayA copy ofawithbappended toaxis.  Note thatappenddoes not occur in-place: a new array is allocated and filled.  Ifaxisis None, the result is a flattened array.",
+        "notes": "",
+        "examples": ""
+    },
+    "make_mask": {
+        "description": "Create a boolean mask from an array.",
+        "params": [
+            {
+                "marray_like": "Potential mask."
+            },
+            {
+                "copybool, optional": "Whether to return a copy ofm(True) ormitself (False)."
+            },
+            {
+                "shrinkbool, optional": "Whether to shrinkmtonomaskif all its values are False."
+            },
+            {
+                "dtypedtype, optional": "Data-type of the output mask. By default, the output mask has a\ndtype of MaskType (bool). If the dtype is flexible, each field has\na boolean dtype. This is ignored whenmisnomask, in which\ncasenomaskis always returned."
+            }
+        ],
+        "return": "resultndarrayA boolean mask derived fromm.",
+        "notes": "",
+        "examples": ""
+    },
+    "make_mask_none": {
+        "description": "Return a boolean mask of the given shape, filled with False.",
+        "params": [
+            {
+                "newshapetuple": "A tuple indicating the shape of the mask."
+            },
+            {
+                "dtype{None, dtype}, optional": "If None, use a MaskType instance. Otherwise, use a new datatype with\nthe same fields asdtype, converted to boolean types."
+            }
+        ],
+        "return": "resultndarrayAn ndarray of appropriate shape and dtype, filled with False.",
+        "notes": "",
+        "examples": ""
+    },
+    "mask_or": {
+        "description": "Combine two masks with thelogical_oroperator.",
+        "params": [
+            {
+                "m1, m2array_like": "Input masks."
+            },
+            {
+                "copybool, optional": "If copy is False and one of the inputs isnomask, return a view\nof the other input mask. Defaults to False."
+            },
+            {
+                "shrinkbool, optional": "Whether to shrink the output tonomaskif all its values are\nFalse. Defaults to True."
+            }
+        ],
+        "return": "maskoutput maskThe result masks values that are masked in eitherm1orm2.",
+        "notes": "",
+        "examples": ""
+    },
+    "make_mask_descr": {
+        "description": "Construct a dtype description list from a given dtype.",
+        "params": [
+            {
+                "ndtypedtype": "The dtype to convert."
+            }
+        ],
+        "return": "resultdtypeA dtype that looks likendtype, the type of all fields is boolean.",
+        "notes": "",
+        "examples": ""
+    },
+    "mask": {
+        "description": "property",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "ndenumerate": {
+        "description": "Multidimensional index iterator.",
+        "params": [
+            {
+                "aarray_like": "An array with (possibly) masked elements."
+            },
+            {
+                "compressedbool, optional": "If True (default), masked elements are skipped."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "flatnotmasked_contiguous": {
+        "description": "Find contiguous unmasked data in a masked array.",
+        "params": [
+            {
+                "aarray_like": "The input array."
+            }
+        ],
+        "return": "slice_listlistA sorted sequence ofsliceobjects (start index, end index).",
+        "notes": "",
+        "examples": ""
+    },
+    "flatnotmasked_edges": {
+        "description": "Find the indices of the first and last unmasked values.",
+        "params": [
+            {
+                "aarray_like": "Input 1-DMaskedArray"
+            }
+        ],
+        "return": "edgesndarray or NoneThe indices of first and last non-masked value in the array.\nReturns None if all values are masked.",
+        "notes": "",
+        "examples": ""
+    },
+    "notmasked_contiguous": {
+        "description": "Find contiguous unmasked data in a masked array along the given axis.",
+        "params": [
+            {
+                "aarray_like": "The input array."
+            },
+            {
+                "axisint, optional": "Axis along which to perform the operation.\nIf None (default), applies to a flattened version of the array, and this\nis the same asflatnotmasked_contiguous."
+            }
+        ],
+        "return": "endpointslistA list of slices (start and end indexes) of unmasked indexes\nin the array.If the input is 2d and axis is specified, the result is a list of lists.",
+        "notes": "",
+        "examples": ""
+    },
+    "notmasked_edges": {
+        "description": "Find the indices of the first and last unmasked values along an axis.",
+        "params": [
+            {
+                "aarray_like": "The input array."
+            },
+            {
+                "axisint, optional": "Axis along which to perform the operation.\nIf None (default), applies to a flattened version of the array."
+            }
+        ],
+        "return": "edgesndarray or listAn array of start and end indexes if there are any masked data in\nthe array. If there are no masked data in the array,edgesis a\nlist of the first and last index.",
+        "notes": "",
+        "examples": ""
+    },
+    "clump_masked": {
+        "description": "Returns a list of slices corresponding to the masked clumps of a 1-D array.\n(A “clump” is defined as a contiguous region of the array).",
+        "params": [
+            {
+                "andarray": "A one-dimensional masked array."
+            }
+        ],
+        "return": "sliceslist of sliceThe list of slices, one for each continuous region of masked elements\nina.",
+        "notes": "",
+        "examples": ""
+    },
+    "clump_unmasked": {
+        "description": "Return list of slices corresponding to the unmasked clumps of a 1-D array.\n(A “clump” is defined as a contiguous region of the array).",
+        "params": [
+            {
+                "andarray": "A one-dimensional masked array."
+            }
+        ],
+        "return": "sliceslist of sliceThe list of slices, one for each continuous region of unmasked\nelements ina.",
+        "notes": "",
+        "examples": ""
+    },
+    "mask_cols": {
+        "description": "Mask columns of a 2D array that contain masked values.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "mask_rowcols": {
+        "description": "Mask rows and/or columns of a 2D array that contain masked values.",
+        "params": [
+            {
+                "aarray_like, MaskedArray": "The array to mask.  If not a MaskedArray instance (or if no array\nelements are masked), the result is a MaskedArray withmaskset\ntonomask(False). Must be a 2D array."
+            },
+            {
+                "axisint, optional": "Axis along which to perform the operation. If None, applies to a\nflattened version of the array."
+            }
+        ],
+        "return": "aMaskedArrayA modified version of the input array, masked depending on the value\nof theaxisparameter.",
+        "notes": "",
+        "examples": ""
+    },
+    "mask_rows": {
+        "description": "Mask rows of a 2D array that contain masked values.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "harden_mask": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "soften_mask": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "shrink_mask": {
+        "description": "method",
+        "params": [
+            {
+                "None": ""
+            }
+        ],
+        "return": "None",
+        "notes": "",
+        "examples": ""
+    },
+    "unshare_mask": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "asarray": {
+        "description": "Convert the input to a masked array of the given data-type.",
+        "params": [
+            {
+                "aarray_like": "Input data, in any form that can be converted to a masked array. This\nincludes lists, lists of tuples, tuples, tuples of tuples, tuples\nof lists, ndarrays and masked arrays."
+            },
+            {
+                "dtypedtype, optional": "By default, the data-type is inferred from the input data."
+            },
+            {
+                "order{‘C’, ‘F’}, optional": "Whether to use row-major (‘C’) or column-major (‘FORTRAN’) memory\nrepresentation.  Default is ‘C’."
+            }
+        ],
+        "return": "outMaskedArrayMasked array interpretation ofa.",
+        "notes": "",
+        "examples": ""
+    },
+    "asanyarray": {
+        "description": "Convert the input to a masked array, conserving subclasses.",
+        "params": [
+            {
+                "aarray_like": "Input data, in any form that can be converted to an array."
+            },
+            {
+                "dtypedtype, optional": "By default, the data-type is inferred from the input data."
+            },
+            {
+                "order{‘C’, ‘F’}, optional": "Whether to use row-major (‘C’) or column-major (‘FORTRAN’) memory\nrepresentation.  Default is ‘C’."
+            }
+        ],
+        "return": "outMaskedArrayMaskedArray interpretation ofa.",
+        "notes": "",
+        "examples": ""
+    },
+    "fix_invalid": {
+        "description": "Return input with invalid data masked and replaced by a fill value.",
+        "params": [
+            {
+                "aarray_like": "Input array, a (subclass of) ndarray."
+            },
+            {
+                "masksequence, optional": "Mask. Must be convertible to an array of booleans with the same\nshape asdata. True indicates a masked (i.e. invalid) data."
+            },
+            {
+                "copybool, optional": "Whether to use a copy ofa(True) or to fixain place (False).\nDefault is True."
+            },
+            {
+                "fill_valuescalar, optional": "Value used for fixing invalid data. Default is None, in which case\nthea.fill_valueis used."
+            }
+        ],
+        "return": "bMaskedArrayThe input array with invalid entries fixed.",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_equal": {
+        "description": "Mask an array where equal to a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_greater": {
+        "description": "Mask an array where greater than a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_greater_equal": {
+        "description": "Mask an array where greater than or equal to a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_inside": {
+        "description": "Mask an array inside a given interval.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_invalid": {
+        "description": "Mask an array where invalid values occur (NaNs or infs).",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_less": {
+        "description": "Mask an array where less than a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_less_equal": {
+        "description": "Mask an array where less than or equal to a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_not_equal": {
+        "description": "Mask an array wherenotequal to a given value.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_object": {
+        "description": "Mask the arrayxwhere the data are exactly equal to value.",
+        "params": [
+            {
+                "xarray_like": "Array to mask"
+            },
+            {
+                "valueobject": "Comparison value"
+            },
+            {
+                "copy{True, False}, optional": "Whether to return a copy ofx."
+            },
+            {
+                "shrink{True, False}, optional": "Whether to collapse a mask full of False to nomask"
+            }
+        ],
+        "return": "resultMaskedArrayThe result of maskingxwhere equal tovalue.",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_outside": {
+        "description": "Mask an array outside a given interval.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_values": {
+        "description": "Mask using floating point equality.",
+        "params": [
+            {
+                "xarray_like": "Array to mask."
+            },
+            {
+                "valuefloat": "Masking value."
+            },
+            {
+                "rtol, atolfloat, optional": "Tolerance parameters passed on toisclose"
+            },
+            {
+                "copybool, optional": "Whether to return a copy ofx."
+            },
+            {
+                "shrinkbool, optional": "Whether to collapse a mask full of False tonomask."
+            }
+        ],
+        "return": "resultMaskedArrayThe result of maskingxwhere approximately equal tovalue.",
+        "notes": "",
+        "examples": ""
+    },
+    "masked_where": {
+        "description": "Mask an array where a condition is met.",
+        "params": [
+            {
+                "conditionarray_like": "Masking condition.  Whenconditiontests floating point values for\nequality, consider usingmasked_valuesinstead."
+            },
+            {
+                "aarray_like": "Array to mask."
+            },
+            {
+                "copybool": "If True (default) make a copy ofain the result.  If False modifyain place and return a view."
+            }
+        ],
+        "return": "resultMaskedArrayThe result of maskingawhereconditionis True.",
+        "notes": "",
+        "examples": ""
+    },
+    "compress_cols": {
+        "description": "Suppress whole columns of a 2-D array that contain masked values.",
+        "params": [
+            {
+                "xarray_like, MaskedArray": "The array to operate on.  If not a MaskedArray instance (or if no array\nelements are masked),xis interpreted as a MaskedArray withmaskset tonomask. Must be a 2D array."
+            }
+        ],
+        "return": "compressed_arrayndarrayThe compressed array.",
+        "notes": "",
+        "examples": ""
+    },
+    "compress_rowcols": {
+        "description": "Suppress the rows and/or columns of a 2-D array that contain\nmasked values.",
+        "params": [
+            {
+                "xarray_like, MaskedArray": "The array to operate on.  If not a MaskedArray instance (or if no array\nelements are masked),xis interpreted as a MaskedArray withmaskset tonomask. Must be a 2D array."
+            },
+            {
+                "axisint, optional": "Axis along which to perform the operation. Default is None."
+            }
+        ],
+        "return": "compressed_arrayndarrayThe compressed array.",
+        "notes": "",
+        "examples": ""
+    },
+    "compress_rows": {
+        "description": "Suppress whole rows of a 2-D array that contain masked values.",
+        "params": [
+            {
+                "xarray_like, MaskedArray": "The array to operate on. If not a MaskedArray instance (or if no array\nelements are masked),xis interpreted as a MaskedArray withmaskset tonomask. Must be a 2D array."
+            }
+        ],
+        "return": "compressed_arrayndarrayThe compressed array.",
+        "notes": "",
+        "examples": ""
+    },
+    "compressed": {
+        "description": "method",
+        "params": [],
+        "return": "datandarrayA newndarrayholding the non-masked data is returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "filled": {
+        "description": "method",
+        "params": [
+            {
+                "fill_valuearray_like, optional": "The value to use for invalid entries. Can be scalar or non-scalar.\nIf non-scalar, the resulting ndarray must be broadcastable over\ninput array. Default is None, in which case, thefill_valueattribute of the array is used instead."
+            }
+        ],
+        "return": "filled_arrayndarrayA copy ofselfwith invalid entries replaced byfill_value(be it the function argument or the attribute ofself), orselfitself as an ndarray if there are no invalid entries to\nbe replaced.",
+        "notes": "",
+        "examples": ""
+    },
+    "tofile": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "tolist": {
+        "description": "method",
+        "params": [
+            {
+                "fill_valuescalar, optional": "The value to use for invalid entries. Default is None."
+            }
+        ],
+        "return": "resultlistThe Python list representation of the masked array.",
+        "notes": "",
+        "examples": ""
+    },
+    "torecords": {
+        "description": "method",
+        "params": [
+            {
+                "None": ""
+            }
+        ],
+        "return": "recordndarrayA new flexible-typendarraywith two fields: the first element\ncontaining a value, the second element containing the corresponding\nmask boolean. The returned record shape matches self.shape.",
+        "notes": "",
+        "examples": ""
+    },
+    "tobytes": {
+        "description": "method",
+        "params": [
+            {
+                "fill_valuescalar, optional": "Value used to fill in the masked values. Default is None, in which\ncaseMaskedArray.fill_valueis used."
+            },
+            {
+                "order{‘C’,’F’,’A’}, optional": "Order of the data item in the copy. Default is ‘C’.‘C’   – C order (row major).‘F’   – Fortran order (column major).‘A’   – Any, current order of array.None  – Same as ‘A’."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "common_fill_value": {
+        "description": "Return the common filling value of two masked arrays, if any.",
+        "params": [
+            {
+                "a, bMaskedArray": "The masked arrays for which to compare fill values."
+            }
+        ],
+        "return": "fill_valuescalar or NoneThe common fill value, or None.",
+        "notes": "",
+        "examples": ""
+    },
+    "default_fill_value": {
+        "description": "Return the default fill value for the argument object.",
+        "params": [
+            {
+                "objndarray, dtype or scalar": "The array data-type or scalar for which the default fill value\nis returned."
+            }
+        ],
+        "return": "fill_valuescalarThe default fill value.",
+        "notes": "",
+        "examples": ""
+    },
+    "maximum_fill_value": {
+        "description": "Return the minimum value that can be represented by the dtype of an object.",
+        "params": [
+            {
+                "objndarray, dtype or scalar": "An object that can be queried for it’s numeric type."
+            }
+        ],
+        "return": "valscalarThe minimum representable value.",
+        "notes": "",
+        "examples": ""
+    },
+    "minimum_fill_value": {
+        "description": "Return the maximum value that can be represented by the dtype of an object.",
+        "params": [
+            {
+                "objndarray, dtype or scalar": "An object that can be queried for it’s numeric type."
+            }
+        ],
+        "return": "valscalarThe maximum representable value.",
+        "notes": "",
+        "examples": ""
+    },
+    "set_fill_value": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "get_fill_value": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "anom": {
+        "description": "method",
+        "params": [
+            {
+                "axisint, optional": "Axis over which the anomalies are taken.\nThe default is to use the mean of the flattened array as reference."
+            },
+            {
+                "dtypedtype, optional": "Type to use in computing the variance. For arrays of integer typethe default is float32; for arrays of float types it is the same as\nthe array type."
+            },
+            {
+                "Type to use in computing the variance. For arrays of integer type": "the default is float32; for arrays of float types it is the same as\nthe array type."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "anomalies": {
+        "description": "Compute the anomalies (deviations from the arithmetic mean)\nalong the given axis.",
+        "params": [
+            {
+                "axisint, optional": "Axis over which the anomalies are taken.\nThe default is to use the mean of the flattened array as reference."
+            },
+            {
+                "dtypedtype, optional": "Type to use in computing the variance. For arrays of integer typethe default is float32; for arrays of float types it is the same as\nthe array type."
+            },
+            {
+                "Type to use in computing the variance. For arrays of integer type": "the default is float32; for arrays of float types it is the same as\nthe array type."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "average": {
+        "description": "Return the weighted average of array over the given axis.",
+        "params": [
+            {
+                "aarray_like": "Data to be averaged.\nMasked entries are not taken into account in the computation."
+            },
+            {
+                "axisNone or int or tuple of ints, optional": "Axis or axes along which to averagea.  The default,axis=None, will average over all of the elements of the input array.\nIf axis is a tuple of ints, averaging is performed on all of the axes\nspecified in the tuple instead of a single axis or all the axes as\nbefore."
+            },
+            {
+                "weightsarray_like, optional": "An array of weights associated with the values ina. Each value inacontributes to the average according to its associated weight.\nThe array of weights must be the same shape asaif no axis is\nspecified, otherwise the weights must have dimensions and shape\nconsistent withaalong the specified axis.\nIfweights=None, then all data inaare assumed to have a\nweight equal to one.\nThe calculation is:avg=sum(a*weights)/sum(weights)where the sum is over all included elements.\nThe only constraint on the values ofweightsis thatsum(weights)must not be 0."
+            },
+            {
+                "returnedbool, optional": "Flag indicating whether a tuple(result,sumofweights)should be returned as output (True), or just the result (False).\nDefault is False."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the originala.Note:keepdimswill not work with instances ofnumpy.matrixor other classes whose methods do not supportkeepdims.New in version 1.23.0."
+            }
+        ],
+        "return": "average, [sum_of_weights](tuple of) scalar or MaskedArrayThe average along the specified axis. When returned isTrue,\nreturn a tuple with the average as the first element and the sum\nof the weights as the second element. The return type isnp.float64ifais of integer type and floats smaller thanfloat64, or the\ninput data-type, otherwise. If returned,sum_of_weightsis alwaysfloat64.",
+        "notes": "",
+        "examples": "avg = sum(a * weights) / sum(weights)"
+    },
+    "conjugate": {
+        "description": "Return the complex conjugate, element-wise.",
+        "params": [
+            {
+                "xarray_like": "Input value."
+            },
+            {
+                "outndarray, None, or tuple of ndarray and None, optional": "A location into which the result is stored. If provided, it must have\na shape that the inputs broadcast to. If not provided or None,\na freshly-allocated array is returned. A tuple (possible only as a\nkeyword argument) must have length equal to the number of outputs."
+            },
+            {
+                "wherearray_like, optional": "This condition is broadcast over the input. At locations where the\ncondition is True, theoutarray will be set to the ufunc result.\nElsewhere, theoutarray will retain its original value.\nNote that if an uninitializedoutarray is created via the defaultout=None, locations within it where the condition is False will\nremain uninitialized."
+            },
+            {
+                "**kwargs": "For other keyword-only arguments, see theufunc docs."
+            }
+        ],
+        "return": "yndarrayThe complex conjugate ofx, with same dtype asy.\nThis is a scalar ifxis a scalar.",
+        "notes": "",
+        "examples": ""
+    },
+    "corrcoef": {
+        "description": "Return Pearson product-moment correlation coefficients.",
+        "params": [
+            {
+                "xarray_like": "A 1-D or 2-D array containing multiple variables and observations.\nEach row ofxrepresents a variable, and each column a single\nobservation of all those variables. Also seerowvarbelow."
+            },
+            {
+                "yarray_like, optional": "An additional set of variables and observations.yhas the same\nshape asx."
+            },
+            {
+                "rowvarbool, optional": "Ifrowvaris True (default), then each row represents a\nvariable, with observations in the columns. Otherwise, the relationship\nis transposed: each column represents a variable, while the rows\ncontain observations."
+            },
+            {
+                "bias_NoValue, optional": "Has no effect, do not use.Deprecated since version 1.10.0."
+            },
+            {
+                "allow_maskedbool, optional": "If True, masked values are propagated pair-wise: if a value is masked\ninx, the corresponding value is masked iny.\nIf False, raises an exception.  Becausebiasis deprecated, this\nargument needs to be treated as keyword only to avoid a warning."
+            },
+            {
+                "ddof_NoValue, optional": "Has no effect, do not use.Deprecated since version 1.10.0."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "cov": {
+        "description": "Estimate the covariance matrix.",
+        "params": [
+            {
+                "xarray_like": "A 1-D or 2-D array containing multiple variables and observations.\nEach row ofxrepresents a variable, and each column a single\nobservation of all those variables. Also seerowvarbelow."
+            },
+            {
+                "yarray_like, optional": "An additional set of variables and observations.yhas the same\nshape asx."
+            },
+            {
+                "rowvarbool, optional": "Ifrowvaris True (default), then each row represents a\nvariable, with observations in the columns. Otherwise, the relationship\nis transposed: each column represents a variable, while the rows\ncontain observations."
+            },
+            {
+                "biasbool, optional": "Default normalization (False) is by(N-1), whereNis the\nnumber of observations given (unbiased estimate). Ifbiasis True,\nthen normalization is byN. This keyword can be overridden by\nthe keywordddofin numpy versions >= 1.5."
+            },
+            {
+                "allow_maskedbool, optional": "If True, masked values are propagated pair-wise: if a value is masked\ninx, the corresponding value is masked iny.\nIf False, raises aValueErrorexception when some values are missing."
+            },
+            {
+                "ddof{None, int}, optional": "If notNonenormalization is by(N-ddof), whereNis\nthe number of observations; this overrides the value implied bybias. The default value isNone."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "cumsum": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "cumprod": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "mean": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "median": {
+        "description": "Compute the median along the specified axis.",
+        "params": [
+            {
+                "aarray_like": "Input array or object that can be converted to an array."
+            },
+            {
+                "axisint, optional": "Axis along which the medians are computed. The default (None) is\nto compute the median along a flattened version of the array."
+            },
+            {
+                "outndarray, optional": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type will be cast if necessary."
+            },
+            {
+                "overwrite_inputbool, optional": "If True, then allow use of memory of input array (a) for\ncalculations. The input array will be modified by the call to\nmedian. This will save memory when you do not need to preserve\nthe contents of the input array. Treat the input as undefined,\nbut it will probably be fully or partially sorted. Default is\nFalse. Note that, ifoverwrite_inputis True, and the input\nis not already anndarray, an error will be raised."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the input array."
+            }
+        ],
+        "return": "medianndarrayA new array holding the result is returned unless out is\nspecified, in which case a reference to out is returned.\nReturn data-type isfloat64for integers and floats smaller thanfloat64, or the input data-type, otherwise.",
+        "notes": "",
+        "examples": ""
+    },
+    "power": {
+        "description": "Returns element-wise base array raised to power from second array.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "prod": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "std": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "sum": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "var": {
+        "description": "method",
+        "params": [
+            {
+                "aarray_like": "Array containing numbers whose variance is desired.  Ifais not an\narray, a conversion is attempted."
+            },
+            {
+                "axisNone or int or tuple of ints, optional": "Axis or axes along which the variance is computed.  The default is to\ncompute the variance of the flattened array.\nIf this is a tuple of ints, a variance is performed over multiple axes,\ninstead of a single axis or all the axes as before."
+            },
+            {
+                "dtypedata-type, optional": "Type to use in computing the variance.  For arrays of integer type\nthe default isfloat64; for arrays of float types it is the same as\nthe array type."
+            },
+            {
+                "outndarray, optional": "Alternate output array in which to place the result.  It must have\nthe same shape as the expected output, but the type is cast if\nnecessary."
+            },
+            {
+                "ddof{int, float}, optional": "“Delta Degrees of Freedom”: the divisor used in the calculation isN-ddof, whereNrepresents the number of elements. By\ndefaultddofis zero. See notes for details about use ofddof."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the input array.If the default value is passed, thenkeepdimswill not be\npassed through to thevarmethod of sub-classes ofndarray, however any non-default value will be.  If the\nsub-class’ method does not implementkeepdimsany\nexceptions will be raised."
+            },
+            {
+                "wherearray_like of bool, optional": "Elements to include in the variance. Seereducefor\ndetails.New in version 1.20.0."
+            },
+            {
+                "meanarray like, optional": "Provide the mean to prevent its recalculation. The mean should have\na shape as if it was calculated withkeepdims=True.\nThe axis for the calculation of the mean should be the same as used in\nthe call to this var function.New in version 2.0.0."
+            },
+            {
+                "correction{int, float}, optional": "Array API compatible name for theddofparameter. Only one of them\ncan be provided at the same time.New in version 2.0.0."
+            }
+        ],
+        "return": "variancendarray, see dtype parameter aboveIfout=None, returns a new array containing the variance;\notherwise, a reference to the output array is returned.",
+        "notes": "",
+        "examples": "N = len(a)\nd2 = abs(a - mean)**2  # abs is for complex `a`\nvar = d2.sum() / (N - ddof)  # note use of `ddof`"
+    },
+    "argmax": {
+        "description": "method",
+        "params": [
+            {
+                "axis{None, integer}": "If None, the index is into the flattened array, otherwise along\nthe specified axis"
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used to fill in the masked values.  If None, the output of\nmaximum_fill_value(self._data) is used instead."
+            },
+            {
+                "out{None, array}, optional": "Array into which the result can be placed. Its type is preserved\nand it must be of the right shape to hold the output."
+            }
+        ],
+        "return": "index_array{integer_array}",
+        "notes": "",
+        "examples": ""
+    },
+    "argmin": {
+        "description": "method",
+        "params": [
+            {
+                "axis{None, integer}": "If None, the index is into the flattened array, otherwise along\nthe specified axis"
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used to fill in the masked values.  If None, the output of\nminimum_fill_value(self._data) is used instead."
+            },
+            {
+                "out{None, array}, optional": "Array into which the result can be placed. Its type is preserved\nand it must be of the right shape to hold the output."
+            }
+        ],
+        "return": "ndarray or scalarIf multi-dimension input, returns a new ndarray of indices to the\nminimum values along the given axis.  Otherwise, returns a scalar\nof index to the minimum values along the given axis.",
+        "notes": "",
+        "examples": ""
+    },
+    "max": {
+        "description": "method",
+        "params": [
+            {
+                "axisNone or int or tuple of ints, optional": "Axis along which to operate.  By default,axisis None and the\nflattened input is used.\nIf this is a tuple of ints, the maximum is selected over multiple\naxes, instead of a single axis or all the axes as before."
+            },
+            {
+                "outarray_like, optional": "Alternative output array in which to place the result.  Must\nbe of the same shape and buffer length as the expected output."
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used to fill in the masked values.\nIf None, use the output of maximum_fill_value()."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+            }
+        ],
+        "return": "amaxarray_likeNew array holding the result.\nIfoutwas specified,outis returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "min": {
+        "description": "method",
+        "params": [
+            {
+                "axisNone or int or tuple of ints, optional": "Axis along which to operate.  By default,axisis None and the\nflattened input is used.\nIf this is a tuple of ints, the minimum is selected over multiple\naxes, instead of a single axis or all the axes as before."
+            },
+            {
+                "outarray_like, optional": "Alternative output array in which to place the result.  Must be of\nthe same shape and buffer length as the expected output."
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used to fill in the masked values.\nIf None, use the output ofminimum_fill_value."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+            }
+        ],
+        "return": "aminarray_likeNew array holding the result.\nIfoutwas specified,outis returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "ptp": {
+        "description": "method",
+        "params": [
+            {
+                "axis{None, int}, optional": "Axis along which to find the peaks.  If None (default) the\nflattened array is used."
+            },
+            {
+                "out{None, array_like}, optional": "Alternative output array in which to place the result. It must\nhave the same shape and buffer length as the expected output\nbut the type will be cast if necessary."
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used to fill in the masked values."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are reduced are left\nin the result as dimensions with size one. With this option,\nthe result will broadcast correctly against the array."
+            }
+        ],
+        "return": "ptpndarray.A new array holding the result, unlessoutwas\nspecified, in which case a reference tooutis returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "diff": {
+        "description": "Calculate the n-th discrete difference along the given axis.\nThe first difference is given byout[i]=a[i+1]-a[i]along\nthe given axis, higher differences are calculated by usingdiffrecursively.\nPreserves the input mask.",
+        "params": [
+            {
+                "aarray_like": "Input array"
+            },
+            {
+                "nint, optional": "The number of times values are differenced. If zero, the input\nis returned as-is."
+            },
+            {
+                "axisint, optional": "The axis along which the difference is taken, default is the\nlast axis."
+            },
+            {
+                "prepend, appendarray_like, optional": "Values to prepend or append toaalong axis prior to\nperforming the difference.  Scalar values are expanded to\narrays with length 1 in the direction of axis and the shape\nof the input array in along all other axes.  Otherwise the\ndimension and shape must matchaexcept along axis."
+            }
+        ],
+        "return": "diffMaskedArrayThe n-th differences. The shape of the output is the same asaexcept alongaxiswhere the dimension is smaller byn. The\ntype of the output is the same as the type of the difference\nbetween any two elements ofa. This is the same as the type ofain most cases. A notable exception isdatetime64, which\nresults in atimedelta64output array.",
+        "notes": "",
+        "examples": ""
+    },
+    "argsort": {
+        "description": "method",
+        "params": [
+            {
+                "axisint, optional": "Axis along which to sort. If None, the default, the flattened array\nis used."
+            },
+            {
+                "kind{‘quicksort’, ‘mergesort’, ‘heapsort’, ‘stable’}, optional": "The sorting algorithm used."
+            },
+            {
+                "orderlist, optional": "Whenais an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc.  Not all fields need be\nspecified."
+            },
+            {
+                "endwith{True, False}, optional": "Whether missing values (if any) should be treated as the largest values\n(True) or the smallest values (False)\nWhen the array contains unmasked values at the same extremes of the\ndatatype, the ordering of these values and the masked values is\nundefined."
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used internally for the masked values.\nIffill_valueis not None, it supersedesendwith."
+            },
+            {
+                "stablebool, optional": "Only for compatibility withnp.argsort. Ignored."
+            }
+        ],
+        "return": "index_arrayndarray, intArray of indices that sortaalong the specified axis.\nIn other words,a[index_array]yields a sorteda.",
+        "notes": "",
+        "examples": ""
+    },
+    "sort": {
+        "description": "method",
+        "params": [
+            {
+                "aarray_like": "Array to be sorted."
+            },
+            {
+                "axisint, optional": "Axis along which to sort. If None, the array is flattened before\nsorting. The default is -1, which sorts along the last axis."
+            },
+            {
+                "kind{‘quicksort’, ‘mergesort’, ‘heapsort’, ‘stable’}, optional": "The sorting algorithm used."
+            },
+            {
+                "orderlist, optional": "Whenais a structured array, this argument specifies which fields\nto compare first, second, and so on.  This list does not need to\ninclude all of the fields."
+            },
+            {
+                "endwith{True, False}, optional": "Whether missing values (if any) should be treated as the largest values\n(True) or the smallest values (False)\nWhen the array contains unmasked values sorting at the same extremes of the\ndatatype, the ordering of these values and the masked values is\nundefined."
+            },
+            {
+                "fill_valuescalar or None, optional": "Value used internally for the masked values.\nIffill_valueis not None, it supersedesendwith."
+            },
+            {
+                "stablebool, optional": "Only for compatibility withnp.sort. Ignored."
+            }
+        ],
+        "return": "sorted_arrayndarrayArray of the same type and shape asa.",
+        "notes": "",
+        "examples": ""
+    },
+    "diag": {
+        "description": "Extract a diagonal or construct a diagonal array.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "dot": {
+        "description": "Return the dot product of two arrays.",
+        "params": [
+            {
+                "a, bmasked_array_like": "Inputs arrays."
+            },
+            {
+                "strictbool, optional": "Whether masked data are propagated (True) or set to 0 (False) for\nthe computation. Default is False.  Propagating the mask means that\nif a masked value appears in a row or column, the whole row or\ncolumn is considered masked."
+            },
+            {
+                "outmasked_array, optional": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfordot(a,b). This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "identity": {
+        "description": "Return the identity array.",
+        "params": [
+            {
+                "nint": "Number of rows (and columns) innxnoutput."
+            },
+            {
+                "dtypedata-type, optional": "Data-type of the output.  Defaults tofloat."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "outMaskedArraynxnarray with its main diagonal set to one,\nand all other elements 0.",
+        "notes": "",
+        "examples": ""
+    },
+    "inner": {
+        "description": "Inner product of two arrays.",
+        "params": [
+            {
+                "a, barray_like": "Ifaandbare nonscalar, their last dimensions must match."
+            }
+        ],
+        "return": "outndarrayIfaandbare both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.out.shape=(*a.shape[:-1],*b.shape[:-1])",
+        "notes": "",
+        "examples": "np.inner(a, b) = sum(a[:]*b[:])\n\n\n\nnp.inner(a, b) = np.tensordot(a, b, axes=(-1,-1))\n\n\n\nnp.inner(a, b)[i0,...,ir-2,j0,...,js-2]\n     = sum(a[i0,...,ir-2,:]*b[j0,...,js-2,:])\n\n\n\nnp.inner(a,b) = a*b"
+    },
+    "innerproduct": {
+        "description": "Inner product of two arrays.",
+        "params": [
+            {
+                "a, barray_like": "Ifaandbare nonscalar, their last dimensions must match."
+            }
+        ],
+        "return": "outndarrayIfaandbare both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.out.shape=(*a.shape[:-1],*b.shape[:-1])",
+        "notes": "",
+        "examples": "np.inner(a, b) = sum(a[:]*b[:])\n\n\n\nnp.inner(a, b) = np.tensordot(a, b, axes=(-1,-1))\n\n\n\nnp.inner(a, b)[i0,...,ir-2,j0,...,js-2]\n     = sum(a[i0,...,ir-2,:]*b[j0,...,js-2,:])\n\n\n\nnp.inner(a,b) = a*b"
+    },
+    "outer": {
+        "description": "Compute the outer product of two vectors.",
+        "params": [
+            {
+                "a(M,) array_like": "First input vector.  Input is flattened if\nnot already 1-dimensional."
+            },
+            {
+                "b(N,) array_like": "Second input vector.  Input is flattened if\nnot already 1-dimensional."
+            },
+            {
+                "out(M, N) ndarray, optional": "A location where the result is stored"
+            }
+        ],
+        "return": "out(M, N) ndarrayout[i,j]=a[i]*b[j]",
+        "notes": "",
+        "examples": "[[a_0*b_0  a_0*b_1 ... a_0*b_{N-1} ]\n [a_1*b_0    .\n [ ...          .\n [a_{M-1}*b_0            a_{M-1}*b_{N-1} ]]"
+    },
+    "outerproduct": {
+        "description": "Compute the outer product of two vectors.",
+        "params": [
+            {
+                "a(M,) array_like": "First input vector.  Input is flattened if\nnot already 1-dimensional."
+            },
+            {
+                "b(N,) array_like": "Second input vector.  Input is flattened if\nnot already 1-dimensional."
+            },
+            {
+                "out(M, N) ndarray, optional": "A location where the result is stored"
+            }
+        ],
+        "return": "out(M, N) ndarrayout[i,j]=a[i]*b[j]",
+        "notes": "",
+        "examples": "[[a_0*b_0  a_0*b_1 ... a_0*b_{N-1} ]\n [a_1*b_0    .\n [ ...          .\n [a_{M-1}*b_0            a_{M-1}*b_{N-1} ]]"
+    },
+    "trace": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "vander": {
+        "description": "Generate a Vandermonde matrix.",
+        "params": [
+            {
+                "xarray_like": "1-D input array."
+            },
+            {
+                "Nint, optional": "Number of columns in the output.  IfNis not specified, a square\narray is returned (N=len(x))."
+            },
+            {
+                "increasingbool, optional": "Order of the powers of the columns.  If True, the powers increase\nfrom left to right, if False (the default) they are reversed."
+            }
+        ],
+        "return": "outndarrayVandermonde matrix.  Ifincreasingis False, the first column isx^(N-1), the secondx^(N-2)and so forth. Ifincreasingis\nTrue, the columns arex^0,x^1,...,x^(N-1).",
+        "notes": "",
+        "examples": ""
+    },
+    "polyfit": {
+        "description": "Least squares polynomial fit.",
+        "params": [
+            {
+                "xarray_like, shape (M,)": "x-coordinates of the M sample points(x[i],y[i])."
+            },
+            {
+                "yarray_like, shape (M,) or (M, K)": "y-coordinates of the sample points. Several data sets of sample\npoints sharing the same x-coordinates can be fitted at once by\npassing in a 2D-array that contains one dataset per column."
+            },
+            {
+                "degint": "Degree of the fitting polynomial"
+            },
+            {
+                "rcondfloat, optional": "Relative condition number of the fit. Singular values smaller than\nthis relative to the largest singular value will be ignored. The\ndefault value is len(x)*eps, where eps is the relative precision of\nthe float type, about 2e-16 in most cases."
+            },
+            {
+                "fullbool, optional": "Switch determining nature of return value. When it is False (the\ndefault) just the coefficients are returned, when True diagnostic\ninformation from the singular value decomposition is also returned."
+            },
+            {
+                "warray_like, shape (M,), optional": "Weights. If not None, the weightw[i]applies to the unsquared\nresidualy[i]-y_hat[i]atx[i]. Ideally the weights are\nchosen so that the errors of the productsw[i]*y[i]all have the\nsame variance.  When using inverse-variance weighting, usew[i]=1/sigma(y[i]).  The default value is None."
+            },
+            {
+                "covbool or str, optional": "If given and notFalse, return not just the estimate but also its\ncovariance matrix. By default, the covariance are scaled by\nchi2/dof, where dof = M - (deg + 1), i.e., the weights are presumed\nto be unreliable except in a relative sense and everything is scaled\nsuch that the reduced chi2 is unity. This scaling is omitted ifcov='unscaled', as is relevant for the case that the weights are\nw = 1/sigma, with sigma known to be a reliable estimate of the\nuncertainty."
+            }
+        ],
+        "return": "pndarray, shape (deg + 1,) or (deg + 1, K)Polynomial coefficients, highest power first.  Ifywas 2-D, the\ncoefficients fork-th data set are inp[:,k].residuals, rank, singular_values, rcondThese values are only returned iffull==Trueresiduals – sum of squared residuals of the least squares fitrank – the effective rank of the scaled Vandermondecoefficient matrixsingular_values – singular values of the scaled Vandermondecoefficient matrixrcond – value ofrcond.For more details, seenumpy.linalg.lstsq.Vndarray, shape (deg + 1, deg + 1) or (deg + 1, deg + 1, K)Present only iffull==Falseandcov==True.  The covariance\nmatrix of the polynomial coefficient estimates.  The diagonal of\nthis matrix are the variance estimates for each coefficient.  If y\nis a 2-D array, then the covariance matrix for thek-th data set\nare inV[:,:,k]",
+        "notes": "",
+        "examples": "x[0]**n * p[0] + ... + x[0] * p[n-1] + p[n] = y[0]\nx[1]**n * p[0] + ... + x[1] * p[n-1] + p[n] = y[1]\n...\nx[k]**n * p[0] + ... + x[k] * p[n-1] + p[n] = y[k]"
+    },
+    "around": {
+        "description": "Round an array to the given number of decimals.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "clip": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "round": {
+        "description": "method",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "intersect1d": {
+        "description": "Returns the unique elements common to both arrays.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "setdiff1d": {
+        "description": "Set difference of 1D arrays with unique elements.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "setxor1d": {
+        "description": "Set exclusive-or of 1-D arrays with unique elements.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "union1d": {
+        "description": "Union of two arrays.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "allequal": {
+        "description": "Return True if all entries of a and b are equal, using\nfill_value as a truth value where either or both are masked.",
+        "params": [
+            {
+                "a, barray_like": "Input arrays to compare."
+            },
+            {
+                "fill_valuebool, optional": "Whether masked values in a or b are considered equal (True) or not\n(False)."
+            }
+        ],
+        "return": "yboolReturns True if the two arrays are equal within the given\ntolerance, False otherwise. If either array contains NaN,\nthen False is returned.",
+        "notes": "",
+        "examples": ""
+    },
+    "allclose": {
+        "description": "Returns True if two arrays are element-wise equal within a tolerance.",
+        "params": [
+            {
+                "a, barray_like": "Input arrays to compare."
+            },
+            {
+                "masked_equalbool, optional": "Whether masked values inaandbare considered equal (True) or not\n(False). They are considered equal by default."
+            },
+            {
+                "rtolfloat, optional": "Relative tolerance. The relative difference is equal tortol*b.\nDefault is 1e-5."
+            },
+            {
+                "atolfloat, optional": "Absolute tolerance. The absolute difference is equal toatol.\nDefault is 1e-8."
+            }
+        ],
+        "return": "yboolReturns True if the two arrays are equal within the given\ntolerance, False otherwise. If either array contains NaN, then\nFalse is returned.",
+        "notes": "",
+        "examples": "absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))"
+    },
+    "amax": {
+        "description": "Return the maximum of an array or maximum along an axis.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "amin": {
+        "description": "Return the minimum of an array or minimum along an axis.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "apply_along_axis": {
+        "description": "Apply a function to 1-D slices along the given axis.",
+        "params": [
+            {
+                "func1dfunction (M,) -> (Nj…)": "This function should accept 1-D arrays. It is applied to 1-D\nslices ofarralong the specified axis."
+            },
+            {
+                "axisinteger": "Axis along whicharris sliced."
+            },
+            {
+                "arrndarray (Ni…, M, Nk…)": "Input array."
+            },
+            {
+                "argsany": "Additional arguments tofunc1d."
+            },
+            {
+                "kwargsany": "Additional named arguments tofunc1d."
+            }
+        ],
+        "return": "outndarray  (Ni…, Nj…, Nk…)The output array. The shape ofoutis identical to the shape ofarr, except along theaxisdimension. This axis is removed, and\nreplaced with new dimensions equal to the shape of the return value\noffunc1d. So iffunc1dreturns a scalaroutwill have one\nfewer dimensions thanarr.",
+        "notes": "",
+        "examples": "Ni, Nk = a.shape[:axis], a.shape[axis+1:]\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nk):\n        f = func1d(arr[ii + s_[:,] + kk])\n        Nj = f.shape\n        for jj in ndindex(Nj):\n            out[ii + jj + kk] = f[jj]\n\n\n\nNi, Nk = a.shape[:axis], a.shape[axis+1:]\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nk):\n        out[ii + s_[...,] + kk] = func1d(arr[ii + s_[:,] + kk])"
+    },
+    "apply_over_axes": {
+        "description": "Apply a function repeatedly over multiple axes.",
+        "params": [
+            {
+                "funcfunction": "This function must take two arguments,func(a, axis)."
+            },
+            {
+                "aarray_like": "Input array."
+            },
+            {
+                "axesarray_like": "Axes over whichfuncis applied; the elements must be integers."
+            }
+        ],
+        "return": "apply_over_axisndarrayThe output array.  The number of dimensions is the same asa,\nbut the shape can be different.  This depends on whetherfuncchanges the shape of its output with respect to its input.",
+        "notes": "",
+        "examples": ""
+    },
+    "arange": {
+        "description": "Return evenly spaced values within a given interval.",
+        "params": [
+            {
+                "startinteger or real, optional": "Start of interval.  The interval includes this value.  The default\nstart value is 0."
+            },
+            {
+                "stopinteger or real": "End of interval.  The interval does not include this value, except\nin some cases wherestepis not an integer and floating point\nround-off affects the length ofout."
+            },
+            {
+                "stepinteger or real, optional": "Spacing between values.  For any outputout, this is the distance\nbetween two adjacent values,out[i+1]-out[i].  The default\nstep size is 1.  Ifstepis specified as a position argument,startmust also be given."
+            },
+            {
+                "dtypedtype, optional": "The type of the output array.  Ifdtypeis not given, infer the data\ntype from the other input arguments."
+            },
+            {
+                "devicestr, optional": "The device on which to place the created array. Default:None.\nFor Array-API interoperability only, so must be\"cpu\"if passed.New in version 2.0.0."
+            },
+            {
+                "likearray_like, optional": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in aslikesupports\nthe__array_function__protocol, the result will be defined\nby it. In this case, it ensures the creation of an array object\ncompatible with that passed in via this argument.New in version 1.20.0."
+            }
+        ],
+        "return": "arangeMaskedArrayArray of evenly spaced values.For floating point arguments, the length of the result isceil((stop-start)/step).  Because of floating point overflow,\nthis rule may result in the last element ofoutbeing greater\nthanstop.",
+        "notes": "",
+        "examples": ">>> np.arange(0, 5, 0.5, dtype=int)\narray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])\n>>> np.arange(-3, 3, 0.5, dtype=int)\narray([-3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8])\n\n\n\n>>> power = 40\n>>> modulo = 10000\n>>> x1 = [(n ** power) % modulo for n in range(8)]\n>>> x2 = [(n ** power) % modulo for n in np.arange(8)]\n>>> print(x1)\n[0, 1, 7776, 8801, 6176, 625, 6576, 4001]  # correct\n>>> print(x2)\n[0, 1, 7776, 7185, 0, 5969, 4816, 3361]  # incorrect"
+    },
+    "choose": {
+        "description": "Use an index array to construct a new array from a list of choices.",
+        "params": [
+            {
+                "indicesndarray of ints": "This array must contain integers in[0,n-1], where n is the\nnumber of choices."
+            },
+            {
+                "choicessequence of arrays": "Choice arrays. The index array and all of the choices should be\nbroadcastable to the same shape."
+            },
+            {
+                "outarray, optional": "If provided, the result will be inserted into this array. It should\nbe of the appropriate shape anddtype."
+            },
+            {
+                "mode{‘raise’, ‘wrap’, ‘clip’}, optional": "Specifies how out-of-bounds indices will behave.‘raise’ : raise an error‘wrap’ : wrap around‘clip’ : clip to the range"
+            }
+        ],
+        "return": "merged_arrayarray",
+        "notes": "",
+        "examples": ""
+    },
+    "compress_nd": {
+        "description": "Suppress slices from multiple dimensions which contain masked values.",
+        "params": [
+            {
+                "xarray_like, MaskedArray": "The array to operate on. If not a MaskedArray instance (or if no array\nelements are masked),xis interpreted as a MaskedArray withmaskset tonomask."
+            },
+            {
+                "axistuple of ints or int, optional": "Which dimensions to suppress slices from can be configured with this\nparameter.\n- If axis is a tuple of ints, those are the axes to suppress slices from.\n- If axis is an int, then that is the only axis to suppress slices from.\n- If axis is None, all axis are selected."
+            }
+        ],
+        "return": "compress_arrayndarrayThe compressed array.",
+        "notes": "",
+        "examples": ""
+    },
+    "convolve": {
+        "description": "Returns the discrete, linear convolution of two one-dimensional sequences.",
+        "params": [
+            {
+                "a, varray_like": "Input sequences."
+            },
+            {
+                "mode{‘valid’, ‘same’, ‘full’}, optional": "Refer to thenp.convolvedocstring."
+            },
+            {
+                "propagate_maskbool": "If True, then if any masked element is included in the sum for a result\nelement, then the result is masked.\nIf False, then the result element is only masked if no non-masked cells\ncontribute towards it"
+            }
+        ],
+        "return": "outMaskedArrayDiscrete, linear convolution ofaandv.",
+        "notes": "",
+        "examples": ""
+    },
+    "correlate": {
+        "description": "Cross-correlation of two 1-dimensional sequences.",
+        "params": [
+            {
+                "a, varray_like": "Input sequences."
+            },
+            {
+                "mode{‘valid’, ‘same’, ‘full’}, optional": "Refer to thenp.convolvedocstring.  Note that the default\nis ‘valid’, unlikeconvolve, which uses ‘full’."
+            },
+            {
+                "propagate_maskbool": "If True, then a result element is masked if any masked element contributes towards it.\nIf False, then a result element is only masked if no non-masked element\ncontribute towards it"
+            }
+        ],
+        "return": "outMaskedArrayDiscrete cross-correlation ofaandv.",
+        "notes": "",
+        "examples": ""
+    },
+    "ediff1d": {
+        "description": "Compute the differences between consecutive elements of an array.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "flatten_mask": {
+        "description": "Returns a completely flattened version of the mask, where nested fields\nare collapsed.",
+        "params": [
+            {
+                "maskarray_like": "Input array, which will be interpreted as booleans."
+            }
+        ],
+        "return": "flattened_maskndarray of boolsThe flattened input.",
+        "notes": "",
+        "examples": ""
+    },
+    "flatten_structured_array": {
+        "description": "Flatten a structured array.",
+        "params": [
+            {
+                "astructured array": ""
+            }
+        ],
+        "return": "outputmasked array or ndarrayA flattened masked array if the input is a masked array, otherwise a\nstandard ndarray.",
+        "notes": "",
+        "examples": ""
+    },
+    "fromflex": {
+        "description": "Build a masked array from a suitable flexible-type array.",
+        "params": [
+            {
+                "fxarrayndarray": "The structured input array, containing_dataand_maskfields. If present, other fields are discarded."
+            }
+        ],
+        "return": "resultMaskedArrayThe constructed masked array.",
+        "notes": "",
+        "examples": ""
+    },
+    "indices": {
+        "description": "Return an array representing the indices of a grid.",
+        "params": [
+            {
+                "dimensionssequence of ints": "The shape of the grid."
+            },
+            {
+                "dtypedtype, optional": "Data type of the result."
+            },
+            {
+                "sparseboolean, optional": "Return a sparse representation of the grid instead of a dense\nrepresentation. Default is False."
+            }
+        ],
+        "return": "gridone MaskedArray or tuple of MaskedArraysIf sparse is False:Returns one array of grid indices,grid.shape=(len(dimensions),)+tuple(dimensions).If sparse is True:Returns a tuple of arrays, withgrid[i].shape=(1,...,1,dimensions[i],1,...,1)with\ndimensions[i] in the ith place",
+        "notes": "",
+        "examples": "grid[k, i0, i1, ..., iN-1] = ik"
+    },
+    "left_shift": {
+        "description": "Shift the bits of an integer to the left.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "ndim": {
+        "description": "Return the number of dimensions of an array.",
+        "params": [
+            {
+                "aarray_like": "Input array.  If it is not already an ndarray, a conversion is\nattempted."
+            }
+        ],
+        "return": "number_of_dimensionsintThe number of dimensions ina.  Scalars are zero-dimensional.",
+        "notes": "",
+        "examples": ""
+    },
+    "put": {
+        "description": "Set storage-indexed locations to corresponding values.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "putmask": {
+        "description": "Changes elements of an array based on conditional and input values.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "right_shift": {
+        "description": "Shift the bits of an integer to the right.",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "round_": null,
+    "take": {
+        "description": "",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "where": {
+        "description": "Return a masked array with elements fromxory, depending on condition.",
+        "params": [
+            {
+                "conditionarray_like, bool": "Where True, yieldx, otherwise yieldy."
+            },
+            {
+                "x, yarray_like, optional": "Values from which to choose.x,yandconditionneed to be\nbroadcastable to some shape."
+            }
+        ],
+        "return": "outMaskedArrayAn masked array withmaskedelements where the condition is masked,\nelements fromxwhereconditionis True, and elements fromyelsewhere.",
+        "notes": "",
+        "examples": ""
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "numpy": ["linalg", "fft"],
+    "pandas": {
+
+    },
+    "scikit": {
+
+    }
+}
