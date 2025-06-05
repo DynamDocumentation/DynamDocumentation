@@ -52,9 +52,9 @@ fun Application.module() {
 
     configureDatabases()
 
-    val navigationController = NavigationController();
-    val classModel = ClassModel()
-    val functionModel = FunctionModel()
+    // val navigationController = NavigationController();
+    // val classModel = ClassModel()
+    // val functionModel = FunctionModel()
 
     routing {
         singlePageApplication {
@@ -62,29 +62,29 @@ fun Application.module() {
         }
 
         route("/docs") {
-            get {
-                try {
-                    val response = navigationController.getAllPathsForNavigation()
-                    call.respond(response)
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError,
-                        mapOf("error" to e)
-                    )
-                }
-            }
+            // get {
+            //     try {
+            //         val response = navigationController.getAllPathsForNavigation()
+            //         call.respond(response)
+            //     } catch (e: Exception) {
+            //         call.respond(
+            //             HttpStatusCode.InternalServerError,
+            //             mapOf("error" to e)
+            //         )
+            //     }
+            // }
 
-            get("/{namespace}") {
-                try {
-                    var response = functionModel.getDetailsOf(call.parameters["namespace"])
-                    call.respond(response)
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError,
-                        mapOf("error" to e)
-                    )
-                }
-            }
+            // get("/{namespace}") {
+            //     try {
+            //         var response = functionModel.getDetailsOf(call.parameters["namespace"])
+            //         call.respond(response)
+            //     } catch (e: Exception) {
+            //         call.respond(
+            //             HttpStatusCode.InternalServerError,
+            //             mapOf("error" to e)
+            //         )
+            //     }
+            // }
         }
     }
 }
