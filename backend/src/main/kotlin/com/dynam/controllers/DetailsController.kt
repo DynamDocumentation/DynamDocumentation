@@ -4,9 +4,6 @@ import com.dynam.models.*
 import com.dynam.utils.*
 
 class DetailsController {
-    // private val functionModel = FunctionModel()
-    // private val classModel = ClassModel()
-
     // Returns the specific details of an entity (either function or class) in a namespace.
     // fun getEntityDetails(namespace: String, entityName: String, entityType: String): EntityDetails {
     //     return when(entityType.lowercase()) {

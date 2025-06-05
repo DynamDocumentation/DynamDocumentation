@@ -2,7 +2,7 @@ package com.dynam.database.tables
 
 import org.jetbrains.exposed.sql.*
 import com.dynam.enums.VariableType
-import com.dynam.database.tables.Namespaces
+import com.dynam.database.tables.Entities
 
 object Variables: Table() {
     val id = integer("id").autoIncrement()
@@ -11,7 +11,7 @@ object Variables: Table() {
     val datatype = varchar("datatype", 255)
     val defaultValue = varchar("default_value", 255)
     val description = varchar("description", 255)
-    val namespaceId = reference("namespace_id", Namespaces.id)
+    val entityId = reference("entity_id", Entities.id)
 
     override val primaryKey: PrimaryKey
         get() = PrimaryKey(id)
