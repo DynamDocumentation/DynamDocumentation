@@ -2,38 +2,38 @@ package com.dynam
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.response.* // Adicione esta linha
+import io.ktor.server.response.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.http.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
-import io.ktor.server.plugins.callloging.CallLogging // Import correto
+import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.http.content.*
 
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.Serializable
 
 import com.dynam.database.*
+import com.dynam.controllers.*
 import com.dynam.routes.*
 import com.dynam.models.*
+import com.dynam.enums.*
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
-    // 0) Logs
-    install(CallLogging) // Instalação correta
+    install(CallLogging)
 
-    // 1) CORS
     install(CORS) {
-        allowHost("localhost:3000") // Frontend React
+        allowHost("localhost:3000")
         allowHost("127.0.0.1:3000")
         allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.ContentType)
         allowCredentials = true
     }
 
-    // 2) JSON
     install(ContentNegotiation) {
         json(Json {
             prettyPrint = true
@@ -42,7 +42,6 @@ fun Application.module() {
         })
     }
 
-    // 3) Tratamento de erros
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             call.respond(HttpStatusCode.InternalServerError, cause.localizedMessage)
@@ -51,36 +50,88 @@ fun Application.module() {
 
     configureDatabases()
 
-    val namespaceModel = NamespaceModel()
-    val classModel = ClassModel()
-    val functionModel = FunctionModel()
+    // val navigationController = NavigationController();
+    // val classModel = ClassModel()
+    // val functionModel = FunctionModel()
 
     routing {
         singlePageApplication {
             react("../frontend/build")
         }
 
-        get("/docs") {
-            try {
-                val namespaces = namespaceModel.getAllNamespaces()
-                var response = namespaces.map { namespace -> NamespaceResponse(namespace, classModel.getAllEntityNamesFrom(namespace) + functionModel.getAllEntityNamesFrom(namespace)) }
-                call.respond(response)
-            } catch (e: Exception) {
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf("error" to e)
-                )
+        route("/library") {
+            get("/{libname}") {
+                try {
+                    val libName = call.parameters["libname"] ?: throw IllegalArgumentException("Library name must be provided")
+                    val namespaces = Namespace.getByLibrary(libName)
+                    
+                    val result = mutableMapOf<String, Map<String, List<Entity>>>()
+                    
+                    for (namespace in namespaces) {
+                        val classes = Entity.getEntitiesByNamespaceId(namespace.id, EntityType.CLASS)
+                        val functions = Entity.getEntitiesByNamespaceId(namespace.id, EntityType.FUNCTION)
+                        
+                        result[namespace.name] = mapOf(
+                            "classes" to classes,
+                            "functions" to functions
+                        )
+                    }
+                    
+                    call.respond(result)
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e.message)
+                    )
+                }
             }
         }
-        get("/docs/{namespace}") {
-            try {
-                var response = functionModel.getDetailsOf(call.parameters["namespace"])
-                call.respond(response)
-            } catch (e: Exception) {
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf("error" to e)
-                )
+
+        route("/entity") {
+            get("/{entityId}") {
+                try {
+                    val entityIdParam = call.parameters["entityId"] ?: throw IllegalArgumentException("Entity ID must be provided")
+                    val entityId = entityIdParam.toIntOrNull() ?: throw IllegalArgumentException("Entity ID must be a valid integer")
+                    
+                    // Get the entity by ID
+                    val entity = Entity.getById(entityId) ?: throw NoSuchElementException("Entity not found with ID: $entityId")
+                    
+                    // Get all variables associated with this entity, grouped by type
+                    val variables = Entity.getEntityVariables(entityId)
+                    
+                    // Create a serializable response structure
+                    @Serializable
+                    data class EntityResponse(
+                        val entity: Entity,
+                        val attributes: List<Variable>,
+                        val parameters: List<Variable>,
+                        val returns: List<Variable>
+                    )
+                    
+                    val response = EntityResponse(
+                        entity = entity,
+                        attributes = variables[VariableType.ATTRIBUTE] ?: emptyList(),
+                        parameters = variables[VariableType.PARAMETER] ?: emptyList(),
+                        returns = variables[VariableType.RETURN] ?: emptyList()
+                    )
+                    
+                    call.respond(response)
+                } catch (e: IllegalArgumentException) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        mapOf("error" to e.message)
+                    )
+                } catch (e: NoSuchElementException) {
+                    call.respond(
+                        HttpStatusCode.NotFound,
+                        mapOf("error" to e.message)
+                    )
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e.message)
+                    )
+                }
             }
         }
     }

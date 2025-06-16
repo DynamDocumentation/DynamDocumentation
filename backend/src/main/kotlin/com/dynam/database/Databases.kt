@@ -1,6 +1,6 @@
 package com.dynam.database;
 
-import com.dynam.models.Namespaces
+import com.dynam.models.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -9,13 +9,16 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import com.dynam.database.tables.Namespaces
+import com.dynam.database.tables.Variables
+import com.dynam.database.tables.Entities
 
 fun Application.configureDatabases() {
     val driverClass = environment.config.property("ktor.storage.driverClassName").getString()
     val jdbcUrl = environment.config.property("ktor.storage.jdbcURL").getString()
     val db = Database.connect(provideDataSource(jdbcUrl, driverClass))
     transaction(db) {
-        SchemaUtils.create(Namespaces)
+        SchemaUtils.create(Namespaces, Variables, Entities)
     }
 }
 
