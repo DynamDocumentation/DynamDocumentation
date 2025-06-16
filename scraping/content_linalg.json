@@ -1,0 +1,607 @@
+{
+    "dot": {
+        "description": "Dot product of two arrays. Specifically,",
+        "params": [
+            {
+                "aarray_like": "First argument."
+            },
+            {
+                "barray_like": "Second argument."
+            },
+            {
+                "outndarray, optional": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfordot(a,b). This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+            }
+        ],
+        "return": "outputndarrayReturns the dot product ofaandb.  Ifaandbare both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.\nIfoutis given, then it is returned.",
+        "notes": "",
+        "examples": "dot(a, b)[i,j,k,m] = sum(a[i,j,:] * b[k,:,m])"
+    },
+    "multi_dot": {
+        "description": "Compute the dot product of two or more arrays in a single function call,\nwhile automatically selecting the fastest evaluation order.",
+        "params": [
+            {
+                "arrayssequence of array_like": "If the first argument is 1-D it is treated as row vector.\nIf the last argument is 1-D it is treated as column vector.\nThe other arguments must be 2-D."
+            },
+            {
+                "outndarray, optional": "Output argument. This must have the exact kind that would be returned\nif it was not used. In particular, it must have the right type, must be\nC-contiguous, and its dtype must be the dtype that would be returned\nfordot(a, b). This is a performance feature. Therefore, if these\nconditions are not met, an exception is raised, instead of attempting\nto be flexible."
+            }
+        ],
+        "return": "outputndarrayReturns the dot product of the supplied arrays.",
+        "notes": "",
+        "examples": "def multi_dot(arrays): return functools.reduce(np.dot, arrays)\n\n\n\ndef cost(A, B):\n    return A.shape[0] * A.shape[1] * B.shape[1]\n\n\n\ncost((AB)C) = 10*100*5 + 10*5*50   = 5000 + 2500   = 7500\ncost(A(BC)) = 10*100*50 + 100*5*50 = 50000 + 25000 = 75000\n\n\n\n>>> import numpy as np\n>>> from numpy.linalg import multi_dot\n>>> # Prepare some data\n>>> A = np.random.random((10000, 100))\n>>> B = np.random.random((100, 1000))\n>>> C = np.random.random((1000, 5))\n>>> D = np.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])\n\n\n\n>>> _ = np.dot(np.dot(np.dot(A, B), C), D)\n>>> # or\n>>> _ = A.dot(B).dot(C).dot(D)"
+    },
+    "vdot": {
+        "description": "Return the dot product of two vectors.",
+        "params": [
+            {
+                "aarray_like": "Ifais complex the complex conjugate is taken before calculation\nof the dot product."
+            },
+            {
+                "barray_like": "Second argument to the dot product."
+            }
+        ],
+        "return": "outputndarrayDot product ofaandb.  Can be an int, float, or\ncomplex depending on the types ofaandb.",
+        "notes": "",
+        "examples": ""
+    },
+    "vecdot": {
+        "description": "Computes the vector dot product.",
+        "params": [
+            {
+                "x1array_like": "First input array."
+            },
+            {
+                "x2array_like": "Second input array."
+            },
+            {
+                "axisint, optional": "Axis over which to compute the dot product. Default:-1."
+            }
+        ],
+        "return": "outputndarrayThe vector dot product of the input.",
+        "notes": "",
+        "examples": ""
+    },
+    "inner": {
+        "description": "Inner product of two arrays.",
+        "params": [
+            {
+                "a, barray_like": "Ifaandbare nonscalar, their last dimensions must match."
+            }
+        ],
+        "return": "outndarrayIfaandbare both\nscalars or both 1-D arrays then a scalar is returned; otherwise\nan array is returned.out.shape=(*a.shape[:-1],*b.shape[:-1])",
+        "notes": "",
+        "examples": "np.inner(a, b) = sum(a[:]*b[:])\n\n\n\nnp.inner(a, b) = np.tensordot(a, b, axes=(-1,-1))\n\n\n\nnp.inner(a, b)[i0,...,ir-2,j0,...,js-2]\n     = sum(a[i0,...,ir-2,:]*b[j0,...,js-2,:])\n\n\n\nnp.inner(a,b) = a*b"
+    },
+    "outer": {
+        "description": "Compute the outer product of two vectors.",
+        "params": [
+            {
+                "x1(M,) array_like": "One-dimensional input array of sizeN.\nMust have a numeric data type."
+            },
+            {
+                "x2(N,) array_like": "One-dimensional input array of sizeM.\nMust have a numeric data type."
+            }
+        ],
+        "return": "out(M, N) ndarrayout[i,j]=a[i]*b[j]",
+        "notes": "",
+        "examples": ""
+    },
+    "matmul": {
+        "description": "Computes the matrix product.",
+        "params": [
+            {
+                "x1array_like": "The first input array."
+            },
+            {
+                "x2array_like": "The second input array."
+            }
+        ],
+        "return": "outndarrayThe matrix product of the inputs.\nThis is a scalar only when bothx1,x2are 1-d vectors.",
+        "notes": "",
+        "examples": ""
+    },
+    "matvec": {
+        "description": "Matrix-vector dot product of two arrays.",
+        "params": [
+            {
+                "x1, x2array_like": "Input arrays, scalars not allowed."
+            },
+            {
+                "outndarray, optional": "A location into which the result is stored. If provided, it must have\nthe broadcasted shape ofx1andx2with the summation axis\nremoved. If not provided or None, a freshly-allocated array is used."
+            },
+            {
+                "**kwargs": "For other keyword-only arguments, see theufunc docs."
+            }
+        ],
+        "return": "yndarrayThe matrix-vector product of the inputs.",
+        "notes": "",
+        "examples": ""
+    },
+    "vecmat": {
+        "description": "Vector-matrix dot product of two arrays.",
+        "params": [
+            {
+                "x1, x2array_like": "Input arrays, scalars not allowed."
+            },
+            {
+                "outndarray, optional": "A location into which the result is stored. If provided, it must have\nthe broadcasted shape ofx1andx2with the summation axis\nremoved. If not provided or None, a freshly-allocated array is used."
+            },
+            {
+                "**kwargs": "For other keyword-only arguments, see theufunc docs."
+            }
+        ],
+        "return": "yndarrayThe vector-matrix product of the inputs.",
+        "notes": "",
+        "examples": ""
+    },
+    "tensordot": {
+        "description": "Compute tensor dot product along specified axes.",
+        "params": [
+            {
+                "a, barray_like": "Tensors to “dot”."
+            },
+            {
+                "axesint or (2,) array_like": "integer_like\nIf an int N, sum over the last N axes ofaand the first N axes\nofbin order. The sizes of the corresponding axes must match.(2,) array_like\nOr, a list of axes to be summed over, first sequence applying toa,\nsecond tob. Both elements array_like must be of the same length."
+            }
+        ],
+        "return": "outputndarrayThe tensor dot product of the input.",
+        "notes": "",
+        "examples": ""
+    },
+    "einsum": {
+        "description": "Evaluates the Einstein summation convention on the operands.",
+        "params": [
+            {
+                "subscriptsstr": "Specifies the subscripts for summation as comma separated list of\nsubscript labels. An implicit (classical Einstein summation)\ncalculation is performed unless the explicit indicator ‘->’ is\nincluded as well as subscript labels of the precise output form."
+            },
+            {
+                "operandslist of array_like": "These are the arrays for the operation."
+            },
+            {
+                "outndarray, optional": "If provided, the calculation is done into this array."
+            },
+            {
+                "dtype{data-type, None}, optional": "If provided, forces the calculation to use the data type specified.\nNote that you may have to also give a more liberalcastingparameter to allow the conversions. Default is None."
+            },
+            {
+                "order{‘C’, ‘F’, ‘A’, ‘K’}, optional": "Controls the memory layout of the output. ‘C’ means it should\nbe C contiguous. ‘F’ means it should be Fortran contiguous,\n‘A’ means it should be ‘F’ if the inputs are all ‘F’, ‘C’ otherwise.\n‘K’ means it should be as close to the layout as the inputs as\nis possible, including arbitrarily permuted axes.\nDefault is ‘K’."
+            },
+            {
+                "casting{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional": "Controls what kind of data casting may occur.  Setting this to\n‘unsafe’ is not recommended, as it can adversely affect accumulations.‘no’ means the data types should not be cast at all.‘equiv’ means only byte-order changes are allowed.‘safe’ means only casts which can preserve values are allowed.‘same_kind’ means only safe casts or casts within a kind,\nlike float64 to float32, are allowed.‘unsafe’ means any data conversions may be done.Default is ‘safe’."
+            },
+            {
+                "optimize{False, True, ‘greedy’, ‘optimal’}, optional": "Controls if intermediate optimization should occur. No optimization\nwill occur if False and True will default to the ‘greedy’ algorithm.\nAlso accepts an explicit contraction list from thenp.einsum_pathfunction. Seenp.einsum_pathfor more details. Defaults to False."
+            }
+        ],
+        "return": "outputndarrayThe calculation based on the Einstein summation convention.",
+        "notes": "",
+        "examples": ""
+    },
+    "einsum_path": {
+        "description": "Evaluates the lowest cost contraction order for an einsum expression by\nconsidering the creation of intermediate arrays.",
+        "params": [
+            {
+                "subscriptsstr": "Specifies the subscripts for summation."
+            },
+            {
+                "*operandslist of array_like": "These are the arrays for the operation."
+            },
+            {
+                "optimize{bool, list, tuple, ‘greedy’, ‘optimal’}": "Choose the type of path. If a tuple is provided, the second argument is\nassumed to be the maximum intermediate size created. If only a single\nargument is provided the largest input or output array size is used\nas a maximum intermediate size.if a list is given that starts witheinsum_path, uses this as the\ncontraction pathif False no optimization is takenif True defaults to the ‘greedy’ algorithm‘optimal’ An algorithm that combinatorially explores all possible\nways of contracting the listed tensors and chooses the least costly\npath. Scales exponentially with the number of terms in the\ncontraction.‘greedy’ An algorithm that chooses the best pair contraction\nat each step. Effectively, this algorithm searches the largest inner,\nHadamard, and then outer products at each step. Scales cubically with\nthe number of terms in the contraction. Equivalent to the ‘optimal’\npath for most contractions.Default is ‘greedy’."
+            }
+        ],
+        "return": "pathlist of tuplesA list representation of the einsum path.string_reprstrA printable representation of the einsum path.",
+        "notes": "",
+        "examples": ""
+    },
+    "matrix_power": {
+        "description": "Raise a square matrix to the (integer) powern.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Matrix to be “powered”."
+            },
+            {
+                "nint": "The exponent can be any integer or long integer, positive,\nnegative, or zero."
+            }
+        ],
+        "return": "a**n(…, M, M) ndarray or matrix objectThe return value is the same shape and type asM;\nif the exponent is positive or zero then the type of the\nelements is the same as those ofM. If the exponent is\nnegative the elements are floating-point.",
+        "notes": "",
+        "examples": ""
+    },
+    "kron": {
+        "description": "Kronecker product of two arrays.",
+        "params": [
+            {
+                "a, barray_like": ""
+            }
+        ],
+        "return": "outndarray",
+        "notes": "",
+        "examples": "kron(a,b)[k0,k1,...,kN] = a[i0,i1,...,iN] * b[j0,j1,...,jN]\n\n\n\nkt = it * st + jt,  t = 0,...,N\n\n\n\n[[ a[0,0]*b,   a[0,1]*b,  ... , a[0,-1]*b  ],\n [  ...                              ...   ],\n [ a[-1,0]*b,  a[-1,1]*b, ... , a[-1,-1]*b ]]"
+    },
+    "cross": {
+        "description": "Returns the cross product of 3-element vectors.",
+        "params": [
+            {
+                "x1array_like": "The first input array."
+            },
+            {
+                "x2array_like": "The second input array. Must be compatible withx1for all\nnon-compute axes. The size of the axis over which to compute\nthe cross-product must be the same size as the respective axis\ninx1."
+            },
+            {
+                "axisint, optional": "The axis (dimension) ofx1andx2containing the vectors for\nwhich to compute the cross-product. Default:-1."
+            }
+        ],
+        "return": "outndarrayAn array containing the cross products.",
+        "notes": "",
+        "examples": ""
+    },
+    "cholesky": {
+        "description": "Cholesky decomposition.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Hermitian (symmetric if all elements are real), positive-definite\ninput matrix."
+            },
+            {
+                "upperbool": "IfTrue, the result must be the upper-triangular Cholesky factor.\nIfFalse, the result must be the lower-triangular Cholesky factor.\nDefault:False."
+            }
+        ],
+        "return": "L(…, M, M) array_likeLower or upper-triangular Cholesky factor ofa. Returns a matrix\nobject ifais a matrix object.",
+        "notes": "",
+        "examples": ""
+    },
+    "qr": {
+        "description": "Compute the qr factorization of a matrix.",
+        "params": [
+            {
+                "aarray_like, shape (…, M, N)": "An array-like object with the dimensionality of at least 2."
+            },
+            {
+                "mode{‘reduced’, ‘complete’, ‘r’, ‘raw’}, optional, default: ‘reduced’": "If K = min(M, N), then‘reduced’  : returns Q, R with dimensions (…, M, K), (…, K, N)‘complete’ : returns Q, R with dimensions (…, M, M), (…, M, N)‘r’        : returns R only with dimensions (…, K, N)‘raw’      : returns h, tau with dimensions (…, N, M), (…, K,)The options ‘reduced’, ‘complete, and ‘raw’ are new in numpy 1.8,\nsee the notes for more information. The default is ‘reduced’, and to\nmaintain backward compatibility with earlier versions of numpy both\nit and the old default ‘full’ can be omitted. Note that array h\nreturned in ‘raw’ mode is transposed for calling Fortran. The\n‘economic’ mode is deprecated.  The modes ‘full’ and ‘economic’ may\nbe passed using only the first letter for backwards compatibility,\nbut all others must be spelled out. See the Notes for more\nexplanation."
+            }
+        ],
+        "return": "When mode is ‘reduced’ or ‘complete’, the result will be a namedtuple withthe attributesQandR.Qndarray of float or complex, optionalA matrix with orthonormal columns. When mode = ‘complete’ the\nresult is an orthogonal/unitary matrix depending on whether or not\na is real/complex. The determinant may be either +/- 1 in that\ncase. In case the number of dimensions in the input array is\ngreater than 2 then a stack of the matrices with above properties\nis returned.Rndarray of float or complex, optionalThe upper-triangular matrix or a stack of upper-triangular\nmatrices if the number of dimensions in the input array is greater\nthan 2.(h, tau)ndarrays of np.double or np.cdouble, optionalThe array h contains the Householder reflectors that generate q\nalong with r. The tau array contains scaling factors for the\nreflectors. In the deprecated  ‘economic’ mode only h is returned.",
+        "notes": "",
+        "examples": "A = array([[0, 1], [1, 1], [1, 1], [2, 1]])\nx = array([[y0], [m]])\nb = array([[1], [0], [2], [1]])"
+    },
+    "svd": {
+        "description": "Singular Value Decomposition.",
+        "params": [
+            {
+                "a(…, M, N) array_like": "A real or complex array witha.ndim>=2."
+            },
+            {
+                "full_matricesbool, optional": "If True (default),uandvhhave the shapes(...,M,M)and(...,N,N), respectively.  Otherwise, the shapes are(...,M,K)and(...,K,N), respectively, whereK=min(M,N)."
+            },
+            {
+                "compute_uvbool, optional": "Whether or not to computeuandvhin addition tos.  True\nby default."
+            },
+            {
+                "hermitianbool, optional": "If True,ais assumed to be Hermitian (symmetric if real-valued),\nenabling a more efficient method for finding singular values.\nDefaults to False."
+            }
+        ],
+        "return": "Whencompute_uvis True, the result is a namedtuple with the followingattribute names:U{ (…, M, M), (…, M, K) } arrayUnitary array(s). The firsta.ndim-2dimensions have the same\nsize as those of the inputa. The size of the last two dimensions\ndepends on the value offull_matrices. Only returned whencompute_uvis True.S(…, K) arrayVector(s) with the singular values, within each vector sorted in\ndescending order. The firsta.ndim-2dimensions have the same\nsize as those of the inputa.Vh{ (…, N, N), (…, K, N) } arrayUnitary array(s). The firsta.ndim-2dimensions have the same\nsize as those of the inputa. The size of the last two dimensions\ndepends on the value offull_matrices. Only returned whencompute_uvis True.",
+        "notes": "",
+        "examples": ""
+    },
+    "svdvals": {
+        "description": "Returns the singular values of a matrix (or a stack of matrices)x.\nWhen x is a stack of matrices, the function will compute the singular\nvalues for each matrix in the stack.",
+        "params": [
+            {
+                "x(…, M, N) array_like": "Input array having shape (…, M, N) and whose last two\ndimensions form matrices on which to perform singular value\ndecomposition. Should have a floating-point data type."
+            }
+        ],
+        "return": "outndarrayAn array with shape (…, K) that contains the vector(s)\nof singular values of length K, where K = min(M, N).",
+        "notes": "",
+        "examples": ""
+    },
+    "eig": {
+        "description": "Compute the eigenvalues and right eigenvectors of a square array.",
+        "params": [
+            {
+                "a(…, M, M) array": "Matrices for which the eigenvalues and right eigenvectors will\nbe computed"
+            }
+        ],
+        "return": "A namedtuple with the following attributes:eigenvalues(…, M) arrayThe eigenvalues, each repeated according to its multiplicity.\nThe eigenvalues are not necessarily ordered. The resulting\narray will be of complex type, unless the imaginary part is\nzero in which case it will be cast to a real type. Whenais real the resulting eigenvalues will be real (0 imaginary\npart) or occur in conjugate pairseigenvectors(…, M, M) arrayThe normalized (unit “length”) eigenvectors, such that the\ncolumneigenvectors[:,i]is the eigenvector corresponding to the\neigenvalueeigenvalues[i].",
+        "notes": "",
+        "examples": ""
+    },
+    "eigh": {
+        "description": "Return the eigenvalues and eigenvectors of a complex Hermitian\n(conjugate symmetric) or a real symmetric matrix.",
+        "params": [
+            {
+                "a(…, M, M) array": "Hermitian or real symmetric matrices whose eigenvalues and\neigenvectors are to be computed."
+            },
+            {
+                "UPLO{‘L’, ‘U’}, optional": "Specifies whether the calculation is done with the lower triangular\npart ofa(‘L’, default) or the upper triangular part (‘U’).\nIrrespective of this value only the real parts of the diagonal will\nbe considered in the computation to preserve the notion of a Hermitian\nmatrix. It therefore follows that the imaginary part of the diagonal\nwill always be treated as zero."
+            }
+        ],
+        "return": "A namedtuple with the following attributes:eigenvalues(…, M) ndarrayThe eigenvalues in ascending order, each repeated according to\nits multiplicity.eigenvectors{(…, M, M) ndarray, (…, M, M) matrix}The columneigenvectors[:,i]is the normalized eigenvector\ncorresponding to the eigenvalueeigenvalues[i].  Will return a\nmatrix object ifais a matrix object.",
+        "notes": "",
+        "examples": ""
+    },
+    "eigvals": {
+        "description": "Compute the eigenvalues of a general matrix.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "A complex- or real-valued matrix whose eigenvalues will be computed."
+            }
+        ],
+        "return": "w(…, M,) ndarrayThe eigenvalues, each repeated according to its multiplicity.\nThey are not necessarily ordered, nor are they necessarily\nreal for real matrices.",
+        "notes": "",
+        "examples": ""
+    },
+    "eigvalsh": {
+        "description": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "A complex- or real-valued matrix whose eigenvalues are to be\ncomputed."
+            },
+            {
+                "UPLO{‘L’, ‘U’}, optional": "Specifies whether the calculation is done with the lower triangular\npart ofa(‘L’, default) or the upper triangular part (‘U’).\nIrrespective of this value only the real parts of the diagonal will\nbe considered in the computation to preserve the notion of a Hermitian\nmatrix. It therefore follows that the imaginary part of the diagonal\nwill always be treated as zero."
+            }
+        ],
+        "return": "w(…, M,) ndarrayThe eigenvalues in ascending order, each repeated according to\nits multiplicity.",
+        "notes": "",
+        "examples": ""
+    },
+    "norm": {
+        "description": "Matrix or vector norm.",
+        "params": [
+            {
+                "xarray_like": "Input array.  Ifaxisis None,xmust be 1-D or 2-D, unlessordis None. If bothaxisandordare None, the 2-norm ofx.ravelwill be returned."
+            },
+            {
+                "ord{int, float, inf, -inf, ‘fro’, ‘nuc’}, optional": "Order of the norm (see table underNotesfor what values are\nsupported for matrices and vectors respectively). inf means numpy’sinfobject. The default is None."
+            },
+            {
+                "axis{None, int, 2-tuple of ints}, optional.": "Ifaxisis an integer, it specifies the axis ofxalong which to\ncompute the vector norms.  Ifaxisis a 2-tuple, it specifies the\naxes that hold 2-D matrices, and the matrix norms of these matrices\nare computed.  Ifaxisis None then either a vector norm (whenxis 1-D) or a matrix norm (whenxis 2-D) is returned. The default\nis None."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are normed over are left in the\nresult as dimensions with size one.  With this option the result will\nbroadcast correctly against the originalx."
+            }
+        ],
+        "return": "nfloat or ndarrayNorm of the matrix or vector(s).",
+        "notes": "",
+        "examples": ""
+    },
+    "matrix_norm": {
+        "description": "Computes the matrix norm of a matrix (or a stack of matrices)x.",
+        "params": [
+            {
+                "xarray_like": "Input array having shape (…, M, N) and whose two innermost\ndimensions formMxNmatrices."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are normed over are left in\nthe result as dimensions with size one. Default: False."
+            },
+            {
+                "ord{1, -1, 2, -2, inf, -inf, ‘fro’, ‘nuc’}, optional": "The order of the norm. For details see the table underNotesinnumpy.linalg.norm."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "vector_norm": {
+        "description": "Computes the vector norm of a vector (or batch of vectors)x.",
+        "params": [
+            {
+                "xarray_like": "Input array."
+            },
+            {
+                "axis{None, int, 2-tuple of ints}, optional": "If an integer,axisspecifies the axis (dimension) along which\nto compute vector norms. If an n-tuple,axisspecifies the axes\n(dimensions) along which to compute batched vector norms. IfNone,\nthe vector norm must be computed over all array values (i.e.,\nequivalent to computing the vector norm of a flattened array).\nDefault:None."
+            },
+            {
+                "keepdimsbool, optional": "If this is set to True, the axes which are normed over are left in\nthe result as dimensions with size one. Default: False."
+            },
+            {
+                "ord{int, float, inf, -inf}, optional": "The order of the norm. For details see the table underNotesinnumpy.linalg.norm."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "cond": {
+        "description": "Compute the condition number of a matrix.",
+        "params": [
+            {
+                "x(…, M, N) array_like": "The matrix whose condition number is sought."
+            },
+            {
+                "p{None, 1, -1, 2, -2, inf, -inf, ‘fro’}, optional": "Order of the norm used in the condition number computation:pnorm for matricesNone2-norm, computed directly using theSVD‘fro’Frobenius norminfmax(sum(abs(x), axis=1))-infmin(sum(abs(x), axis=1))1max(sum(abs(x), axis=0))-1min(sum(abs(x), axis=0))22-norm (largest sing. value)-2smallest singular valueinf means thenumpy.infobject, and the Frobenius norm is\nthe root-of-sum-of-squares norm."
+            }
+        ],
+        "return": "c{float, inf}The condition number of the matrix. May be infinite.",
+        "notes": "",
+        "examples": ""
+    },
+    "det": {
+        "description": "Compute the determinant of an array.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Input array to compute determinants for."
+            }
+        ],
+        "return": "det(…) array_likeDeterminant ofa.",
+        "notes": "",
+        "examples": ""
+    },
+    "matrix_rank": {
+        "description": "Return matrix rank of array using SVD method",
+        "params": [
+            {
+                "A{(M,), (…, M, N)} array_like": "Input vector or stack of matrices."
+            },
+            {
+                "tol(…) array_like, float, optional": "Threshold below which SVD values are considered zero. Iftolis\nNone, andSis an array with singular values forM, andepsis the epsilon value for datatype ofS, thentolis\nset toS.max()*max(M,N)*eps."
+            },
+            {
+                "hermitianbool, optional": "If True,Ais assumed to be Hermitian (symmetric if real-valued),\nenabling a more efficient method for finding singular values.\nDefaults to False."
+            },
+            {
+                "rtol(…) array_like, float, optional": "Parameter for the relative tolerance component. Onlytolorrtolcan be set at a time. Defaults tomax(M,N)*eps.New in version 2.0.0."
+            }
+        ],
+        "return": "rank(…) array_likeRank of A.",
+        "notes": "",
+        "examples": ""
+    },
+    "slogdet": {
+        "description": "Compute the sign and (natural) logarithm of the determinant of an array.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Input array, has to be a square 2-D array."
+            }
+        ],
+        "return": "A namedtuple with the following attributes:sign(…) array_likeA number representing the sign of the determinant. For a real matrix,\nthis is 1, 0, or -1. For a complex matrix, this is a complex number\nwith absolute value 1 (i.e., it is on the unit circle), or else 0.logabsdet(…) array_likeThe natural log of the absolute value of the determinant.If the determinant is zero, thensignwill be 0 andlogabsdetwill be -inf. In all cases, the determinant is equal tosign*np.exp(logabsdet).",
+        "notes": "",
+        "examples": ""
+    },
+    "trace": {
+        "description": "Returns the sum along the specified diagonals of a matrix\n(or a stack of matrices)x.",
+        "params": [
+            {
+                "x(…,M,N) array_like": "Input array having shape (…, M, N) and whose innermost two\ndimensions form MxN matrices."
+            },
+            {
+                "offsetint, optional": "Offset specifying the off-diagonal relative to the main diagonal,\nwhere:*offset=0:themaindiagonal.*offset>0:off-diagonalabovethemaindiagonal.*offset<0:off-diagonalbelowthemaindiagonal."
+            },
+            {
+                "dtypedtype, optional": "Data type of the returned array."
+            }
+        ],
+        "return": "outndarrayAn array containing the traces and whose shape is determined by\nremoving the last two dimensions and storing the traces in the last\narray dimension. For example, if x has rank k and shape:\n(I, J, K, …, L, M, N), then an output array has rank k-2 and shape:\n(I, J, K, …, L) where:out[i,j,k,...,l]=trace(a[i,j,k,...,l,:,:])The returned array must have a data type as described by the dtype\nparameter above.",
+        "notes": "",
+        "examples": "* offset = 0: the main diagonal.\n* offset > 0: off-diagonal above the main diagonal.\n* offset < 0: off-diagonal below the main diagonal.\n\n\n\nout[i, j, k, ..., l] = trace(a[i, j, k, ..., l, :, :])"
+    },
+    "solve": {
+        "description": "Solve a linear matrix equation, or system of linear scalar equations.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Coefficient matrix."
+            },
+            {
+                "b{(M,), (…, M, K)}, array_like": "Ordinate or “dependent variable” values."
+            }
+        ],
+        "return": "x{(…, M,), (…, M, K)} ndarraySolution to the system a x = b.  Returned shape is (…, M) if b is\nshape (M,) and (…, M, K) if b is (…, M, K), where the “…” part is\nbroadcasted between a and b.",
+        "notes": "",
+        "examples": ""
+    },
+    "tensorsolve": {
+        "description": "Solve the tensor equationax=bfor x.",
+        "params": [
+            {
+                "aarray_like": "Coefficient tensor, of shapeb.shape+Q.Q, a tuple, equals\nthe shape of that sub-tensor ofaconsisting of the appropriate\nnumber of its rightmost indices, and must be such thatprod(Q)==prod(b.shape)(in which senseais said to be\n‘square’)."
+            },
+            {
+                "barray_like": "Right-hand tensor, which can be of any shape."
+            },
+            {
+                "axestuple of ints, optional": "Axes inato reorder to the right, before inversion.\nIf None (default), no reordering is done."
+            }
+        ],
+        "return": "xndarray, shape Q",
+        "notes": "",
+        "examples": ""
+    },
+    "lstsq": {
+        "description": "Return the least-squares solution to a linear matrix equation.",
+        "params": [
+            {
+                "a(M, N) array_like": "“Coefficient” matrix."
+            },
+            {
+                "b{(M,), (M, K)} array_like": "Ordinate or “dependent variable” values. Ifbis two-dimensional,\nthe least-squares solution is calculated for each of theKcolumns\nofb."
+            },
+            {
+                "rcondfloat, optional": "Cut-off ratio for small singular values ofa.\nFor the purposes of rank determination, singular values are treated\nas zero if they are smaller thanrcondtimes the largest singular\nvalue ofa.\nThe default uses the machine precision timesmax(M,N).  Passing-1will use machine precision.Changed in version 2.0:Previously, the default was-1, but a warning was given that\nthis would change."
+            }
+        ],
+        "return": "x{(N,), (N, K)} ndarrayLeast-squares solution. Ifbis two-dimensional,\nthe solutions are in theKcolumns ofx.residuals{(1,), (K,), (0,)} ndarraySums of squared residuals: Squared Euclidean 2-norm for each column inb-a@x.\nIf the rank ofais < N or M <= N, this is an empty array.\nIfbis 1-dimensional, this is a (1,) shape array.\nOtherwise the shape is (K,).rankintRank of matrixa.s(min(M, N),) ndarraySingular values ofa.",
+        "notes": "",
+        "examples": ""
+    },
+    "inv": {
+        "description": "Compute the inverse of a matrix.",
+        "params": [
+            {
+                "a(…, M, M) array_like": "Matrix to be inverted."
+            }
+        ],
+        "return": "ainv(…, M, M) ndarray or matrixInverse of the matrixa.",
+        "notes": "",
+        "examples": ""
+    },
+    "pinv": {
+        "description": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
+        "params": [
+            {
+                "a(…, M, N) array_like": "Matrix or stack of matrices to be pseudo-inverted."
+            },
+            {
+                "rcond(…) array_like of float, optional": "Cutoff for small singular values.\nSingular values less than or equal torcond*largest_singular_valueare set to zero.\nBroadcasts against the stack of matrices. Default:1e-15."
+            },
+            {
+                "hermitianbool, optional": "If True,ais assumed to be Hermitian (symmetric if real-valued),\nenabling a more efficient method for finding singular values.\nDefaults to False."
+            },
+            {
+                "rtol(…) array_like of float, optional": "Same asrcond, but it’s an Array API compatible parameter name.\nOnlyrcondorrtolcan be set at a time. If none of them are\nprovided then NumPy’s1e-15default is used. Ifrtol=Noneis passed then the API standard default is used.New in version 2.0.0."
+            }
+        ],
+        "return": "B(…, N, M) ndarrayThe pseudo-inverse ofa. Ifais amatrixinstance, then so\nisB.",
+        "notes": "",
+        "examples": ""
+    },
+    "tensorinv": {
+        "description": "Compute the ‘inverse’ of an N-dimensional array.",
+        "params": [
+            {
+                "aarray_like": "Tensor to ‘invert’. Its shape must be ‘square’, i. e.,prod(a.shape[:ind])==prod(a.shape[ind:])."
+            },
+            {
+                "indint, optional": "Number of first indices that are involved in the inverse sum.\nMust be a positive integer, default is 2."
+            }
+        ],
+        "return": "bndarraya’s tensordot inverse, shapea.shape[ind:]+a.shape[:ind].",
+        "notes": "",
+        "examples": ""
+    },
+    "diagonal": {
+        "description": "Returns specified diagonals of a matrix (or a stack of matrices)x.",
+        "params": [
+            {
+                "x(…,M,N) array_like": "Input array having shape (…, M, N) and whose innermost two\ndimensions form MxN matrices."
+            },
+            {
+                "offsetint, optional": "Offset specifying the off-diagonal relative to the main diagonal,\nwhere:*offset=0:themaindiagonal.*offset>0:off-diagonalabovethemaindiagonal.*offset<0:off-diagonalbelowthemaindiagonal."
+            }
+        ],
+        "return": "out(…,min(N,M)) ndarrayAn array containing the diagonals and whose shape is determined by\nremoving the last two dimensions and appending a dimension equal to\nthe size of the resulting diagonals. The returned array must have\nthe same data type asx.",
+        "notes": "",
+        "examples": "* offset = 0: the main diagonal.\n* offset > 0: off-diagonal above the main diagonal.\n* offset < 0: off-diagonal below the main diagonal."
+    },
+    "matrix_transpose": {
+        "description": "Transposes a matrix (or a stack of matrices)x.",
+        "params": [
+            {
+                "xarray_like": "Input array having shape (…, M, N) and whose two innermost\ndimensions formMxNmatrices."
+            }
+        ],
+        "return": "outndarrayAn array containing the transpose for each matrix and having shape\n(…, N, M).",
+        "notes": "",
+        "examples": ""
+    },
+    "LinAlgError": {
+        "description": "Generic Python-exception-derived object raised by linalg functions.",
+        "params": [
+            {
+                "None": ""
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "linalg":["eig", "dot"],
+    "fft":[
+        "fft",
+        "iffth"
+    ],
+    "ndarray": {
+        "params": "sim",
+        "notes": "sim",
+        "description": "sim",
+        "atributes": "sim",
+        "metodos": [
+           "all" 
+        ]
+    }
+}

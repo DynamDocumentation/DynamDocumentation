@@ -1,0 +1,147 @@
+{
+    "array": {
+        "description": "Construct a record array from a wide-variety of objects.",
+        "params": [
+            {
+                "objany": "Input object. See Notes for details on how various input types are\ntreated."
+            },
+            {
+                "dtypedata-type, optional": "Valid dtype for array."
+            },
+            {
+                "shapeint or tuple of ints, optional": "Shape of each array."
+            },
+            {
+                "offsetint, optional": "Position in the file or buffer to start reading from."
+            },
+            {
+                "stridestuple of ints, optional": "Buffer (buf) is interpreted according to these strides (strides\ndefine how many bytes each array element, row, column, etc.\noccupy in memory)."
+            },
+            {
+                "formats, names, titles, aligned, byteorder": "IfdtypeisNone, these arguments are passed tonumpy.format_parserto construct a dtype. See that function for\ndetailed documentation."
+            },
+            {
+                "copybool, optional": "Whether to copy the input object (True), or to use a reference instead.\nThis option only applies when the input is an ndarray or recarray.\nDefaults to True."
+            }
+        ],
+        "return": "np.recarrayRecord array created from the specified object.",
+        "notes": "",
+        "examples": ""
+    },
+    "find_duplicate": {
+        "description": "Find duplication in a list, return a list of duplicated elements",
+        "params": [],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "format_parser": {
+        "description": "Class to convert formats, names, titles description to a dtype.",
+        "params": [
+            {
+                "formatsstr or list of str": "The format description, either specified as a string with\ncomma-separated format descriptions in the form'f8,i4,S5', or\na list of format description strings  in the form['f8','i4','S5']."
+            },
+            {
+                "namesstr or list/tuple of str": "The field names, either specified as a comma-separated string in the\nform'col1,col2,col3', or as a list or tuple of strings in the\nform['col1','col2','col3'].\nAn empty list can be used, in that case default field names\n(‘f0’, ‘f1’, …) are used."
+            },
+            {
+                "titlessequence": "Sequence of title strings. An empty list can be used to leave titles\nout."
+            },
+            {
+                "alignedbool, optional": "If True, align the fields by padding as the C-compiler would.\nDefault is False."
+            },
+            {
+                "byteorderstr, optional": "If specified, all the fields will be changed to the\nprovided byte-order.  Otherwise, the default byte-order is\nused. For all available string specifiers, seedtype.newbyteorder."
+            }
+        ],
+        "return": "",
+        "notes": "",
+        "examples": ""
+    },
+    "fromarrays": {
+        "description": "Create a record array from a (flat) list of arrays",
+        "params": [
+            {
+                "arrayListlist or tuple": "List of array-like objects (such as lists, tuples,\nand ndarrays)."
+            },
+            {
+                "dtypedata-type, optional": "valid dtype for all arrays"
+            },
+            {
+                "shapeint or tuple of ints, optional": "Shape of the resulting array. If not provided, inferred fromarrayList[0]."
+            },
+            {
+                "formats, names, titles, aligned, byteorder": "IfdtypeisNone, these arguments are passed tonumpy.rec.format_parserto construct a dtype. See that function for\ndetailed documentation."
+            }
+        ],
+        "return": "np.recarrayRecord array consisting of given arrayList columns.",
+        "notes": "",
+        "examples": ""
+    },
+    "fromfile": {
+        "description": "Create an array from binary file data",
+        "params": [
+            {
+                "fdstr or file type": "If file is a string or a path-like object then that file is opened,\nelse it is assumed to be a file object. The file object must\nsupport random access (i.e. it must have tell and seek methods)."
+            },
+            {
+                "dtypedata-type, optional": "valid dtype for all arrays"
+            },
+            {
+                "shapeint or tuple of ints, optional": "shape of each array."
+            },
+            {
+                "offsetint, optional": "Position in the file to start reading from."
+            },
+            {
+                "formats, names, titles, aligned, byteorder": "IfdtypeisNone, these arguments are passed tonumpy.format_parserto construct a dtype. See that function for\ndetailed documentation"
+            }
+        ],
+        "return": "np.recarrayrecord array consisting of data enclosed in file.",
+        "notes": "",
+        "examples": ""
+    },
+    "fromrecords": {
+        "description": "Create a recarray from a list of records in text form.",
+        "params": [
+            {
+                "recListsequence": "data in the same field may be heterogeneous - they will be promoted\nto the highest data type."
+            },
+            {
+                "dtypedata-type, optional": "valid dtype for all arrays"
+            },
+            {
+                "shapeint or tuple of ints, optional": "shape of each array."
+            },
+            {
+                "formats, names, titles, aligned, byteorder": "IfdtypeisNone, these arguments are passed tonumpy.format_parserto construct a dtype. See that function for\ndetailed documentation.If bothformatsanddtypeare None, then this will auto-detect\nformats. Use list of tuples rather than list of lists for faster\nprocessing."
+            }
+        ],
+        "return": "np.recarrayrecord array consisting of given recList rows.",
+        "notes": "",
+        "examples": ""
+    },
+    "fromstring": {
+        "description": "Create a record array from binary data",
+        "params": [
+            {
+                "datastringbytes-like": "Buffer of binary data"
+            },
+            {
+                "dtypedata-type, optional": "Valid dtype for all arrays"
+            },
+            {
+                "shapeint or tuple of ints, optional": "Shape of each array."
+            },
+            {
+                "offsetint, optional": "Position in the buffer to start reading from."
+            },
+            {
+                "formats, names, titles, aligned, byteorder": "IfdtypeisNone, these arguments are passed tonumpy.format_parserto construct a dtype. See that function for\ndetailed documentation."
+            }
+        ],
+        "return": "np.recarrayRecord array view into the data in datastring. This will be readonly\nifdatastringis readonly.",
+        "notes": "",
+        "examples": ""
+    }
+}
