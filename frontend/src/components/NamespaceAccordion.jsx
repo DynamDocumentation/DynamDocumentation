@@ -57,21 +57,23 @@ export default function NamespaceAccordion({ data }) {
     return (
         <div>
             { data != null ?
-                Object.entries(data).map(([namespace, details], key) =>
+                Object.entries(data).map(([namespace, entities], key) =>
                     <Accordion expanded={expanded === 'panel' + key} onChange={handleChange('panel' + key)} key={key}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                             <Typography component="span">{namespace}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Stack direction='column'>
-                                { details.classes && details.classes.length > 0 &&
-                                    details.classes.map((name, idx) =>
-                                        <NavLink key={"cls-" + idx} to={`${namespace}.${name}`}>{name}</NavLink>
+                                { entities.classes && entities.classes.length > 0 &&
+                                    entities.classes.map((entity, idx) =>
+                                        <NavLink key={"cls-" + idx} to={`/details/${entity.id}`}>{entity.name}</NavLink>
+                                        // console.log(name, idx)
                                     )
                                 }
-                                { details.functions && details.functions.length > 0 &&
-                                    details.functions.map((name, idx) =>
-                                        <NavLink key={"fn-" + idx} to={`${namespace}.${name}`}>{name}</NavLink>
+                                { entities.functions && entities.functions.length > 0 &&
+                                    entities.functions.map((entity, idx) =>
+                                        <NavLink key={"fn-" + idx} to={`/details/${entity.id}`}>{entity.name}</NavLink>
+                                        // console.log(name, idx)
                                     )
                                 }
                             </Stack>

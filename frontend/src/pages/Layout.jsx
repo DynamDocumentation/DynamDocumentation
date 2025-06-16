@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Paper } from '@mui/material';
+import { Paper, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -105,7 +105,9 @@ export default function Layout() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [data, setData] = React.useState(null);
-
+    const [selectedLibrary, setSelectedLibrary] = React.useState('sklearn');
+    const [libraries, _] = React.useState(['sklearn', 'pandas', 'numpy']); // Example libraries
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -113,13 +115,22 @@ export default function Layout() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+    
+    const handleLibraryChange = (event) => {
+        setSelectedLibrary(event.target.value);
+    };
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8080/docs').then((response) => {
-            setData(response.data);
-            console.log(response.data);
-        });
-    }, []);
+        if (selectedLibrary) {
+            axios.get(`http://127.0.0.1:8080/library/${selectedLibrary}`).then((response) => {
+                setData(response.data);
+                console.log(response.data);
+            }).catch((error) => {
+                console.error("Error fetching library data:", error);
+                setData(null);
+            });
+        }
+    }, [selectedLibrary]);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -137,12 +148,28 @@ export default function Layout() {
                         },
                         open && { display: 'none' },
                         ]}
+                        disabled={!selectedLibrary}
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                         DynamDocumentation
                     </Typography>
+                    <FormControl variant="outlined" size="small" sx={{ minWidth: 120, mr: 1, bgcolor: 'rgba(255,255,255,0.15)', borderRadius: 1 }}>
+                        <InputLabel id="library-select-label" sx={{ color: 'white' }}>Biblioteca</InputLabel>
+                        <Select
+                            labelId="library-select-label"
+                            id="library-select"
+                            value={selectedLibrary}
+                            onChange={handleLibraryChange}
+                            label="Library"
+                            sx={{ color: 'white' }}
+                        >
+                            {libraries.map((lib) => (
+                                <MenuItem key={lib} value={lib}>{lib}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Toolbar>
             </AppBar>
             <Drawer
