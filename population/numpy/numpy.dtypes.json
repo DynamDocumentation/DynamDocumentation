@@ -1,0 +1,1873 @@
+{
+  "description": "DType classes and utility (:mod:`numpy.dtypes`)\n===============================================\n\nThis module is home to specific dtypes related functionality and their classes.\nFor more general information about dtypes, also see `numpy.dtype` and\n:ref:`arrays.dtypes`.\n\nSimilar to the builtin ``types`` module, this submodule defines types (classes)\nthat are not widely used directly.\n\n.. versionadded:: NumPy 1.25\n\n    The dtypes module is new in NumPy 1.25.  Previously DType classes were\n    only accessible indirectly.\n\n\nDType classes\n-------------\n\nThe following are the classes of the corresponding NumPy dtype instances and\nNumPy scalar types.  The classes can be used in ``isinstance`` checks and can\nalso be instantiated or used directly.  Direct use of these classes is not\ntypical, since their scalar counterparts (e.g. ``np.float64``) or strings\nlike ``\"float64\"`` can be used.\n\n.. list-table::\n    :header-rows: 1\n\n    * - Group\n      - DType class\n\n    * - Boolean\n      - ``BoolDType``\n\n    * - Bit-sized integers\n      - ``Int8DType``, ``UInt8DType``, ``Int16DType``, ``UInt16DType``,\n        ``Int32DType``, ``UInt32DType``, ``Int64DType``, ``UInt64DType``\n\n    * - C-named integers (may be aliases)\n      - ``ByteDType``, ``UByteDType``, ``ShortDType``, ``UShortDType``,\n        ``IntDType``, ``UIntDType``, ``LongDType``, ``ULongDType``,\n        ``LongLongDType``, ``ULongLongDType``\n\n    * - Floating point\n      - ``Float16DType``, ``Float32DType``, ``Float64DType``,\n        ``LongDoubleDType``\n\n    * - Complex\n      - ``Complex64DType``, ``Complex128DType``, ``CLongDoubleDType``\n\n    * - Strings\n      - ``BytesDType``, ``BytesDType``\n\n    * - Times\n      - ``DateTime64DType``, ``TimeDelta64DType``\n\n    * - Others\n      - ``ObjectDType``, ``VoidDType``",
+  "functions": [
+    {
+      "name": "BoolDType",
+      "signature": "BoolDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ByteDType",
+      "signature": "Int8DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "BytesDType",
+      "signature": "BytesDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "CLongDoubleDType",
+      "signature": "CLongDoubleDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Complex128DType",
+      "signature": "Complex128DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Complex64DType",
+      "signature": "Complex64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "DateTime64DType",
+      "signature": "DateTime64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Float16DType",
+      "signature": "Float16DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Float32DType",
+      "signature": "Float32DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Float64DType",
+      "signature": "Float64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Int16DType",
+      "signature": "Int16DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Int32DType",
+      "signature": "Int32DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Int64DType",
+      "signature": "Int64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Int8DType",
+      "signature": "Int8DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "IntDType",
+      "signature": "Int32DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "LongDType",
+      "signature": "Int64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "LongDoubleDType",
+      "signature": "LongDoubleDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "LongLongDType",
+      "signature": "LongLongDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ObjectDType",
+      "signature": "ObjectDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ShortDType",
+      "signature": "Int16DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "StrDType",
+      "signature": "StrDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "TimeDelta64DType",
+      "signature": "TimeDelta64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UByteDType",
+      "signature": "UInt8DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UInt16DType",
+      "signature": "UInt16DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UInt32DType",
+      "signature": "UInt32DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UInt64DType",
+      "signature": "UInt64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UInt8DType",
+      "signature": "UInt8DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UIntDType",
+      "signature": "UInt32DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ULongDType",
+      "signature": "UInt64DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ULongLongDType",
+      "signature": "ULongLongDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "UShortDType",
+      "signature": "UInt16DType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "VoidDType",
+      "signature": "VoidDType(...)",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "BoolDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "bool_(...)",
+          "docstring": {
+            "description": "Boolean type (True or False), stored as a byte.\n\n.. warning::\n\n   The :class:`bool_` type is not a subclass of the :class:`int_` type\n   (the :class:`bool_` is not even a number type). This is different\n   than Python's default implementation of :class:`bool` as a\n   sub-class of :class:`int`.\n\n:Character code: ``'?'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ByteDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int8(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``char``.\n\n:Character code: ``'b'``\n:Canonical name: `numpy.byte`\n:Alias on this platform (Linux x86_64): `numpy.int8`: 8-bit signed integer (``-128`` to ``127``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "BytesDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "bytes_(...)",
+          "docstring": {
+            "description": "A byte string.\n\nWhen used in arrays, this type strips trailing null bytes.\n\n:Character code: ``'S'``\n:Alias: `numpy.string_`",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "CLongDoubleDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "clongdouble(...)",
+          "docstring": {
+            "description": "Complex number type composed of two extended-precision floating-point\nnumbers.\n\n:Character code: ``'G'``\n:Alias: `numpy.clongfloat`\n:Alias: `numpy.longcomplex`\n:Alias on this platform (Linux x86_64): `numpy.complex256`: Complex number type composed of 2 128-bit extended-precision floating-point numbers.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complex128DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "complex128(real=0, imag=0)",
+          "docstring": {
+            "description": "Complex number type composed of two double-precision floating-point\nnumbers, compatible with Python `complex`.\n\n:Character code: ``'D'``\n:Canonical name: `numpy.cdouble`\n:Alias: `numpy.cfloat`\n:Alias: `numpy.complex_`\n:Alias on this platform (Linux x86_64): `numpy.complex128`: Complex number type composed of 2 64-bit-precision floating-point numbers.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Complex64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "complex64(...)",
+          "docstring": {
+            "description": "Complex number type composed of two single-precision floating-point\nnumbers.\n\n:Character code: ``'F'``\n:Canonical name: `numpy.csingle`\n:Alias: `numpy.singlecomplex`\n:Alias on this platform (Linux x86_64): `numpy.complex64`: Complex number type composed of 2 32-bit-precision floating-point numbers.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "DateTime64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "datetime64(...)",
+          "docstring": {
+            "description": "If created from a 64-bit integer, it represents an offset from\n``1970-01-01T00:00:00``.\nIf created from string, the string can be in ISO 8601 date\nor datetime format.\n\n>>> np.datetime64(10, 'Y')\nnumpy.datetime64('1980')\n>>> np.datetime64('1980', 'Y')\nnumpy.datetime64('1980')\n>>> np.datetime64(10, 'D')\nnumpy.datetime64('1970-01-11')\n\nSee :ref:`arrays.datetime` for more information.\n\n:Character code: ``'M'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Float16DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "float16(...)",
+          "docstring": {
+            "description": "Half-precision floating-point number type.\n\n:Character code: ``'e'``\n:Canonical name: `numpy.half`\n:Alias on this platform (Linux x86_64): `numpy.float16`: 16-bit-precision floating-point number type: sign bit, 5 bits exponent, 10 bits mantissa.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Float32DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "float32(...)",
+          "docstring": {
+            "description": "Single-precision floating-point number type, compatible with C ``float``.\n\n:Character code: ``'f'``\n:Canonical name: `numpy.single`\n:Alias on this platform (Linux x86_64): `numpy.float32`: 32-bit-precision floating-point number type: sign bit, 8 bits exponent, 23 bits mantissa.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Float64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "float64(x=0, /)",
+          "docstring": {
+            "description": "Double-precision floating-point number type, compatible with Python `float`\nand C ``double``.\n\n:Character code: ``'d'``\n:Canonical name: `numpy.double`\n:Alias: `numpy.float_`\n:Alias on this platform (Linux x86_64): `numpy.float64`: 64-bit precision floating-point number type: sign bit, 11 bits exponent, 52 bits mantissa.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Int16DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int16(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``short``.\n\n:Character code: ``'h'``\n:Canonical name: `numpy.short`\n:Alias on this platform (Linux x86_64): `numpy.int16`: 16-bit signed integer (``-32_768`` to ``32_767``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Int32DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int32(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``int``.\n\n:Character code: ``'i'``\n:Canonical name: `numpy.intc`\n:Alias on this platform (Linux x86_64): `numpy.int32`: 32-bit signed integer (``-2_147_483_648`` to ``2_147_483_647``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Int64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int64(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with Python `int` and C ``long``.\n\n:Character code: ``'l'``\n:Canonical name: `numpy.int_`\n:Alias on this platform (Linux x86_64): `numpy.int64`: 64-bit signed integer (``-9_223_372_036_854_775_808`` to ``9_223_372_036_854_775_807``).\n:Alias on this platform (Linux x86_64): `numpy.intp`: Signed integer large enough to fit pointer, compatible with C ``intptr_t``.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Int8DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int8(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``char``.\n\n:Character code: ``'b'``\n:Canonical name: `numpy.byte`\n:Alias on this platform (Linux x86_64): `numpy.int8`: 8-bit signed integer (``-128`` to ``127``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "IntDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int32(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``int``.\n\n:Character code: ``'i'``\n:Canonical name: `numpy.intc`\n:Alias on this platform (Linux x86_64): `numpy.int32`: 32-bit signed integer (``-2_147_483_648`` to ``2_147_483_647``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LongDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int64(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with Python `int` and C ``long``.\n\n:Character code: ``'l'``\n:Canonical name: `numpy.int_`\n:Alias on this platform (Linux x86_64): `numpy.int64`: 64-bit signed integer (``-9_223_372_036_854_775_808`` to ``9_223_372_036_854_775_807``).\n:Alias on this platform (Linux x86_64): `numpy.intp`: Signed integer large enough to fit pointer, compatible with C ``intptr_t``.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LongDoubleDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "longdouble(...)",
+          "docstring": {
+            "description": "Extended-precision floating-point number type, compatible with C\n``long double`` but not necessarily with IEEE 754 quadruple-precision.\n\n:Character code: ``'g'``\n:Alias: `numpy.longfloat`\n:Alias on this platform (Linux x86_64): `numpy.float128`: 128-bit extended-precision floating-point number type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LongLongDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "longlong(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``long long``.\n\n:Character code: ``'q'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ObjectDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "object_(...)",
+          "docstring": {
+            "description": "Any Python object.\n\n:Character code: ``'O'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ShortDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "int16(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``short``.\n\n:Character code: ``'h'``\n:Canonical name: `numpy.short`\n:Alias on this platform (Linux x86_64): `numpy.int16`: 16-bit signed integer (``-32_768`` to ``32_767``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "StrDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "str_(...)",
+          "docstring": {
+            "description": "A unicode string.\n\nThis type strips trailing null codepoints.\n\n>>> s = np.str_(\"abc\\x00\")\n>>> s\n'abc'\n\nUnlike the builtin `str`, this supports the :ref:`python:bufferobjects`, exposing its\ncontents as UCS4:\n\n>>> m = memoryview(np.str_(\"abc\"))\n>>> m.format\n'3w'\n>>> m.tobytes()\nb'a\\x00\\x00\\x00b\\x00\\x00\\x00c\\x00\\x00\\x00'\n\n:Character code: ``'U'``\n:Alias: `numpy.unicode_`",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TimeDelta64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "timedelta64(...)",
+          "docstring": {
+            "description": "A timedelta stored as a 64-bit integer.\n\nSee :ref:`arrays.datetime` for more information.\n\n:Character code: ``'m'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UByteDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint8(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned char``.\n\n:Character code: ``'B'``\n:Canonical name: `numpy.ubyte`\n:Alias on this platform (Linux x86_64): `numpy.uint8`: 8-bit unsigned integer (``0`` to ``255``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UInt16DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint16(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned short``.\n\n:Character code: ``'H'``\n:Canonical name: `numpy.ushort`\n:Alias on this platform (Linux x86_64): `numpy.uint16`: 16-bit unsigned integer (``0`` to ``65_535``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UInt32DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint32(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned int``.\n\n:Character code: ``'I'``\n:Canonical name: `numpy.uintc`\n:Alias on this platform (Linux x86_64): `numpy.uint32`: 32-bit unsigned integer (``0`` to ``4_294_967_295``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UInt64DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint64(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned long``.\n\n:Character code: ``'L'``\n:Canonical name: `numpy.uint`\n:Alias on this platform (Linux x86_64): `numpy.uint64`: 64-bit unsigned integer (``0`` to ``18_446_744_073_709_551_615``).\n:Alias on this platform (Linux x86_64): `numpy.uintp`: Unsigned integer large enough to fit pointer, compatible with C ``uintptr_t``.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UInt8DType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint8(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned char``.\n\n:Character code: ``'B'``\n:Canonical name: `numpy.ubyte`\n:Alias on this platform (Linux x86_64): `numpy.uint8`: 8-bit unsigned integer (``0`` to ``255``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UIntDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint32(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned int``.\n\n:Character code: ``'I'``\n:Canonical name: `numpy.uintc`\n:Alias on this platform (Linux x86_64): `numpy.uint32`: 32-bit unsigned integer (``0`` to ``4_294_967_295``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ULongDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint64(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned long``.\n\n:Character code: ``'L'``\n:Canonical name: `numpy.uint`\n:Alias on this platform (Linux x86_64): `numpy.uint64`: 64-bit unsigned integer (``0`` to ``18_446_744_073_709_551_615``).\n:Alias on this platform (Linux x86_64): `numpy.uintp`: Unsigned integer large enough to fit pointer, compatible with C ``uintptr_t``.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ULongLongDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "ulonglong(...)",
+          "docstring": {
+            "description": "Signed integer type, compatible with C ``unsigned long long``.\n\n:Character code: ``'Q'``",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UShortDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "uint16(...)",
+          "docstring": {
+            "description": "Unsigned integer type, compatible with C ``unsigned short``.\n\n:Character code: ``'H'``\n:Canonical name: `numpy.ushort`\n:Alias on this platform (Linux x86_64): `numpy.uint16`: 16-bit unsigned integer (``0`` to ``65_535``).",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "VoidDType",
+      "docstring": {
+        "description": "DType class corresponding to the scalar type and dtype of the same name.\n\nPlease see `numpy.dtype` for the typical way to create\ndtype instances and :ref:`arrays.dtypes` for additional\ninformation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "docstring": {
+            "description": "newbyteorder(new_order='S', /)\n\nReturn a new dtype with a different byte order.\n\nChanges are also made in all fields and sub-arrays of the data type.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\n    below.  The default value ('S') results in swapping the current\n    byte order.  `new_order` codes can be any of:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)"
+              }
+            },
+            "returns": "new_dtype : dtype\n    New dtype object with the given change to the byte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "Changes are also made in all fields and sub-arrays of the data type.",
+            "examples": ">>> import sys\n>>> sys_is_le = sys.byteorder == 'little'\n>>> native_code = '<' if sys_is_le else '>'\n>>> swapped_code = '>' if sys_is_le else '<'\n>>> native_dt = np.dtype(native_code+'i2')\n>>> swapped_dt = np.dtype(swapped_code+'i2')\n>>> native_dt.newbyteorder('S') == swapped_dt\nTrue\n>>> native_dt.newbyteorder() == swapped_dt\nTrue\n>>> native_dt == swapped_dt.newbyteorder('S')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('=')\nTrue\n>>> native_dt == swapped_dt.newbyteorder('N')\nTrue\n>>> native_dt == native_dt.newbyteorder('|')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('<')\nTrue\n>>> np.dtype('<i2') == native_dt.newbyteorder('L')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('>')\nTrue\n>>> np.dtype('>i2') == native_dt.newbyteorder('B')\nTrue"
+          }
+        },
+        {
+          "name": "type",
+          "signature": "void(...)",
+          "docstring": {
+            "description": "np.void(length_or_data, /, dtype=None)\n\nCreate a new structured or unstructured void scalar.",
+            "parameters": {
+              "length_or_data": {
+                "type": "int, array-like, bytes-like, object",
+                "description": "One of multiple meanings (see notes).  The length or\n   bytes data of an unstructured void.  Or alternatively,\n   the data to be stored in the new scalar when `dtype`\n   is provided.\n   This can be an array-like, in which case an array may\n   be returned."
+              },
+              "dtype": {
+                "type": "dtype, optional",
+                "description": "If provided the dtype of the new scalar.  This dtype must\n    be \"void\" dtype (i.e. a structured or unstructured void,\n    see also :ref:`defining-structured-types`).\n\n   ..versionadded:: 1.24"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "For historical reasons and because void scalars can represent both\narbitrary byte data and structured dtypes, the void constructor\nhas three calling conventions:\n\n1. ``np.void(5)`` creates a ``dtype=\"V5\"`` scalar filled with five\n   ``\\0`` bytes.  The 5 can be a Python or NumPy integer.\n2. ``np.void(b\"bytes-like\")`` creates a void scalar from the byte string.\n   The dtype itemsize will match the byte string length, here ``\"V10\"``.\n3. When a ``dtype=`` is passed the call is roughly the same as an\n   array creation.  However, a void scalar rather than array is returned.\n\nPlease see the examples which show all three different conventions.",
+            "examples": ">>> np.void(5)\nvoid(b'\\x00\\x00\\x00\\x00\\x00')\n>>> np.void(b'abcd')\nvoid(b'\\x61\\x62\\x63\\x64')\n>>> np.void((5, 3.2, \"eggs\"), dtype=\"i,d,S5\")\n(5, 3.2, b'eggs')  # looks like a tuple, but is `np.void`\n>>> np.void(3, dtype=[('x', np.int8), ('y', np.int8)])\n(3, 3)  # looks like a tuple, but is `np.void`\n\n:Character code: ``'V'``"
+          }
+        }
+      ]
+    }
+  ],
+  "constants": []
+}
