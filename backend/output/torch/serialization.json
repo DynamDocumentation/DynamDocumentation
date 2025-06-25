@@ -1,0 +1,1397 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Callable",
+      "signature": "Callable(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to collections.abc.Callable.\n\nCallable[[int], str] signifies a function that takes a single\nparameter of type int and returns a str.\n\nThe subscription syntax must always be used with exactly two\nvalues: the argument list and the return type.\nThe argument list must be a list of types, a ParamSpec,\nConcatenate or ellipsis. The return type must be a single type.\n\nThere is no syntax to indicate optional or keyword arguments;\nsuch function types are rarely used as callback types.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Dict",
+      "signature": "Dict(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of dict.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "FILE_LIKE",
+      "signature": "Union(*args, **kwargs)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "List",
+      "signature": "List(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of list.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "MAP_LOCATION",
+      "signature": "Union(*args, **kwargs)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Optional",
+      "signature": "Optional(*args, **kwds)",
+      "documentation": {
+        "description": "Optional[X] is equivalent to Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "STORAGE",
+      "signature": "Union(*args, **kwargs)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Tuple",
+      "signature": "Tuple(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to builtins.tuple.\n\nTuple[X, Y] is the cross-product type of X and Y.\n\nExample: Tuple[T1, T2] is a tuple of two elements corresponding\nto type variables T1 and T2.  Tuple[int, float, str] is a tuple\nof an int, a float and a string.\n\nTo specify a variable-length tuple of homogeneous type, use Tuple[T, ...].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Type",
+      "signature": "Type(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to builtins.type.\n\nbuiltins.type or typing.Type can be used to annotate class objects.\nFor example, suppose we have the following classes::\n\n    class User: ...  # Abstract base for User classes\n    class BasicUser(User): ...\n    class ProUser(User): ...\n    class TeamUser(User): ...\n\nAnd a function that takes a class argument that's a subclass of\nUser and returns an instance of the corresponding class::\n\n    def new_user[U](user_class: Type[U]) -> U:\n        user = user_class()\n        # (Here we could write the user object to a database)\n        return user\n\n    joe = new_user(BasicUser)\n\nAt this point the type checker knows that joe has type BasicUser.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "TypeAlias",
+      "signature": "TypeAlias(*args, **kwds)",
+      "documentation": {
+        "description": "Special form for marking type aliases.\n\nUse TypeAlias to indicate that an assignment should\nbe recognized as a proper type alias definition by type\ncheckers.\n\nFor example::\n\n    Predicate: TypeAlias = Callable[..., bool]\n\nIt's invalid when used anywhere except as in the example above.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "TypeIs",
+      "signature": "TypeIs(*args, **kwds)",
+      "documentation": {
+        "description": "Special typing form used to annotate the return type of a user-defined\ntype narrower function.  ``TypeIs`` only accepts a single type argument.\nAt runtime, functions marked this way should return a boolean.\n\n``TypeIs`` aims to benefit *type narrowing* -- a technique used by static\ntype checkers to determine a more precise type of an expression within a\nprogram's code flow.  Usually type narrowing is done by analyzing\nconditional code flow and applying the narrowing to a block of code.  The\nconditional expression here is sometimes referred to as a \"type guard\".\n\nSometimes it would be convenient to use a user-defined boolean function\nas a type guard.  Such a function should use ``TypeIs[...]`` as its\nreturn type to alert static type checkers to this intention.\n\nUsing  ``-> TypeIs`` tells the static type checker that for a given\nfunction:\n\n1. The return value is a boolean.\n2. If the return value is ``True``, the type of its argument\nis the intersection of the type inside ``TypeIs`` and the argument's\npreviously known type.\n\nFor example::\n\n    def is_awaitable(val: object) -> TypeIs[Awaitable[Any]]:\n        return hasattr(val, '__await__')\n\n    def f(val: Union[int, Awaitable[int]]) -> int:\n        if is_awaitable(val):\n            assert_type(val, Awaitable[int])\n        else:\n            assert_type(val, int)\n\n``TypeIs`` also works with type variables.  For more information, see\nPEP 742 (Narrowing types with TypeIs).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Union",
+      "signature": "Union(*args, **kwds)",
+      "documentation": {
+        "description": "Union type; Union[X, Y] means either X or Y.\n\nOn Python 3.10 and higher, the | operator\ncan also be used to denote unions;\nX | Y means the same thing to the type checker as Union[X, Y].\n\nTo define a union, use e.g. Union[int, str]. Details:\n- The arguments must be types and there must be at least one.\n- None as an argument is a special case and is replaced by\n  type(None).\n- Unions of unions are flattened, e.g.::\n\n    assert Union[Union[int, str], float] == Union[int, str, float]\n\n- Unions of a single argument vanish, e.g.::\n\n    assert Union[int] == int  # The constructor actually returns int\n\n- Redundant arguments are skipped, e.g.::\n\n    assert Union[int, str, int] == Union[int, str]\n\n- When comparing unions, the argument order is ignored, e.g.::\n\n    assert Union[int, str] == Union[str, int]\n\n- You cannot subclass or instantiate a union.\n- You can use Optional[X] as a shorthand for Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "add_safe_globals",
+      "signature": "add_safe_globals(safe_globals: List[Union[Callable, Tuple[Callable, str]]]) -> None",
+      "documentation": {
+        "description": "Marks the given globals as safe for ``weights_only`` load. For example, functions\nadded to this list can be called during unpickling, classes could be instantiated\nand have state set.\n\nEach item in the list can either be a function/class or a tuple of the form\n(function/class, string) where string is the full path of the function/class.\n\nWithin the serialized format, each function is identified with its full\npath as ``{__module__}.{__name__}``. When calling this API, you can provide this\nfull path that should match the one in the checkpoint otherwise the default\n``{fn.__module__}.{fn.__name__}`` will be used.",
+        "parameters": {
+          "safe_globals": {
+            "type": "List[Union[Callable, Tuple[Callable, str]]]",
+            "description": "list of globals to mark as safe"
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +SKIP(\"Can't torch.save(t, ...) as doctest thinks MyTensor is defined on torch.serialization\")\n>>> import tempfile\n>>> class MyTensor(torch.Tensor):\n...     pass\n>>> t = MyTensor(torch.randn(2, 3))\n>>> with tempfile.NamedTemporaryFile() as f:\n...     torch.save(t, f.name)\n# Running `torch.load(f.name, weights_only=True)` will fail with\n# Unsupported global: GLOBAL __main__.MyTensor was not an allowed global by default.\n# Check the code and make sure MyTensor is safe to be used when loaded from an arbitrary checkpoint.\n...     torch.serialization.add_safe_globals([MyTensor])\n...     torch.load(f.name, weights_only=True)\n# MyTensor([[-0.5024, -1.8152, -0.5455],\n#          [-0.8234,  2.0500, -0.3657]])"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP(\"Can't torch.save(t, ...) as doctest thinks MyTensor is defined on torch.serialization\")\n    >>> import tempfile\n    >>> class MyTensor(torch.Tensor):\n    ...     pass\n    >>> t = MyTensor(torch.randn(2, 3))\n    >>> with tempfile.NamedTemporaryFile() as f:\n    ...     torch.save(t, f.name)\n    # Running `torch.load(f.name, weights_only=True)` will fail with\n    # Unsupported global: GLOBAL __main__.MyTensor was not an allowed global by default.\n    # Check the code and make sure MyTensor is safe to be used when loaded from an arbitrary checkpoint.\n    ...     torch.serialization.add_safe_globals([MyTensor])\n    ...     torch.load(f.name, weights_only=True)\n    # MyTensor([[-0.5024, -1.8152, -0.5455],\n    #          [-0.8234,  2.0500, -0.3657]])"
+      }
+    },
+    {
+      "name": "cast",
+      "signature": "cast(typ, val)",
+      "documentation": {
+        "description": "Cast a value to a type.\n\nThis returns the value unchanged.  To the type checker this\nsignals that the return value has the designated type, but at\nruntime we intentionally don't check anything (we want this\nto be as fast as possible).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "check_module_version_greater_or_equal",
+      "signature": "check_module_version_greater_or_equal(module, req_version_tuple, error_if_malformed=True)",
+      "documentation": {
+        "description": "Check if a module's version satisfies requirements\n\nUsually, a module's version string will be like 'x.y.z', which would be represented\nas a tuple (x, y, z), but sometimes it could be an unexpected format. If the version\nstring does not match the given tuple's format up to the length of the tuple, then\nerror and exit or emit a warning.",
+        "parameters": {
+          "module": {
+            "type": "",
+            "description": "the module to check the version of"
+          },
+          "req_version_tuple": {
+            "type": "",
+            "description": "tuple (usually of ints) representing the required version"
+          },
+          "error_if_malformed": {
+            "type": "",
+            "description": "whether we should exit if module version string is malformed"
+          }
+        },
+        "returns": "requirement_is_met: bool",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "clear_safe_globals",
+      "signature": "clear_safe_globals() -> None",
+      "documentation": {
+        "description": "Clears the list of globals that are safe for ``weights_only`` load.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "contextmanager",
+      "signature": "contextmanager(func)",
+      "documentation": {
+        "description": "@contextmanager decorator.\n\nTypical usage:\n\n    @contextmanager\n    def some_generator(<arguments>):\n        <setup>\n        try:\n            yield <value>\n        finally:\n            <cleanup>\n\nThis makes this:\n\n    with some_generator(<arguments>) as <variable>:\n        <body>\n\nequivalent to this:\n\n    <setup>\n    try:\n        <variable> = <value>\n        <body>\n    finally:\n        <cleanup>",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "default_restore_location",
+      "signature": "default_restore_location(storage, location)",
+      "documentation": {
+        "description": "Restores `storage` using a deserializer function registered for the `location`.\n\nThis function looks in the registry for deserializer functions that match the `location`.\nIf found, it attempts to use them, in priority order, to restore `storage` until one\nreturns a not `None` result. If no deserializer can be found in the registry, or all found fail\nto bear a result, it raises a `RuntimeError`.",
+        "parameters": {
+          "storage": {
+            "type": "STORAGE",
+            "description": "the storage object to restore"
+          },
+          "location": {
+            "type": "str",
+            "description": "the location tag associated with the storage object"
+          }
+        },
+        "returns": "storage: Optional[STORAGE]",
+        "raises": "RuntimeError: If no deserializer matching `location` is found in the registry or if\n       all matching ones return `None`.",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_crc32_options",
+      "signature": "get_crc32_options() -> bool",
+      "documentation": {
+        "description": "Get whether :func:`torch.save` computes and writes crc32 for each record.\n\nDefaults to ``True``.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_default_load_endianness",
+      "signature": "get_default_load_endianness() -> Optional[torch.serialization.LoadEndianness]",
+      "documentation": {
+        "description": "Get fallback byte order for loading files\n\nIf byteorder mark is not present in saved checkpoint,\nthis byte order is used as fallback.\nBy default, it's \"native\" byte order.",
+        "parameters": {},
+        "returns": "default_load_endian: Optional[LoadEndianness]",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_default_mmap_options",
+      "signature": "get_default_mmap_options() -> int",
+      "documentation": {
+        "description": "Get default mmap options for :func:`torch.load` with ``mmap=True``.\n\nDefaults to ``mmap.MAP_PRIVATE``.",
+        "parameters": {},
+        "returns": "default_mmap_options: int",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_safe_globals",
+      "signature": "get_safe_globals() -> List[Union[Callable, Tuple[Callable, str]]]",
+      "documentation": {
+        "description": "Returns the list of user-added globals that are safe for ``weights_only`` load.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_source_lines_and_file",
+      "signature": "get_source_lines_and_file(obj: Any, error_msg: Optional[str] = None) -> Tuple[List[str], int, Optional[str]]",
+      "documentation": {
+        "description": "Wrapper around inspect.getsourcelines and inspect.getsourcefile.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_unsafe_globals_in_checkpoint",
+      "signature": "get_unsafe_globals_in_checkpoint(f: Union[str, os.PathLike, BinaryIO, IO[bytes]]) -> List[str]",
+      "documentation": {
+        "description": "Returns a list of strings of functions/classes in a ``torch.save`` object that are not safe for ``weights_only``.\n\nFor a given function or class ``f``, the corresponding string will be of the form\n``{f.__module__}.{f.__name__}``.\n\nThis function will return any GLOBALs in the checkpoint that are not in the set marked safe\nfor ``weights_only`` (either via :func:`add_safe_globals` or :class:`safe_globals` context or\nallowlisted by ``torch`` by default).\n\n.. note::\n    This function will statically disassemble the pickle file in the checkpoint.\n    The implication is any classes dynamically pushed onto the stack during unpickling\n    will not be included in the output.",
+        "parameters": {
+          "f": {
+            "type": "",
+            "description": "File-like object or string containing the checkpoint object saved via ``torch.save``"
+          }
+        },
+        "returns": "A list of strings of pickle GLOBALs in the checkpoint that are not allowlisted for ``weights_only``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "load",
+      "signature": "load(f: Union[str, os.PathLike, BinaryIO, IO[bytes]], map_location: Union[Callable[[torch.types.Storage, str], torch.types.Storage], torch.device, str, Dict[str, str], NoneType] = None, pickle_module: Any = None, *, weights_only: Optional[bool] = None, mmap: Optional[bool] = None, **pickle_load_args: Any) -> Any",
+      "documentation": {
+        "description": "load(f, map_location=None, pickle_module=pickle, *, weights_only=True, mmap=None, **pickle_load_args)\n\nLoads an object saved with :func:`torch.save` from a file.\n\n:func:`torch.load` uses Python's unpickling facilities but treats storages,\nwhich underlie tensors, specially. They are first deserialized on the\nCPU and are then moved to the device they were saved from. If this fails\n(e.g. because the run time system doesn't have certain devices), an exception\nis raised. However, storages can be dynamically remapped to an alternative\nset of devices using the :attr:`map_location` argument.\n\nIf :attr:`map_location` is a callable, it will be called once for each serialized\nstorage with two arguments: storage and location. The storage argument\nwill be the initial deserialization of the storage, residing on the CPU.\nEach serialized storage has a location tag associated with it which\nidentifies the device it was saved from, and this tag is the second\nargument passed to :attr:`map_location`. The builtin location tags are ``'cpu'``\nfor CPU tensors and ``'cuda:device_id'`` (e.g. ``'cuda:2'``) for CUDA tensors.\n:attr:`map_location` should return either ``None`` or a storage. If\n:attr:`map_location` returns a storage, it will be used as the final deserialized\nobject, already moved to the right device. Otherwise, :func:`torch.load` will\nfall back to the default behavior, as if :attr:`map_location` wasn't specified.\n\nIf :attr:`map_location` is a :class:`torch.device` object or a string containing\na device tag, it indicates the location where all tensors should be loaded.\n\nOtherwise, if :attr:`map_location` is a dict, it will be used to remap location tags\nappearing in the file (keys), to ones that specify where to put the\nstorages (values).\n\nUser extensions can register their own location tags and tagging and\ndeserialization methods using :func:`torch.serialization.register_package`.",
+        "parameters": {
+          "f": {
+            "type": "",
+            "description": "a file-like object (has to implement :meth:`read`, :meth:`readline`, :meth:`tell`, and :meth:`seek`),"
+          },
+          "or": {
+            "type": "",
+            "description": "a string or os.PathLike object containing a file name"
+          },
+          "map_location": {
+            "type": "",
+            "description": "a function, :class:`torch.device`, string or a dict specifying how to remap storage"
+          },
+          "locations": {
+            "type": "",
+            "description": ""
+          },
+          "pickle_module": {
+            "type": "",
+            "description": "module used for unpickling metadata and objects (has to"
+          },
+          "match": {
+            "type": "",
+            "description": "the :attr:`pickle_module` used to serialize file)"
+          },
+          "weights_only": {
+            "type": "",
+            "description": "Indicates whether unpickler should be restricted to"
+          },
+          "loading": {
+            "type": "",
+            "description": "only tensors, primitive types, dictionaries"
+          },
+          "and": {
+            "type": "",
+            "description": "then :meth:`load_state_dict` to avoid GPU RAM surge when loading a model checkpoint.\n.. note::"
+          },
+          "See": {
+            "type": "",
+            "description": "ref:`weights-only` for more details."
+          },
+          "mmap": {
+            "type": "",
+            "description": "Indicates whether the file should be mmaped rather than loading all the storages into memory."
+          },
+          "Typically": {
+            "type": "",
+            "description": ", tensor storages in the file will first be moved from disk to CPU memory, after which they"
+          },
+          "are": {
+            "type": "",
+            "description": "moved to the location that they were tagged with when saving, or specified by ``map_location``. This"
+          },
+          "second": {
+            "type": "",
+            "description": "step is a no-op if the final location is CPU. When the ``mmap`` flag is set, instead of copying the"
+          },
+          "tensor": {
+            "type": "",
+            "description": "storages from disk to CPU memory in the first step, ``f`` is mmaped."
+          },
+          "pickle_load_args": {
+            "type": "",
+            "description": "(Python 3 only) optional keyword arguments passed over to\n:func:`pickle_module.load` and :func:`pickle_module.Unpickler`, e.g.,\n:attr:`errors=...`.\n.. warning::\n:func:`torch.load()` unless `weights_only` parameter is set to `True`,"
+          },
+          "uses": {
+            "type": "",
+            "description": "``pickle`` module implicitly, which is known to be insecure."
+          },
+          "It": {
+            "type": "",
+            "description": "is possible to construct malicious pickle data which will execute arbitrary code"
+          },
+          "during": {
+            "type": "",
+            "description": "unpickling. Never load data that could have come from an untrusted"
+          },
+          "source": {
+            "type": "",
+            "description": "in an unsafe mode, or that could have been tampered with. **Only load data you trust**.\n.. note::"
+          },
+          "When": {
+            "type": "",
+            "description": "you call :func:`torch.load()` on a file which contains GPU tensors, those tensors"
+          },
+          "will": {
+            "type": "",
+            "description": "be loaded to GPU by default. You can call ``torch.load(.., map_location='cpu')``"
+          },
+          "By": {
+            "type": "",
+            "description": "default, we decode byte strings as ``utf-8``.  This is to avoid a common error"
+          },
+          "case": {
+            "type": "",
+            "description": "``UnicodeDecodeError: 'ascii' codec can't decode byte 0x...``"
+          },
+          "when": {
+            "type": "",
+            "description": "loading files saved by Python 2 in Python 3.  If this default"
+          },
+          "is": {
+            "type": "",
+            "description": "incorrect, you may use an extra :attr:`encoding` keyword argument to specify how"
+          },
+          "these": {
+            "type": "",
+            "description": "objects should be loaded, e.g., :attr:`encoding='latin1'` decodes them"
+          },
+          "to": {
+            "type": "",
+            "description": "strings using ``latin1`` encoding, and :attr:`encoding='bytes'` keeps them"
+          },
+          "as": {
+            "type": "",
+            "description": "byte arrays which can be decoded later with ``byte_array.decode(...)``."
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +SKIP(\"undefined filepaths\")\n>>> torch.load(\"tensors.pt\", weights_only=True)\n# Load all tensors onto the CPU\n>>> torch.load(\"tensors.pt\", map_location=torch.device(\"cpu\"), weights_only=True)\n# Load all tensors onto the CPU, using a function\n>>> torch.load(\n...     \"tensors.pt\", map_location=lambda storage, loc: storage, weights_only=True\n... )\n# Load all tensors onto GPU 1\n>>> torch.load(\n...     \"tensors.pt\",\n...     map_location=lambda storage, loc: storage.cuda(1),\n...     weights_only=True,\n... )  # type: ignore[attr-defined]\n# Map tensors from GPU 1 to GPU 0\n>>> torch.load(\"tensors.pt\", map_location={\"cuda:1\": \"cuda:0\"}, weights_only=True)\n# Load tensor from io.BytesIO object\n# Loading from a buffer setting weights_only=False, warning this can be unsafe\n>>> with open(\"tensor.pt\", \"rb\") as f:\n...     buffer = io.BytesIO(f.read())\n>>> torch.load(buffer, weights_only=False)\n# Load a module with 'ascii' encoding for unpickling\n# Loading from a module setting weights_only=False, warning this can be unsafe\n>>> torch.load(\"module.pt\", encoding=\"ascii\", weights_only=False)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP(\"undefined filepaths\")\n    >>> torch.load(\"tensors.pt\", weights_only=True)\n    # Load all tensors onto the CPU\n    >>> torch.load(\"tensors.pt\", map_location=torch.device(\"cpu\"), weights_only=True)\n    # Load all tensors onto the CPU, using a function\n    >>> torch.load(\n    ...     \"tensors.pt\", map_location=lambda storage, loc: storage, weights_only=True\n    ... )\n    # Load all tensors onto GPU 1\n    >>> torch.load(\n    ...     \"tensors.pt\",\n    ...     map_location=lambda storage, loc: storage.cuda(1),\n    ...     weights_only=True,\n    ... )  # type: ignore[attr-defined]\n    # Map tensors from GPU 1 to GPU 0\n    >>> torch.load(\"tensors.pt\", map_location={\"cuda:1\": \"cuda:0\"}, weights_only=True)\n    # Load tensor from io.BytesIO object\n    # Loading from a buffer setting weights_only=False, warning this can be unsafe\n    >>> with open(\"tensor.pt\", \"rb\") as f:\n    ...     buffer = io.BytesIO(f.read())\n    >>> torch.load(buffer, weights_only=False)\n    # Load a module with 'ascii' encoding for unpickling\n    # Loading from a module setting weights_only=False, warning this can be unsafe\n    >>> torch.load(\"module.pt\", encoding=\"ascii\", weights_only=False)"
+      }
+    },
+    {
+      "name": "location_tag",
+      "signature": "location_tag(storage: Union[torch.types.Storage, torch.storage.TypedStorage, torch.storage.UntypedStorage])",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "mkdtemp",
+      "signature": "mkdtemp()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "normalize_storage_type",
+      "signature": "normalize_storage_type(storage_type)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_package",
+      "signature": "register_package(priority: int, tagger: Callable[[Union[torch.types.Storage, torch.storage.TypedStorage, torch.storage.UntypedStorage]], Optional[str]], deserializer: Callable[[Union[torch.types.Storage, torch.storage.TypedStorage, torch.storage.UntypedStorage], str], Union[torch.types.Storage, torch.storage.TypedStorage, torch.storage.UntypedStorage, NoneType]])",
+      "documentation": {
+        "description": "Registers callables for tagging and deserializing storage objects with an associated priority.\nTagging associates a device with a storage object at save time while deserializing moves a\nstorage object to an appropriate device at load time. :attr:`tagger` and :attr:`deserializer`\nare run in the order given by their :attr:`priority` until a tagger/deserializer returns a\nvalue that is not `None`.\n\nTo override the deserialization behavior for a device in the global registry, one can register a\ntagger with a higher priority than the existing tagger.\n\nThis function can also be used to register a tagger and deserializer for new devices.",
+        "parameters": {
+          "priority": {
+            "type": "",
+            "description": "Indicates the priority associated with the tagger and deserializer, where a lower"
+          },
+          "value": {
+            "type": "",
+            "description": "indicates higher priority."
+          },
+          "tagger": {
+            "type": "",
+            "description": "Callable that takes in a storage object and returns its tagged device as a string"
+          },
+          "or": {
+            "type": "",
+            "description": "None."
+          },
+          "deserializer": {
+            "type": "",
+            "description": "Callable that takes in storage object and a device string and returns a storage"
+          },
+          "object": {
+            "type": "",
+            "description": "on the appropriate device or None."
+          }
+        },
+        "returns": "`None`\n\nExample:\n    >>> def ipu_tag(obj):\n    >>>     if obj.device.type == 'ipu':\n    >>>         return 'ipu'\n    >>> def ipu_deserialize(obj, location):\n    >>>     if location.startswith('ipu'):\n    >>>         ipu = getattr(torch, \"ipu\", None)\n    >>>         assert ipu is not None, \"IPU device module is not loaded\"\n    >>>         assert torch.ipu.is_available(), \"ipu is not available\"\n    >>>         return obj.ipu(location)\n    >>> torch.serialization.register_package(11, ipu_tag, ipu_deserialize)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> def ipu_tag(obj):\n    >>>     if obj.device.type == 'ipu':\n    >>>         return 'ipu'\n    >>> def ipu_deserialize(obj, location):\n    >>>     if location.startswith('ipu'):\n    >>>         ipu = getattr(torch, \"ipu\", None)\n    >>>         assert ipu is not None, \"IPU device module is not loaded\"\n    >>>         assert torch.ipu.is_available(), \"ipu is not available\"\n    >>>         return obj.ipu(location)\n    >>> torch.serialization.register_package(11, ipu_tag, ipu_deserialize)"
+      }
+    },
+    {
+      "name": "save",
+      "signature": "save(obj: object, f: Union[str, os.PathLike, BinaryIO, IO[bytes]], pickle_module: Any = <module 'pickle' from '/usr/lib/python3.12/pickle.py'>, pickle_protocol: int = 2, _use_new_zipfile_serialization: bool = True, _disable_byteorder_record: bool = False) -> None",
+      "documentation": {
+        "description": "save(obj, f, pickle_module=pickle, pickle_protocol=2, _use_new_zipfile_serialization=True)\n\nSaves an object to a disk file.\n\nSee also: :ref:`saving-loading-tensors`",
+        "parameters": {
+          "obj": {
+            "type": "",
+            "description": "saved object"
+          },
+          "f": {
+            "type": "",
+            "description": "a file-like object (has to implement write and flush) or a string or"
+          },
+          "os": {
+            "type": "",
+            "description": ".PathLike object containing a file name"
+          },
+          "pickle_module": {
+            "type": "",
+            "description": "module used for pickling metadata and objects"
+          },
+          "pickle_protocol": {
+            "type": "",
+            "description": "can be specified to override the default protocol\n.. note::"
+          },
+          "A": {
+            "type": "",
+            "description": "common PyTorch convention is to save tensors using .pt file extension.\n.. note::"
+          },
+          "PyTorch": {
+            "type": "",
+            "description": "preserves storage sharing across serialization. See\n:ref:`preserve-storage-sharing` for more details.\n.. note::"
+          },
+          "The": {
+            "type": "",
+            "description": "1.6 release of PyTorch switched ``torch.save`` to use a new"
+          },
+          "zipfile": {
+            "type": "",
+            "description": "-based file format. ``torch.load`` still retains the ability to"
+          },
+          "load": {
+            "type": "",
+            "description": "files in the old format. If for any reason you want ``torch.save``"
+          },
+          "to": {
+            "type": "",
+            "description": "use the old format, pass the kwarg ``_use_new_zipfile_serialization=False``."
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +SKIP(\"makes cwd dirty\")\n>>> # Save to file\n>>> x = torch.tensor([0, 1, 2, 3, 4])\n>>> torch.save(x, \"tensor.pt\")\n>>> # Save to io.BytesIO buffer\n>>> buffer = io.BytesIO()\n>>> torch.save(x, buffer)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP(\"makes cwd dirty\")\n    >>> # Save to file\n    >>> x = torch.tensor([0, 1, 2, 3, 4])\n    >>> torch.save(x, \"tensor.pt\")\n    >>> # Save to io.BytesIO buffer\n    >>> buffer = io.BytesIO()\n    >>> torch.save(x, buffer)"
+      }
+    },
+    {
+      "name": "set_crc32_options",
+      "signature": "set_crc32_options(compute_crc32: bool)",
+      "documentation": {
+        "description": "Set whether :func:`torch.save` computes and writes crc32 for each record.\n\n.. note::\n    Setting this to ``False`` may make unzipping of the ``torch.save`` output\n    fail or warn due to corrupted CRC32. However ``torch.load`` will be\n    able to load the file.",
+        "parameters": {
+          "compute_crc32": {
+            "type": "bool",
+            "description": "set crc32 compuation flag"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_default_load_endianness",
+      "signature": "set_default_load_endianness(endianness)",
+      "documentation": {
+        "description": "Set fallback byte order for loading files\n\nIf byteorder mark is not present in saved checkpoint,\nthis byte order is used as fallback.\nBy default, it's \"native\" byte order.",
+        "parameters": {
+          "endianness": {
+            "type": "",
+            "description": "the new fallback byte order"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "storage_to_tensor_type",
+      "signature": "storage_to_tensor_type(storage)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "validate_cuda_device",
+      "signature": "validate_cuda_device(location)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "validate_hpu_device",
+      "signature": "validate_hpu_device(location)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Any",
+      "documentation": {
+        "description": "Special type indicating an unconstrained type.\n\n- Any is compatible with every type.\n- Any assumed to have all methods.\n- All values assumed to be instances of Any.\n\nNote that all the above statements are true from the point of view of\nstatic type checkers. At runtime, Any should not be used with instance\nchecks.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "BinaryIO",
+      "documentation": {
+        "description": "Typed version of the return of open() in binary mode.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "close",
+          "signature": "close(self) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fileno",
+          "signature": "fileno(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "flush",
+          "signature": "flush(self) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "isatty",
+          "signature": "isatty(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "read",
+          "signature": "read(self, n: int = -1) -> ~AnyStr",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readable",
+          "signature": "readable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readline",
+          "signature": "readline(self, limit: int = -1) -> ~AnyStr",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readlines",
+          "signature": "readlines(self, hint: int = -1) -> List[~AnyStr]",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "seek",
+          "signature": "seek(self, offset: int, whence: int = 0) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "seekable",
+          "signature": "seekable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tell",
+          "signature": "tell(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "truncate",
+          "signature": "truncate(self, size: int = None) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "writable",
+          "signature": "writable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "write",
+          "signature": "write(self, s: Union[bytes, bytearray]) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "writelines",
+          "signature": "writelines(self, lines: List[~AnyStr]) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Enum",
+      "documentation": {
+        "description": "Create a collection of name/value pairs.\n\nExample enumeration:\n\n>>> class Color(Enum):\n...     RED = 1\n...     BLUE = 2\n...     GREEN = 3\n\nAccess them by:\n\n- attribute access:\n\n  >>> Color.RED\n  <Color.RED: 1>\n\n- value lookup:\n\n  >>> Color(1)\n  <Color.RED: 1>\n\n- name lookup:\n\n  >>> Color['RED']\n  <Color.RED: 1>\n\nEnumerations can be iterated over, and know how many members they have:\n\n>>> len(Color)\n3\n\n>>> list(Color)\n[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]\n\nMethods can be added to enumerations, and members can have their own\nattributes -- see the documentation for details.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "IO",
+      "documentation": {
+        "description": "Generic base class for TextIO and BinaryIO.\n\nThis is an abstract, generic version of the return of open().\n\nNOTE: This does not distinguish between the different possible\nclasses (text vs. binary, read vs. write vs. read/write,\nappend-only, unbuffered).  The TextIO and BinaryIO subclasses\nbelow capture the distinctions between text vs. binary, which is\npervasive in the interface; however we currently do not offer a\nway to track the other distinctions in the type system.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "close",
+          "signature": "close(self) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fileno",
+          "signature": "fileno(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "flush",
+          "signature": "flush(self) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "isatty",
+          "signature": "isatty(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "read",
+          "signature": "read(self, n: int = -1) -> ~AnyStr",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readable",
+          "signature": "readable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readline",
+          "signature": "readline(self, limit: int = -1) -> ~AnyStr",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "readlines",
+          "signature": "readlines(self, hint: int = -1) -> List[~AnyStr]",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "seek",
+          "signature": "seek(self, offset: int, whence: int = 0) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "seekable",
+          "signature": "seekable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tell",
+          "signature": "tell(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "truncate",
+          "signature": "truncate(self, size: int = None) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "writable",
+          "signature": "writable(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "write",
+          "signature": "write(self, s: ~AnyStr) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "writelines",
+          "signature": "writelines(self, lines: List[~AnyStr]) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LoadEndianness",
+      "documentation": {
+        "description": "Create a collection of name/value pairs.\n\nExample enumeration:\n\n>>> class Color(Enum):\n...     RED = 1\n...     BLUE = 2\n...     GREEN = 3\n\nAccess them by:\n\n- attribute access:\n\n  >>> Color.RED\n  <Color.RED: 1>\n\n- value lookup:\n\n  >>> Color(1)\n  <Color.RED: 1>\n\n- name lookup:\n\n  >>> Color['RED']\n  <Color.RED: 1>\n\nEnumerations can be iterated over, and know how many members they have:\n\n>>> len(Color)\n3\n\n>>> list(Color)\n[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]\n\nMethods can be added to enumerations, and members can have their own\nattributes -- see the documentation for details.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "SourceChangeWarning",
+      "documentation": {
+        "description": "Base class for warning categories.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "cpu",
+          "signature": "cpu(self) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "data_ptr",
+          "signature": "data_ptr(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "element_size",
+          "signature": "element_size(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_file",
+          "signature": "from_file(self, filename: str, shared: bool = False, nbytes: int = 0) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_shared",
+          "signature": "is_shared(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nbytes",
+          "signature": "nbytes(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "share_memory_",
+          "signature": "share_memory_(self) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "StorageType",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "closing",
+      "documentation": {
+        "description": "Context to automatically close something at the end of a block.\n\nCode like this:\n\n    with closing(<module>.open(<arguments>)) as f:\n        <block>\n\nis equivalent to this:\n\n    f = <module>.open(<arguments>)\n    try:\n        <block>\n    finally:\n        f.close()",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "safe_globals",
+      "documentation": {
+        "description": "Context-manager that adds certain globals as safe for ``weights_only`` load.",
+        "parameters": {
+          "safe_globals": {
+            "type": "",
+            "description": "List of globals for weights_only load."
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +SKIP(\"Can't torch.save(t, ...) as doctest thinks MyTensor is defined on torch.serialization\")\n>>> import tempfile\n>>> class MyTensor(torch.Tensor):\n...     pass\n>>> t = MyTensor(torch.randn(2, 3))\n>>> with tempfile.NamedTemporaryFile() as f:\n...     torch.save(t, f.name)\n# Running `torch.load(f.name, weights_only=True)` will fail with\n# Unsupported global: GLOBAL __main__.MyTensor was not an allowed global by default.\n# Check the code and make sure MyTensor is safe to be used when loaded from an arbitrary checkpoint.\n...     with torch.serialization.safe_globals([MyTensor]):\n...         torch.load(f.name, weights_only=True)\n# MyTensor([[-0.5024, -1.8152, -0.5455],\n#          [-0.8234,  2.0500, -0.3657]])\n>>> assert torch.serialization.get_safe_globals() == []"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP(\"Can't torch.save(t, ...) as doctest thinks MyTensor is defined on torch.serialization\")\n    >>> import tempfile\n    >>> class MyTensor(torch.Tensor):\n    ...     pass\n    >>> t = MyTensor(torch.randn(2, 3))\n    >>> with tempfile.NamedTemporaryFile() as f:\n    ...     torch.save(t, f.name)\n    # Running `torch.load(f.name, weights_only=True)` will fail with\n    # Unsupported global: GLOBAL __main__.MyTensor was not an allowed global by default.\n    # Check the code and make sure MyTensor is safe to be used when loaded from an arbitrary checkpoint.\n    ...     with torch.serialization.safe_globals([MyTensor]):\n    ...         torch.load(f.name, weights_only=True)\n    # MyTensor([[-0.5024, -1.8152, -0.5455],\n    #          [-0.8234,  2.0500, -0.3657]])\n    >>> assert torch.serialization.get_safe_globals() == []"
+      },
+      "methods": []
+    },
+    {
+      "name": "set_default_mmap_options",
+      "documentation": {
+        "description": "Context manager or function to set default mmap options for :func:`torch.load` with ``mmap=True`` to flags.\n\nFor now, only either ``mmap.MAP_PRIVATE`` or ``mmap.MAP_SHARED`` are supported.\nPlease open an issue if you need any other option to be added here.\n\n.. note::\n    This feature is currently not supported for Windows.",
+        "parameters": {
+          "flags": {
+            "type": "",
+            "description": "``mmap.MAP_PRIVATE`` or ``mmap.MAP_SHARED``"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "skip_data",
+      "documentation": {
+        "description": "Context-manager that skips writing storage bytes for ``torch.save`` calls.\n\nStorages will still be saved, but the space that their bytes would usually be written to\nwill be empty space. The storage bytes can then be populated in a separate pass.\n\n.. warning::\n    The ``skip_data`` context manager is an early prototype and is subject to change.",
+        "parameters": {
+          "materialize_fake_tensors": {
+            "type": "",
+            "description": "Whether to materialize FakeTensors."
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +SKIP(\"NamedTemporaryFile on Windows\")\n>>> import tempfile\n>>> t = torch.randn(2, 3)\n>>> with tempfile.NamedTemporaryFile() as f:\n...     with torch.serialization.skip_data():\n...         torch.save(t, f.name)\n...     torch.load(f.name, weights_only=True)"
+          },
+          "tensor": {
+            "type": "",
+            "description": "([[0., 0., 0.],\n[0., 0., 0.]])"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP(\"NamedTemporaryFile on Windows\")\n    >>> import tempfile\n    >>> t = torch.randn(2, 3)\n    >>> with tempfile.NamedTemporaryFile() as f:\n    ...     with torch.serialization.skip_data():\n    ...         torch.save(t, f.name)\n    ...     torch.load(f.name, weights_only=True)\n    tensor([[0., 0., 0.],\n            [0., 0., 0.]])"
+      },
+      "methods": []
+    }
+  ]
+}

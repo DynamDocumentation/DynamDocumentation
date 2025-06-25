@@ -1,0 +1,32 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "from_dlpack",
+      "signature": "from_dlpack(external_array, device: 'xla_client.Device | Sharding | None' = None, copy: 'bool | None' = None)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "The returned :class:`~jax.Array` shares memory with ``external_array`` if no\ndevice transfer or copy was requested.\nArgs:\nexternal_array: An array object that has ``__dlpack__` and\n``__dlpack_device__`` methods.\ndevice: The (optional) :py:class:`Device`, representing the device on which\nthe returned array should be placed. If given, then the result is\ncommitted to the device. If unspecified, the resulting array will be\nunpacked onto the same device it originated from. Setting ``device`` to a\ndevice different from the source of ``external_array`` will require a\ncopy, meaning ``copy`` must be set to either ``True`` or ``None``.\ncopy: An (optional) boolean, controlling whether or not a copy is performed.\nIf ``copy=True`` then a copy is always performed, even if unpacked onto\nthe same device. If ``copy=False`` then the copy is never performed and\nwill raise an error if necessary. When ``copy=None`` then a copy may be\nperformed if needed for a device transfer.\nA jax.Array\nNote:\nWhile JAX arrays are always immutable, dlpack buffers cannot be marked as\nimmutable, and it is possible for processes external to JAX to mutate them\nin-place. If a jax Array is constructed from a dlpack buffer and the buffer\nis later modified in-place, it may lead to undefined behavior when using\nthe associated JAX array.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "to_dlpack",
+      "signature": "to_dlpack(x: 'Array', stream: 'int | Any | None' = None, src_device: 'xla_client.Device | None' = None, dl_device: 'tuple[DLDeviceType, int] | None' = None, max_version: 'tuple[int, int] | None' = None, copy: 'bool | None' = None)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "Args:\nx: a :class:`~jax.Array`, on either CPU or GPU.\nstream: optional platform-dependent stream to wait on until the buffer is\nready. This corresponds to the `stream` argument to ``__dlpack__``\ndocumented in https://dmlc.github.io/dlpack/latest/python_spec.html.\nsrc_device: either a CPU or GPU :class:`~jax.Device`.\ndl_device: a tuple of ``(dl_device_type, local_hardware_id)`` in DLPack\nformat e.g. as produced by ``__dlpack_device__``.\nmax_version: the maximum DLPack version that the consumer (i.e. caller of\n``__dlpack__``) supports in the form of a 2-tuple of ``(major, minor)``.\nThis function is not guaranteed to return a capsule of version\n``max_version``.\ncopy: a boolean indicating whether or not to copy the input. If\n``copy=True`` then the function must always copy. When\n``copy=False`` then the function must never copy, and must raise an error\nwhen a copy is deemed necessary. If ``copy=None`` then the function must\navoid a copy if possible but may copy if needed.\nA DLPack PyCapsule object.\nNote:\nWhile JAX arrays are always immutable, ``DLPackManagedTensor`` buffers\ncannot be marked as immutable, and it is possible for processes external\nto JAX to mutate them in-place. If a DLPack buffer derived from a JAX array\nis mutated, it may lead to undefined behavior when using the associated JAX\narray. When JAX eventually supports ``DLManagedTensorVersioned``\n(DLPack 1.0), it will be possible to specify that a buffer is read-only.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

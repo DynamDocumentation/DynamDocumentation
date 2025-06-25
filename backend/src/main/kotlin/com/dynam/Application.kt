@@ -2,12 +2,12 @@ package com.dynam
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.response.* // Adicione esta linha
+import io.ktor.server.response.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.http.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
-import io.ktor.server.plugins.callloging.CallLogging // Import correto
+import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.http.content.*
 
 import io.ktor.serialization.kotlinx.json.*
@@ -15,20 +15,17 @@ import kotlinx.serialization.json.Json
 
 import com.dynam.database.DatabaseSimulator
 import com.dynam.routes.UserRoutes
+import com.dynam.routes.LibraryRoutes
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
     // 0) Logs
-    install(CallLogging) // Instalação correta
+    install(CallLogging)
 
     // 1) CORS
-    install(CORS) {
-        allowHost("localhost:3000") // Frontend React
-        allowMethod(HttpMethod.Get)
-        allowHeader(HttpHeaders.ContentType)
-    }
+    configureCORS()
 
     // 2) JSON
     install(ContentNegotiation) {
@@ -56,5 +53,16 @@ fun Application.module() {
         }
 
         UserRoutes(db).registerRoutes(this)
+        LibraryRoutes().registerRoutes(this)
+    }
+}
+
+fun Application.configureCORS() {
+    install(CORS) {
+        anyHost() // For development only - restrict in production
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
     }
 }

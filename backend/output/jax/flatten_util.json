@@ -1,0 +1,19 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "ravel_pytree",
+      "signature": "ravel_pytree(pytree)",
+      "documentation": {
+        "description": "Ravel (flatten) a pytree of arrays down to a 1D array.\nArgs:\npytree: a pytree of arrays and scalars to ravel.",
+        "parameters": {},
+        "returns": "A pair where the first element is a 1D array representing the flattened and\nconcatenated leaf values, with dtype determined by promoting the dtypes of\nleaf values, and the second element is a callable for unflattening a 1D\nvector of the same length back to a pytree of the same structure as the\ninput ``pytree``. If the input pytree is empty (i.e. has no leaves) then as\na convention a 1D empty array of dtype float32 is returned in the first\ncomponent of the output.\nFor details on dtype promotion, see\nhttps://jax.readthedocs.io/en/latest/type_promotion.html.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

@@ -1,0 +1,590 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "functional_call",
+      "signature": "functional_call(module: 'torch.nn.Module', parameter_and_buffer_dicts: Union[Dict[str, torch.Tensor], Sequence[Dict[str, torch.Tensor]]], args: Union[Any, Tuple, NoneType] = None, kwargs: Optional[Dict[str, Any]] = None, *, tie_weights: bool = True, strict: bool = False)",
+      "documentation": {
+        "description": "Performs a functional call on the module by replacing the module parameters\nand buffers with the provided ones.\n\n.. note:: If the module has active parametrizations, passing a value in the\n    :attr:`parameter_and_buffer_dicts` argument with the name set to the regular parameter\n    name will completely disable the parametrization.\n    If you want to apply the parametrization function to the value passed\n    please set the key as ``{submodule_name}.parametrizations.{parameter_name}.original``.\n\n.. note:: If the module performs in-place operations on parameters/buffers, these will be reflected\n    in the ``parameter_and_buffer_dicts`` input.\n\n\n     Example::\n\n        >>> a = {'foo': torch.zeros(())}\n        >>> # xdoctest: +SKIP\n        >>> mod = Foo()  # does self.foo = self.foo + 1\n        >>> print(mod.foo)  # tensor(0.)\n        >>> functional_call(mod, a, torch.ones(()))\n        >>> print(mod.foo)  # tensor(0.)\n        >>> print(a['foo'])  # tensor(1.)\n\n.. note:: If the module has tied weights, whether or not functional_call respects the tying is determined by the\n    tie_weights flag.\n\n    Example::\n\n        >>> a = {'foo': torch.zeros(())}\n        >>> # xdoctest: +SKIP\n        >>> mod = Foo()  # has both self.foo and self.foo_tied which are tied. Returns x + self.foo + self.foo_tied\n        >>> print(mod.foo)  # tensor(1.)\n        >>> mod(torch.zeros(()))  # tensor(2.)\n        >>> functional_call(mod, a, torch.zeros(()))  # tensor(0.) since it will change self.foo_tied too\n        >>> functional_call(mod, a, torch.zeros(()), tie_weights=False)  # tensor(1.)--self.foo_tied is not updated\n        >>> new_a = {'foo': torch.zeros(()), 'foo_tied': torch.zeros(())}\n        >>> functional_call(mod, new_a, torch.zeros()) # tensor(0.)\n\nAn example of passing multiple dictionaries\n\n.. code-block:: python\n\n        a = ({'weight': torch.ones(1, 1)}, {'buffer': torch.zeros(1)})  # two separate dictionaries\n        mod = nn.Bar(1, 1)  # return self.weight @ x + self.buffer\n        print(mod.weight)  # tensor(...)\n        print(mod.buffer)  # tensor(...)\n        x = torch.randn((1, 1))\n        print(x)\n        functional_call(mod, a, x)  # same as x\n        print(mod.weight)  # same as before functional_call\n\n\nAnd here is an example of applying the grad transform over the parameters\nof a model.\n\n.. code-block:: python\n\n    import torch\n    import torch.nn as nn\n    from torch.func import functional_call, grad\n\n    x = torch.randn(4, 3)\n    t = torch.randn(4, 3)\n    model = nn.Linear(3, 3)\n\n    def compute_loss(params, x, t):\n        y = functional_call(model, params, x)\n        return nn.functional.mse_loss(y, t)\n\n    grad_weights = grad(compute_loss)(dict(model.named_parameters()), x, t)\n\n.. note:: If the user does not need grad tracking outside of grad transforms, they can detach all of the\n    parameters for better performance and memory usage\n\n    Example::\n\n        >>> detached_params = {k: v.detach() for k, v in model.named_parameters()}\n        >>> grad_weights = grad(compute_loss)(detached_params, x, t)\n        >>> grad_weights.grad_fn  # None--it's not tracking gradients outside of grad\n\n    This means that the user cannot call ``grad_weight.backward()``. However, if they don't need autograd tracking\n    outside of the transforms, this will result in less memory usage and faster speeds.",
+        "parameters": {
+          "module": {
+            "type": "torch.nn.Module",
+            "description": "the module to call"
+          },
+          "parameters_and_buffer_dicts": {
+            "type": "Dict[str, Tensor] or tuple of Dict[str, Tensor]",
+            "description": "the parameters that will be used in"
+          },
+          "the": {
+            "type": "",
+            "description": "module call. If given a tuple of dictionaries, they must have distinct keys so that all dictionaries can"
+          },
+          "be": {
+            "type": "",
+            "description": "used together"
+          },
+          "args": {
+            "type": "Any or tuple",
+            "description": "arguments to be passed to the module call. If not a tuple, considered a single argument."
+          },
+          "kwargs": {
+            "type": "dict",
+            "description": "keyword arguments to be passed to the module call"
+          },
+          "tie_weights": {
+            "type": "bool, optional",
+            "description": "If True, then parameters and buffers tied in the original model will be treated as"
+          },
+          "tied": {
+            "type": "",
+            "description": "in the reparameterized version. Therefore, if True and different values are passed for the tied"
+          },
+          "parameters": {
+            "type": "",
+            "description": "and buffers, it will error. If False, it will not respect the originally tied parameters and"
+          },
+          "buffers": {
+            "type": "",
+            "description": "in the original module. Therefore, if True and there are any missing or unexpected keys, it will"
+          },
+          "strict": {
+            "type": "bool, optional",
+            "description": "If True, then the parameters and buffers passed in must match the parameters and"
+          },
+          "error": {
+            "type": "",
+            "description": ". Default: False."
+          }
+        },
+        "returns": "Any: the result of calling ``module``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "functionalize",
+      "signature": "functionalize(func: Callable, *, remove: str = 'mutations') -> Callable",
+      "documentation": {
+        "description": "functionalize is a transform that can be used to remove (intermediate)\nmutations and aliasing from a function, while preserving the function's\nsemantics.\n\n``functionalize(func)`` returns a new function with the same semantics\nas ``func``, but with all intermediate mutations removed.\nEvery inplace operation performed on an intermediate tensor:\n``intermediate.foo_()``\ngets replaced by its out-of-place equivalent:\n``intermediate_updated = intermediate.foo()``.\n\nfunctionalize is useful for shipping a pytorch program off to\nbackends or compilers that aren't able to easily represent\nmutations or aliasing operators.",
+        "parameters": {
+          "func": {
+            "type": "Callable",
+            "description": "A Python function that takes one or more arguments."
+          },
+          "remove": {
+            "type": "str",
+            "description": "An optional string argument, that takes on either"
+          },
+          "the": {
+            "type": "",
+            "description": "value 'mutations' or 'mutations_and_views'."
+          },
+          "If": {
+            "type": "",
+            "description": "'mutations_and_views' is passed in, then additionally, all aliasing"
+          },
+          "will": {
+            "type": "",
+            "description": "be replaced with their non-mutating equivalents."
+          },
+          "operators": {
+            "type": "",
+            "description": "will be replaced with their non-aliasing equivalents."
+          },
+          "Default": {
+            "type": "",
+            "description": "'mutations'."
+          }
+        },
+        "returns": "Returns a new \"functionalized\" function. It takes the same inputs as\n    ``func``, and has the same behavior, but any mutations\n    (and optionally aliasing) performed on intermediate tensors\n    in the function will be removed.\n\nfunctionalize will also remove mutations (and views) that were performed on function inputs.\nHowever to preserve semantics, functionalize will \"fix up\" the mutations after\nthe transform has finished running, by detecting if any tensor inputs \"should have\"\nbeen mutated, and copying the new data back to the inputs if necessary.\n\n\nExample::\n\n    >>> # xdoctest: +SKIP\n    >>> import torch\n    >>> from torch.fx.experimental.proxy_tensor import make_fx\n    >>> from torch.func import functionalize\n    >>>\n    >>> # A function that uses mutations and views, but only on intermediate tensors.\n    >>> def f(a):\n    ...     b = a + 1\n    ...     c = b.view(-1)\n    ...     c.add_(1)\n    ...     return b\n    ...\n    >>> inpt = torch.randn(2)\n    >>>\n    >>> out1 = f(inpt)\n    >>> out2 = functionalize(f)(inpt)\n    >>>\n    >>> # semantics are the same (outputs are equivalent)\n    >>> print(torch.allclose(out1, out2))\n    True\n    >>>\n    >>> f_traced = make_fx(f)(inpt)\n    >>> f_no_mutations_traced = make_fx(functionalize(f))(inpt)\n    >>> f_no_mutations_and_views_traced = make_fx(functionalize(f, remove='mutations_and_views'))(inpt)\n    >>>\n    >>> print(f_traced.code)\n\n\n\n    def forward(self, a_1):\n        add = torch.ops.aten.add(a_1, 1);  a_1 = None\n        view = torch.ops.aten.view(add, [-1])\n        add_ = torch.ops.aten.add_(view, 1);  view = None\n        return add\n\n    >>> print(f_no_mutations_traced.code)\n\n\n\n    def forward(self, a_1):\n        add = torch.ops.aten.add(a_1, 1);  a_1 = None\n        view = torch.ops.aten.view(add, [-1]);  add = None\n        add_1 = torch.ops.aten.add(view, 1);  view = None\n        view_1 = torch.ops.aten.view(add_1, [2]);  add_1 = None\n        return view_1\n\n    >>> print(f_no_mutations_and_views_traced.code)\n\n\n\n    def forward(self, a_1):\n        add = torch.ops.aten.add(a_1, 1);  a_1 = None\n        view_copy = torch.ops.aten.view_copy(add, [-1]);  add = None\n        add_1 = torch.ops.aten.add(view_copy, 1);  view_copy = None\n        view_copy_1 = torch.ops.aten.view_copy(add_1, [2]);  add_1 = None\n        return view_copy_1\n\n\n    >>> # A function that mutates its input tensor\n    >>> def f(a):\n    ...     b = a.view(-1)\n    ...     b.add_(1)\n    ...     return a\n    ...\n    >>> f_no_mutations_and_views_traced = make_fx(functionalize(f, remove='mutations_and_views'))(inpt)\n    >>> #\n    >>> # All mutations and views have been removed,\n    >>> # but there is an extra copy_ in the graph to correctly apply the mutation to the input\n    >>> # after the function has completed.\n    >>> print(f_no_mutations_and_views_traced.code)\n\n\n\n    def forward(self, a_1):\n        view_copy = torch.ops.aten.view_copy(a_1, [-1])\n        add = torch.ops.aten.add(view_copy, 1);  view_copy = None\n        view_copy_1 = torch.ops.aten.view_copy(add, [2]);  add = None\n        copy_ = torch.ops.aten.copy_(a_1, view_copy_1);  a_1 = None\n        return view_copy_1\n\n\nThere are a few \"failure modes\" for functionalize that are worth calling out:\n  (1) Like other torch.func transforms, `functionalize()` doesn't work with functions\n      that directly use `.backward()`. The same is true for torch.autograd.grad.\n      If you want to use autograd, you can compute gradients directly\n      with `functionalize(grad(f))`.\n  (2) Like other torch.func transforms, `functionalize()` doesn't work with global state.\n      If you call `functionalize(f)` on a function that takes views / mutations of\n      non-local state, functionalization will simply no-op and pass the view/mutation\n      calls directly to the backend.\n      One way to work around this is is to ensure that any non-local state creation\n      is wrapped into a larger function, which you then call functionalize on.\n  (3) `resize_()` has some limitations: functionalize will only work on programs\n      that use resize_()` as long as the tensor being resized is not a view.\n  (4) `as_strided()` has some limitations: functionalize will not work on\n      `as_strided()` calls that result in tensors with overlapping memory.\n\n\nFinally, a helpful mental model for understanding functionalization is that\nmost user pytorch programs are writing with the public torch API.\nWhen executed, torch operators are generally decomposed into\nour internal C++ \"ATen\" API.\nThe logic for functionalization happens entirely at the level of ATen.\nFunctionalization knows how to take every aliasing operator in ATen,\nand map it to its non-aliasing equivalent\n(e.g. ``tensor.view({-1})`` -> ``at::view_copy(tensor, {-1})``),\nand how to take every mutating operator in ATen,\nand map it to its non-mutating equivalent\n(e.g. ``tensor.add_(1)`` -> ``at::add(tensor, -1)``),\nwhile tracking aliases and mutations out-of-line to know when to fix things up.\nInformation about which ATen operators are aliasing or mutating all comes from\nhttps://github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/native_functions.yaml.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "grad",
+      "signature": "grad(func: Callable, argnums: Union[int, Tuple[int, ...]] = 0, has_aux: bool = False) -> Callable",
+      "documentation": {
+        "description": "``grad`` operator helps computing gradients of ``func`` with respect to the\ninput(s) specified by ``argnums``. This operator can be nested to\ncompute higher-order gradients.",
+        "parameters": {
+          "func": {
+            "type": "Callable",
+            "description": "A Python function that takes one or more arguments."
+          },
+          "Must": {
+            "type": "",
+            "description": "return a single-element Tensor. If specified ``has_aux`` equals ``True``,"
+          },
+          "function": {
+            "type": "",
+            "description": "can return a tuple of single-element Tensor and other auxiliary objects:\n``(output, aux)``."
+          },
+          "argnums": {
+            "type": "int or Tuple[int]",
+            "description": "Specifies arguments to compute gradients with respect to.\n``argnums`` can be single integer or tuple of integers. Default: 0."
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a tensor and other"
+          },
+          "auxiliary": {
+            "type": "",
+            "description": "objects: ``(output, aux)``. Default: False."
+          }
+        },
+        "returns": "Function to compute gradients with respect to its inputs. By default, the output of\n    the function is the gradient tensor(s) with respect to the first argument.\n    If specified ``has_aux`` equals ``True``, tuple of gradients and output auxiliary objects\n    is returned. If ``argnums`` is a tuple of integers, a tuple of output gradients with\n    respect to each ``argnums`` value is returned.\n\nExample of using ``grad``:\n\n    >>> # xdoctest: +SKIP\n    >>> from torch.func import grad\n    >>> x = torch.randn([])\n    >>> cos_x = grad(lambda x: torch.sin(x))(x)\n    >>> assert torch.allclose(cos_x, x.cos())\n    >>>\n    >>> # Second-order gradients\n    >>> neg_sin_x = grad(grad(lambda x: torch.sin(x)))(x)\n    >>> assert torch.allclose(neg_sin_x, -x.sin())\n\nWhen composed with ``vmap``, ``grad`` can be used to compute per-sample-gradients:\n\n    >>> # xdoctest: +SKIP\n    >>> from torch.func import grad, vmap\n    >>> batch_size, feature_size = 3, 5\n    >>>\n    >>> def model(weights, feature_vec):\n    >>>     # Very simple linear model with activation\n    >>>     assert feature_vec.dim() == 1\n    >>>     return feature_vec.dot(weights).relu()\n    >>>\n    >>> def compute_loss(weights, example, target):\n    >>>     y = model(weights, example)\n    >>>     return ((y - target) ** 2).mean()  # MSELoss\n    >>>\n    >>> weights = torch.randn(feature_size, requires_grad=True)\n    >>> examples = torch.randn(batch_size, feature_size)\n    >>> targets = torch.randn(batch_size)\n    >>> inputs = (weights, examples, targets)\n    >>> grad_weight_per_example = vmap(grad(compute_loss), in_dims=(None, 0, 0))(*inputs)\n\nExample of using ``grad`` with ``has_aux`` and ``argnums``:\n\n    >>> # xdoctest: +SKIP\n    >>> from torch.func import grad\n    >>> def my_loss_func(y, y_pred):\n    >>>    loss_per_sample = (0.5 * y_pred - y) ** 2\n    >>>    loss = loss_per_sample.mean()\n    >>>    return loss, (y_pred, loss_per_sample)\n    >>>\n    >>> fn = grad(my_loss_func, argnums=(0, 1), has_aux=True)\n    >>> y_true = torch.rand(4)\n    >>> y_preds = torch.rand(4, requires_grad=True)\n    >>> out = fn(y_true, y_preds)\n    >>> # > output is ((grads w.r.t y_true, grads w.r.t y_preds), (y_pred, loss_per_sample))\n\n.. note::\n    Using PyTorch ``torch.no_grad`` together with ``grad``.\n\n    Case 1: Using ``torch.no_grad`` inside a function:\n\n        >>> # xdoctest: +SKIP\n        >>> def f(x):\n        >>>     with torch.no_grad():\n        >>>         c = x ** 2\n        >>>     return x - c\n\n    In this case, ``grad(f)(x)`` will respect the inner ``torch.no_grad``.\n\n    Case 2: Using ``grad`` inside ``torch.no_grad`` context manager:\n\n        >>> # xdoctest: +SKIP\n        >>> with torch.no_grad():\n        >>>     grad(f)(x)\n\n    In this case, ``grad`` will respect the inner ``torch.no_grad``, but not the\n    outer one. This is because ``grad`` is a \"function transform\": its result\n    should not depend on the result of a context manager outside of ``f``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "grad_and_value",
+      "signature": "grad_and_value(func: Callable, argnums: Union[int, Tuple[int, ...]] = 0, has_aux: bool = False) -> Callable",
+      "documentation": {
+        "description": "Returns a function to compute a tuple of the gradient and primal, or\nforward, computation.",
+        "parameters": {
+          "func": {
+            "type": "Callable",
+            "description": "A Python function that takes one or more arguments."
+          },
+          "Must": {
+            "type": "",
+            "description": "return a single-element Tensor. If specified ``has_aux``"
+          },
+          "equals": {
+            "type": "",
+            "description": "``True``, function can return a tuple of single-element"
+          },
+          "Tensor": {
+            "type": "",
+            "description": "and other auxiliary objects: ``(output, aux)``."
+          },
+          "argnums": {
+            "type": "int or Tuple[int]",
+            "description": "Specifies arguments to compute gradients"
+          },
+          "with": {
+            "type": "",
+            "description": "respect to. ``argnums`` can be single integer or tuple of"
+          },
+          "integers": {
+            "type": "",
+            "description": ". Default: 0."
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a tensor and"
+          },
+          "other": {
+            "type": "",
+            "description": "auxiliary objects: ``(output, aux)``. Default: False."
+          }
+        },
+        "returns": "Function to compute a tuple of gradients with respect to its inputs\n    and the forward computation. By default, the output of the function is\n    a tuple of the gradient tensor(s) with respect to the first argument\n    and the primal computation. If specified ``has_aux`` equals\n    ``True``, tuple of gradients and tuple of the forward computation with\n    output auxiliary objects is returned. If ``argnums`` is a tuple of\n    integers, a tuple of a tuple of the output gradients with respect to\n    each ``argnums`` value and the forward computation is returned.\n\nSee :func:`grad` for examples",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hessian",
+      "signature": "hessian(func, argnums=0)",
+      "documentation": {
+        "description": "Computes the Hessian of ``func`` with respect to the arg(s) at index\n``argnum`` via a forward-over-reverse strategy.\n\nThe forward-over-reverse strategy (composing ``jacfwd(jacrev(func))``) is\na good default for good performance. It is possible to compute Hessians\nthrough other compositions of :func:`jacfwd` and :func:`jacrev` like\n``jacfwd(jacfwd(func))`` or ``jacrev(jacrev(func))``.",
+        "parameters": {
+          "func": {
+            "type": "function",
+            "description": "A Python function that takes one or more arguments,"
+          },
+          "one": {
+            "type": "",
+            "description": "of which must be a Tensor, and returns one or more Tensors"
+          },
+          "argnums": {
+            "type": "int or Tuple[int]",
+            "description": "Optional, integer or tuple of integers,"
+          },
+          "saying": {
+            "type": "",
+            "description": "which arguments to get the Hessian with respect to."
+          },
+          "Default": {
+            "type": "",
+            "description": "0."
+          }
+        },
+        "returns": "Returns a function that takes in the same inputs as ``func`` and\n    returns the Hessian of ``func`` with respect to the arg(s) at\n    ``argnums``.\n\n.. note::\n    You may see this API error out with \"forward-mode AD not implemented\n    for operator X\". If so, please file a bug report and we will prioritize it.\n    An alternative is to use ``jacrev(jacrev(func))``, which has better\n    operator coverage.\n\nA basic usage with a R^N -> R^1 function gives a N x N Hessian:\n\n    >>> from torch.func import hessian\n    >>> def f(x):\n    >>>   return x.sin().sum()\n    >>>\n    >>> x = torch.randn(5)\n    >>> hess = hessian(f)(x)  # equivalent to jacfwd(jacrev(f))(x)\n    >>> assert torch.allclose(hess, torch.diag(-x.sin()))",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "jacfwd",
+      "signature": "jacfwd(func: Callable, argnums: Union[int, Tuple[int, ...]] = 0, has_aux: bool = False, *, randomness: str = 'error')",
+      "documentation": {
+        "description": "Computes the Jacobian of ``func`` with respect to the arg(s) at index\n``argnum`` using forward-mode autodiff",
+        "parameters": {
+          "func": {
+            "type": "function",
+            "description": "A Python function that takes one or more arguments,"
+          },
+          "one": {
+            "type": "",
+            "description": "of which must be a Tensor, and returns one or more Tensors"
+          },
+          "argnums": {
+            "type": "int or Tuple[int]",
+            "description": "Optional, integer or tuple of integers,"
+          },
+          "saying": {
+            "type": "",
+            "description": "which arguments to get the Jacobian with respect to."
+          },
+          "Default": {
+            "type": "",
+            "description": "\"error\""
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a\n``(output, aux)`` tuple where the first element is the output of"
+          },
+          "the": {
+            "type": "",
+            "description": "function to be differentiated and the second element is"
+          },
+          "auxiliary": {
+            "type": "",
+            "description": "objects that will not be differentiated."
+          },
+          "randomness": {
+            "type": "str",
+            "description": "Flag indicating what type of randomness to use."
+          },
+          "See": {
+            "type": "",
+            "description": "func:`vmap` for more detail. Allowed: \"different\", \"same\", \"error\"."
+          }
+        },
+        "returns": "Returns a function that takes in the same inputs as ``func`` and\n    returns the Jacobian of ``func`` with respect to the arg(s) at\n    ``argnums``. If ``has_aux is True``, then the returned function\n    instead returns a ``(jacobian, aux)`` tuple where ``jacobian``\n    is the Jacobian and ``aux`` is auxiliary objects returned by ``func``.\n\n.. note::\n    You may see this API error out with \"forward-mode AD not implemented\n    for operator X\". If so, please file a bug report and we will prioritize it.\n    An alternative is to use :func:`jacrev`, which has better operator coverage.\n\nA basic usage with a pointwise, unary operation will give a diagonal array\nas the Jacobian\n\n    >>> from torch.func import jacfwd\n    >>> x = torch.randn(5)\n    >>> jacobian = jacfwd(torch.sin)(x)\n    >>> expected = torch.diag(torch.cos(x))\n    >>> assert torch.allclose(jacobian, expected)\n\n:func:`jacfwd` can be composed with vmap to produce batched\nJacobians:\n\n    >>> from torch.func import jacfwd, vmap\n    >>> x = torch.randn(64, 5)\n    >>> jacobian = vmap(jacfwd(torch.sin))(x)\n    >>> assert jacobian.shape == (64, 5, 5)\n\nIf you would like to compute the output of the function as well as the\njacobian of the function, use the ``has_aux`` flag to return the output\nas an auxiliary object:\n\n    >>> from torch.func import jacfwd\n    >>> x = torch.randn(5)\n    >>>\n    >>> def f(x):\n    >>>   return x.sin()\n    >>>\n    >>> def g(x):\n    >>>   result = f(x)\n    >>>   return result, result\n    >>>\n    >>> jacobian_f, f_x = jacfwd(g, has_aux=True)(x)\n    >>> assert torch.allclose(f_x, f(x))\n\nAdditionally, :func:`jacrev` can be composed with itself or :func:`jacrev`\nto produce Hessians\n\n    >>> from torch.func import jacfwd, jacrev\n    >>> def f(x):\n    >>>   return x.sin().sum()\n    >>>\n    >>> x = torch.randn(5)\n    >>> hessian = jacfwd(jacrev(f))(x)\n    >>> assert torch.allclose(hessian, torch.diag(-x.sin()))\n\nBy default, :func:`jacfwd` computes the Jacobian with respect to the first\ninput. However, it can compute the Jacboian with respect to a different\nargument by using ``argnums``:\n\n    >>> from torch.func import jacfwd\n    >>> def f(x, y):\n    >>>   return x + y ** 2\n    >>>\n    >>> x, y = torch.randn(5), torch.randn(5)\n    >>> jacobian = jacfwd(f, argnums=1)(x, y)\n    >>> expected = torch.diag(2 * y)\n    >>> assert torch.allclose(jacobian, expected)\n\nAdditionally, passing a tuple to ``argnums`` will compute the Jacobian\nwith respect to multiple arguments\n\n    >>> from torch.func import jacfwd\n    >>> def f(x, y):\n    >>>   return x + y ** 2\n    >>>\n    >>> x, y = torch.randn(5), torch.randn(5)\n    >>> jacobian = jacfwd(f, argnums=(0, 1))(x, y)\n    >>> expectedX = torch.diag(torch.ones_like(x))\n    >>> expectedY = torch.diag(2 * y)\n    >>> assert torch.allclose(jacobian[0], expectedX)\n    >>> assert torch.allclose(jacobian[1], expectedY)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "jacrev",
+      "signature": "jacrev(func: Callable, argnums: Union[int, Tuple[int]] = 0, *, has_aux=False, chunk_size: Optional[int] = None, _preallocate_and_copy=False)",
+      "documentation": {
+        "description": "Computes the Jacobian of ``func`` with respect to the arg(s) at index\n``argnum`` using reverse mode autodiff\n\n.. note::\n    Using :attr:`chunk_size=1` is equivalent to computing the jacobian\n    row-by-row with a for-loop i.e. the constraints of :func:`vmap` are\n    not applicable.",
+        "parameters": {
+          "func": {
+            "type": "function",
+            "description": "A Python function that takes one or more arguments,"
+          },
+          "one": {
+            "type": "",
+            "description": "of which must be a Tensor, and returns one or more Tensors"
+          },
+          "argnums": {
+            "type": "int or Tuple[int]",
+            "description": "Optional, integer or tuple of integers,"
+          },
+          "saying": {
+            "type": "",
+            "description": "which arguments to get the Jacobian with respect to."
+          },
+          "Default": {
+            "type": "",
+            "description": "False."
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a\n``(output, aux)`` tuple where the first element is the output of"
+          },
+          "the": {
+            "type": "",
+            "description": "jacobian, please try to specify a non-None chunk_size."
+          },
+          "auxiliary": {
+            "type": "",
+            "description": "objects that will not be differentiated."
+          },
+          "chunk_size": {
+            "type": "None or int",
+            "description": "If None (default), use the maximum chunk size\n(equivalent to doing a single vmap over vjp to compute the jacobian)."
+          },
+          "If": {
+            "type": "",
+            "description": "not None, then compute the jacobian :attr:`chunk_size` rows at a time\n(equivalent to doing multiple vmap over vjp). If you run into memory issues computing"
+          }
+        },
+        "returns": "Returns a function that takes in the same inputs as ``func`` and\n    returns the Jacobian of ``func`` with respect to the arg(s) at\n    ``argnums``. If ``has_aux is True``, then the returned function\n    instead returns a ``(jacobian, aux)`` tuple where ``jacobian``\n    is the Jacobian and ``aux`` is auxiliary objects returned by ``func``.\n\nA basic usage with a pointwise, unary operation will give a diagonal array\nas the Jacobian\n\n    >>> from torch.func import jacrev\n    >>> x = torch.randn(5)\n    >>> jacobian = jacrev(torch.sin)(x)\n    >>> expected = torch.diag(torch.cos(x))\n    >>> assert torch.allclose(jacobian, expected)\n\nIf you would like to compute the output of the function as well as the\njacobian of the function, use the ``has_aux`` flag to return the output\nas an auxiliary object:\n\n    >>> from torch.func import jacrev\n    >>> x = torch.randn(5)\n    >>>\n    >>> def f(x):\n    >>>   return x.sin()\n    >>>\n    >>> def g(x):\n    >>>   result = f(x)\n    >>>   return result, result\n    >>>\n    >>> jacobian_f, f_x = jacrev(g, has_aux=True)(x)\n    >>> assert torch.allclose(f_x, f(x))\n\n:func:`jacrev` can be composed with vmap to produce batched\nJacobians:\n\n    >>> from torch.func import jacrev, vmap\n    >>> x = torch.randn(64, 5)\n    >>> jacobian = vmap(jacrev(torch.sin))(x)\n    >>> assert jacobian.shape == (64, 5, 5)\n\nAdditionally, :func:`jacrev` can be composed with itself to produce\nHessians\n\n    >>> from torch.func import jacrev\n    >>> def f(x):\n    >>>   return x.sin().sum()\n    >>>\n    >>> x = torch.randn(5)\n    >>> hessian = jacrev(jacrev(f))(x)\n    >>> assert torch.allclose(hessian, torch.diag(-x.sin()))\n\nBy default, :func:`jacrev` computes the Jacobian with respect to the first\ninput. However, it can compute the Jacboian with respect to a different\nargument by using ``argnums``:\n\n    >>> from torch.func import jacrev\n    >>> def f(x, y):\n    >>>   return x + y ** 2\n    >>>\n    >>> x, y = torch.randn(5), torch.randn(5)\n    >>> jacobian = jacrev(f, argnums=1)(x, y)\n    >>> expected = torch.diag(2 * y)\n    >>> assert torch.allclose(jacobian, expected)\n\nAdditionally, passing a tuple to ``argnums`` will compute the Jacobian\nwith respect to multiple arguments\n\n    >>> from torch.func import jacrev\n    >>> def f(x, y):\n    >>>   return x + y ** 2\n    >>>\n    >>> x, y = torch.randn(5), torch.randn(5)\n    >>> jacobian = jacrev(f, argnums=(0, 1))(x, y)\n    >>> expectedX = torch.diag(torch.ones_like(x))\n    >>> expectedY = torch.diag(2 * y)\n    >>> assert torch.allclose(jacobian[0], expectedX)\n    >>> assert torch.allclose(jacobian[1], expectedY)\n\n.. note::\n    Using PyTorch ``torch.no_grad`` together with ``jacrev``.\n    Case 1: Using ``torch.no_grad`` inside a function:\n\n        >>> def f(x):\n        >>>     with torch.no_grad():\n        >>>         c = x ** 2\n        >>>     return x - c\n\n    In this case, ``jacrev(f)(x)`` will respect the inner ``torch.no_grad``.\n\n    Case 2: Using ``jacrev`` inside ``torch.no_grad`` context manager:\n\n        >>> with torch.no_grad():\n        >>>     jacrev(f)(x)\n\n    In this case, ``jacrev`` will respect the inner ``torch.no_grad``, but not the\n    outer one. This is because ``jacrev`` is a \"function transform\": its result\n    should not depend on the result of a context manager outside of ``f``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "jvp",
+      "signature": "jvp(func: Callable, primals: Any, tangents: Any, *, strict: bool = False, has_aux: bool = False)",
+      "documentation": {
+        "description": "Standing for the Jacobian-vector product, returns a tuple containing\nthe output of `func(*primals)` and the \"Jacobian of ``func`` evaluated at\n``primals``\" times ``tangents``. This is also known as forward-mode autodiff.",
+        "parameters": {
+          "func": {
+            "type": "function",
+            "description": "A Python function that takes one or more arguments,"
+          },
+          "one": {
+            "type": "",
+            "description": "of which must be a Tensor, and returns one or more Tensors"
+          },
+          "primals": {
+            "type": "Tensors",
+            "description": "Positional arguments to ``func`` that must all be"
+          },
+          "Tensors": {
+            "type": "",
+            "description": ". The returned function will also be computing the"
+          },
+          "derivative": {
+            "type": "",
+            "description": "with respect to these arguments"
+          },
+          "tangents": {
+            "type": "Tensors",
+            "description": "The \"vector\" for which Jacobian-vector-product is"
+          },
+          "computed": {
+            "type": "",
+            "description": ". Must be the same structure and sizes as the inputs to\n``func``."
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a\n``(output, aux)`` tuple where the first element is the output of"
+          },
+          "the": {
+            "type": "",
+            "description": "function to be differentiated and the second element is"
+          },
+          "other": {
+            "type": "",
+            "description": "auxiliary objects that will not be differentiated."
+          },
+          "Default": {
+            "type": "",
+            "description": "False."
+          }
+        },
+        "returns": "Returns a ``(output, jvp_out)`` tuple containing the output of ``func``\n    evaluated at ``primals`` and the Jacobian-vector product.\n    If ``has_aux is True``, then instead returns a ``(output, jvp_out, aux)`` tuple.\n\n.. note::\n    You may see this API error out with \"forward-mode AD not implemented\n    for operator X\". If so, please file a bug report and we will prioritize it.\n\njvp is useful when you wish to compute gradients of a function R^1 -> R^N\n\n    >>> from torch.func import jvp\n    >>> x = torch.randn([])\n    >>> f = lambda x: x * torch.tensor([1., 2., 3])\n    >>> value, grad = jvp(f, (x,), (torch.tensor(1.),))\n    >>> assert torch.allclose(value, f(x))\n    >>> assert torch.allclose(grad, torch.tensor([1., 2, 3]))\n\n:func:`jvp` can support functions with multiple inputs by passing in the\ntangents for each of the inputs\n\n     >>> from torch.func import jvp\n     >>> x = torch.randn(5)\n     >>> y = torch.randn(5)\n     >>> f = lambda x, y: (x * y)\n     >>> _, output = jvp(f, (x, y), (torch.ones(5), torch.ones(5)))\n     >>> assert torch.allclose(output, x + y)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "linearize",
+      "signature": "linearize(func: Callable, *primals) -> Tuple[Any, Callable]",
+      "documentation": {
+        "description": "Returns the value of ``func`` at ``primals`` and linear approximation\nat ``primals``.",
+        "parameters": {
+          "func": {
+            "type": "Callable",
+            "description": "A Python function that takes one or more arguments."
+          },
+          "primals": {
+            "type": "Tensors",
+            "description": "Positional arguments to ``func`` that must all be"
+          },
+          "Tensors": {
+            "type": "",
+            "description": ". These are the values at which the function is linearly approximated."
+          }
+        },
+        "returns": "Returns a ``(output, jvp_fn)`` tuple containing the output of ``func``\n    applied to ``primals`` and a function that computes the jvp of\n    ``func`` evaluated at ``primals``.\n\nlinearize is useful if jvp is to be computed multiple times at ``primals``. However,\nto achieve this, linearize saves intermediate computation and has higher memory requirements\nthan directly applying `jvp`. So, if all the ``tangents`` are known, it maybe more efficient\nto compute vmap(jvp) instead of using linearize.\n\n.. note::\n    linearize evaluates ``func`` twice. Please file an issue for an implementation\n    with a single evaluation.\n\nExample::\n    >>> import torch\n    >>> from torch.func import linearize\n    >>> def fn(x):\n    ...     return x.sin()\n    ...\n    >>> output, jvp_fn = linearize(fn, torch.zeros(3, 3))\n    >>> jvp_fn(torch.ones(3, 3))\n    tensor([[1., 1., 1.],\n            [1., 1., 1.],\n            [1., 1., 1.]])\n    >>>",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "replace_all_batch_norm_modules_",
+      "signature": "replace_all_batch_norm_modules_(root: torch.nn.modules.module.Module) -> torch.nn.modules.module.Module",
+      "documentation": {
+        "description": "In place updates :attr:`root` by setting the ``running_mean`` and ``running_var`` to be None and\nsetting track_running_stats to be False for any nn.BatchNorm module in :attr:`root`",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "stack_module_state",
+      "signature": "stack_module_state(models: Union[Sequence[torch.nn.modules.module.Module], torch.nn.modules.container.ModuleList]) -> Tuple[Dict[str, Any], Dict[str, Any]]",
+      "documentation": {
+        "description": "stack_module_state(models) -> params, buffers\n\nPrepares a list of torch.nn.Modules for ensembling with :func:`vmap`.\n\nGiven a list of ``M`` ``nn.Modules`` of the same class, returns two dictionaries\nthat stack all of their parameters and buffers together, indexed by name.\nThe stacked parameters are optimizable (i.e. they are new leaf nodes in the\nautograd history that are unrelated to the original parameters and can be\npassed directly to an optimizer).\n\nHere's an example of how to ensemble over a very simple model:\n\n.. code-block:: python\n\n    num_models = 5\n    batch_size = 64\n    in_features, out_features = 3, 3\n    models = [torch.nn.Linear(in_features, out_features) for i in range(num_models)]\n    data = torch.randn(batch_size, 3)\n\n    def wrapper(params, buffers, data):\n        return torch.func.functional_call(models[0], (params, buffers), data)\n\n    params, buffers = stack_module_state(models)\n    output = vmap(wrapper, (0, 0, None))(params, buffers, data)\n\n    assert output.shape == (num_models, batch_size, out_features)\n\nWhen there's submodules, this follows state dict naming conventions\n\n.. code-block:: python\n\n    import torch.nn as nn\n    class Foo(nn.Module):\n        def __init__(self, in_features, out_features):\n            super().__init__()\n            hidden = 4\n            self.l1 = nn.Linear(in_features, hidden)\n            self.l2 = nn.Linear(hidden, out_features)\n\n        def forward(self, x):\n            return self.l2(self.l1(x))\n\n    num_models = 5\n    in_features, out_features = 3, 3\n    models = [Foo(in_features, out_features) for i in range(num_models)]\n    params, buffers = stack_module_state(models)\n    print(list(params.keys()))  # \"l1.weight\", \"l1.bias\", \"l2.weight\", \"l2.bias\"\n\n.. warning::\n    All of the modules being stacked together must be the same (except for\n    the values of their parameters/buffers). For example, they should be in the\n    same mode (training vs eval).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "vjp",
+      "signature": "vjp(func: Callable, *primals, has_aux: bool = False)",
+      "documentation": {
+        "description": "Standing for the vector-Jacobian product, returns a tuple containing the\nresults of ``func`` applied to ``primals`` and a function that, when\ngiven ``cotangents``, computes the reverse-mode Jacobian of ``func`` with\nrespect to ``primals`` times ``cotangents``.",
+        "parameters": {
+          "func": {
+            "type": "Callable",
+            "description": "A Python function that takes one or more arguments. Must"
+          },
+          "return": {
+            "type": "",
+            "description": "one or more Tensors."
+          },
+          "primals": {
+            "type": "Tensors",
+            "description": "Positional arguments to ``func`` that must all be"
+          },
+          "Tensors": {
+            "type": "",
+            "description": ". The returned function will also be computing the"
+          },
+          "derivative": {
+            "type": "",
+            "description": "with respect to these arguments"
+          },
+          "has_aux": {
+            "type": "bool",
+            "description": "Flag indicating that ``func`` returns a\n``(output, aux)`` tuple where the first element is the output of"
+          },
+          "the": {
+            "type": "",
+            "description": "function to be differentiated and the second element is"
+          },
+          "other": {
+            "type": "",
+            "description": "auxiliary objects that will not be differentiated."
+          },
+          "Default": {
+            "type": "",
+            "description": "False."
+          }
+        },
+        "returns": "Returns a ``(output, vjp_fn)`` tuple containing the output of ``func``\n    applied to ``primals`` and a function that computes the vjp of\n    ``func`` with respect to all ``primals`` using the cotangents passed\n    to the returned function. If ``has_aux is True``, then instead returns a\n    ``(output, vjp_fn, aux)`` tuple.\n    The returned ``vjp_fn`` function will return a tuple of each VJP.\n\nWhen used in simple cases, :func:`vjp` behaves the same as :func:`grad`\n\n    >>> x = torch.randn([5])\n    >>> f = lambda x: x.sin().sum()\n    >>> (_, vjpfunc) = torch.func.vjp(f, x)\n    >>> grad = vjpfunc(torch.tensor(1.))[0]\n    >>> assert torch.allclose(grad, torch.func.grad(f)(x))\n\nHowever, :func:`vjp` can support functions with multiple outputs by\npassing in the cotangents for each of the outputs\n\n    >>> x = torch.randn([5])\n    >>> f = lambda x: (x.sin(), x.cos())\n    >>> (_, vjpfunc) = torch.func.vjp(f, x)\n    >>> vjps = vjpfunc((torch.ones([5]), torch.ones([5])))\n    >>> assert torch.allclose(vjps[0], x.cos() + -x.sin())\n\n:func:`vjp` can even support outputs being Python structs\n\n    >>> x = torch.randn([5])\n    >>> f = lambda x: {'first': x.sin(), 'second': x.cos()}\n    >>> (_, vjpfunc) = torch.func.vjp(f, x)\n    >>> cotangents = {'first': torch.ones([5]), 'second': torch.ones([5])}\n    >>> vjps = vjpfunc(cotangents)\n    >>> assert torch.allclose(vjps[0], x.cos() + -x.sin())\n\nThe function returned by :func:`vjp` will compute the partials with\nrespect to each of the ``primals``\n\n    >>> x, y = torch.randn([5, 4]), torch.randn([4, 5])\n    >>> (_, vjpfunc) = torch.func.vjp(torch.matmul, x, y)\n    >>> cotangents = torch.randn([5, 5])\n    >>> vjps = vjpfunc(cotangents)\n    >>> assert len(vjps) == 2\n    >>> assert torch.allclose(vjps[0], torch.matmul(cotangents, y.transpose(0, 1)))\n    >>> assert torch.allclose(vjps[1], torch.matmul(x.transpose(0, 1), cotangents))\n\n``primals`` are the positional arguments for ``f``. All kwargs use their\ndefault value\n\n    >>> x = torch.randn([5])\n    >>> def f(x, scale=4.):\n    >>>   return x * scale\n    >>>\n    >>> (_, vjpfunc) = torch.func.vjp(f, x)\n    >>> vjps = vjpfunc(torch.ones_like(x))\n    >>> assert torch.allclose(vjps[0], torch.full(x.shape, 4.))\n\n.. note::\n    Using PyTorch ``torch.no_grad`` together with ``vjp``.\n    Case 1: Using ``torch.no_grad`` inside a function:\n\n        >>> def f(x):\n        >>>     with torch.no_grad():\n        >>>         c = x ** 2\n        >>>     return x - c\n\n    In this case, ``vjp(f)(x)`` will respect the inner ``torch.no_grad``.\n\n    Case 2: Using ``vjp`` inside ``torch.no_grad`` context manager:\n\n        >>> # xdoctest: +SKIP(failing)\n        >>> with torch.no_grad():\n        >>>     vjp(f)(x)\n\n    In this case, ``vjp`` will respect the inner ``torch.no_grad``, but not the\n    outer one. This is because ``vjp`` is a \"function transform\": its result\n    should not depend on the result of a context manager outside of ``f``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "vmap",
+      "signature": "vmap(func: Callable, in_dims: Union[int, Tuple] = 0, out_dims: Union[int, Tuple[int, ...]] = 0, randomness: str = 'error', *, chunk_size=None) -> Callable",
+      "documentation": {
+        "description": "vmap is the vectorizing map; ``vmap(func)`` returns a new function that\nmaps ``func`` over some dimension of the inputs. Semantically, vmap\npushes the map into PyTorch operations called by ``func``, effectively\nvectorizing those operations.\n\nvmap is useful for handling batch dimensions: one can write a function\n``func`` that runs on examples and then lift it to a function that can\ntake batches of examples with ``vmap(func)``. vmap can also be used to\ncompute batched gradients when composed with autograd.\n\n.. note::\n    :func:`torch.vmap` is aliased to :func:`torch.func.vmap` for\n    convenience. Use whichever one you'd like.",
+        "parameters": {
+          "func": {
+            "type": "function",
+            "description": "A Python function that takes one or more arguments."
+          },
+          "Must": {
+            "type": "",
+            "description": "return one or more Tensors."
+          },
+          "in_dims": {
+            "type": "int or nested structure",
+            "description": "Specifies which dimension of the"
+          },
+          "inputs": {
+            "type": "",
+            "description": "should be mapped over. ``in_dims`` should have a"
+          },
+          "structure": {
+            "type": "",
+            "description": "like the inputs. If the ``in_dim`` for a particular"
+          },
+          "input": {
+            "type": "",
+            "description": "is None, then that indicates there is no map dimension."
+          },
+          "Default": {
+            "type": "",
+            "description": "0."
+          },
+          "out_dims": {
+            "type": "int or Tuple[int]",
+            "description": "Specifies where the mapped dimension"
+          },
+          "should": {
+            "type": "",
+            "description": "appear in the outputs. If ``out_dims`` is a Tuple, then"
+          },
+          "it": {
+            "type": "",
+            "description": "should have one element per output. Default: 0."
+          },
+          "randomness": {
+            "type": "",
+            "description": "will be the same across batches. If 'error', any calls to"
+          },
+          "vmap": {
+            "type": "",
+            "description": "should be the same or different across batches. If 'different',"
+          },
+          "the": {
+            "type": "",
+            "description": "randomness for each batch will be different. If 'same', the"
+          },
+          "random": {
+            "type": "",
+            "description": "functions will error. Default: 'error'. WARNING: this flag"
+          },
+          "only": {
+            "type": "",
+            "description": "applies to random PyTorch operations and does not apply to"
+          },
+          "Python": {
+            "type": "",
+            "description": "'s random module or numpy randomness."
+          },
+          "chunk_size": {
+            "type": "None or int",
+            "description": "If None (default), apply a single vmap over inputs."
+          },
+          "If": {
+            "type": "",
+            "description": "you run into memory issues computing the vmap, please try a non-None chunk_size."
+          },
+          "Note": {
+            "type": "",
+            "description": "that :attr:`chunk_size=1` is equivalent to computing the vmap with a for-loop."
+          }
+        },
+        "returns": "Returns a new \"batched\" function. It takes the same inputs as\n    ``func``, except each input has an extra dimension at the index\n    specified by ``in_dims``. It takes returns the same outputs as\n    ``func``, except each output has an extra dimension at the index\n    specified by ``out_dims``.\n\n.. warning:\n    :func:`vmap` works best with functional-style code. Please do not\n    perform any side-effects in ``func``, with the exception of\n    in-place PyTorch operations. Examples of side-effects include mutating\n    Python data structures and assigning values to variables not captured\n    in ``func``.\n\nOne example of using :func:`vmap` is to compute batched dot products. PyTorch\ndoesn't provide a batched ``torch.dot`` API; instead of unsuccessfully\nrummaging through docs, use :func:`vmap` to construct a new function.\n\n    >>> torch.dot                            # [D], [D] -> []\n    >>> batched_dot = torch.func.vmap(torch.dot)  # [N, D], [N, D] -> [N]\n    >>> x, y = torch.randn(2, 5), torch.randn(2, 5)\n    >>> batched_dot(x, y)\n\n:func:`vmap` can be helpful in hiding batch dimensions, leading to a simpler\nmodel authoring experience.\n\n    >>> batch_size, feature_size = 3, 5\n    >>> weights = torch.randn(feature_size, requires_grad=True)\n    >>>\n    >>> def model(feature_vec):\n    >>>     # Very simple linear model with activation\n    >>>     return feature_vec.dot(weights).relu()\n    >>>\n    >>> examples = torch.randn(batch_size, feature_size)\n    >>> result = torch.vmap(model)(examples)\n\n:func:`vmap` can also help vectorize computations that were previously difficult\nor impossible to batch. One example is higher-order gradient computation.\nThe PyTorch autograd engine computes vjps (vector-Jacobian products).\nComputing a full Jacobian matrix for some function f: R^N -> R^N usually\nrequires N calls to ``autograd.grad``, one per Jacobian row. Using :func:`vmap`,\nwe can vectorize the whole computation, computing the Jacobian in a single\ncall to ``autograd.grad``.\n\n    >>> # Setup\n    >>> N = 5\n    >>> f = lambda x: x ** 2\n    >>> x = torch.randn(N, requires_grad=True)\n    >>> y = f(x)\n    >>> I_N = torch.eye(N)\n    >>>\n    >>> # Sequential approach\n    >>> jacobian_rows = [torch.autograd.grad(y, x, v, retain_graph=True)[0]\n    >>>                  for v in I_N.unbind()]\n    >>> jacobian = torch.stack(jacobian_rows)\n    >>>\n    >>> # vectorized gradient computation\n    >>> def get_vjp(v):\n    >>>     return torch.autograd.grad(y, x, v)\n    >>> jacobian = torch.vmap(get_vjp)(I_N)\n\n:func:`vmap` can also be nested, producing an output with multiple batched dimensions\n\n    >>> torch.dot                            # [D], [D] -> []\n    >>> batched_dot = torch.vmap(torch.vmap(torch.dot))  # [N1, N0, D], [N1, N0, D] -> [N1, N0]\n    >>> x, y = torch.randn(2, 3, 5), torch.randn(2, 3, 5)\n    >>> batched_dot(x, y) # tensor of size [2, 3]\n\nIf the inputs are not batched along the first dimension, ``in_dims`` specifies\nthe dimension that each inputs are batched along as\n\n    >>> torch.dot                            # [N], [N] -> []\n    >>> batched_dot = torch.vmap(torch.dot, in_dims=1)  # [N, D], [N, D] -> [D]\n    >>> x, y = torch.randn(2, 5), torch.randn(2, 5)\n    >>> batched_dot(x, y)   # output is [5] instead of [2] if batched along the 0th dimension\n\nIf there are multiple inputs each of which is batched along different dimensions,\n``in_dims`` must be a tuple with the batch dimension for each input as\n\n    >>> torch.dot                            # [D], [D] -> []\n    >>> batched_dot = torch.vmap(torch.dot, in_dims=(0, None))  # [N, D], [D] -> [N]\n    >>> x, y = torch.randn(2, 5), torch.randn(5)\n    >>> batched_dot(x, y) # second arg doesn't have a batch dim because in_dim[1] was None\n\nIf the input is a Python struct, ``in_dims`` must be a tuple containing a struct\nmatching the shape of the input:\n\n    >>> f = lambda dict: torch.dot(dict['x'], dict['y'])\n    >>> x, y = torch.randn(2, 5), torch.randn(5)\n    >>> input = {'x': x, 'y': y}\n    >>> batched_dot = torch.vmap(f, in_dims=({'x': 0, 'y': None},))\n    >>> batched_dot(input)\n\nBy default, the output is batched along the first dimension. However, it can be batched\nalong any dimension by using ``out_dims``\n\n    >>> f = lambda x: x ** 2\n    >>> x = torch.randn(2, 5)\n    >>> batched_pow = torch.vmap(f, out_dims=1)\n    >>> batched_pow(x) # [5, 2]\n\nFor any function that uses kwargs, the returned function will not batch the kwargs but will\naccept kwargs\n\n    >>> x = torch.randn([2, 5])\n    >>> def fn(x, scale=4.):\n    >>>   return x * scale\n    >>>\n    >>> batched_pow = torch.vmap(fn)\n    >>> assert torch.allclose(batched_pow(x), x * 4)\n    >>> batched_pow(x, scale=x) # scale is not batched, output has shape [2, 2, 5]\n\n.. note::\n    vmap does not provide general autobatching or handle variable-length\n    sequences out of the box.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

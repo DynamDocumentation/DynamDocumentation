@@ -1,17 +1,42 @@
-import { BrowserRouter, Routes, Route } from "react-router";
-import Layout from "./pages/Layout";
-import Login from "./pages/Test";
-import UserPage from './pages/UserPage';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Layout from './pages/Layout';
+import LibraryInput from './pages/LibraryInput';
 
-export default function App() {  
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    background: {
+      default: '#f5f5f5',
+      paper: '#ffffff',
+    },
+  },
+});
+
+function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
-          <Route path="users" element={<UserPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<div>Página Inicial</div>} />
+            <Route path="/documentation" element={<div>Documentação</div>} />
+            <Route path="/library-input" element={<LibraryInput />} />
+            <Route path="/users" element={<div>Usuários</div>} />
+            <Route path="/about" element={<div>Sobre</div>} />
+          </Route>
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
+
+export default App;

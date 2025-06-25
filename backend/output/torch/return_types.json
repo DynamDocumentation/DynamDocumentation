@@ -1,0 +1,2813 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "pytree_register_structseq",
+      "signature": "pytree_register_structseq(cls)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_pytree_node",
+      "signature": "register_pytree_node(cls: Type[Any], flatten_fn: Callable[[Any], Tuple[List[Any], Any]], unflatten_fn: Callable[[Iterable[Any], Any], Any], *, serialized_type_name: Optional[str] = None, to_dumpable_context: Optional[Callable[[Any], Any]] = None, from_dumpable_context: Optional[Callable[[Any], Any]] = None, flatten_with_keys_fn: Optional[Callable[[Any], Tuple[List[Tuple[torch.utils._pytree.KeyEntry, Any]], Any]]] = None) -> None",
+      "documentation": {
+        "description": "Register a container-like type as pytree node.",
+        "parameters": {
+          "cls": {
+            "type": "",
+            "description": "the type to register"
+          },
+          "flatten_fn": {
+            "type": "",
+            "description": "A callable that takes a pytree and returns a flattened"
+          },
+          "representation": {
+            "type": "",
+            "description": ". This is used for json serialization, which is being"
+          },
+          "flattened": {
+            "type": "",
+            "description": "pytree."
+          },
+          "unflatten_fn": {
+            "type": "",
+            "description": "A callable that takes a flattened version of the pytree,"
+          },
+          "additional": {
+            "type": "",
+            "description": "context, and returns an unflattened pytree."
+          },
+          "serialized_type_name": {
+            "type": "",
+            "description": "A keyword argument used to specify the fully qualified"
+          },
+          "name": {
+            "type": "",
+            "description": "used when serializing the tree spec."
+          },
+          "to_dumpable_context": {
+            "type": "",
+            "description": "An optional keyword argument to custom specify how"
+          },
+          "to": {
+            "type": "",
+            "description": "convert the custom json dumpable representation of the context"
+          },
+          "used": {
+            "type": "",
+            "description": "in torch.export right now."
+          },
+          "from_dumpable_context": {
+            "type": "",
+            "description": "An optional keyword argument to custom specify how"
+          },
+          "back": {
+            "type": "",
+            "description": "to the original context. This is used for json deserialization,"
+          },
+          "which": {
+            "type": "",
+            "description": "is being used in torch.export right now."
+          },
+          "flatten_with_keys_fn": {
+            "type": "",
+            "description": "An optional keyword argument to specify how to"
+          },
+          "access": {
+            "type": "",
+            "description": "each pytree leaf's keypath when flattening and tree-mapping."
+          },
+          "Like": {
+            "type": "",
+            "description": "``flatten_fn``, but in place of a List[leaf], it should return"
+          },
+          "a": {
+            "type": "",
+            "description": "List[(keypath, leaf)]."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "SequenceKey",
+      "documentation": {
+        "description": "SequenceKey(idx: int)",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "get",
+          "signature": "get(self, sequence: Sequence[~T]) -> ~T",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "aminmax",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "aminmax_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "cummax",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "cummax_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "cummin",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "cummin_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "frexp",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "frexp_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "geqrf",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "geqrf_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "histogram",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "histogram_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "histogramdd",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "kthvalue",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "kthvalue_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_cholesky_ex",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_cholesky_ex_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_eig",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_eig_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_eigh",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_eigh_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_inv_ex",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_inv_ex_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_ldl_factor",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_ldl_factor_ex",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_ldl_factor_ex_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_ldl_factor_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lstsq",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lstsq_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu_factor",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu_factor_ex",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu_factor_ex_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu_factor_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_lu_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_qr",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_qr_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_slogdet",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_slogdet_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_solve_ex",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_solve_ex_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_svd",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "linalg_svd_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "lu_unpack",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "lu_unpack_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "max",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "max_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "median",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "median_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "min",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "min_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "mode",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "mode_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "nanmedian",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "nanmedian_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "qr",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "qr_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "slogdet",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "slogdet_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "sort",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "sort_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "svd",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "svd_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "topk",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "topk_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "triangular_solve",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "triangular_solve_out",
+      "documentation": {
+        "description": "Built-in immutable sequence.\n\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\n\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.\n\nRaises ValueError if the value is not present.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

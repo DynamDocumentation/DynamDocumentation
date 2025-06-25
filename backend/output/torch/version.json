@@ -1,0 +1,19 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Optional",
+      "signature": "Optional(*args, **kwds)",
+      "documentation": {
+        "description": "Optional[X] is equivalent to Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

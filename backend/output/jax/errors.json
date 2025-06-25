@@ -1,0 +1,446 @@
+{
+  "description": "No description available",
+  "functions": [],
+  "classes": [
+    {
+      "name": "ConcretizationTypeError",
+      "documentation": {
+        "description": "This error occurs when a JAX Tracer object is used in a context where a\nconcrete value is required (see :ref:`faq-different-kinds-of-jax-values`\nfor more on what a Tracer is). In some situations, it can be easily fixed by\nmarking problematic values as static; in others, it may indicate that your\nprogram is doing operations that are not directly supported by JAX's JIT\ncompilation model.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "Traced value where static value is expected\nOne common cause of this error is using a traced value where a static value\nis required. For example:\n>>> from functools import partial\n>>> from jax import jit\n>>> import jax.numpy as jnp\n>>> @jit\n... def func(x, axis):\n...   return x.min(axis)\n>>> func(jnp.arange(4), 0)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nConcretizationTypeError: Abstract tracer value encountered where concrete\nvalue is expected: axis argument to jnp.min().\nThis can often be fixed by marking the problematic argument as static::\n>>> @partial(jit, static_argnums=1)\n... def func(x, axis):\n...   return x.min(axis)\n>>> func(jnp.arange(4), 0)\nArray(0, dtype=int32)\nShape depends on Traced Value\nSuch an error may also arise when a shape in your JIT-compiled computation\ndepends on the values within a traced quantity. For example::\n>>> @jit\n... def func(x):\n...     return jnp.where(x < 0)\n>>> func(jnp.arange(4))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nConcretizationTypeError: Abstract tracer value encountered where concrete value is expected:\nThe error arose in jnp.nonzero.\nThis is an example of an operation that is incompatible with JAX's JIT\ncompilation model, which requires array sizes to be known at compile-time.\nHere the size of the returned array depends on the contents of `x`, and such\ncode cannot be JIT compiled.\nIn many cases it is possible to work around this by modifying the logic used\nin the function; for example here is code with a similar issue::\n>>> @jit\n... def func(x):\n...     indices = jnp.where(x > 1)\n...     return x[indices].sum()\n>>> func(jnp.arange(4))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nConcretizationTypeError: Abstract tracer value encountered where concrete\nvalue is expected: The error arose in jnp.nonzero.\nAnd here is how you might express the same operation in a way that avoids\ncreation of a dynamically-sized index array::\n>>> @jit\n... def func(x):\n...   return jnp.where(x > 1, x, 0).sum()\n>>> func(jnp.arange(4))\nArray(5, dtype=int32)\nTo understand more subtleties having to do with tracers vs. regular values,\nand concrete vs. abstract values, you may want to read\n:ref:`faq-different-kinds-of-jax-values`."
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "JAXIndexError",
+      "documentation": {
+        "description": "Mixin for JAX-specific errors",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "JAXTypeError",
+      "documentation": {
+        "description": "Mixin for JAX-specific errors",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "JaxRuntimeError",
+      "documentation": {
+        "description": "Runtime errors thrown by the JAX runtime. While the JAX runtime may raise other exceptions as well, most exceptions thrown by the runtime are instances of this class.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "KeyReuseError",
+      "documentation": {
+        "description": "This error occurs when a PRNG key is reused in an unsafe manner.\nKey reuse is checked only when `jax_debug_key_reuse` is\nset to `True`.\nHere is a simple example of code that would lead to such an error::\n>>> with jax.debug_key_reuse(True):  # doctest: +SKIP\n...   key = jax.random.key(0)\n...   value = jax.random.uniform(key)\n...   new_value = jax.random.uniform(key)\n...\n---------------------------------------------------------------------------\nKeyReuseError                             Traceback (most recent call last)\n...\nKeyReuseError: Previously-consumed key passed to jit-compiled function at index 0\nThis sort of key reuse is problematic because the JAX PRNG is stateless, and keys\nmust be manually split; For more information on this see `the Pseudorandom Numbers\ntutorial <https://jax.readthedocs.io/en/latest/random-numbers.html>`_.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "NonConcreteBooleanIndexError",
+      "documentation": {
+        "description": "This error occurs when a program attempts to use non-concrete boolean indices\nin a traced indexing operation. Under JIT compilation, JAX arrays must have\nstatic shapes (i.e. shapes that are known at compile-time) and so boolean\nmasks must be used carefully. Some logic implemented via boolean masking is\nsimply not possible in a :func:`jax.jit` function; in other cases, the logic\ncan be re-expressed in a JIT-compatible way, often using the three-argument\nversion of :func:`~jax.numpy.where`.\nFollowing are a few examples of when this error might arise.\nConstructing arrays via boolean masking\nThis most commonly arises when attempting to create an array via a boolean\nmask within a JIT context. For example::\n>>> import jax\n>>> import jax.numpy as jnp\n>>> @jax.jit\n... def positive_values(x):\n...   return x[x > 0]\n>>> positive_values(jnp.arange(-5, 5))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nNonConcreteBooleanIndexError: Array boolean indices must be concrete: ShapedArray(bool[10])\nThis function is attempting to return only the positive values in the input\narray; the size of this returned array cannot be determined at compile-time\nunless `x` is marked as static, and so operations like this cannot be\nperformed under JIT compilation.\nReexpressible Boolean Logic\nAlthough creating dynamically sized arrays is not supported directly, in\nmany cases it is possible to re-express the logic of the computation in\nterms of a JIT-compatible operation. For example, here is another function\nthat fails under JIT for the same reason::\n>>> @jax.jit\n... def sum_of_positive(x):\n...   return x[x > 0].sum()\n>>> sum_of_positive(jnp.arange(-5, 5))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nNonConcreteBooleanIndexError: Array boolean indices must be concrete: ShapedArray(bool[10])\nIn this case, however, the problematic array is only an intermediate value,\nand we can instead express the same logic in terms of the JIT-compatible\nthree-argument version of :func:`jax.numpy.where`::\n>>> @jax.jit\n... def sum_of_positive(x):\n...   return jnp.where(x > 0, x, 0).sum()\n>>> sum_of_positive(jnp.arange(-5, 5))\nArray(10, dtype=int32)\nThis pattern of replacing boolean masking with three-argument\n:func:`~jax.numpy.where` is a common solution to this sort of problem.\nBoolean indexing into JAX arrays\nThe other situation where this error often arises is when using boolean\nindices, such as with :code:`.at[...].set(...)`. Here is a simple example::\n>>> @jax.jit\n... def manual_clip(x):\n...   return x.at[x < 0].set(0)\n>>> manual_clip(jnp.arange(-2, 2))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nNonConcreteBooleanIndexError: Array boolean indices must be concrete: ShapedArray(bool[4])\nThis function is attempting to set values smaller than zero to a scalar fill\nvalue. As above, this can be addressed by re-expressing the logic in terms\nof :func:`~jax.numpy.where`::\n>>> @jax.jit\n... def manual_clip(x):\n...   return jnp.where(x < 0, 0, x)\n>>> manual_clip(jnp.arange(-2, 2))\nArray([0, 0, 0, 1], dtype=int32)",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SimplifiedTraceback",
+      "documentation": {
+        "description": "Common base class for all non-exit exceptions.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TracerArrayConversionError",
+      "documentation": {
+        "description": "This error occurs when a program attempts to convert a JAX Tracer object into\na standard NumPy array (see :ref:`faq-different-kinds-of-jax-values` for more\non what a Tracer is). It typically occurs in one of a few situations.\nUsing non-JAX functions in JAX transformations\nThis error can occur if you attempt to use a non-JAX library like ``numpy``\nor ``scipy`` inside a JAX transformation (:func:`~jax.jit`, :func:`~jax.grad`,\n:func:`jax.vmap`, etc.). For example::\n>>> from jax import jit\n>>> import numpy as np\n>>> @jit\n... def func(x):\n...   return np.sin(x)\n>>> func(np.arange(4))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerArrayConversionError: The numpy.ndarray conversion method\n__array__() was called on traced array with shape int32[4]\nIn this case, you can fix the issue by using :func:`jax.numpy.sin` in place of\n:func:`numpy.sin`::\n>>> import jax.numpy as jnp\n>>> @jit\n... def func(x):\n...   return jnp.sin(x)\n>>> func(jnp.arange(4))\nArray([0.        , 0.84147096, 0.9092974 , 0.14112   ], dtype=float32)\nSee also `External Callbacks`_ for options for calling back to host-side computations\nfrom transformed JAX code.\nIndexing a numpy array with a tracer\nIf this error arises on a line that involves array indexing, it may be that\nthe array being indexed ``x`` is a standard numpy.ndarray while the indices\n``idx`` are traced JAX arrays. For example::\n>>> x = np.arange(10)\n>>> @jit\n... def func(i):\n...   return x[i]\n>>> func(0)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerArrayConversionError: The numpy.ndarray conversion method\n__array__() was called on traced array with shape int32[0]\nDepending on the context, you may fix this by converting the numpy array\ninto a JAX array::\n>>> @jit\n... def func(i):\n...   return jnp.asarray(x)[i]\n>>> func(0)\nArray(0, dtype=int32)\nor by declaring the index as a static argument::\n>>> from functools import partial\n>>> @partial(jit, static_argnums=(0,))\n... def func(i):\n...   return x[i]\n>>> func(0)\nArray(0, dtype=int32)\nTo understand more subtleties having to do with tracers vs. regular values,\nand concrete vs. abstract values, you may want to read\n:ref:`faq-different-kinds-of-jax-values`.\n.. _External Callbacks: https://jax.readthedocs.io/en/latest/notebooks/external_callbacks.html",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TracerBoolConversionError",
+      "documentation": {
+        "description": "This error occurs when a traced value in JAX is used in a context where a\nboolean value is expected (see :ref:`faq-different-kinds-of-jax-values`\nfor more on what a Tracer is).\nThe boolean cast may be an explicit (e.g. ``bool(x)``) or implicit, through use of\ncontrol flow (e.g. ``if x > 0`` or ``while x``), use of Python boolean\noperators (e.g. ``z = x and y``, ``z = x or y``, ``z = not x``) or functions\nthat use them (e.g. ``z = max(x, y)``, ``z = min(x, y)`` etc.).\nIn some situations, this problem can be easily fixed by marking traced values as\nstatic; in others, it may indicate that your program is doing operations that are\nnot directly supported by JAX's JIT compilation model.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "Traced value used in control flow\nOne case where this often arises is when a traced value is used in\nPython control flow. For example::\n>>> from jax import jit\n>>> import jax.numpy as jnp\n>>> @jit\n... def func(x, y):\n...   return x if x.sum() < y.sum() else y\n>>> func(jnp.ones(4), jnp.zeros(4))  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerBoolConversionError: Attempted boolean conversion of JAX Tracer [...]\nWe could mark both inputs ``x`` and ``y`` as static, but that would defeat\nthe purpose of using :func:`jax.jit` here. Another option is to re-express\nthe if statement in terms of the three-term :func:`jax.numpy.where`::\n>>> @jit\n... def func(x, y):\n...   return jnp.where(x.sum() < y.sum(), x, y)\n>>> func(jnp.ones(4), jnp.zeros(4))\nArray([0., 0., 0., 0.], dtype=float32)\nFor more complicated control flow including loops, see\n:ref:`lax-control-flow`.\nControl flow on traced values\nAnother common cause of this error is if you inadvertently trace over a boolean\nflag. For example::\n>>> @jit\n... def func(x, normalize=True):\n...   if normalize:\n...     return x / x.sum()\n...   return x\n>>> func(jnp.arange(5), True)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerBoolConversionError: Attempted boolean conversion of JAX Tracer ...\nHere because the flag ``normalize`` is traced, it cannot be used in Python\ncontrol flow. In this situation, the best solution is probably to mark this\nvalue as static::\n>>> from functools import partial\n>>> @partial(jit, static_argnames=['normalize'])\n... def func(x, normalize=True):\n...   if normalize:\n...     return x / x.sum()\n...   return x\n>>> func(jnp.arange(5), True)\nArray([0. , 0.1, 0.2, 0.3, 0.4], dtype=float32)\nFor more on ``static_argnums``, see the documentation of :func:`jax.jit`.\nUsing non-JAX aware functions\nAnother common cause of this error is using non-JAX aware functions within JAX\ncode. For example:\n>>> @jit\n... def func(x):\n...   return min(x, 0)\n>>> func(2)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerBoolConversionError: Attempted boolean conversion of JAX Tracer ...\nIn this case, the error occurs because Python's built-in ``min`` function is not\ncompatible with JAX transforms. This can be fixed by replacing it with\n``jnp.minumum``:\n>>> @jit\n... def func(x):\n...   return jnp.minimum(x, 0)\n>>> print(func(2))\n0\nTo understand more subtleties having to do with tracers vs. regular values,\nand concrete vs. abstract values, you may want to read\n:ref:`faq-different-kinds-of-jax-values`."
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TracerIntegerConversionError",
+      "documentation": {
+        "description": "This error can occur when a JAX Tracer object is used in a context where a\nPython integer is expected (see :ref:`faq-different-kinds-of-jax-values` for\nmore on what a Tracer is). It typically occurs in a few situations.\nPassing a tracer in place of an integer\nThis error can occur if you attempt to pass a traced value to a function\nthat requires a static integer argument; for example::\n>>> from jax import jit\n>>> import numpy as np\n>>> @jit\n... def func(x, axis):\n...   return np.split(x, 2, axis)\n>>> func(np.arange(4), 0)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerIntegerConversionError: The __index__() method was called on\ntraced array with shape int32[0]\nWhen this happens, the solution is often to mark the problematic argument as\nstatic::\n>>> from functools import partial\n>>> @partial(jit, static_argnums=1)\n... def func(x, axis):\n...   return np.split(x, 2, axis)\n>>> func(np.arange(10), 0)\n[Array([0, 1, 2, 3, 4], dtype=int32),\nArray([5, 6, 7, 8, 9], dtype=int32)]\nAn alternative is to apply the transformation to a closure that encapsulates\nthe arguments to be protected, either manually as below or by using\n:func:`functools.partial`::\n>>> jit(lambda arr: np.split(arr, 2, 0))(np.arange(4))\n[Array([0, 1], dtype=int32), Array([2, 3], dtype=int32)]\n**Note a new closure is created at every invocation, which defeats the\ncompilation caching mechanism, which is why static_argnums is preferred.**\nIndexing a list with a Tracer\nThis error can occur if you attempt to index a Python list with a traced\nquantity.\nFor example::\n>>> import jax.numpy as jnp\n>>> from jax import jit\n>>> L = [1, 2, 3]\n>>> @jit\n... def func(i):\n...   return L[i]\n>>> func(0)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTracerIntegerConversionError: The __index__() method was called on\ntraced array with shape int32[0]\nDepending on the context, you can generally fix this either by converting\nthe list to a JAX array::\n>>> @jit\n... def func(i):\n...   return jnp.array(L)[i]\n>>> func(0)\nArray(1, dtype=int32)\nor by declaring the index as a static argument::\n>>> from functools import partial\n>>> @partial(jit, static_argnums=0)\n... def func(i):\n...   return L[i]\n>>> func(0)\nArray(1, dtype=int32, weak_type=True)\nTo understand more subtleties having to do with tracers vs. regular values,\nand concrete vs. abstract values, you may want to read\n:ref:`faq-different-kinds-of-jax-values`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UnexpectedTracerError",
+      "documentation": {
+        "description": "This error occurs when you use a JAX value that has leaked out of a function.\nWhat does it mean to leak a value? If you use a JAX transformation on a\nfunction ``f`` that stores, in some scope outside of ``f``, a reference to\nan intermediate value, that value is considered to have been leaked.\nLeaking values is a side effect. (Read more about avoiding side effects in\n`Pure Functions <https://jax.readthedocs.io/en/latest/notebooks/Common_Gotchas_in_JAX.html#pure-functions>`_)\nJAX detects leaks when you then use the leaked value in another\noperation later on, at which point it raises an ``UnexpectedTracerError``.\nTo fix this, avoid side effects: if a function computes a value needed\nin an outer scope, return that value from the transformed function explicitly.\nSpecifically, a ``Tracer`` is JAX's internal representation of a function's\nintermediate values during transformations, e.g. within :func:`~jax.jit`,\n:func:`~jax.pmap`, :func:`~jax.vmap`, etc. Encountering a ``Tracer`` outside\nof a transformation implies a leak.\nLife-cycle of a leaked value\nConsider the following example of a transformed function which leaks a value\nto an outer scope::\n>>> from jax import jit\n>>> import jax.numpy as jnp\n>>> outs = []\n>>> @jit                   # 1\n... def side_effecting(x):\n...   y = x + 1            # 3\n...   outs.append(y)       # 4\n>>> x = 1\n>>> side_effecting(x)      # 2\n>>> outs[0] + 1            # 5  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nUnexpectedTracerError: Encountered an unexpected tracer.\nIn this example we leak a Traced value from an inner transformed scope to an\nouter scope. We get an ``UnexpectedTracerError`` when the leaked value is\nused, not when the value is leaked.\nThis example also demonstrates the life-cycle of a leaked value:\n1. A function is transformed (in this case, by :func:`~jax.jit`)\n2. The transformed function is called (initiating an abstract trace of the\nfunction and turning ``x`` into a ``Tracer``)\n3. The intermediate value ``y``, which will later be leaked, is created\n(an intermediate value of a traced function is also a ``Tracer``)\n4. The value is leaked (appended to a list in an outer scope, escaping\nthe function through a side-channel)\n5. The leaked value is used, and an UnexpectedTracerError is raised.\nThe UnexpectedTracerError message tries to point to these locations in your\ncode by including information about each stage. Respectively:\n1. The name of the transformed function (``side_effecting``) and which\ntransform kicked off the trace  :func:`~jax.jit`).\n2. A reconstructed stack trace of where the leaked Tracer was created,\nwhich includes where the transformed function was called.\n(``When the Tracer was created, the final 5 stack frames were...``).\n3. From the reconstructed stack trace, the line of code that created\nthe leaked Tracer.\n4. The leak location is not included in the error message because it is\ndifficult to pin down! JAX can only tell you what the leaked value\nlooks like (what shape it has and where it was created) and what\nboundary it was leaked over (the name of the transformation and the\nname of the transformed function).\n5. The current error's stack trace points to where the value is used.\nThe error can be fixed by the returning the value out of the\ntransformed function::\n>>> from jax import jit\n>>> import jax.numpy as jnp\n>>> outs = []\n>>> @jit\n... def not_side_effecting(x):\n...   y = x+1\n...   return y\n>>> x = 1\n>>> y = not_side_effecting(x)\n>>> outs.append(y)\n>>> outs[0] + 1  # all good! no longer a leaked value.\nArray(3, dtype=int32, weak_type=True)\nLeak checker\nAs discussed in point 2 and 3 above, JAX shows a reconstructed stack trace\nwhich points to where the leaked value was created.  This is because\nJAX only raises an error when the leaked value is used, not when the\nvalue is leaked. This is not the most useful place to raise this error,\nbecause you need to know the location where the Tracer was leaked to fix the\nerror.\nTo make this location easier to track down, you can use the leak checker.\nWhen the leak checker is enabled, an error is raised as soon as a ``Tracer``\nis leaked. (To be more exact, it will raise an error when the transformed\nfunction from which the ``Tracer`` is leaked returns)\nTo enable the leak checker you can use the ``JAX_CHECK_TRACER_LEAKS``\nenvironment variable or the ``with jax.checking_leaks()`` context manager.\n.. note::\nNote that this tool is experimental and may report false positives. It\nworks by disabling some JAX caches, so it will have a negative effect on\nperformance and should only be used when debugging.\nExample usage::\n>>> from jax import jit\n>>> import jax.numpy as jnp\n>>> outs = []\n>>> @jit\n... def side_effecting(x):\n...   y = x+1\n...   outs.append(y)\n>>> x = 1\n>>> with jax.checking_leaks():\n...   y = side_effecting(x)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nException: Leaked Trace",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

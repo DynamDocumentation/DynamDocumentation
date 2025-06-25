@@ -1,0 +1,409 @@
+{
+  "description": "Common functions for neural network libraries.",
+  "functions": [
+    {
+      "name": "celu",
+      "signature": "celu(x: 'ArrayLike', alpha: 'ArrayLike' = 1.0) -> 'Array'",
+      "documentation": {
+        "description": "Continuously-differentiable exponential linear unit activation.\nComputes the element-wise function:\n.. math::\n\\mathrm{celu}(x) = \\begin{cases}\nx, & x > 0\\\\\n\\alpha \\left(\\exp(\\frac{x}{\\alpha}) - 1\\right), & x \\le 0\n\\end{cases}\nFor more information, see\n`Continuously Differentiable Exponential Linear Units\n<https://arxiv.org/abs/1704.07483>`_.\nArgs:\nx : input array\nalpha : array or scalar (default: 1.0)",
+        "parameters": {},
+        "returns": "An array.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "dot_product_attention",
+      "signature": "dot_product_attention(query: 'ArrayLike', key: 'ArrayLike', value: 'ArrayLike', bias: 'ArrayLike | None' = None, mask: 'ArrayLike | None' = None, *, scale: 'float | None' = None, is_causal: 'bool' = False, query_seq_lengths: 'ArrayLike | None' = None, key_value_seq_lengths: 'ArrayLike | None' = None, local_window_size: 'int | tuple[int, int] | None' = None, implementation: \"Literal['xla', 'cudnn'] | None\" = None) -> 'Array'",
+      "documentation": {
+        "description": "Scaled dot product attention function.\nComputes the attention function on Query, Key, and Value tensors:\n.. math::\n\\mathrm{Attention}(Q, K, V)=\\mathrm{softmax}(\\frac{QK^T}{\\sqrt{d_k}})V\nIf we define :code:`logits` as the output of :math:`QK^T` and the\n:code:`probs` as the output of :math:`softmax`.\nThroughout this function, we utilize the following uppercase letters to\nrepresent the shape of array::\nB = batch size\nS = length of the key/value (source)\nT = length of the query (target)\nN = number of attention heads\nH = dimensions of each attention head\nK = number of key/value heads\nG = number of groups, which equals to N // K\nArgs:\nquery: query array; shape :code:`(BTNH|TNH)`\nkey: key array: shape :code:`(BSKH|SKH)`. When `K` equals `N`, multi-headed\nattention (MHA https://arxiv.org/abs/1706.03762) is performed. Otherwise,\ngrouped query attention (GQA https://arxiv.org/abs/2305.13245) is\nperformed if `N` is a multiple of `K`, and multi-query attention (MQA\nhttps://arxiv.org/abs/1911.02150) is performed if `K == 1` (a special case\nof GQA).\nvalue: value array, should have the same shape as the `key` array.\nbias: optional, bias array to be added to logits; The shape must be 4D and\nbe broadcastable to :code:`(BNTS|NTS)`.\nmask: optional, mask array used to filter out logits. It is a boolean mask\nwhere `True` indicates the element should take part in attention. For an\nadditive mask, users should pass it to `bias`. The shape must be 4D and be\nbroadcastable to :code:`(BNTS|NTS)`.\nscale: scale for the logits. If None, the scale will be set to 1 divided by\nthe square root of query's head dimension (i.e. H).\nis_causal: If true, causal attention will be applied. Note, some\nimplementations like `xla` will generate a mask tensor and apply it to the\nlogits to mask out the non-causal parts of the attention matrix, but other\nimplementations like `cudnn` will avoid computing the non-causal regions,\nproviding speedups.\nquery_seq_lengths: `int32` array of sequence lengths for query; shape\n:code:`(B)`\nkey_value_seq_lengths: `int32` array of sequence lengths for key and value;\nshape :code:`(B)`\nlocal_window_size: Window sizes to make self attention to attend to each\ntoken's local window. If set, this specifies the (left_window_size,\nright_window_size) for each token. E.g., if local_window_size == (3, 2)\nand the sequence is [0, 1, 2, 3, 4, 5, c, 7, 8, 9], token `c` can attend\nto [3, 4, 5, c, 7, 8]. If a single int is given, it will be intepreted as\na symmetric window (window_size, window_size).\nimplementation: A string to control which implementation backend to use.\nSupported strings are `xla`, `cudnn` (cuDNN flash attention). It defaults\nto `None`, which will automatically select the best available backend.\nNote, `cudnn` supports only a subset of shapes/dtypes, and an exception\nwill be thrown if its not supported.",
+        "parameters": {},
+        "returns": "An array of the attention output with the same shape as :code:`query`.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "elu",
+      "signature": "elu(x: 'ArrayLike', alpha: 'ArrayLike' = 1.0) -> 'Array'",
+      "documentation": {
+        "description": "Exponential linear unit activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{elu}(x) = \\begin{cases}\nx, & x > 0\\\\\n\\alpha \\left(\\exp(x) - 1\\right), & x \\le 0\n\\end{cases}\nArgs:\nx : input array\nalpha : scalar or array of alpha values (default: 1.0)",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`selu`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "gelu",
+      "signature": "gelu(x: 'ArrayLike', approximate: 'bool' = True) -> 'Array'",
+      "documentation": {
+        "description": "Gaussian error linear unit activation function.\nIf ``approximate=False``, computes the element-wise function:\n.. math::\n\\mathrm{gelu}(x) = \\frac{x}{2} \\left(\\mathrm{erfc} \\left(\n\\frac{-x}{\\sqrt{2}} \\right) \\right)\nIf ``approximate=True``, uses the approximate formulation of GELU:\n.. math::\n\\mathrm{gelu}(x) = \\frac{x}{2} \\left(1 + \\mathrm{tanh} \\left(\n\\sqrt{\\frac{2}{\\pi}} \\left(x + 0.044715 x^3 \\right) \\right) \\right)\nFor more information, see `Gaussian Error Linear Units (GELUs)\n<https://arxiv.org/abs/1606.08415>`_, section 2.\nArgs:\nx: input array\napproximate: whether to use the approximate or exact formulation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "glu",
+      "signature": "glu(x: 'ArrayLike', axis: 'int' = -1) -> 'Array'",
+      "documentation": {
+        "description": "Gated linear unit activation function.\nComputes the function:\n.. math::\n\\mathrm{glu}(x) =  x\\left[\\ldots, 0:\\frac{n}{2}, \\ldots\\right] \\cdot\n\\mathrm{sigmoid} \\left( x\\left[\\ldots, \\frac{n}{2}:n, \\ldots\\right]\n\\right)\nwhere the array is split into two along ``axis``. The size of the ``axis``\ndimension must be divisible by two.\nArgs:\nx : input array\naxis: the axis along which the split should be computed (default: -1)",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hard_sigmoid",
+      "signature": "hard_sigmoid(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Hard Sigmoid activation function.\nComputes the element-wise function\n.. math::\n\\mathrm{hard\\_sigmoid}(x) = \\frac{\\mathrm{relu6}(x + 3)}{6}\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`relu6`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hard_silu",
+      "signature": "hard_silu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Hard SiLU (swish) activation function\nComputes the element-wise function\n.. math::\n\\mathrm{hard\\_silu}(x) = x \\cdot \\mathrm{hard\\_sigmoid}(x)\nBoth :func:`hard_silu` and :func:`hard_swish` are aliases for the same\nfunction.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`hard_sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hard_swish",
+      "signature": "hard_silu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Hard SiLU (swish) activation function\nComputes the element-wise function\n.. math::\n\\mathrm{hard\\_silu}(x) = x \\cdot \\mathrm{hard\\_sigmoid}(x)\nBoth :func:`hard_silu` and :func:`hard_swish` are aliases for the same\nfunction.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`hard_sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hard_tanh",
+      "signature": "hard_tanh(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Hard :math:`\\mathrm{tanh}` activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{hard\\_tanh}(x) = \\begin{cases}\n-1, & x < -1\\\\\nx, & -1 \\le x \\le 1\\\\\n1, & 1 < x\n\\end{cases}\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "leaky_relu",
+      "signature": "leaky_relu(x: 'ArrayLike', negative_slope: 'ArrayLike' = 0.01) -> 'Array'",
+      "documentation": {
+        "description": "Leaky rectified linear unit activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{leaky\\_relu}(x) = \\begin{cases}\nx, & x \\ge 0\\\\\n\\alpha x, & x < 0\n\\end{cases}\nwhere :math:`\\alpha` = :code:`negative_slope`.\nArgs:\nx : input array\nnegative_slope : array or scalar specifying the negative slope (default: 0.01)",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`relu`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "log_sigmoid",
+      "signature": "log_sigmoid(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Log-sigmoid activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{log\\_sigmoid}(x) = \\log(\\mathrm{sigmoid}(x)) = -\\log(1 + e^{-x})\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "log_softmax",
+      "signature": "log_softmax(x: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = -1, where: 'ArrayLike | None' = None, initial: 'Unspecified' = _UNSPECIFIED) -> 'Array'",
+      "documentation": {
+        "description": "Log-Softmax function.\nComputes the logarithm of the :code:`softmax` function, which rescales\nelements to the range :math:`[-\\infty, 0)`.\n.. math ::\n\\mathrm{log\\_softmax}(x)_i = \\log \\left( \\frac{\\exp(x_i)}{\\sum_j \\exp(x_j)}\n\\right)\nArgs:\nx : input array\naxis: the axis or axes along which the :code:`log_softmax` should be\ncomputed. Either an integer or a tuple of integers.\nwhere: Elements to include in the :code:`log_softmax`.",
+        "parameters": {},
+        "returns": "An array.\nNote:\nIf any input values are ``+inf``, the result will be all ``NaN``: this reflects the\nfact that ``inf / inf`` is not well-defined in the context of floating-point math.\nSee also:\n:func:`softmax`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "logsumexp",
+      "signature": "logsumexp(a: 'ArrayLike', axis: 'Axis' = None, b: 'ArrayLike | None' = None, keepdims: 'bool' = False, return_sign: 'bool' = False, where: 'ArrayLike | None' = None) -> 'Array | tuple[Array, Array]'",
+      "documentation": {
+        "description": "Log-sum-exp reduction.\nJAX implementation of :func:`scipy.special.logsumexp`.\n.. math::\n\\mathrm{logsumexp}(a) = \\mathrm{log} \\sum_j b \\cdot \\mathrm{exp}(a_{ij})\nwhere the :math:`j` indices range over one or more dimensions to be reduced.\nArgs:\na: the input array\naxis: int or sequence of ints, default=None. Axis along which the sum to be\ncomputed. If None, the sum is computed along all the axes.\nb: scaling factors for :math:`\\mathrm{exp}(a)`. Must be broadcastable to the\nshape of `a`.\nkeepdims: If ``True``, the axes that are reduced are left in the output as\ndimensions of size 1.\nreturn_sign: If ``True``, the output will be a ``(result, sign)`` pair,\nwhere ``sign`` is the sign of the sums and ``result`` contains the\nlogarithms of their absolute values. If ``False`` only ``result`` is\nreturned and it will contain NaN values if the sums are negative.\nwhere: Elements to include in the reduction.",
+        "parameters": {},
+        "returns": "Either an array ``result`` or a pair of arrays ``(result, sign)``, depending\non the value of the ``return_sign`` argument.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "mish",
+      "signature": "mish(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Mish activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{mish}(x) = x \\cdot \\mathrm{tanh}(\\mathrm{softplus}(x))\nFor more information, see\n`Mish: A Self Regularized Non-Monotonic Activation Function\n<https://arxiv.org/abs/1908.08681>`_.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "one_hot",
+      "signature": "one_hot(x: 'Any', num_classes: 'int', *, dtype: 'Any' = <class 'jax.numpy.float64'>, axis: 'int | AxisName' = -1) -> 'Array'",
+      "documentation": {
+        "description": "One-hot encodes the given indices.\nEach index in the input ``x`` is encoded as a vector of zeros of length\n``num_classes`` with the element at ``index`` set to one::\n>>> jax.nn.one_hot(jnp.array([0, 1, 2]), 3)\nArray([[1., 0., 0.],\n[0., 1., 0.],\n[0., 0., 1.]], dtype=float32)\nIndices outside the range [0, num_classes) will be encoded as zeros::\n>>> jax.nn.one_hot(jnp.array([-1, 3]), 3)\nArray([[0., 0., 0.],\n[0., 0., 0.]], dtype=float32)\nArgs:\nx: A tensor of indices.\nnum_classes: Number of classes in the one-hot dimension.\ndtype: optional, a float dtype for the returned values (default :obj:`jnp.float_`).\naxis: the axis or axes along which the function should be\ncomputed.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "relu",
+      "signature": "relu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Rectified linear unit activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{relu}(x) = \\max(x, 0)\nexcept under differentiation, we take:\n.. math::\n\\nabla \\mathrm{relu}(0) = 0\nFor more information see\n`Numerical influence of ReLU’(0) on backpropagation\n<https://dl.acm.org/doi/10.5555/3540261.3540297>`_.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> jax.nn.relu(jax.numpy.array([-2., -1., -0.5, 0, 0.5, 1., 2.]))\nArray([0. , 0. , 0. , 0. , 0.5, 1. , 2. ], dtype=float32)\nSee also:\n:func:`relu6`"
+      }
+    },
+    {
+      "name": "relu6",
+      "signature": "relu6(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Rectified Linear Unit 6 activation function.\nComputes the element-wise function\n.. math::\n\\mathrm{relu6}(x) = \\min(\\max(x, 0), 6)\nexcept under differentiation, we take:\n.. math::\n\\nabla \\mathrm{relu}(0) = 0\nand\n.. math::\n\\nabla \\mathrm{relu}(6) = 0\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`relu`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "scaled_dot_general",
+      "signature": "scaled_dot_general(lhs, rhs, dimension_numbers, preferred_element_type=<class 'jax.numpy.float32'>, configs: 'List[BlockScaleConfig] | None' = None, implementation: \"Literal['cudnn'] | None\" = None)",
+      "documentation": {
+        "description": "Scaled dot general operation.\nComputes the scaled dot general on lhs, rhs with quanitzation specified by configs:\n.. math::\n\\widehat{lhs}, s_a=\\mathrm{quantize}(lhs) \\\\\n\\widehat{rhs}, s_b=\\mathrm{quantize}(rhs) \\\\\n\\mathrm{ScaledDot}(lhs, rhs)=s_a \\cdot s_b \\cdot \\mathrm{dot}(\\widehat{lhs}, \\widehat{rhs})\nArgs:\nlhs: Left-hand side input tensor.\nrhs: Right-hand side input tensor.\ndimension_numbers: A tuple specifying the contraction and batch dimensions\nfor the dot general operation. Must follow the format:\n`((lhs_contracting_dims, rhs_contracting_dims), (lhs_batch_dims, rhs_batch_dims))`.\npreferred_element_type: The preferred output data type. Supported types are\n`jnp.float32`, `jnp.bfloat16`, and `jnp.float16`. Defaults to `jnp.float32`.\nconfigs: A list of `BlockScaleConfig` specifying the scaling\nconfigurations for the operation. Defaults to `mxfp8`.\nimplementation: A string to control which implementation backend to use.\nSupported strings are `cudnn` (cuDNN block scaled dot). It defaults\nto `None`, which will automatically select the best available backend.",
+        "parameters": {},
+        "returns": "The result of the scaled dot general operation.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "scaled_matmul",
+      "signature": "scaled_matmul(lhs: 'Array', rhs: 'Array', lhs_scales: 'Array', rhs_scales: 'Array', preferred_element_type: 'DTypeLike' = <class 'jax.numpy.float32'>) -> 'Array'",
+      "documentation": {
+        "description": "Performs scaled matrix multiplication between two 3D arrays, with scaling\nfactors applied to the matrices.\n.. math::\n\\mathrm{ScaledMatmul}(lhs, rhs, lhs_scales, rhs_scales)=lhs_scales \\cdot rhs_scales \\cdot \\mathrm{dot}(lhs, rhs)\nArgs:\nlhs (Array): A 3D array of shape (B, M, K).\nrhs (Array): A 3D array of shape (B, N, K).\nlhs_scales (Array): A 3D array of shape (B, M, K_block).\nrhs_scales (Array): A 3D array of shape (B, N, K_block).\npreferred_element_type (DTypeLike, optional): The preferred data type\nfor the computation. Defaults to `jnp.float32`.",
+        "parameters": {},
+        "returns": "Array: A 3D array of shape (B, M, N) representing the scaled matrix\nmultiplication result.",
+        "raises": "AssertionError: If the number of columns in `lhs` (`lhs_K`) does not\nmatch the number of columns in `rhs` (`rhs_K`).",
+        "see_also": "",
+        "notes": "- The function ensures that the `preferred_element_type` is\ndanonicalized before passing it to the underlying computation.\n- Scaling is applied to the matrices based on the `lhs_scales` and\n`rhs_scales` arrays, enabling efficient computations in blocks.",
+        "examples": ""
+      }
+    },
+    {
+      "name": "selu",
+      "signature": "selu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Scaled exponential linear unit activation.\nComputes the element-wise function:\n.. math::\n\\mathrm{selu}(x) = \\lambda \\begin{cases}\nx, & x > 0\\\\\n\\alpha e^x - \\alpha, & x \\le 0\n\\end{cases}\nwhere :math:`\\lambda = 1.0507009873554804934193349852946` and\n:math:`\\alpha = 1.6732632423543772848170429916717`.\nFor more information, see\n`Self-Normalizing Neural Networks\n<https://arxiv.org/abs/1706.02515>`_.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`elu`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "sigmoid",
+      "signature": "sigmoid(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Sigmoid activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{sigmoid}(x) = \\frac{1}{1 + e^{-x}}\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`log_sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "silu",
+      "signature": "silu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "SiLU (aka swish) activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{silu}(x) = x \\cdot \\mathrm{sigmoid}(x) = \\frac{x}{1 + e^{-x}}\n:func:`swish` and :func:`silu` are both aliases for the same function.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "soft_sign",
+      "signature": "soft_sign(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Soft-sign activation function.\nComputes the element-wise function\n.. math::\n\\mathrm{soft\\_sign}(x) = \\frac{x}{|x| + 1}\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "softmax",
+      "signature": "softmax(x: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = -1, where: 'ArrayLike | None' = None, initial: 'Unspecified' = _UNSPECIFIED) -> 'Array'",
+      "documentation": {
+        "description": "Softmax function.\nComputes the function which rescales elements to the range :math:`[0, 1]`\nsuch that the elements along :code:`axis` sum to :math:`1`.\n.. math ::\n\\mathrm{softmax}(x) = \\frac{\\exp(x_i)}{\\sum_j \\exp(x_j)}\nArgs:\nx : input array\naxis: the axis or axes along which the softmax should be computed. The\nsoftmax output summed across these dimensions should sum to :math:`1`.\nEither an integer or a tuple of integers.\nwhere: Elements to include in the :code:`softmax`.",
+        "parameters": {},
+        "returns": "An array.\nNote:\nIf any input values are ``+inf``, the result will be all ``NaN``: this reflects the\nfact that ``inf / inf`` is not well-defined in the context of floating-point math.\nSee also:\n:func:`log_softmax`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "softplus",
+      "signature": "softplus(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Softplus activation function.\nComputes the element-wise function\n.. math::\n\\mathrm{softplus}(x) = \\log(1 + e^x)\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "sparse_plus",
+      "signature": "sparse_plus(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Sparse plus function.\nComputes the function:\n.. math::\n\\mathrm{sparse\\_plus}(x) = \\begin{cases}\n0, & x \\leq -1\\\\\n\\frac{1}{4}(x+1)^2, & -1 < x < 1 \\\\\nx, & 1 \\leq x\n\\end{cases}\nThis is the twin function of the softplus activation ensuring a zero output\nfor inputs less than -1 and a linear output for inputs greater than 1,\nwhile remaining smooth, convex, monotonic by an adequate definition between\n-1 and 1.\nArgs:\nx: input (float)",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "sparse_sigmoid",
+      "signature": "sparse_sigmoid(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "Sparse sigmoid activation function.\nComputes the function:\n.. math::\n\\mathrm{sparse\\_sigmoid}(x) = \\begin{cases}\n0, & x \\leq -1\\\\\n\\frac{1}{2}(x+1), & -1 < x < 1 \\\\\n1, & 1 \\leq x\n\\end{cases}\nThis is the twin function of the ``sigmoid`` activation ensuring a zero output\nfor inputs less than -1, a 1 output for inputs greater than 1, and a linear\noutput for inputs between -1 and 1. It is the derivative of ``sparse_plus``.\nFor more information, see `Learning with Fenchel-Young Losses (section 6.2)\n<https://arxiv.org/abs/1901.02324>`_.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "squareplus",
+      "signature": "squareplus(x: 'ArrayLike', b: 'ArrayLike' = 4) -> 'Array'",
+      "documentation": {
+        "description": "Squareplus activation function.\nComputes the element-wise function\n.. math::\n\\mathrm{squareplus}(x) = \\frac{x + \\sqrt{x^2 + b}}{2}\nas described in https://arxiv.org/abs/2112.11687.\nArgs:\nx : input array\nb : smoothness parameter",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "standardize",
+      "signature": "standardize(x: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = -1, mean: 'ArrayLike | None' = None, variance: 'ArrayLike | None' = None, epsilon: 'ArrayLike' = 1e-05, where: 'ArrayLike | None' = None) -> 'Array'",
+      "documentation": {
+        "description": "Normalizes an array by subtracting ``mean`` and dividing by :math:`\\sqrt{\\mathrm{variance}}`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "swish",
+      "signature": "silu(x: 'ArrayLike') -> 'Array'",
+      "documentation": {
+        "description": "SiLU (aka swish) activation function.\nComputes the element-wise function:\n.. math::\n\\mathrm{silu}(x) = x \\cdot \\mathrm{sigmoid}(x) = \\frac{x}{1 + e^{-x}}\n:func:`swish` and :func:`silu` are both aliases for the same function.\nArgs:\nx : input array",
+        "parameters": {},
+        "returns": "An array.\nSee also:\n:func:`sigmoid`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tanh",
+      "signature": "tanh(x: 'ArrayLike', /) -> 'Array'",
+      "documentation": {
+        "description": "Calculate element-wise hyperbolic tangent of input.\nJAX implementation of :obj:`numpy.tanh`.\nThe hyperbolic tangent is defined by:\n.. math::\ntanh(x) = \\frac{sinh(x)}{cosh(x)} = \\frac{e^x - e^{-x}}{e^x + e^{-x}}\nArgs:\nx: input array or scalar.",
+        "parameters": {},
+        "returns": "An array containing the hyperbolic tangent of each element of ``x``, promoting\nto inexact dtype.\nNote:\n``jnp.tanh`` is equivalent to computing ``-1j * jnp.tan(1j * x)``.\nSee also:\n- :func:`jax.numpy.sinh`: Computes the element-wise hyperbolic sine of the input.\n- :func:`jax.numpy.cosh`: Computes the element-wise hyperbolic cosine of the\ninput.\n- :func:`jax.numpy.arctanh`:  Computes the element-wise inverse of hyperbolic\ntangent of the input.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> x = jnp.array([[-1, 0, 1],\n...                [3, -2, 5]])\n>>> with jnp.printoptions(precision=3, suppress=True):\n...   jnp.tanh(x)\nArray([[-0.762,  0.   ,  0.762],\n[ 0.995, -0.964,  1.   ]], dtype=float32)\n>>> with jnp.printoptions(precision=3, suppress=True):\n...   -1j * jnp.tan(1j * x)\nArray([[-0.762+0.j,  0.   -0.j,  0.762-0.j],\n[ 0.995-0.j, -0.964+0.j,  1.   -0.j]],      dtype=complex64, weak_type=True)\nFor complex-valued input:\n>>> with jnp.printoptions(precision=3, suppress=True):\n...   jnp.tanh(2-5j)\nArray(1.031+0.021j, dtype=complex64, weak_type=True)\n>>> with jnp.printoptions(precision=3, suppress=True):\n...   -1j * jnp.tan(1j * (2-5j))\nArray(1.031+0.021j, dtype=complex64, weak_type=True)"
+      }
+    }
+  ],
+  "classes": []
+}

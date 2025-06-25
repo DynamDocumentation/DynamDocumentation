@@ -1,0 +1,33 @@
+{
+  "description": "No description available",
+  "functions": [],
+  "classes": [
+    {
+      "name": "custom_transpose",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "def_transpose",
+          "signature": "def_transpose(self, transpose: 'Callable')",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

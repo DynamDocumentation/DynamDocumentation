@@ -1,0 +1,97 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "ffi_call",
+      "signature": "ffi_call(target_name: 'str', result_shape_dtypes: 'ResultMetadata | Sequence[ResultMetadata]', *deprecated_args: 'ArrayLike', has_side_effect: 'bool' = False, vmap_method: 'str | None' = None, input_layouts: 'Sequence[FfiLayoutOptions] | None' = None, output_layouts: 'FfiLayoutOptions | Sequence[FfiLayoutOptions] | None' = None, input_output_aliases: 'dict[int, int] | None' = None, custom_call_api_version: 'int' = 4, legacy_backend_config: 'str | None' = None, vectorized: 'bool | DeprecatedArg' = Deprecated, **deprecated_kwargs: 'Any') -> 'Callable[..., Array | Sequence[Array]] | Array | Sequence[Array]'",
+      "documentation": {
+        "description": "Call a foreign function interface (FFI) target.\nSee the :ref:`ffi-tutorial` tutorial for more information.\nLike :func:`~jax.pure_callback`, the behavior of ``ffi_call`` under\n:func:`~jax.vmap` depends on the value of ``vmap_method``. See the\n:func:`~jax.pure_callback` documenation for more details about the allowed\nvalues and examples of their behavior.\nThe current default behavior is to use ``vmap_method=\"sequential\"`` when\nnot specified, but this behavior is deprecated, and in the future, the\ndefault will be to raise a ``NotImplementedError`` unless ``vmap_method`` is\nexplicitly specified.\nArgs:\ntarget_name: the name of the XLA FFI custom call target that was registered\nusing :func:`~jax.ffi.register_ffi_target`.\nresult_shape_dtypes: an object, or sequence of objects, with ``shape`` and\n``dtype`` attributes which are expected to match the shape and dtype of\nthe custom call output or outputs. :class:`~jax.ShapeDtypeStruct` is often\nused to define the elements of ``result_shape_dtypes``.\n``jax.core.abstract_token`` may be used to represent a token-typed output.\nhas_side_effect: boolean specifying whether the custom call has side\neffects. When ``True``, the FFI call will be executed even when the\noutputs are not used.\nvmap_method: string specifying how the FFI call transforms under\n:func:`~jax.vmap` as described above.\ninput_layouts: a sequence of layouts for each input argument. In each case,\nthe layout can be (a) ``None`` indicating that this input is in default\nrow-major order, (b) a ``DeviceLocalLayout`` specifying the axis order,\nor (c) a sequence of integers specifying the major-to-minor axis\nordering. Users who are familiar with XLA layouts should note that this\nfunction expects layouts in major-to-minor order instead of the\nminor-to-major order that XLA uses. For example, a batch of row-major\nmatrices could be specified using the layout ``[0, 1, 2]``, whereas a\nbatch of column-major matrices would have layout ``[0, 2, 1]``. In both\nof these examples, the leading/batch dimension is the \"slowest\" axis. The\n``input_layouts`` parameter should be used to request the memory layout\nexpected by the FFI call target, and XLA will ensure that the buffers\nhave the correct layouts before the handler is executed.\noutput_layouts: like ``input_layouts``, but specifying the required layouts\nfor the output arrays.\ninput_output_aliases: a dictionary where the keys are input indices and the\nvalues are output indices. This mapping indicates which output arrays\nalias specific input arrays.\ncustom_call_api_version: the version number of the custom call API\nimplemented by the FFI target ``target_name``. The only formally\nsupported version is the typed FFI API with ``custom_call_api_version=4``,\nbut earlier unsupported custom calls can be executed using this argument.\nlegacy_backend_config: for legacy targets implemented using\n``custom_call_api_version<4``, attributes are passed using the opaque\nstring representation provided by this argument. This parameter cannot be\nused with ``custom_call_api_version>=4``.",
+        "parameters": {},
+        "returns": "A function that can be called with the input arrays as positional arguments\nto execute the FFI handler. Any keyword arguments are passed as named\nattributes to the FFI handler using XLA's FFI interface.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ffi_lowering",
+      "signature": "ffi_lowering(call_target_name: 'str', *, operand_layouts: 'Sequence[FfiLayoutOptions] | None' = None, result_layouts: 'Sequence[FfiLayoutOptions] | None' = None, backend_config: 'Mapping[str, ir.Attribute] | str | None' = None, **lowering_args: 'Any') -> 'mlir.LoweringRule'",
+      "documentation": {
+        "description": "Build a lowering rule for an foreign function interface (FFI) target.\nBy default, this lowering rule can use the input and output abstract values to\ncompute the input and output types and shapes for the custom call, assuming\nrow-major layouts.\nNote that layouts passed to this function as tuples should be in\nminor-to-major order (as expected by XLA) rather than major-to-minor as used\nby :func:`~jax.ffi.ffi_call` and ``DeviceLocalLayout``.\nIf keyword arguments are passed to the lowering rule, these are treated as\nattributes, and added to `backend_config`.\nArgs:\ncall_target_name: The name of the custom call target.\noperand_layouts: A sequence of layouts (dimension orders) for each operand.\nBy default, the operands are assumed to be row-major.\nresult_layouts: A sequence of layouts (dimension orders) for each result.\nBy default, the results are assumed to be row-major.\nbackend_config: Configuration data for the custom call. Any keyword\narguments passed to the lowering rule will added to this dictionary.\nlowering_args: Any other arguments to :func:`mlir.custom_call` will also be\npassed through if provided as extra arguments to this function.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "include_dir",
+      "signature": "include_dir() -> 'str'",
+      "documentation": {
+        "description": "Get the path to the directory containing header files bundled with jaxlib",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pycapsule",
+      "signature": "pycapsule(funcptr)",
+      "documentation": {
+        "description": "Wrap a ctypes function pointer in a PyCapsule.\nThe primary use of this function, and the reason why it lives with in the\n``jax.ffi`` submodule, is to wrap function calls from external compiled\nlibraries to be registered as XLA custom calls.\nExample usage::\nimport ctypes\nimport jax\nfrom jax.lib import xla_client\nlibfoo = ctypes.cdll.LoadLibrary('./foo.so')\nxla_client.register_custom_call_target(\nname=\"bar\",\nfn=jax.ffi.pycapsule(libfoo.bar),\nplatform=PLATFORM,\napi_version=API_VERSION\n)\nArgs:\nfuncptr: A function pointer loaded from a dynamic library using ``ctypes``.",
+        "parameters": {},
+        "returns": "An opaque ``PyCapsule`` object wrapping ``funcptr``.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_ffi_target",
+      "signature": "register_ffi_target(name: 'str', fn: 'Any', platform: 'str' = 'cpu', api_version: 'int' = 1, **kwargs: 'Any') -> 'None'",
+      "documentation": {
+        "description": "Registers a foreign function target.\nArgs:\nname: the name of the target.\nfn: a ``PyCapsule`` object containing the function pointer, or a ``dict``\nwhere the keys are FFI stage names (e.g. `\"execute\"`) and the values are\n``PyCapsule`` objects continaing a pointer to the handler for that stage.\nplatform: the target platform.\napi_version: the XLA custom call API version to use. Supported versions are:\n1 (default) for the typed FFI or 0 for the earlier \"custom call\" API.\nkwargs: any extra keyword arguments are passed directly to\n:func:`~jaxlib.xla_client.register_custom_call_target` for more advanced\nuse cases.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_ffi_target_as_batch_partitionable",
+      "signature": "register_ffi_target_as_batch_partitionable(name: 'str') -> 'None'",
+      "documentation": {
+        "description": "Registers an FFI target as batch partitionable.\nArgs:\nname: the name of the target.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_ffi_type_id",
+      "signature": "register_ffi_type_id(name: 'str', obj: 'Any', platform: 'str' = 'cpu') -> 'None'",
+      "documentation": {
+        "description": "Registers a custom type ID for a FFI target.\nArgs:\nname: the name of the type ID. This name must be unique within the process.\nobj: a ``PyCapsule`` object encapsulating a pointer to the type ID.\nplatform: the target platform.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

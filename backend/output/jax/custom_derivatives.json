@@ -1,0 +1,179 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "closure_convert",
+      "signature": "closure_convert(fun: 'Callable', *example_args) -> 'tuple[Callable, list[Any]]'",
+      "documentation": {
+        "description": "Closure conversion utility, for use with higher-order custom derivatives.\nTo define custom derivatives such as with ``jax.custom_vjp(f)``, the target\nfunction ``f`` must take, as formal arguments, all values involved in\ndifferentiation. If ``f`` is a higher-order function, in that it accepts as an\nargument a Python function ``g``, then values stored away in ``g``'s closure\nwill not be visible to the custom derivative rules, and attempts at AD\ninvolving these values will fail. One way around this is to convert the\nclosure by extracting these values, and to pass them as explicit formal\narguments across the custom derivative boundary. This utility carries out that\nconversion. More precisely, it closure-converts the function ``fun``\nspecialized to the types of the arguments given in ``example_args``.\nWhen we refer here to \"values in the closure\" of ``fun``, we do not mean the\nvalues that are captured by Python directly when ``fun`` is defined (e.g. the\nPython objects in ``fun.__closure__``, if the attribute exists). Rather, we\nmean values encountered during the execution of ``fun`` on ``example_args``\nthat determine its output. This may include, for instance, arrays captured\ntransitively in Python closures, i.e. in the Python closure of functions\ncalled by ``fun``, the closures of the functions that they call, and so forth.\nThe function ``fun`` must be a pure function.\nExample usage::\ndef minimize(objective_fn, x0):\nconverted_fn, aux_args = closure_convert(objective_fn, x0)\nreturn _minimize(converted_fn, x0, *aux_args)\n@partial(custom_vjp, nondiff_argnums=(0,))\ndef _minimize(objective_fn, x0, *args):\nz = objective_fn(x0, *args)\n# ... find minimizer x_opt ...\nreturn x_opt\ndef fwd(objective_fn, x0, *args):\ny = _minimize(objective_fn, x0, *args)\nreturn y, (y, args)\ndef rev(objective_fn, res, g):\ny, args = res\ny_bar = g\n# ... custom reverse-mode AD ...\nreturn x0_bar, *args_bars\n_minimize.defvjp(fwd, rev)\nArgs:\nfun: Python callable to be converted. Must be a pure function.\nexample_args: Arrays, scalars, or (nested) standard Python\ncontainers (tuples, lists, dicts, namedtuples, i.e., pytrees)\nthereof, used to determine the types of the formal arguments to\n``fun``. This type-specialized form of ``fun`` is the function\nthat will be closure converted.",
+        "parameters": {},
+        "returns": "A pair comprising (i) a Python callable, accepting the same\narguments as ``fun`` followed by arguments corresponding to the\nvalues hoisted from its closure, and (ii) a list of values hoisted\nfrom the closure.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "custom_gradient",
+      "signature": "custom_gradient(fun)",
+      "documentation": {
+        "description": "Convenience function for defining custom VJP rules (aka custom gradients).\nWhile the canonical way to define custom VJP rules is via ``jax.custom_vjp``,\nthe ``custom_gradient`` convenience wrapper follows TensorFlow's\n``tf.custom_gradient`` API. The difference here is that ``custom_gradient``\ncan be used as a decorator on one function that returns both the primal value\n(representing the output of the mathematical function to be differentiated)\nand the VJP (gradient) function. See\nhttps://www.tensorflow.org/api_docs/python/tf/custom_gradient.\nIf the mathematical function to be differentiated has Haskell-like signature\n``a -> b``, then the Python callable ``fun`` should have the signature\n``a -> (b, CT b --o CT a)`` where we use ``CT x`` to denote a cotangent type\nfor ``x`` and the ``--o`` arrow to denote a linear function. See the example\nbelow. That is, ``fun`` should return a pair where the first element\nrepresents the value of the mathematical function to be differentiated and the\nsecond element is a function to be called on the backward pass of reverse-mode\nautomatic differentiation (i.e. the \"custom gradient\" function).\nThe function returned as the second element of the output of ``fun`` can close\nover intermediate values computed when evaluating the function to be\ndifferentiated. That is, use lexical closure to share work between the forward\npass and the backward pass of reverse-mode automatic differentiation. However,\nit cannot perform Python control flow which depends on the values of the\nclosed-over intermediate values or its cotangent arguments; if the function\nincludes such control flow, an error is raised.\nArgs:\nfun: a Python callable specifying both the mathematical function to be\ndifferentiated and its reverse-mode differentiation rule. It should return\na pair consisting of an output value and a Python callable that represents\nthe custom gradient function.",
+        "parameters": {},
+        "returns": "A Python callable that accepts the same arguments as ``fun`` and returns the\noutput value specified by the first element of ``fun``'s output pair.\nFor example:\n>>> @jax.custom_gradient\n... def f(x):\n...   return x ** 2, lambda g: (g * x,)\n...\n>>> print(f(3.))\n9.0\n>>> print(jax.grad(f)(3.))\n3.0\nAn example with a function on two arguments, so that the VJP function must\nreturn a tuple of length two:\n>>> @jax.custom_gradient\n... def f(x, y):\n...   return x * y, lambda g: (g * y, g * x)\n...\n>>> print(f(3., 4.))\n12.0\n>>> print(jax.grad(f, argnums=(0, 1))(3., 4.))\n(Array(4., dtype=float32, weak_type=True), Array(3., dtype=float32, weak_type=True))",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "custom_vjp_primal_tree_values",
+      "signature": "custom_vjp_primal_tree_values(tree)",
+      "documentation": {
+        "description": "Strips away perturbation information from forward rule arguments.\nThis is a helper function for user with the ``symbolic_zeros`` option to\nthe ``defvjp`` method of a ``custom_vjp``-decorated function.\nIn ``symbolic_zeros`` mode, the custom forward rule receives arguments\nwhose pytree leaves are records with a ``value`` attribute that carries\nthe primal argument. This is a way to convert such argument trees back to\ntheir original form, replacing each such record with its carried value at\neach leaf.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "linear_call",
+      "signature": "linear_call(fun: 'Callable', fun_transpose: 'Callable', residual_args, linear_args)",
+      "documentation": {
+        "description": "Call a linear function, with a custom implementation for its transpose.\nThe `Haskell-like type signatures`_ of ``fun`` and ``fun_transpose`` are:\n.. code-block:: haskell\nfun           :: r -> a -o b\nfun_transpose :: r -> b -o a\nwhere the ``-o`` arrow indicates a linear function, ``r`` is the\nresidual input type and ``a`` is the linear input type.\nThe functions ``fun`` and ``fun_transpose`` are coupled as\ntransposes of one another. Specifically, the transpose of a\n``linear_call`` primitive is another ``linear_call`` to\n``fun_transpose``, with ``fun`` as its custom transposition.\nFor example:\n>>> def f(r, x):\n...   return x / r\n>>> def t(r, t):\n...   return t / r\n>>> def div_add(x, denom):\n...   return x + linear_call(f, t, denom, x)\n>>> def transpose(f, x_example):\n...   def transposed(y):\n...     x, = jax.linear_transpose(f, x_example)(y)\n...     return x\n...   return transposed\n>>> div_add(9., 3.)\nArray(12., dtype=float32, weak_type=True)\n>>> transpose(partial(div_add, denom=3.), 1.)(18.)  # custom\nArray(24., dtype=float32, weak_type=True)\n>>> transpose(lambda x: x + x / 3., 1.)(18.)  # reference\nArray(24., dtype=float32, weak_type=True)\nThe above definition of ``f`` illustrates the purpose of a residual\nargument: division is linear in one of its inputs (the dividend\n``x``) but not the other (the divisor ``r``).\nAs another example:\n>>> def custom_id(x):\n...   def f(_, x): return x\n...   def t(_, t): return 7.\n...   return linear_call(f, t, (), x)\n>>> custom_id(1.)\n1.0\n>>> transpose(custom_id, 1.)(1.)\n7.0\n>>> transpose(transpose(custom_id, 1.), 1.)(1.)\n1.0\n>>> transpose(transpose(transpose(custom_id, 1.), 1.), 1.)(1.)\n7.0\nArgs:\nfun: a Python callable specifying a linear function. It should\ntake two arguments: one of \"residual\" inputs (type ``r``),\ni.e. inputs in which the function is not necessarily linear, and\none of \"linear\" inputs (type ``a``).  It should return output\nwhose components are linear in the linear input (type ``b``).\nfun_transpose: a Python callable specifying a structurally linear\nfunction that is the transpose of ``fun`` with respect to its\nlinear inputs. Its first argument is the same residual inputs\n(``r``) as ``fun``. Its second argument is of type\n``b``. Finally, its output is of type ``a`` and each of its\ncomponent are linear in its second argument (the ``b`` inputs).\nresidual_args: Argument in which ``fun`` and ``fun_transpose`` are\nnot necessarily linear. Not involved in transposition.\nlinear_args: Argument in which ``fun`` and ``fun_transpose`` are\nlinear and with respect to which the two are transposes.",
+        "parameters": {},
+        "returns": "The call result, i.e. ``fun(residual_args, linear_args)``.\n.. _Haskell-like type signatures: https://wiki.haskell.org/Type_signature",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "zero_from_primal",
+      "signature": "zero_from_primal(val, symbolic_zeros=False)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "CustomVJPPrimal",
+      "documentation": {
+        "description": "Primal to a ``custom_vjp``'s forward rule when ``symbolic_zeros`` is set",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "SymbolicZero",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "from_primal_value",
+          "signature": "from_primal_value(val: 'Any') -> 'SymbolicZero'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "custom_jvp",
+      "documentation": {
+        "description": "Set up a JAX-transformable function for a custom JVP rule definition.\nThis class is meant to be used as a function decorator. Instances are\ncallables that behave similarly to the underlying function to which the\ndecorator was applied, except when a differentiation transformation (like\n:py:func:`jax.jvp` or :py:func:`jax.grad`) is applied, in which case a custom\nuser-supplied JVP rule function is used instead of tracing into and\nperforming automatic differentiation of the underlying function's\nimplementation.\nThere are two instance methods available for defining the custom JVP rule:\n:py:func:`~jax.custom_jvp.defjvp` for defining a *single* custom JVP rule for\nall the function's inputs, and for convenience\n:py:func:`~jax.custom_jvp.defjvps`, which wraps\n:py:func:`~jax.custom_jvp.defjvp`, and allows you to provide separate\ndefinitions for the partial derivatives of the function w.r.t. each of its\narguments.\nFor example::\n@jax.custom_jvp\ndef f(x, y):\nreturn jnp.sin(x) * y\n@f.defjvp\ndef f_jvp(primals, tangents):\nx, y = primals\nx_dot, y_dot = tangents\nprimal_out = f(x, y)\ntangent_out = jnp.cos(x) * x_dot * y + jnp.sin(x) * y_dot\nreturn primal_out, tangent_out\nFor a more detailed introduction, see the tutorial_.\n.. _tutorial: https://jax.readthedocs.io/en/latest/notebooks/Custom_derivative_rules_for_Python_code.html",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "defjvp",
+          "signature": "defjvp(self, jvp: 'Callable[..., tuple[ReturnValue, ReturnValue]]', symbolic_zeros: 'bool' = False) -> 'Callable[..., tuple[ReturnValue, ReturnValue]]'",
+          "documentation": {
+            "description": "Define a custom JVP rule for the function represented by this instance.\nArgs:\njvp: a Python callable representing the custom JVP rule. When there are no\n``nondiff_argnums``, the ``jvp`` function should accept two arguments,\nwhere the first is a tuple of primal inputs and the second is a tuple of\ntangent inputs. The lengths of both tuples are equal to the number of\nparameters of the :class:`~jax.custom_jvp` function. The ``jvp`` function\nshould produce as output a pair where the first element is the primal\noutput and the second element is the tangent output. Elements of the\ninput and output tuples may be arrays or any nested tuples/lists/dicts\nthereof.\nsymbolic_zeros: boolean, indicating whether the rule should be passed\nobjects representing static symbolic zeros in its tangent argument in\ncorrespondence with unperturbed values; otherwise, only standard JAX\ntypes (e.g. array-likes) are passed. Setting this option to ``True``\nallows a JVP rule to detect whether certain inputs are not involved in\ndifferentiation, but at the cost of needing special handling for these\nobjects (which e.g. can't be passed into jax.numpy functions). Default\n``False``.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> @jax.custom_jvp\n... def f(x, y):\n...   return jnp.sin(x) * y\n...\n>>> @f.defjvp\n... def f_jvp(primals, tangents):\n...   x, y = primals\n...   x_dot, y_dot = tangents\n...   primal_out = f(x, y)\n...   tangent_out = jnp.cos(x) * x_dot * y + jnp.sin(x) * y_dot\n...   return primal_out, tangent_out\n>>> x = jnp.float32(1.0)\n>>> y = jnp.float32(2.0)\n>>> with jnp.printoptions(precision=2):\n...   print(jax.value_and_grad(f)(x, y))\n(Array(1.68, dtype=float32), Array(1.08, dtype=float32))"
+          }
+        },
+        {
+          "name": "defjvps",
+          "signature": "defjvps(self, *jvps: 'Callable[..., ReturnValue] | None') -> 'None'",
+          "documentation": {
+            "description": "Convenience wrapper for defining JVPs for each argument separately.\nThis convenience wrapper cannot be used together with ``nondiff_argnums``.\nArgs:\n*jvps: a sequence of functions, one for each positional argument of the\n:class:`~jax.custom_jvp` function. Each function takes as arguments\nthe tangent value for the corresponding primal input, the primal\noutput, and the primal inputs. See the example below.",
+            "parameters": {},
+            "returns": "None.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> @jax.custom_jvp\n... def f(x, y):\n...   return jnp.sin(x) * y\n...\n>>> f.defjvps(lambda x_dot, primal_out, x, y: jnp.cos(x) * x_dot * y,\n...           lambda y_dot, primal_out, x, y: jnp.sin(x) * y_dot)\n>>> x = jnp.float32(1.0)\n>>> y = jnp.float32(2.0)\n>>> with jnp.printoptions(precision=2):\n...   print(jax.value_and_grad(f)(x, y))\n(Array(1.68, dtype=float32), Array(1.08, dtype=float32))"
+          }
+        }
+      ]
+    },
+    {
+      "name": "custom_vjp",
+      "documentation": {
+        "description": "Set up a JAX-transformable function for a custom VJP rule definition.\nThis class is meant to be used as a function decorator. Instances are\ncallables that behave similarly to the underlying function to which the\ndecorator was applied, except when a reverse-mode differentiation\ntransformation (like :py:func:`jax.grad`) is applied, in which case a custom\nuser-supplied VJP rule function is used instead of tracing into and performing\nautomatic differentiation of the underlying function's implementation. There\nis a single instance method, :py:func:`~jax.custom_vjp.defvjp`, which may be\nused to define the custom VJP rule.\nThis decorator precludes the use of forward-mode automatic differentiation.\nFor example::\n@jax.custom_vjp\ndef f(x, y):\nreturn jnp.sin(x) * y\ndef f_fwd(x, y):\nreturn f(x, y), (jnp.cos(x), jnp.sin(x), y)\ndef f_bwd(res, g):\ncos_x, sin_x, y = res\nreturn (cos_x * g * y, sin_x * g)\nf.defvjp(f_fwd, f_bwd)\nFor a more detailed introduction, see the tutorial_.\n.. _tutorial: https://jax.readthedocs.io/en/latest/notebooks/Custom_derivative_rules_for_Python_code.html",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "defvjp",
+          "signature": "defvjp(self, fwd: 'Callable[..., tuple[ReturnValue, Any]]', bwd: 'Callable[..., tuple[Any, ...]]', symbolic_zeros: 'bool' = False, optimize_remat: 'bool' = False) -> 'None'",
+          "documentation": {
+            "description": "Define a custom VJP rule for the function represented by this instance.\nArgs:\nfwd: a Python callable representing the forward pass of the custom VJP\nrule. When there are no ``nondiff_argnums``, the ``fwd`` function has\nthe same input signature as the underlying primal function. It should\nreturn as output a pair, where the first element represents the primal\noutput and the second element represents any \"residual\" values to store\nfrom the forward pass for use on the backward pass by the function\n``bwd``. Input arguments and elements of the output pair may be arrays\nor nested tuples/lists/dicts thereof.\nbwd: a Python callable representing the backward pass of the custom VJP\nrule. When there are no ``nondiff_argnums``, the ``bwd`` function takes\ntwo arguments, where the first is the \"residual\" values produced on the\nforward pass by ``fwd``, and the second is the output cotangent with the\nsame structure as the primal function output. The output of ``bwd`` must\nbe a tuple of length equal to the number of arguments of the primal\nfunction, and the tuple elements may be arrays or nested\ntuples/lists/dicts thereof so as to match the structure of the primal\ninput arguments.\nsymbolic_zeros: boolean, determining whether to indicate symbolic zeros\nto the ``fwd`` and ``bwd`` rules. Enabling this option allows custom\nderivative rules to detect when certain inputs, and when certain\noutput cotangents, are not involved in differentiation. If ``True``:\n* ``fwd`` must accept, in place of each leaf value ``x`` in\nthe pytree comprising an argument to the original function,\nan object (of type\n``jax.custom_derivatives.CustomVJPPrimal``) with two\nattributes instead: ``value`` and ``perturbed``. The\n``value`` field is the original primal argument, and\n``perturbed`` is a boolean.  The ``perturbed`` bit indicates\nwhether the argument is involved in differentiation (i.e.,\nif it is ``False``, then the corresponding Jacobian \"column\"\nis zero).\n* ``bwd`` will be passed objects representing static symbolic zeros in\nits cotangent argument in correspondence with unperturbed values;\notherwise, only standard JAX types (e.g. array-likes) are passed.\nSetting this option to ``True`` allows these rules to detect whether\ncertain inputs and outputs are not involved in differentiation, but at\nthe cost of special handling. For instance:\n* The signature of ``fwd`` changes, and the objects it is passed cannot\nbe output from the rule directly.\n* The ``bwd`` rule is passed objects that are not entirely array-like,\nand that cannot be passed to most ``jax.numpy`` functions.\n* Any custom pytree nodes involved in the primal function's arguments\nmust accept, in their unflattening functions, the two-field record\nobjects that are given as input leaves to the ``fwd`` rule.\nDefault ``False``.\noptimize_remat: boolean, an experimental flag to enable an automatic\noptimization when this function is used under :func:`jax.remat`. This\nwill be most useful when the ``fwd`` rule is an opaque call such as a\nPallas kernel or a custom call. Default ``False``.",
+            "parameters": {},
+            "returns": "None.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> @jax.custom_vjp\n... def f(x, y):\n...   return jnp.sin(x) * y\n...\n>>> def f_fwd(x, y):\n...   return f(x, y), (jnp.cos(x), jnp.sin(x), y)\n...\n>>> def f_bwd(res, g):\n...   cos_x, sin_x, y = res\n...   return (cos_x * g * y, sin_x * g)\n...\n>>> f.defvjp(f_fwd, f_bwd)\n>>> x = jnp.float32(1.0)\n>>> y = jnp.float32(2.0)\n>>> with jnp.printoptions(precision=2):\n...   print(jax.value_and_grad(f)(x, y))\n(Array(1.68, dtype=float32), Array(1.08, dtype=float32))"
+          }
+        }
+      ]
+    }
+  ]
+}

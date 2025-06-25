@@ -1,0 +1,45 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "check_grads",
+      "signature": "check_grads(f, args, order, modes=('fwd', 'rev'), atol=None, rtol=None, eps=None)",
+      "documentation": {
+        "description": "Check gradients from automatic differentiation against finite differences.\nGradients are only checked in a single randomly chosen direction, which\nensures that the finite difference calculation does not become prohibitively\nexpensive even for large input/output spaces.\nArgs:\nf: function to check at ``f(*args)``.\nargs: tuple of argument values.\norder: forward and backwards gradients up to this order are checked.\nmodes: lists of gradient modes to check ('fwd' and/or 'rev').\natol: absolute tolerance for gradient equality.\nrtol: relative tolerance for gradient equality.\neps: step size used for finite differences.",
+        "parameters": {},
+        "returns": "",
+        "raises": "AssertionError: if gradients do not match.",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "check_jvp",
+      "signature": "check_jvp(f, f_jvp, args, atol=None, rtol=None, eps=0.0001, err_msg='')",
+      "documentation": {
+        "description": "Check a JVP from automatic differentiation against finite differences.\nGradients are only checked in a single randomly chosen direction, which\nensures that the finite difference calculation does not become prohibitively\nexpensive even for large input/output spaces.\nArgs:\nf: function to check at ``f(*args)``.\nf_vjp: function that calculates ``jax.jvp`` applied to ``f``. Typically this\nshould be ``functools.partial(jax.jvp, f))``.\nargs: tuple of argument values.\natol: absolute tolerance for gradient equality.\nrtol: relative tolerance for gradient equality.\neps: step size used for finite differences.\nerr_msg: additional error message to include if checks fail.",
+        "parameters": {},
+        "returns": "",
+        "raises": "AssertionError: if gradients do not match.",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "check_vjp",
+      "signature": "check_vjp(f, f_vjp, args, atol=None, rtol=None, eps=0.0001, err_msg='')",
+      "documentation": {
+        "description": "Check a VJP from automatic differentiation against finite differences.\nGradients are only checked in a single randomly chosen direction, which\nensures that the finite difference calculation does not become prohibitively\nexpensive even for large input/output spaces.\nArgs:\nf: function to check at ``f(*args)``.\nf_vjp: function that calculates ``jax.vjp`` applied to ``f``. Typically this\nshould be ``functools.partial(jax.jvp, f))``.\nargs: tuple of argument values.\natol: absolute tolerance for gradient equality.\nrtol: relative tolerance for gradient equality.\neps: step size used for finite differences.\nerr_msg: additional error message to include if checks fail.",
+        "parameters": {},
+        "returns": "",
+        "raises": "AssertionError: if gradients do not match.",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

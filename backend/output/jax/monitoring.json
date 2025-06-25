@@ -1,0 +1,97 @@
+{
+  "description": "Utilities for instrumenting code.\n\nCode points can be marked as a named event. Every time an event is reached\nduring program execution, the registered listeners will be invoked.\n\nA typical listener callback is to send an event to a metrics collector for\naggregation/exporting.",
+  "functions": [
+    {
+      "name": "clear_event_listeners",
+      "signature": "clear_event_listeners()",
+      "documentation": {
+        "description": "Clear event listeners.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "record_event",
+      "signature": "record_event(event: 'str', **kwargs: 'str | int') -> 'None'",
+      "documentation": {
+        "description": "Record an event.\nIf **kwargs are specified, all of the named arguments have to be passed in the\nsame order across all invocations of this method for the same event.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "record_event_duration_secs",
+      "signature": "record_event_duration_secs(event: 'str', duration: 'float', **kwargs: 'str | int') -> 'None'",
+      "documentation": {
+        "description": "Record an event duration in seconds (float).\nIf **kwargs are specified, all of the named arguments have to be passed in the\nsame order across all invocations of this method for the same event.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "record_event_time_span",
+      "signature": "record_event_time_span(event: 'str', start_time: 'float', end_time: 'float', **kwargs: 'str | int') -> 'None'",
+      "documentation": {
+        "description": "Record an event start and end time in seconds (float).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_event_duration_secs_listener",
+      "signature": "register_event_duration_secs_listener(callback: 'EventDurationListenerWithMetadata') -> 'None'",
+      "documentation": {
+        "description": "Register a callback to be invoked during record_event_duration_secs().",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_event_listener",
+      "signature": "register_event_listener(callback: 'EventListenerWithMetadata') -> 'None'",
+      "documentation": {
+        "description": "Register a callback to be invoked during record_event().",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_event_time_span_listener",
+      "signature": "register_event_time_span_listener(callback: 'EventTimeSpanListenerWithMetadata') -> 'None'",
+      "documentation": {
+        "description": "Register a callback to be invoked during record_event_time_span().",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

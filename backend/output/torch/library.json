@@ -1,0 +1,985 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Callable",
+      "signature": "Callable(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to collections.abc.Callable.\n\nCallable[[int], str] signifies a function that takes a single\nparameter of type int and returns a str.\n\nThe subscription syntax must always be used with exactly two\nvalues: the argument list and the return type.\nThe argument list must be a list of types, a ParamSpec,\nConcatenate or ellipsis. The return type must be a single type.\n\nThere is no syntax to indicate optional or keyword arguments;\nsuch function types are rarely used as callback types.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Dict",
+      "signature": "Dict(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of dict.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "List",
+      "signature": "List(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of list.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Optional",
+      "signature": "Optional(*args, **kwds)",
+      "documentation": {
+        "description": "Optional[X] is equivalent to Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Sequence",
+      "signature": "Sequence(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of collections.abc.Sequence.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Set",
+      "signature": "Set(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of set.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Tuple",
+      "signature": "Tuple(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to builtins.tuple.\n\nTuple[X, Y] is the cross-product type of X and Y.\n\nExample: Tuple[T1, T2] is a tuple of two elements corresponding\nto type variables T1 and T2.  Tuple[int, float, str] is a tuple\nof an int, a float and a string.\n\nTo specify a variable-length tuple of homogeneous type, use Tuple[T, ...].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Union",
+      "signature": "Union(*args, **kwds)",
+      "documentation": {
+        "description": "Union type; Union[X, Y] means either X or Y.\n\nOn Python 3.10 and higher, the | operator\ncan also be used to denote unions;\nX | Y means the same thing to the type checker as Union[X, Y].\n\nTo define a union, use e.g. Union[int, str]. Details:\n- The arguments must be types and there must be at least one.\n- None as an argument is a special case and is replaced by\n  type(None).\n- Unions of unions are flattened, e.g.::\n\n    assert Union[Union[int, str], float] == Union[int, str, float]\n\n- Unions of a single argument vanish, e.g.::\n\n    assert Union[int] == int  # The constructor actually returns int\n\n- Redundant arguments are skipped, e.g.::\n\n    assert Union[int, str, int] == Union[int, str]\n\n- When comparing unions, the argument order is ignored, e.g.::\n\n    assert Union[int, str] == Union[str, int]\n\n- You cannot subclass or instantiate a union.\n- You can use Optional[X] as a shorthand for Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "custom_op",
+      "signature": "custom_op(name: str, fn: Optional[Callable] = None, /, *, mutates_args: Union[str, Iterable[str]], device_types: Union[str, Sequence[str], NoneType] = None, schema: Optional[str] = None) -> Any",
+      "documentation": {
+        "description": "Wraps a function into custom operator.\n\nReasons why you may want to create a custom op include:\n- Wrapping a third-party library or custom kernel to work with PyTorch\nsubsystems like Autograd.\n- Preventing torch.compile/export/FX tracing from peeking inside your function.\n\nThis API is used as a decorator around a function (please see examples).\nThe provided function must have type hints; these are needed to interface\nwith PyTorch's various subsystems.",
+        "parameters": {
+          "name": {
+            "type": "str",
+            "description": "A name for the custom op that looks like \"{namespace}::{name}\","
+          },
+          "e": {
+            "type": "",
+            "description": ".g. all custom ops in pytorch/fbgemm use \"fbgemm\" as the namespace."
+          },
+          "in": {
+            "type": "",
+            "description": "PyTorch subsystems (e.g. torch.export, FX graphs)."
+          },
+          "To": {
+            "type": "",
+            "description": "avoid name collisions, please use your project name as the namespace;"
+          },
+          "mutates_args": {
+            "type": "Iterable[str] or \"unknown\"",
+            "description": "The names of args that the function mutates."
+          },
+          "This": {
+            "type": "",
+            "description": "MUST be accurate, otherwise, the behavior is undefined. If \"unknown\","
+          },
+          "it": {
+            "type": "",
+            "description": "pessimistically assumes that all inputs to the operator are being mutated."
+          },
+          "device_types": {
+            "type": "None | str | Sequence[str]",
+            "description": "The device type(s) the function"
+          },
+          "is": {
+            "type": "",
+            "description": "used as the default implementation for all device types."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "define",
+      "signature": "define(qualname, schema, *, lib=None, tags=())",
+      "documentation": {
+        "description": "Defines a new operator.\n\nIn PyTorch, defining an op (short for \"operator\") is a two step-process:\n- we need to define the op (by providing an operator name and schema)\n- we need to implement behavior for how the operator interacts with\nvarious PyTorch subsystems, like CPU/CUDA Tensors, Autograd, etc.\n\nThis entrypoint defines the custom operator (the first step)\nyou must then perform the second step by calling various\n``impl_*`` APIs, like :func:`torch.library.impl` or\n:func:`torch.library.register_fake`.",
+        "parameters": {
+          "qualname": {
+            "type": "str",
+            "description": "The qualified name for the operator. Should be"
+          },
+          "a": {
+            "type": "",
+            "description": "string that looks like \"namespace::name\", e.g. \"aten::sin\"."
+          },
+          "Operators": {
+            "type": "",
+            "description": "in PyTorch need a namespace to"
+          },
+          "avoid": {
+            "type": "",
+            "description": "name collisions; a given operator may only be created once."
+          },
+          "If": {
+            "type": "",
+            "description": "you are writing a Python library, we recommend the namespace to"
+          },
+          "be": {
+            "type": "",
+            "description": "the name of your top-level module."
+          },
+          "schema": {
+            "type": "str",
+            "description": "The schema of the operator. E.g. \"(Tensor x) -> Tensor\""
+          },
+          "for": {
+            "type": "",
+            "description": "an op that accepts one Tensor and returns one Tensor. It does"
+          },
+          "not": {
+            "type": "",
+            "description": "contain the operator name (that is passed in ``qualname``)."
+          },
+          "lib": {
+            "type": "Optional[Library]",
+            "description": "If provided, the lifetime of this operator"
+          },
+          "will": {
+            "type": "",
+            "description": "be tied to the lifetime of the Library object."
+          },
+          "tags": {
+            "type": "Tag | Sequence[Tag]",
+            "description": "one or more torch.Tag to apply to this"
+          },
+          "operator": {
+            "type": "",
+            "description": ". Tagging an operator changes the operator's behavior"
+          },
+          "under": {
+            "type": "",
+            "description": "various PyTorch subsystems; please read the docs for the"
+          },
+          "torch": {
+            "type": "",
+            "description": ".Tag carefully before applying it."
+          },
+          "Example": {
+            "type": "",
+            "description": ":\n>>> import torch\n>>> import numpy as np\n>>>\n>>> # Define the operator\n>>> torch.library.define(\"mylib::sin\", \"(Tensor x) -> Tensor\")\n>>>\n>>> # Add implementations for the operator\n>>> @torch.library.impl(\"mylib::sin\", \"cpu\")\n>>> def f(x):\n>>>     return torch.from_numpy(np.sin(x.numpy()))\n>>>\n>>> # Call the new operator from torch.ops.\n>>> x = torch.randn(3)\n>>> y = torch.ops.mylib.sin(x)\n>>> assert torch.allclose(y, x.sin())"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "device_types_t",
+      "signature": "Union(*args, **kwargs)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fallthrough_kernel",
+      "signature": "fallthrough_kernel()",
+      "documentation": {
+        "description": "A dummy function to pass to ``Library.impl`` in order to register a fallthrough.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_ctx",
+      "signature": "get_ctx() -> 'torch._library.fake_impl.FakeImplCtx'",
+      "documentation": {
+        "description": "get_ctx() returns the current AbstractImplCtx object.\n\nCalling ``get_ctx()`` is only valid inside of an fake impl\n(see :func:`torch.library.register_fake` for more usage details.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "impl",
+      "signature": "impl(qualname, types, func=None, *, lib=None)",
+      "documentation": {
+        "description": "Register an implementation for a device type for this operator.\n\nYou may pass \"default\" for ``types`` to register this implementation as the\ndefault implementation for ALL device types.\nPlease only use this if the implementation truly supports all device types;\nfor example, this is true if it is a composition of built-in PyTorch operators.\n\nSome valid types are: \"cpu\", \"cuda\", \"xla\", \"mps\", \"ipu\", \"xpu\".",
+        "parameters": {
+          "qualname": {
+            "type": "str",
+            "description": "Should be a string that looks like \"namespace::operator_name\"."
+          },
+          "types": {
+            "type": "str | Sequence[str]",
+            "description": "The device types to register an impl to."
+          },
+          "lib": {
+            "type": "Optional[Library]",
+            "description": "If provided, the lifetime of this registration"
+          },
+          "will": {
+            "type": "",
+            "description": "be tied to the lifetime of the Library object."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import torch\n    >>> import numpy as np\n    >>>\n    >>> # Define the operator\n    >>> torch.library.define(\"mylib::mysin\", \"(Tensor x) -> Tensor\")\n    >>>\n    >>> # Add implementations for the cpu device\n    >>> @torch.library.impl(\"mylib::mysin\", \"cpu\")\n    >>> def f(x):\n    >>>     return torch.from_numpy(np.sin(x.numpy()))\n    >>>\n    >>> x = torch.randn(3)\n    >>> y = torch.ops.mylib.mysin(x)\n    >>> assert torch.allclose(y, x.sin())"
+      }
+    },
+    {
+      "name": "impl_abstract",
+      "signature": "impl_abstract(qualname, func=None, *, lib=None, _stacklevel=1)",
+      "documentation": {
+        "description": "This API was renamed to :func:`torch.library.register_fake` in PyTorch 2.4.\nPlease use that instead.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "infer_schema",
+      "signature": "infer_schema(prototype_function: Callable, /, *, mutates_args, op_name: Optional[str] = None) -> str",
+      "documentation": {
+        "description": "Parses the schema of a given function with type hints. The schema is inferred from the\nfunction's type hints, and can be used to define a new operator.\n\nWe make the following assumptions:\n\n* None of the outputs alias any of the inputs or each other.\n* | String type annotations \"device, dtype, Tensor, types\" without library specification are\n  | assumed to be torch.*. Similarly, string type annotations \"Optional, List, Sequence, Union\"\n  | without library specification are assumed to be typing.*.\n* | Only the args listed in ``mutates_args`` are being mutated. If ``mutates_args`` is \"unknown\",\n  | it assumes that all inputs to the operator are being mutates.\n\nCallers (e.g. the custom ops API) are responsible for checking these assumptions.",
+        "parameters": {
+          "prototype_function": {
+            "type": "",
+            "description": "The function from which to infer a schema for from its type annotations."
+          },
+          "op_name": {
+            "type": "Optional[str]",
+            "description": "The name of the operator in the schema. If ``name`` is None, then the"
+          },
+          "name": {
+            "type": "",
+            "description": "is not included in the inferred schema. Note that the input schema to\n``torch.library.Library.define`` requires a operator name."
+          },
+          "mutates_args": {
+            "type": "\"unknown\" | Iterable[str]",
+            "description": "The arguments that are mutated in the function."
+          }
+        },
+        "returns": "The inferred schema.\n\nExample:\n    >>> def foo_impl(x: torch.Tensor) -> torch.Tensor:\n    >>>     return x.sin()\n    >>>\n    >>> infer_schema(foo_impl, op_name=\"foo\", mutates_args={})\n    foo(Tensor x) -> Tensor\n    >>>\n    >>> infer_schema(foo_impl, mutates_args={})\n    (Tensor x) -> Tensor",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> def foo_impl(x: torch.Tensor) -> torch.Tensor:\n    >>>     return x.sin()\n    >>>\n    >>> infer_schema(foo_impl, op_name=\"foo\", mutates_args={})\n    foo(Tensor x) -> Tensor\n    >>>\n    >>> infer_schema(foo_impl, mutates_args={})\n    (Tensor x) -> Tensor"
+      }
+    },
+    {
+      "name": "opcheck",
+      "signature": "opcheck(op: Union[torch._ops.OpOverload, torch._ops.OpOverloadPacket, torch._library.custom_ops.CustomOpDef], args: Tuple[Any, ...], kwargs: Optional[Dict[str, Any]] = None, *, test_utils: Union[str, Sequence[str]] = ('test_schema', 'test_autograd_registration', 'test_faketensor', 'test_aot_dispatch_dynamic'), raise_exception: bool = True) -> Dict[str, str]",
+      "documentation": {
+        "description": "Given an operator and some sample arguments, tests if the operator is\nregistered correctly.\n\nThat is, when you use the torch.library/TORCH_LIBRARY APIs to create a\ncustom op, you specified metadata (e.g. mutability info) about the custom op\nand these APIs require that the functions you pass them satisfy certain\nproperties (e.g. no data pointer access in the fake/meta/abstract kernel)\n``opcheck`` tests these metadata and properties.\n\nConcretely, we test the following:\n\n- test_schema: If the schema matches the implementation of\n  the operator. For example: if the schema specifies a Tensor is mutated,\n  then we check the implementation mutates the Tensor. If the schema\n  specifies that we return a new Tensor, then we check that the\n  implementation returns a new Tensor (instead of an existing one or\n  a view of an existing one).\n- test_autograd_registration: If the operator supports training\n  (autograd): we check that its autograd formula is registered via\n  torch.library.register_autograd or a manual registration to one\n  or more DispatchKey::Autograd keys. Any other DispatchKey-based\n  registrations may lead to undefined behavior.\n- test_faketensor: If the operator has a FakeTensor kernel\n  (and if it is correct). The FakeTensor kernel is necessary (\n  but not sufficient) for the operator to work with PyTorch compilation\n  APIs (torch.compile/export/FX). We check that a FakeTensor kernel\n  (also sometimes known as a meta kernel) was registered for the\n  operator and that it is correct. This test takes the result of\n  running the operator on real tensors and the result of running\n  the operator on FakeTensors and checks that they have the same\n  Tensor metadata (sizes/strides/dtype/device/etc).\n- test_aot_dispatch_dynamic: If the operator has correct behavior\n  with PyTorch compilation APIs (torch.compile/export/FX).\n  This checks that the outputs (and gradients, if applicable) are the\n  same under eager-mode PyTorch and torch.compile.\n  This test is a superset of ``test_faketensor`` and is an e2e test;\n  other things it tests are that the operator supports\n  functionalization and that the backward pass (if it exists) also\n  supports FakeTensor and functionalization.\n\nFor best results, please call ``opcheck`` multiple times with a\nrepresentative set of inputs. If your operator supports\nautograd, please use ``opcheck`` with inputs with ``requires_grad = True``;\nif your operator supports multiple devices (e.g. CPU and CUDA), please\nuse ``opcheck`` with inputs on all supported devices.",
+        "parameters": {
+          "op": {
+            "type": "",
+            "description": "The operator. Must either be a function decorated with\n:func:`torch.library.custom_op` or an OpOverload/OpOverloadPacket"
+          },
+          "found": {
+            "type": "",
+            "description": "in torch.ops.* (e.g. torch.ops.aten.sin, torch.ops.mylib.foo)"
+          },
+          "args": {
+            "type": "",
+            "description": "The args to the operator"
+          },
+          "kwargs": {
+            "type": "",
+            "description": "The kwargs to the operator"
+          },
+          "test_utils": {
+            "type": "",
+            "description": "Tests that we should run. Default: all of them."
+          },
+          "Example": {
+            "type": "",
+            "description": ">>> # xdoctest: +REQUIRES(env:TORCH_DOCTEST_CUDA)\n>>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n>>> def numpy_mul(x: Tensor, y: float) -> Tensor:\n>>>     x_np = x.numpy(force=True)\n>>>     z_np = x_np * y\n>>>     return torch.from_numpy(z_np).to(x.device)\n>>>\n>>> @numpy_mul.register_fake\n>>> def _(x, y):\n>>>     return torch.empty_like(x)\n>>>\n>>> def setup_context(ctx, inputs, output):\n>>>     y, = inputs\n>>>     ctx.y = y\n>>>\n>>> def backward(ctx, grad):\n>>>     return grad * ctx.y, None\n>>>\n>>> numpy_mul.register_autograd(backward, setup_context=setup_context)\n>>>\n>>> sample_inputs = [\n>>>     (torch.randn(3), 3.14),\n>>>     (torch.randn(2, 3, device='cuda'), 2.718),\n>>>     (torch.randn(1, 10, requires_grad=True), 1.234),\n>>>     (torch.randn(64, 64, device='cuda', requires_grad=True), 90.18),\n>>> ]\n>>>\n>>> for args in sample_inputs:\n>>>     torch.library.opcheck(numpy_mul, args)"
+          },
+          "raise_exception": {
+            "type": "",
+            "description": "If we should raise an exception on the first"
+          },
+          "error": {
+            "type": "",
+            "description": ". If False, we will return a dict with information"
+          },
+          "on": {
+            "type": "",
+            "description": "if each test passed or not.\n.. warning::"
+          },
+          "opcheck": {
+            "type": "",
+            "description": "tests if your usage of torch.library APIs is correct while\n:func:`torch.autograd.gradcheck` tests if your autograd formula is"
+          },
+          "mathematically": {
+            "type": "",
+            "description": "correct. Use both to test custom ops that support"
+          },
+          "gradient": {
+            "type": "",
+            "description": "computation."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +REQUIRES(env:TORCH_DOCTEST_CUDA)\n    >>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n    >>> def numpy_mul(x: Tensor, y: float) -> Tensor:\n    >>>     x_np = x.numpy(force=True)\n    >>>     z_np = x_np * y\n    >>>     return torch.from_numpy(z_np).to(x.device)\n    >>>\n    >>> @numpy_mul.register_fake\n    >>> def _(x, y):\n    >>>     return torch.empty_like(x)\n    >>>\n    >>> def setup_context(ctx, inputs, output):\n    >>>     y, = inputs\n    >>>     ctx.y = y\n    >>>\n    >>> def backward(ctx, grad):\n    >>>     return grad * ctx.y, None\n    >>>\n    >>> numpy_mul.register_autograd(backward, setup_context=setup_context)\n    >>>\n    >>> sample_inputs = [\n    >>>     (torch.randn(3), 3.14),\n    >>>     (torch.randn(2, 3, device='cuda'), 2.718),\n    >>>     (torch.randn(1, 10, requires_grad=True), 1.234),\n    >>>     (torch.randn(64, 64, device='cuda', requires_grad=True), 90.18),\n    >>> ]\n    >>>\n    >>> for args in sample_inputs:\n    >>>     torch.library.opcheck(numpy_mul, args)"
+      }
+    },
+    {
+      "name": "register_autograd",
+      "signature": "register_autograd(op: Union[str, ForwardRef('torch._ops.OpOverload'), ForwardRef('torch._library.custom_ops.CustomOpDef')], backward: Callable, /, *, setup_context: Optional[Callable] = None, lib=None) -> None",
+      "documentation": {
+        "description": "Register a backward formula for this custom op.\n\nIn order for an operator to work with autograd, you need to register\na backward formula:\n1. You must tell us how to compute gradients during the backward pass\nby providing us a \"backward\" function.\n2. If you need any values from the forward to compute gradients, you can\nuse `setup_context` to save values for backward.\n\n``backward`` runs during the backward pass. It accepts ``(ctx, *grads)``:\n- ``grads`` is one or more gradients. The number of gradients matches\nthe number of outputs of the operator.\nThe ``ctx`` object is `the same ctx object <context_method_mixins>`_ used by\n:class:`torch.autograd.Function`. The semantics of ``backward_fn`` are the\nsame as :meth:`torch.autograd.Function.backward`.\n\n``setup_context(ctx, inputs, output)`` runs during the forward pass.\nPlease save quantities needed for backward onto the ``ctx`` object via\neither :meth:`torch.autograd.function.FunctionCtx.save_for_backward`\nor assigning them as attributes of ``ctx``. If your custom op has\nkwarg-only arguments, we expect the signature of ``setup_context``\nto be ``setup_context(ctx, inputs, keyword_only_inputs, output)``.\n\nBoth ``setup_context_fn`` and ``backward_fn`` must be traceable. That is,\nthey may not directly access :meth:`torch.Tensor.data_ptr` and they must\nnot depend on or mutate global state. If you need a non-traceable backward,\nyou can make it a separate custom_op that you call inside ``backward_fn``.\n\nIf you need different autograd behavior on different devices, then we\nrecommend creating two different custom operators, one for each device\nthat needs different behavior, and switching between them at runtime.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>>\n    >>> @torch.library.custom_op(\"mylib::numpy_sin\", mutates_args=())\n    >>> def numpy_sin(x: Tensor) -> Tensor:\n    >>>     x_np = x.cpu().numpy()\n    >>>     y_np = np.sin(x_np)\n    >>>     return torch.from_numpy(y_np).to(device=x.device)\n    >>>\n    >>> def setup_context(ctx, inputs, output) -> Tensor:\n    >>>     x, = inputs\n    >>>     ctx.save_for_backward(x)\n    >>>\n    >>> def backward(ctx, grad):\n    >>>     x, = ctx.saved_tensors\n    >>>     return grad * x.cos()\n    >>>\n    >>> torch.library.register_autograd(\n    ...     \"mylib::numpy_sin\", backward, setup_context=setup_context\n    ... )\n    >>>\n    >>> x = torch.randn(3, requires_grad=True)\n    >>> y = numpy_sin(x)\n    >>> (grad_x,) = torch.autograd.grad(y, x, torch.ones_like(y))\n    >>> assert torch.allclose(grad_x, x.cos())\n    >>>\n    >>> # Example with a keyword-only arg\n    >>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n    >>> def numpy_mul(x: Tensor, *, val: float) -> Tensor:\n    >>>     x_np = x.cpu().numpy()\n    >>>     y_np = x_np * val\n    >>>     return torch.from_numpy(y_np).to(device=x.device)\n    >>>\n    >>> def setup_context(ctx, inputs, keyword_only_inputs, output) -> Tensor:\n    >>>     ctx.val = keyword_only_inputs[\"val\"]\n    >>>\n    >>> def backward(ctx, grad):\n    >>>     return grad * ctx.val\n    >>>\n    >>> torch.library.register_autograd(\n    ...     \"mylib::numpy_mul\", backward, setup_context=setup_context\n    ... )\n    >>>\n    >>> x = torch.randn(3, requires_grad=True)\n    >>> y = numpy_mul(x, val=3.14)\n    >>> (grad_x,) = torch.autograd.grad(y, x, torch.ones_like(y))\n    >>> assert torch.allclose(grad_x, torch.full_like(x, 3.14))"
+      }
+    },
+    {
+      "name": "register_fake",
+      "signature": "register_fake(op: Union[str, ForwardRef('torch._ops.OpOverload'), ForwardRef('torch._library.custom_ops.CustomOpDef')], func: Optional[Callable] = None, /, *, lib: Optional[torch.library.Library] = None, _stacklevel: int = 1)",
+      "documentation": {
+        "description": "Register a FakeTensor implementation (\"fake impl\") for this operator.\n\nAlso sometimes known as a \"meta kernel\", \"abstract impl\".\n\nAn \"FakeTensor implementation\" specifies the behavior of this operator on\nTensors that carry no data (\"FakeTensor\"). Given some input Tensors with\ncertain properties (sizes/strides/storage_offset/device), it specifies\nwhat the properties of the output Tensors are.\n\nThe FakeTensor implementation has the same signature as the operator.\nIt is run for both FakeTensors and meta tensors. To write a FakeTensor\nimplementation, assume that all Tensor inputs to the operator are\nregular CPU/CUDA/Meta tensors, but they do not have storage, and\nyou are trying to return regular CPU/CUDA/Meta tensor(s) as output.\nThe FakeTensor implementation must consist of only PyTorch operations\n(and may not directly access the storage or data of any input or\nintermediate Tensors).\n\nThis API may be used as a decorator (see examples).\n\nFor a detailed guide on custom ops, please see\nhttps://pytorch.org/tutorials/advanced/custom_ops_landing_page.html",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>>\n    >>> # Example 1: an operator without data-dependent output shape\n    >>> @torch.library.custom_op(\"mylib::custom_linear\", mutates_args=())\n    >>> def custom_linear(x: Tensor, weight: Tensor, bias: Tensor) -> Tensor:\n    >>>     raise NotImplementedError(\"Implementation goes here\")\n    >>>\n    >>> @torch.library.register_fake(\"mylib::custom_linear\")\n    >>> def _(x, weight, bias):\n    >>>     assert x.dim() == 2\n    >>>     assert weight.dim() == 2\n    >>>     assert bias.dim() == 1\n    >>>     assert x.shape[1] == weight.shape[1]\n    >>>     assert weight.shape[0] == bias.shape[0]\n    >>>     assert x.device == weight.device\n    >>>\n    >>>     return (x @ weight.t()) + bias\n    >>>\n    >>> with torch._subclasses.fake_tensor.FakeTensorMode():\n    >>>     x = torch.randn(2, 3)\n    >>>     w = torch.randn(3, 3)\n    >>>     b = torch.randn(3)\n    >>>     y = torch.ops.mylib.custom_linear(x, w, b)\n    >>>\n    >>> assert y.shape == (2, 3)\n    >>>\n    >>> # Example 2: an operator with data-dependent output shape\n    >>> @torch.library.custom_op(\"mylib::custom_nonzero\", mutates_args=())\n    >>> def custom_nonzero(x: Tensor) -> Tensor:\n    >>>     x_np = x.numpy(force=True)\n    >>>     res = np.stack(np.nonzero(x_np), axis=1)\n    >>>     return torch.tensor(res, device=x.device)\n    >>>\n    >>> @torch.library.register_fake(\"mylib::custom_nonzero\")\n    >>> def _(x):\n    >>> # Number of nonzero-elements is data-dependent.\n    >>> # Since we cannot peek at the data in an fake impl,\n    >>> # we use the ctx object to construct a new symint that\n    >>> # represents the data-dependent size.\n    >>>     ctx = torch.library.get_ctx()\n    >>>     nnz = ctx.new_dynamic_size()\n    >>>     shape = [nnz, x.dim()]\n    >>>     result = x.new_empty(shape, dtype=torch.int64)\n    >>>     return result\n    >>>\n    >>> from torch.fx.experimental.proxy_tensor import make_fx\n    >>>\n    >>> x = torch.tensor([0, 1, 2, 3, 4, 0])\n    >>> trace = make_fx(torch.ops.mylib.custom_nonzero, tracing_mode=\"symbolic\")(x)\n    >>> trace.print_readable()\n    >>>\n    >>> assert torch.allclose(trace(x), torch.ops.mylib.custom_nonzero(x))"
+      }
+    },
+    {
+      "name": "register_kernel",
+      "signature": "register_kernel(op: Union[str, ForwardRef('torch._ops.OpOverload'), ForwardRef('torch._library.custom_ops.CustomOpDef')], device_types: Union[str, Sequence[str], NoneType], func: Optional[Callable] = None, /, *, lib: Optional[torch.library.Library] = None)",
+      "documentation": {
+        "description": "Register an implementation for a device type for this operator.\n\nSome valid device_types are: \"cpu\", \"cuda\", \"xla\", \"mps\", \"ipu\", \"xpu\".\nThis API may be used as a decorator.",
+        "parameters": {
+          "op": {
+            "type": "str | OpOverload",
+            "description": "The operator to register an impl to."
+          },
+          "device_types": {
+            "type": "None | str | Sequence[str]",
+            "description": "The device_types to register an impl to."
+          },
+          "If": {
+            "type": "",
+            "description": "None, we will register to all device types -- please only use"
+          },
+          "this": {
+            "type": "",
+            "description": "option if your implementation is truly device-type-agnostic."
+          },
+          "func": {
+            "type": "Callable",
+            "description": "The function to register as the implementation for"
+          },
+          "the": {
+            "type": "",
+            "description": "given device types."
+          },
+          "lib": {
+            "type": "Optional[Library]",
+            "description": "If provided, the lifetime of this registration"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "register_torch_dispatch",
+      "signature": "register_torch_dispatch(op: Union[str, ForwardRef('torch._ops.OpOverload'), ForwardRef('torch._library.custom_ops.CustomOpDef')], torch_dispatch_class: Any, func: Optional[Callable] = None, /, *, lib: Optional[torch.library.Library] = None)",
+      "documentation": {
+        "description": "Registers a torch_dispatch rule for the given operator and ``torch_dispatch_class``.\n\nThis allows for open registration to specify the behavior between the operator\nand the ``torch_dispatch_class`` without needing to modify the ``torch_dispatch_class``\nor the operator directly.\n\nThe ``torch_dispatch_class`` is either a Tensor subclass with ``__torch_dispatch__`` or a\nTorchDispatchMode.\n\nIf it is a Tensor subclass, we expect ``func`` to have the following signature:\n``(cls, func: OpOverload, types: Tuple[type, ...], args, kwargs) -> Any``\n\nIf it is a TorchDispatchMode, we expect ``func`` to have the following signature:\n``(mode, func: OpOverload, types: Tuple[type, ...], args, kwargs) -> Any``\n\n``args`` and ``kwargs`` will have been normalized the same way they are\nin ``__torch_dispatch__`` (see :ref:`torch-dispatch-calling-convention`).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import torch\n    >>>\n    >>> @torch.library.custom_op(\"mylib::foo\", mutates_args={})\n    >>> def foo(x: torch.Tensor) -> torch.Tensor:\n    >>>     return x.clone()\n    >>>\n    >>> class MyMode(torch.utils._python_dispatch.TorchDispatchMode):\n    >>>     def __torch_dispatch__(self, func, types, args=(), kwargs=None):\n    >>>         return func(*args, **kwargs)\n    >>>\n    >>> @torch.library.register_torch_dispatch(\"mylib::foo\", MyMode)\n    >>> def _(mode, func, types, args, kwargs):\n    >>>     x, = args\n    >>>     return x + 1\n    >>>\n    >>> x = torch.randn(3)\n    >>> y = foo(x)\n    >>> assert torch.allclose(y, x)\n    >>>\n    >>> with MyMode():\n    >>>     y = foo(x)\n    >>> assert torch.allclose(y, x + 1)"
+      }
+    },
+    {
+      "name": "register_vmap",
+      "signature": "register_vmap(op: Union[str, ForwardRef('torch._ops.OpOverload'), ForwardRef('torch._library.custom_ops.CustomOpDef')], func: Optional[Callable] = None, /, *, lib=None)",
+      "documentation": {
+        "description": "Register a vmap implementation to support :func:`torch.vmap` for this custom op.\n\nThis API may be used as a decorator (see examples).\n\nIn order for an operator to work with :func:`torch.vmap`, you may need to register a\nvmap implementation in the following signature:\n\n    ``vmap_func(info, in_dims: Tuple[Optional[int]], *args, **kwargs)``,\n\nwhere ``*args`` and ``**kwargs`` are the arguments and kwargs for ``op``.\nWe do not support kwarg-only Tensor args.\n\nIt specifies how do we compute the batched version of ``op`` given inputs with an additional\ndimension (specified by ``in_dims``).\n\nFor each arg in ``args``, ``in_dims`` has a corresponding ``Optional[int]``. It is ``None``\nif the arg is not a Tensor or if the arg is not being vmapped over, otherwise, it is an integer\nspecifying what dimension of the Tensor is being vmapped over.\n\n``info`` is a collection of additional metadata that may be helpful:\n``info.batch_size`` specifies the size of the dimension being vmapped over, while\n``info.randomness`` is the ``randomness`` option that was passed to :func:`torch.vmap`.\n\nThe return of the function ``func`` is a tuple of ``(output, out_dims)``. Similar to ``in_dims``,\n``out_dims`` should be of the same structure as ``output`` and contain one ``out_dim``\nper output that specifies if the output has the vmapped dimension and what index it is in.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>> from typing import Tuple\n    >>>\n    >>> def to_numpy(tensor):\n    >>>     return tensor.cpu().numpy()\n    >>>\n    >>> lib = torch.library.Library(\"mylib\", \"FRAGMENT\")\n    >>> @torch.library.custom_op(\"mylib::numpy_cube\", mutates_args=())\n    >>> def numpy_cube(x: Tensor) -> Tuple[Tensor, Tensor]:\n    >>>     x_np = to_numpy(x)\n    >>>     dx = torch.tensor(3 * x_np ** 2, device=x.device)\n    >>>     return torch.tensor(x_np ** 3, device=x.device), dx\n    >>>\n    >>> def numpy_cube_vmap(info, in_dims, x):\n    >>>     result = numpy_cube(x)\n    >>>     return result, (in_dims[0], in_dims[0])\n    >>>\n    >>> torch.library.register_vmap(numpy_cube, numpy_cube_vmap)\n    >>>\n    >>> x = torch.randn(3)\n    >>> torch.vmap(numpy_cube)(x)\n    >>>\n    >>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n    >>> def numpy_mul(x: Tensor, y: Tensor) -> Tensor:\n    >>>     return torch.tensor(to_numpy(x) * to_numpy(y), device=x.device)\n    >>>\n    >>> @torch.library.register_vmap(\"mylib::numpy_mul\")\n    >>> def numpy_mul_vmap(info, in_dims, x, y):\n    >>>     x_bdim, y_bdim = in_dims\n    >>>     x = x.movedim(x_bdim, -1) if x_bdim is not None else x.unsqueeze(-1)\n    >>>     y = y.movedim(y_bdim, -1) if y_bdim is not None else y.unsqueeze(-1)\n    >>>     result = x * y\n    >>>     result = result.movedim(-1, 0)\n    >>>     return result, 0\n    >>>\n    >>>\n    >>> x = torch.randn(3)\n    >>> y = torch.randn(3)\n    >>> torch.vmap(numpy_mul)(x, y)\n\n.. note::\n    The vmap function should aim to preserve the semantics of the entire custom operator.\n    That is, ``grad(vmap(op))`` should be replaceable with a ``grad(map(op))``.\n\n    If your custom operator has any custom behavior in the backward pass, please\n    keep this in mind."
+      }
+    },
+    {
+      "name": "triton_op",
+      "signature": "triton_op(name: str, fn: Optional[Callable] = None, /, *, mutates_args: Union[str, Iterable[str]], schema: Optional[str] = None) -> Callable",
+      "documentation": {
+        "description": "Create a custom operator whose implementation is backed by 1+ triton kernels.\n\nThis is a more structured way of using triton kernels with PyTorch.\nPrefer using triton kernels with no ``torch.library`` custom operator wrappers\n(like :func:`torch.library.custom_op`, :func:`torch.library.triton_op`) because\nthat is simpler;\nonly use :func:`torch.library.custom_op`/:func:`torch.library.triton_op` if you\nwant to create an operator that behaves like PyTorch built-in operators.\nFor example, you may use a ``torch.library`` wrapper API to define the\nbehavior of the triton kernel when passed a tensor subclass or under\na TorchDispatchMode.\n\nUse :func:`torch.library.triton_op` instead of :func:`torch.library.custom_op`\nwhen the implementation\nconsists of 1+ triton kernels. :func:`torch.library.custom_op` treats\ncustom operators as opaque (:func:`torch.compile` and\n:func:`torch.export.export` will never trace into them), but ``triton_op``\nmakes the implementation visible to these subsystems, allowing them\nto optimize the triton kernel(s).\n\nNote that ``fn`` must only consist of calls to PyTorch-understood\noperators and triton kernels. Any triton kernels called inside ``fn``\nmust be wrapped in a call to :func:`torch._library.wrap_triton``.",
+        "parameters": {
+          "name": {
+            "type": "str",
+            "description": "A name for the custom op that looks like \"{namespace}::{name}\","
+          },
+          "e": {
+            "type": "",
+            "description": ".g. all custom ops in pytorch/fbgemm use \"fbgemm\" as the namespace."
+          },
+          "in": {
+            "type": "",
+            "description": "PyTorch subsystems (e.g. torch.export, FX graphs)."
+          },
+          "To": {
+            "type": "",
+            "description": "avoid name collisions, please use your project name as the namespace;"
+          },
+          "mutates_args": {
+            "type": "Iterable[str] or \"unknown\"",
+            "description": "The names of args that the function mutates."
+          },
+          "This": {
+            "type": "",
+            "description": "MUST be accurate, otherwise, the behavior is undefined. If \"unknown\","
+          },
+          "it": {
+            "type": "",
+            "description": "pessimistically assumes that all inputs to the operator are being mutated."
+          },
+          "schema": {
+            "type": "None | str",
+            "description": "A schema string for the operator. If None\n(recommended) we'll infer a schema for the operator from its type"
+          },
+          "annotations": {
+            "type": "",
+            "description": ". We recommend letting us infer a schema unless you"
+          },
+          "have": {
+            "type": "",
+            "description": "a specific reason not to."
+          },
+          "Example": {
+            "type": "",
+            "description": ":\n>>> # xdoctest: +REQUIRES(env:TORCH_DOCTEST_CUDA)\n>>> import torch\n>>> from torch._library import triton_op, wrap_triton\n>>>\n>>> import triton\n>>> from triton import language as tl\n>>>\n>>> @triton.jit\n>>> def add_kernel(\n>>>     in_ptr0,\n>>>     in_ptr1,\n>>>     out_ptr,\n>>>     n_elements,\n>>>     BLOCK_SIZE: \"tl.constexpr\",\n>>> ):\n>>>     pid = tl.program_id(axis=0)\n>>>     block_start = pid * BLOCK_SIZE\n>>>     offsets = block_start + tl.arange(0, BLOCK_SIZE)\n>>>     mask = offsets < n_elements\n>>>     x = tl.load(in_ptr0 + offsets, mask=mask)\n>>>     y = tl.load(in_ptr1 + offsets, mask=mask)\n>>>     output = x + y\n>>>     tl.store(out_ptr + offsets, output, mask=mask)\n>>>\n>>> @triton_op(\"mylib::add\", mutates_args={})\n>>> def add(x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:\n>>>     output = torch.empty_like(x)\n>>>     n_elements = output.numel()\n>>>\n>>>     def grid(meta):\n>>>         return (triton.cdiv(n_elements, meta[\"BLOCK_SIZE\"]),)\n>>>\n>>>     # NB: we need to wrap the triton kernel in a call to wrap_triton\n>>>     wrap_triton(add_kernel)[grid](x, y, output, n_elements, 16)\n>>>     return output\n>>>\n>>> @torch.compile\n>>> def f(x, y):\n>>>     return add(x, y)\n>>>\n>>> x = torch.randn(3, device=\"cuda\")\n>>> y = torch.randn(3, device=\"cuda\")\n>>>\n>>> z = f(x, y)\n>>> assert torch.allclose(z, x + y)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "wrap_triton",
+      "signature": "wrap_triton(triton_kernel: Callable, /) -> Any",
+      "documentation": {
+        "description": "Allows capture of a triton kernel into a graph via make_fx or\nnon-strict ``torch.export``.\n\nThese technologies perform Dispatcher-based tracing (via\n``__torch_dispatch__``) and cannot see calls to raw triton kernels.\nThe ``wrap_triton`` API wraps a triton kernel into a callable that\ncan actually be traced into a graph.\n\nPlease use this API together with :func:`torch.library.triton_op`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> # xdoctest: +SKIP\n    >>> import torch\n    >>> import triton\n    >>> from triton import language as tl\n    >>> from torch.fx.experimental.proxy_tensor import make_fx\n    >>> from torch.library import wrap_triton\n    >>>\n    >>> @triton.jit\n    >>> def add_kernel(\n    >>>     in_ptr0,\n    >>>     in_ptr1,\n    >>>     out_ptr,\n    >>>     n_elements,\n    >>>     BLOCK_SIZE: \"tl.constexpr\",\n    >>> ):\n    >>>     pid = tl.program_id(axis=0)\n    >>>     block_start = pid * BLOCK_SIZE\n    >>>     offsets = block_start + tl.arange(0, BLOCK_SIZE)\n    >>>     mask = offsets < n_elements\n    >>>     x = tl.load(in_ptr0 + offsets, mask=mask)\n    >>>     y = tl.load(in_ptr1 + offsets, mask=mask)\n    >>>     output = x + y\n    >>>     tl.store(out_ptr + offsets, output, mask=mask)\n    >>>\n    >>> def add(x, y):\n    >>>     output = torch.empty_like(x)\n    >>>     n_elements = output.numel()\n    >>>\n    >>>     def grid_fn(meta):\n    >>>         return (triton.cdiv(n_elements, meta[\"BLOCK_SIZE\"]),)\n    >>>\n    >>>     wrap_triton(add_kernel)[grid_fn](x, y, output, n_elements, 16)\n    >>>     return output\n    >>>\n    >>> x = torch.randn(3, device=\"cuda\")\n    >>> y = torch.randn(3, device=\"cuda\")\n    >>> gm = make_fx(add)(x, y)\n    >>> print(gm.code)\n    >>> # def forward(self, x_1, y_1):\n    >>> #     empty_like = torch.ops.aten.empty_like.default(x_1, pin_memory = False)\n    >>> #     triton_kernel_wrapper_mutation_proxy = triton_kernel_wrapper_mutation(\n    >>> #         kernel_idx = 0, constant_args_idx = 0,\n    >>> #         grid = [(1, 1, 1)], kwargs = {\n    >>> #             'in_ptr0': x_1, 'in_ptr1': y_1, 'out_ptr': empty_like,\n    >>> #             'n_elements': 3, 'BLOCK_SIZE': 16\n    >>> #         })\n    >>> #     return empty_like"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Any",
+      "documentation": {
+        "description": "Special type indicating an unconstrained type.\n\n- Any is compatible with every type.\n- Any assumed to have all methods.\n- All values assumed to be instances of Any.\n\nNote that all the above statements are true from the point of view of\nstatic type checkers. At runtime, Any should not be used with instance\nchecks.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "CustomOpDef",
+      "documentation": {
+        "description": "CustomOpDef is a wrapper around a function that turns it into a custom op.\n\nIt has various methods for registering additional behavior for this\ncustom op.\n\nYou should not instantiate CustomOpDef directly; instead, use the\n:func:`torch.library.custom_op` API.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "register_autograd",
+          "signature": "register_autograd(self, backward: Callable, /, *, setup_context: Optional[Callable] = None) -> None",
+          "documentation": {
+            "description": "Register a backward formula for this custom op.\n\nIn order for an operator to work with autograd, you need to register\na backward formula:\n1. You must tell us how to compute gradients during the backward pass\nby providing us a \"backward\" function.\n2. If you need any values from the forward to compute gradients, you can\nuse `setup_context` to save values for backward.\n\n``backward_fn`` runs during the backward pass. It accepts ``(ctx, *grads)``:\n- ``grads`` is one or more gradients. The number of gradients matches\nthe number of outputs of the operator.\nThe ``ctx`` object is `the same ctx object <context_method_mixins>`_ used by\n:class:`torch.autograd.Function`. The semantics of ``backward_fn`` are the\nsame as :meth:`torch.autograd.Function.backward`.\n\n``setup_context(ctx, inputs, output)`` runs during the forward pass.\nPlease save quantities needed for backward onto the ``ctx`` object via\neither :meth:`torch.autograd.function.FunctionCtx.save_for_backward`\nor assigning them as attributes of ``ctx``. If your custom op has\nkwarg-only arguments, we expect the signature of ``setup_context``\nto be ``setup_context(ctx, inputs, keyword_only_inputs, output)``.\n\nBoth ``setup_context_fn`` and ``backward_fn`` must be traceable. That is,\nthey may not directly access :meth:`torch.Tensor.data_ptr` and they must\nnot depend on or mutate global state. If you need a non-traceable backward,\nyou can make it a separate custom_op that you call inside ``backward_fn``.\n\nIf you need different autograd behavior on different devices, then we\nrecommend creating two different custom operators, one for each device\nthat needs different behavior, and switching between them at runtime.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>>\n    >>> @torch.library.custom_op(\"mylib::numpy_sin\", mutates_args=())\n    >>> def numpy_sin(x: Tensor) -> Tensor:\n    >>>     x_np = x.cpu().numpy()\n    >>>     y_np = np.sin(x_np)\n    >>>     return torch.from_numpy(y_np).to(device=x.device)\n    >>>\n    >>> def setup_context(ctx, inputs, output) -> Tensor:\n    >>>     x, = inputs\n    >>>     ctx.save_for_backward(x)\n    >>>\n    >>> def backward(ctx, grad):\n    >>>     x, = ctx.saved_tensors\n    >>>     return grad * x.cos()\n    >>>\n    >>> numpy_sin.register_autograd(backward, setup_context=setup_context)\n    >>>\n    >>> x = torch.randn(3, requires_grad=True)\n    >>> y = numpy_sin(x)\n    >>> grad_x, = torch.autograd.grad(y, x, torch.ones_like(y))\n    >>> assert torch.allclose(grad_x, x.cos())\n    >>>\n    >>> # Example with a keyword-only arg\n    >>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n    >>> def numpy_mul(x: Tensor, *, val: float) -> Tensor:\n    >>>     x_np = x.cpu().numpy()\n    >>>     y_np = x_np * val\n    >>>     return torch.from_numpy(y_np).to(device=x.device)\n    >>>\n    >>> def setup_context(ctx, inputs, keyword_only_inputs, output) -> Tensor:\n    >>>     ctx.val = keyword_only_inputs[\"val\"]\n    >>>\n    >>> def backward(ctx, grad):\n    >>>     return grad * ctx.val\n    >>>\n    >>> numpy_mul.register_autograd(backward, setup_context=setup_context)\n    >>>\n    >>> x = torch.randn(3, requires_grad=True)\n    >>> y = numpy_mul(x, val=3.14)\n    >>> grad_x, = torch.autograd.grad(y, x, torch.ones_like(y))\n    >>> assert torch.allclose(grad_x, torch.full_like(x, 3.14))"
+          }
+        },
+        {
+          "name": "register_fake",
+          "signature": "register_fake(self, fn: Callable, /) -> Callable",
+          "documentation": {
+            "description": "Register a FakeTensor implementation for this custom op.\n\nThis is necessary to get the operator to work efficiently with torch.compile.\n\nThe Fake impl (sometimes also known as a meta kernel or abstract impl)\nspecifies the behavior of this operator on Tensors that carry no data.\nGiven some input Tensors with certain properties\n(sizes/strides/storage_offset/device), it specifies what the properties of\nthe output Tensors are.\n\nPlease see :func:`torch.library.impl_abstract` for more details.",
+            "parameters": {
+              "fn": {
+                "type": "Callable",
+                "description": "The function to register as the FakeTensor"
+              },
+              "implementation": {
+                "type": "",
+                "description": "."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>>\n    >>> # Example 1: an operator without data-dependent output shape\n    >>> @torch.library.custom_op(\"mylib::linear\", mutates_args=())\n    >>> def linear(x: Tensor, weight: Tensor, bias: Tensor) -> Tensor:\n    >>>     return (x @ weight.t()) + bias\n    >>>\n    >>> @linear.register_fake\n    >>> def _(x, weight, bias):\n    >>>     assert x.dim() == 2\n    >>>     assert weight.dim() == 2\n    >>>     assert bias.dim() == 1\n    >>>     assert x.shape[1] == weight.shape[1]\n    >>>     assert weight.shape[0] == bias.shape[0]\n    >>>     assert x.device == weight.device\n    >>>     return x.new_empty(x.size(0), weight.size(0))\n    >>>\n    >>> x = torch.randn(2, 2)\n    >>> weight = torch.randn(2, 2)\n    >>> bias = torch.randn(2)\n    >>> # xdoctest: +SKIP(\"Requires Python <= 3.11\")\n    >>> out = torch.compile(linear, fullgraph=True)(x, weight, bias)\n    >>> # xdoctest: +SKIP(\"Requires Python <= 3.11\")\n    >>> assert torch.allclose(out, torch.nn.functional.linear(x, weight, bias))\n    >>>\n    >>> # Example 2: an operator with data-dependent output shape\n    >>> @torch.library.custom_op(\"mylib::nonzero\", mutates_args=())\n    >>> def nonzero(x: Tensor) -> Tensor:\n    >>>     x_np = x.cpu().numpy()\n    >>>     res = np.stack(np.nonzero(x_np), axis=1)\n    >>>     return torch.tensor(res, device=x.device)\n    >>>\n    >>> @nonzero.register_fake\n    >>> def _(x):\n    >>>     # Number of nonzero-elements is data-dependent.\n    >>>     # Since we cannot peek at the data in an abstract impl,\n    >>>     # we use the ctx object to construct a new symint that\n    >>>     # represents the data-dependent size.\n    >>>     ctx = torch.library.get_ctx()\n    >>>     nnz = ctx.new_dynamic_size()\n    >>>     shape = [nnz, x.dim()]\n    >>>     result = x.new_empty(shape, dtype=torch.int64)\n    >>>     return result\n    >>>\n    >>> x = torch.tensor([0, 1, 2, 0, 0, 1])\n    >>> # xdoctest: +SKIP(\"Requires Python <= 3.11\")\n    >>> out = torch.compile(nonzero, fullgraph=True)(x)\n    >>> # xdoctest: +SKIP(\"Requires Python <= 3.11\")\n    >>> assert torch.allclose(out, x.nonzero())"
+          }
+        },
+        {
+          "name": "register_kernel",
+          "signature": "register_kernel(self, device_types: Union[str, Sequence[str], NoneType], fn: Optional[Callable] = None, /) -> Callable",
+          "documentation": {
+            "description": "Register an implementation for a device type for this operator.\n\nSome valid device_types are: \"cpu\", \"cuda\", \"xla\", \"mps\", \"ipu\", \"xpu\".\nThis API may be used as a decorator.",
+            "parameters": {
+              "fn": {
+                "type": "Callable",
+                "description": "The function to register as the implementation for"
+              },
+              "the": {
+                "type": "",
+                "description": "given device types."
+              },
+              "device_types": {
+                "type": "str | Sequence[str]",
+                "description": "The device device_types to register an impl to."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "register_torch_dispatch",
+          "signature": "register_torch_dispatch(self, torch_dispatch_class: Any, fn: Optional[Callable] = None, /) -> Callable",
+          "documentation": {
+            "description": "Registers a torch_dispatch rule for the given operator and ``torch_dispatch_class``.\n\nThis allows for open registration to specify the behavior between the operator\nand the ``torch_dispatch_class`` without needing to modify the ``torch_dispatch_class``\nor the operator directly.\n\nPlease see :func:`torch.library.register_torch_dispatch` for examples and more details.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "register_vmap",
+          "signature": "register_vmap(self, func: Optional[Callable] = None)",
+          "documentation": {
+            "description": "Register a vmap implementation to support :func:`torch.vmap` for this custom op.\n\nThis API may be used as a decorator.\n\nIn order for an operator to work with :func:`torch.vmap`, you may need to register a\nvmap implementation in the following signature:\n\n    ``vmap_func(info, in_dims: Tuple[Optional[int]], *args, **kwargs)``,\n\nwhere ``*args`` and ``**kwargs`` are the arguments and kwargs for ``op``.\n\nIt specifies how do we compute the batched version of ``op`` given inputs with an additional\ndimension (specified by ``in_dims``).\n\nFor each arg in ``args``, ``in_dims`` has a corresponding ``Optional[int]``. It is ``None``\nif the arg is not a Tensor or if the arg is not being vmapped over, otherwise, it is an integer\nspecifying what dimension of the Tensor is being vmapped over.\n\n``info`` is a collection of additional metadata that may be helpful:\n``info.batch_size`` specifies the size of the dimension being vmapped over, while\n``info.randomness`` is the ``randomness`` option that was passed to :func:`torch.vmap`.\n\nThe return of the function ``func`` is a tuple of ``(output, out_dims)``. Similar to ``in_dims``,\n``out_dims`` should be of the same structure as ``output`` and contain one ``out_dim``\nper output that specifies if the output has the vmapped dimension and what index it is in.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> import torch\n    >>> import numpy as np\n    >>> from torch import Tensor\n    >>> from typing import Tuple\n    >>>\n    >>> def to_numpy(tensor):\n    >>>     return tensor.cpu().numpy()\n    >>>\n    >>> lib = torch.library.Library(\"mylib\", \"FRAGMENT\")\n    >>> @torch.library.custom_op(\"mylib::numpy_cube\", mutates_args=())\n    >>> def numpy_cube(x: Tensor) -> Tuple[Tensor, Tensor]:\n    >>>     x_np = to_numpy(x)\n    >>>     dx = torch.tensor(3 * x_np ** 2, device=x.device)\n    >>>     return torch.tensor(x_np ** 3, device=x.device), dx\n    >>>\n    >>> def numpy_cube_vmap(info, in_dims, x):\n    >>>     result = numpy_cube(x)\n    >>>     return result, (in_dims[0], in_dims[0])\n    >>>\n    >>> numpy_cube.register_vmap(numpy_cube_vmap)\n    >>>\n    >>> x = torch.randn(3)\n    >>> torch.vmap(numpy_cube)(x)\n    >>>\n    >>> @torch.library.custom_op(\"mylib::numpy_mul\", mutates_args=())\n    >>> def numpy_mul(x: Tensor, y: Tensor) -> Tensor:\n    >>>     return torch.tensor(to_numpy(x) * to_numpy(y), device=x.device)\n    >>>\n    >>> @numpy_mul.register_vmap\n    >>> def numpy_mul_vmap(info, in_dims, x, y):\n    >>>     x_bdim, y_bdim = in_dims\n    >>>     x = x.movedim(x_bdim, -1) if x_bdim is not None else x.unsqueeze(-1)\n    >>>     y = y.movedim(y_bdim, -1) if y_bdim is not None else y.unsqueeze(-1)\n    >>>     result = x * y\n    >>>     result = result.movedim(-1, 0)\n    >>>     return result, 0\n    >>>\n    >>>\n    >>> x = torch.randn(3)\n    >>> y = torch.randn(3)\n    >>> torch.vmap(numpy_mul)(x, y)"
+          }
+        },
+        {
+          "name": "set_kernel_enabled",
+          "signature": "set_kernel_enabled(self, device_type: str, enabled: bool = True)",
+          "documentation": {
+            "description": "Disable or re-enable an already registered kernel for this custom operator.\n\nIf the kernel is already disabled/enabled, this is a no-op.",
+            "parameters": {
+              "device_type": {
+                "type": "str",
+                "description": "The device type to disable/enable the kernel for."
+              },
+              "disable": {
+                "type": "bool",
+                "description": "Whether to disable or enable the kernel."
+              },
+              "Example": {
+                "type": "",
+                "description": ">>> inp = torch.randn(1)\n>>>\n>>> # define custom op `f`.\n>>> @custom_op(\"mylib::f\", mutates_args=())\n>>> def f(x: Tensor) -> Tensor:\n>>>     return torch.zeros(1)\n>>>\n>>> print(f(inp))  # tensor([0.]), default kernel\n>>>\n>>> @f.register_kernel(\"cpu\")\n>>> def _(x):\n>>>     return torch.ones(1)\n>>>\n>>> print(f(inp))  # tensor([1.]), CPU kernel\n>>>\n>>> # temporarily disable the CPU kernel\n>>> with f.set_kernel_enabled(\"cpu\", enabled = False):\n>>>     print(f(inp))  # tensor([0.]) with CPU kernel disabled"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "If a kernel is first disabled and then registered, it is disabled until enabled again.\n\nArgs:\n    device_type (str): The device type to disable/enable the kernel for.\n    disable (bool): Whether to disable or enable the kernel.",
+            "examples": ">>> inp = torch.randn(1)\n    >>>\n    >>> # define custom op `f`.\n    >>> @custom_op(\"mylib::f\", mutates_args=())\n    >>> def f(x: Tensor) -> Tensor:\n    >>>     return torch.zeros(1)\n    >>>\n    >>> print(f(inp))  # tensor([0.]), default kernel\n    >>>\n    >>> @f.register_kernel(\"cpu\")\n    >>> def _(x):\n    >>>     return torch.ones(1)\n    >>>\n    >>> print(f(inp))  # tensor([1.]), CPU kernel\n    >>>\n    >>> # temporarily disable the CPU kernel\n    >>> with f.set_kernel_enabled(\"cpu\", enabled = False):\n    >>>     print(f(inp))  # tensor([0.]) with CPU kernel disabled"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Library",
+      "documentation": {
+        "description": "A class to create libraries that can be used to register new operators or\noverride operators in existing libraries from Python.\nA user can optionally pass in a dispatch keyname if they only want to register\nkernels corresponding to only one specific dispatch key.\n\nTo create a library to override operators in an existing library (with name ns), set the kind to \"IMPL\".\nTo create a new library (with name ns) to register new operators, set the kind to \"DEF\".\nTo create a fragment of a possibly existing library to register operators (and bypass\nthe limitation that there is only one library for a given namespace), set the kind to\n\"FRAGMENT\".",
+        "parameters": {
+          "ns": {
+            "type": "",
+            "description": "library name"
+          },
+          "kind": {
+            "type": "",
+            "description": "\"DEF\", \"IMPL\" (default: \"IMPL\"), \"FRAGMENT\""
+          },
+          "dispatch_key": {
+            "type": "",
+            "description": "PyTorch dispatch key (default: \"\")"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "define",
+          "signature": "define(self, schema, alias_analysis='', *, tags=())",
+          "documentation": {
+            "description": "Defines a new operator and its semantics in the ns namespace.",
+            "parameters": {
+              "schema": {
+                "type": "",
+                "description": "function schema to define a new operator."
+              },
+              "alias_analysis": {
+                "type": "optional",
+                "description": "Indicates if the aliasing properties of the operator arguments can be"
+              },
+              "inferred": {
+                "type": "",
+                "description": "from the schema (default behavior) or not (\"CONSERVATIVE\")."
+              },
+              "tags": {
+                "type": "Tag | Sequence[Tag]",
+                "description": "one or more torch.Tag to apply to this"
+              },
+              "operator": {
+                "type": "",
+                "description": ". Tagging an operator changes the operator's behavior"
+              },
+              "under": {
+                "type": "",
+                "description": "various PyTorch subsystems; please read the docs for the"
+              },
+              "torch": {
+                "type": "",
+                "description": ".Tag carefully before applying it."
+              }
+            },
+            "returns": "name of the operator as inferred from the schema.\n\nExample::\n    >>> my_lib = Library(\"mylib\", \"DEF\")\n    >>> my_lib.define(\"sum(Tensor self) -> Tensor\")",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fallback",
+          "signature": "fallback(self, fn, dispatch_key='', *, with_keyset=False)",
+          "documentation": {
+            "description": "Registers the function implementation as the fallback for the given key.\n\nThis function only works for a library with global namespace (\"_\").",
+            "parameters": {
+              "fn": {
+                "type": "",
+                "description": "function used as fallback for the given dispatch key or :func:`~fallthrough_kernel`"
+              },
+              "to": {
+                "type": "",
+                "description": "attr:`fn` when calling. This should be used to create the appropriate keyset for redispatch calls."
+              },
+              "dispatch_key": {
+                "type": "",
+                "description": "dispatch key that the input function should be registered for. By default, it uses"
+              },
+              "the": {
+                "type": "",
+                "description": "dispatch key that the library was created with."
+              },
+              "with_keyset": {
+                "type": "",
+                "description": "flag controlling if the current dispatcher call keyset should be passed as the first argument"
+              },
+              "Example": {
+                "type": "",
+                "description": ":\n>>> my_lib = Library(\"_\", \"IMPL\")\n>>> def fallback_kernel(op, *args, **kwargs):\n>>>     # Handle all autocast ops generically\n>>>     # ...\n>>> my_lib.fallback(fallback_kernel, \"Autocast\")"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "impl",
+          "signature": "impl(self, op_name, fn, dispatch_key='', *, with_keyset=False)",
+          "documentation": {
+            "description": "Registers the function implementation for an operator defined in the library.",
+            "parameters": {
+              "op_name": {
+                "type": "",
+                "description": "operator name (along with the overload) or OpOverload object."
+              },
+              "fn": {
+                "type": "",
+                "description": "function that's the operator implementation for the input dispatch key or :func:`~fallthrough_kernel`"
+              },
+              "to": {
+                "type": "",
+                "description": "attr:`fn` when calling. This should be used to create the appropriate keyset for redispatch calls."
+              },
+              "dispatch_key": {
+                "type": "",
+                "description": "dispatch key that the input function should be registered for. By default, it uses"
+              },
+              "the": {
+                "type": "",
+                "description": "dispatch key that the library was created with."
+              },
+              "with_keyset": {
+                "type": "",
+                "description": "flag controlling if the current dispatcher call keyset should be passed as the first argument"
+              },
+              "Example": {
+                "type": "",
+                "description": ":\n>>> my_lib = Library(\"aten\", \"IMPL\")\n>>> def div_cpu(self, other):\n>>>     return self * (1 / other)\n>>> my_lib.impl(\"div.Tensor\", div_cpu, \"CPU\")"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "OpOverload",
+      "documentation": {
+        "description": "Base class for OpOverload (which represents C++ ATen operators) and HigherOrderOperator\n(which represents Python-only operators that are unrepresentable in TorchScript).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "decompose",
+          "signature": "decompose(self, *args, **kwargs)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "has_kernel_for_any_dispatch_key",
+          "signature": "has_kernel_for_any_dispatch_key(self, ks)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "has_kernel_for_dispatch_key",
+          "signature": "has_kernel_for_dispatch_key(self, k)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "name",
+          "signature": "name(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "py_functionalize_impl",
+          "signature": "py_functionalize_impl(self, fn: ~_F) -> ~_F",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "py_impl",
+          "signature": "py_impl(self, k: Any) -> Callable[[~_F], ~_F]",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "redispatch",
+          "signature": "redispatch(self, /, keyset, *args, **kwargs)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "deprecated",
+      "documentation": {
+        "description": "Indicate that a class, function or overload is deprecated.\n\nWhen this decorator is applied to an object, the type checker\nwill generate a diagnostic on usage of the deprecated object.\n\nUsage:\n\n    @deprecated(\"Use B instead\")\n    class A:\n        pass\n\n    @deprecated(\"Use g instead\")\n    def f():\n        pass\n\n    @overload\n    @deprecated(\"int support is deprecated\")\n    def g(x: int) -> int: ...\n    @overload\n    def g(x: str) -> int: ...\n\nThe warning specified by *category* will be emitted at runtime\non use of deprecated objects. For functions, that happens on calls;\nfor classes, on instantiation and on creation of subclasses.\nIf the *category* is ``None``, no warning is emitted at runtime.\nThe *stacklevel* determines where the\nwarning is emitted. If it is ``1`` (the default), the warning\nis emitted at the direct caller of the deprecated object; if it\nis higher, it is emitted further up the stack.\nStatic type checker behavior is not affected by the *category*\nand *stacklevel* arguments.\n\nThe deprecation message passed to the decorator is saved in the\n``__deprecated__`` attribute on the decorated object.\nIf applied to an overload, the decorator\nmust be after the ``@overload`` decorator for the attribute to\nexist on the overload as returned by ``get_overloads()``.\n\nSee PEP 702 for details.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    }
+  ]
+}

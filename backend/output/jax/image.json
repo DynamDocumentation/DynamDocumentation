@@ -1,0 +1,46 @@
+{
+  "description": "Image manipulation functions.\n\nMore image manipulation functions can be found in libraries built on top of\nJAX, such as `PIX`_.\n\n.. _PIX: https://github.com/deepmind/dm_pix",
+  "functions": [
+    {
+      "name": "resize",
+      "signature": "resize(image, shape: 'core.Shape', method: 'str | ResizeMethod', antialias: 'bool' = True, precision=Precision.HIGHEST)",
+      "documentation": {
+        "description": "Image resize.\nThe ``method`` argument expects one of the following resize methods:\n``ResizeMethod.NEAREST``, ``\"nearest\"``\n`Nearest neighbor interpolation`_. The values of ``antialias`` and\n``precision`` are ignored.\n``ResizeMethod.LINEAR``, ``\"linear\"``, ``\"bilinear\"``, ``\"trilinear\"``, ``\"triangle\"``\n`Linear interpolation`_. If ``antialias`` is ``True``, uses a triangular\nfilter when downsampling.\n``ResizeMethod.CUBIC``, ``\"cubic\"``, ``\"bicubic\"``, ``\"tricubic\"``\n`Cubic interpolation`_, using the Keys cubic kernel.\n``ResizeMethod.LANCZOS3``, ``\"lanczos3\"``\n`Lanczos resampling`_, using a kernel of radius 3.\n``ResizeMethod.LANCZOS5``, ``\"lanczos5\"``\n`Lanczos resampling`_, using a kernel of radius 5.\n.. _Nearest neighbor interpolation: https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation\n.. _Linear interpolation: https://en.wikipedia.org/wiki/Bilinear_interpolation\n.. _Cubic interpolation: https://en.wikipedia.org/wiki/Bicubic_interpolation\n.. _Lanczos resampling: https://en.wikipedia.org/wiki/Lanczos_resampling\nArgs:\nimage: a JAX array.\nshape: the output shape, as a sequence of integers with length equal to\nthe number of dimensions of `image`. Note that :func:`resize` does not\ndistinguish spatial dimensions from batch or channel dimensions, so this\nincludes all dimensions of the image. To represent a batch or a channel\ndimension, simply leave that element of the shape unchanged.\nmethod: the resizing method to use; either a ``ResizeMethod`` instance or a\nstring. Available methods are: LINEAR, LANCZOS3, LANCZOS5, CUBIC.\nantialias: should an antialiasing filter be used when downsampling? Defaults\nto ``True``. Has no effect when upsampling.",
+        "parameters": {},
+        "returns": "The resized image.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "scale_and_translate",
+      "signature": "scale_and_translate(image, shape: 'core.Shape', spatial_dims: 'Sequence[int]', scale, translation, method: 'str | ResizeMethod', antialias: 'bool' = True, precision=Precision.HIGHEST)",
+      "documentation": {
+        "description": "Apply a scale and translation to an image.\nGenerates a new image of shape 'shape' by resampling from the input image\nusing the sampling method corresponding to method. For 2D images, this\noperation transforms a location in the input images, (x, y), to a location\nin the output image according to::\n(x * scale[1] + translation[1], y * scale[0] + translation[0])\n(Note the *inverse* warp is used to generate the sample locations.)\nAssumes half-centered pixels, i.e the pixel at integer location ``row, col``\nhas coordinates ``y, x = row + 0.5, col + 0.5``, and similarly for other input\nimage dimensions.\nIf an output location(pixel) maps to an input sample location that is outside\nthe input boundaries then the value for the output location will be set to\nzero.\nThe ``method`` argument expects one of the following resize methods:\n``ResizeMethod.LINEAR``, ``\"linear\"``, ``\"bilinear\"``, ``\"trilinear\"``,\n``\"triangle\"`` `Linear interpolation`_. If ``antialias`` is ``True``, uses a\ntriangular filter when downsampling.\n``ResizeMethod.CUBIC``, ``\"cubic\"``, ``\"bicubic\"``, ``\"tricubic\"``\n`Cubic interpolation`_, using the Keys cubic kernel.\n``ResizeMethod.LANCZOS3``, ``\"lanczos3\"``\n`Lanczos resampling`_, using a kernel of radius 3.\n``ResizeMethod.LANCZOS5``, ``\"lanczos5\"``\n`Lanczos resampling`_, using a kernel of radius 5.\n.. _Linear interpolation: https://en.wikipedia.org/wiki/Bilinear_interpolation\n.. _Cubic interpolation: https://en.wikipedia.org/wiki/Bicubic_interpolation\n.. _Lanczos resampling: https://en.wikipedia.org/wiki/Lanczos_resampling\nArgs:\nimage: a JAX array.\nshape: the output shape, as a sequence of integers with length equal to the\nnumber of dimensions of `image`.\nspatial_dims: A length K tuple specifying the spatial dimensions that the\npassed scale and translation should be applied to.\nscale: A [K] array with the same number of dimensions as image, containing\nthe scale to apply in each dimension.\ntranslation: A [K] array with the same number of dimensions as image,\ncontaining the translation to apply in each dimension.\nmethod: the resizing method to use; either a ``ResizeMethod`` instance or a\nstring. Available methods are: LINEAR, LANCZOS3, LANCZOS5, CUBIC.\nantialias: Should an antialiasing filter be used when downsampling? Defaults\nto ``True``. Has no effect when upsampling.",
+        "parameters": {},
+        "returns": "The scale and translated image.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "ResizeMethod",
+      "documentation": {
+        "description": "Image resize method.\nPossible values are:\nNEAREST:\nNearest-neighbor interpolation.\nLINEAR:\n`Linear interpolation`_.\nLANCZOS3:\n`Lanczos resampling`_, using a kernel of radius 3.\nLANCZOS5:\n`Lanczos resampling`_, using a kernel of radius 5.\nCUBIC:\n`Cubic interpolation`_, using the Keys cubic kernel.\n.. _Linear interpolation: https://en.wikipedia.org/wiki/Bilinear_interpolation\n.. _Cubic interpolation: https://en.wikipedia.org/wiki/Bicubic_interpolation\n.. _Lanczos resampling: https://en.wikipedia.org/wiki/Lanczos_resampling",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    }
+  ]
+}

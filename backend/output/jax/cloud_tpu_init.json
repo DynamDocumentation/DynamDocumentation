@@ -1,0 +1,19 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "cloud_tpu_init",
+      "signature": "cloud_tpu_init() -> None",
+      "documentation": {
+        "description": "Automatically sets Cloud TPU topology and other env vars.\n**This must be called before the TPU runtime is loaded, which happens as soon\nas JAX's C++ backend is loaded! I.e. call this before xla_bridge or xla_client\nis imported.**\nSafe to call in non-Cloud TPU environments.\nSome of these environment variables are used to tell the TPU runtime what kind\nof mesh topology to use. It assumes a single-host topology by default, so we\nmanually set them here to default to the full pod slice if applicable.\nThis will not set any env vars if a single topology-related env var is already\nset.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

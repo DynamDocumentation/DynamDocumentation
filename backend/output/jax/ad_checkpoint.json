@@ -1,0 +1,99 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "checkpoint",
+      "signature": "checkpoint(fun: 'Callable', *, prevent_cse: 'bool' = True, policy: 'Callable[..., bool] | None' = None, static_argnums: 'int | tuple[int, ...]' = ()) -> 'Callable'",
+      "documentation": {
+        "description": "Make ``fun`` recompute internal linearization points when differentiated.\nThe :func:`jax.checkpoint` decorator, aliased to :func:`jax.remat`, provides a\nway to trade off computation time and memory cost in the context of automatic\ndifferentiation, especially with reverse-mode autodiff like :func:`jax.grad`\nand :func:`jax.vjp` but also with :func:`jax.linearize`.\nWhen differentiating a function in reverse-mode, by default all the\nlinearization points (e.g. inputs to elementwise nonlinear primitive\noperations) are stored when evaluating the forward pass so that they can be\nreused on the backward pass. This evaluation strategy can lead to a high\nmemory cost, or even to poor performance on hardware accelerators where memory\naccess is much more expensive than FLOPs.\nAn alternative evaluation strategy is for some of the linearization points to\nbe recomputed (i.e. rematerialized) rather than stored. This approach can\nreduce memory usage at the cost of increased computation.\nThis function decorator produces a new version of ``fun`` which follows\nthe rematerialization strategy rather than the default store-everything\nstrategy. That is, it returns a new version of ``fun`` which, when\ndifferentiated, doesn't store any of its intermediate linearization points.\nInstead, these linearization points are recomputed from the function's saved\ninputs.\nSee the examples below.\nArgs:\nfun: Function for which the autodiff evaluation strategy is to be changed\nfrom the default of storing all intermediate linearization points to\nrecomputing them. Its arguments and return value should be arrays,\nscalars, or (nested) standard Python containers (tuple/list/dict) thereof.\nprevent_cse: Optional, boolean keyword-only argument indicating whether to\nprevent common subexpression elimination (CSE) optimizations in the HLO\ngenerated from differentiation. This CSE prevention has costs because it\ncan foil other optimizations, and because it can incur high overheads on\nsome backends, especially GPU. The default is True because otherwise,\nunder a :func:`~jax.jit` or :func:`~jax.pmap`, CSE can defeat the purpose\nof this decorator.\nBut in some settings, like when used inside a :func:`~jax.lax.scan`, this\nCSE prevention mechanism is unnecessary, in which case ``prevent_cse`` can\nbe set to False.\nstatic_argnums: Optional, int or sequence of ints, a keyword-only argument\nindicating which argument values on which to specialize for tracing and\ncaching purposes. Specifying arguments as static can avoid\nConcretizationTypeErrors when tracing, but at the cost of more retracing\noverheads. See the example below.\npolicy: Optional, callable keyword-only argument. It should be one of the\nattributes of ``jax.checkpoint_policies``. The callable takes as input a\ntype-level specification of a first-order primitive application and\nreturns a boolean indicating whether the corresponding output value(s) can\nbe saved as residuals (or instead must be recomputed in the (co)tangent\ncomputation if needed).",
+        "parameters": {},
+        "returns": "A function (callable) with the same input/output behavior as ``fun`` but\nwhich, when differentiated using e.g. :func:`jax.grad`, :func:`jax.vjp`, or\n:func:`jax.linearize`, recomputes rather than stores intermediate\nlinearization points, thus potentially saving memory at the cost of extra\ncomputation.\nHere is a simple example:\n>>> import jax\n>>> import jax.numpy as jnp\n>>> @jax.checkpoint\n... def g(x):\n...   y = jnp.sin(x)\n...   z = jnp.sin(y)\n...   return z\n...\n>>> jax.value_and_grad(g)(2.0)\n(Array(0.78907233, dtype=float32, weak_type=True), Array(-0.2556391, dtype=float32, weak_type=True))\nHere, the same value is produced whether or not the :func:`jax.checkpoint`\ndecorator is present. When the decorator is not present, the values\n``jnp.cos(2.0)`` and ``jnp.cos(jnp.sin(2.0))`` are computed on the forward\npass and are stored for use in the backward pass, because they are needed\non the backward pass and depend only on the primal inputs. When using\n:func:`jax.checkpoint`, the forward pass will compute only the primal outputs\nand only the primal inputs (``2.0``) will be stored for the backward pass.\nAt that time, the value ``jnp.sin(2.0)`` is recomputed, along with the values\n``jnp.cos(2.0)`` and ``jnp.cos(jnp.sin(2.0))``.\nWhile :func:`jax.checkpoint` controls what values are stored from the\nforward-pass to be used on the backward pass, the total amount of memory\nrequired to evaluate a function or its VJP depends on many additional internal\ndetails of that function. Those details include which numerical primitives are\nused, how they're composed, where jit and control flow primitives like scan\nare used, and other factors.\nThe :func:`jax.checkpoint` decorator can be applied recursively to express\nsophisticated autodiff rematerialization strategies. For example:\n>>> def recursive_checkpoint(funs):\n...   if len(funs) == 1:\n...     return funs[0]\n...   elif len(funs) == 2:\n...     f1, f2 = funs\n...     return lambda x: f1(f2(x))\n...   else:\n...     f1 = recursive_checkpoint(funs[:len(funs)//2])\n...     f2 = recursive_checkpoint(funs[len(funs)//2:])\n...     return lambda x: f1(jax.checkpoint(f2)(x))\n...\nIf ``fun`` involves Python control flow that depends on argument values,\nit may be necessary to use the ``static_argnums`` parameter. For example,\nconsider a boolean flag argument::\nfrom functools import partial\n@partial(jax.checkpoint, static_argnums=(1,))\ndef foo(x, is_training):\nif is_training:\n...\nelse:\n...\nHere, the use of ``static_argnums`` allows the ``if`` statement's condition\nto depends on the value of ``is_training``. The cost to using\n``static_argnums`` is that it introduces re-tracing overheads across calls:\nin the example, ``foo`` is re-traced every time it is called with a new value\nof ``is_training``. In some situations, ``jax.ensure_compile_time_eval``\nis needed as well::\n@partial(jax.checkpoint, static_argnums=(1,))\ndef foo(x, y):\nwith jax.ensure_compile_time_eval():\ny_pos = y > 0\nif y_pos:\n...\nelse:\n...\nAs an alternative to using ``static_argnums`` (and\n``jax.ensure_compile_time_eval``), it may be easier to compute some values\noutside the :func:`jax.checkpoint`-decorated function and then close over them.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "checkpoint_name",
+      "signature": "checkpoint_name(x, name)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "print_saved_residuals",
+      "signature": "print_saved_residuals(f, *args, **kwargs)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "remat",
+      "signature": "checkpoint(fun: 'Callable', *, prevent_cse: 'bool' = True, policy: 'Callable[..., bool] | None' = None, static_argnums: 'int | tuple[int, ...]' = ()) -> 'Callable'",
+      "documentation": {
+        "description": "Make ``fun`` recompute internal linearization points when differentiated.\nThe :func:`jax.checkpoint` decorator, aliased to :func:`jax.remat`, provides a\nway to trade off computation time and memory cost in the context of automatic\ndifferentiation, especially with reverse-mode autodiff like :func:`jax.grad`\nand :func:`jax.vjp` but also with :func:`jax.linearize`.\nWhen differentiating a function in reverse-mode, by default all the\nlinearization points (e.g. inputs to elementwise nonlinear primitive\noperations) are stored when evaluating the forward pass so that they can be\nreused on the backward pass. This evaluation strategy can lead to a high\nmemory cost, or even to poor performance on hardware accelerators where memory\naccess is much more expensive than FLOPs.\nAn alternative evaluation strategy is for some of the linearization points to\nbe recomputed (i.e. rematerialized) rather than stored. This approach can\nreduce memory usage at the cost of increased computation.\nThis function decorator produces a new version of ``fun`` which follows\nthe rematerialization strategy rather than the default store-everything\nstrategy. That is, it returns a new version of ``fun`` which, when\ndifferentiated, doesn't store any of its intermediate linearization points.\nInstead, these linearization points are recomputed from the function's saved\ninputs.\nSee the examples below.\nArgs:\nfun: Function for which the autodiff evaluation strategy is to be changed\nfrom the default of storing all intermediate linearization points to\nrecomputing them. Its arguments and return value should be arrays,\nscalars, or (nested) standard Python containers (tuple/list/dict) thereof.\nprevent_cse: Optional, boolean keyword-only argument indicating whether to\nprevent common subexpression elimination (CSE) optimizations in the HLO\ngenerated from differentiation. This CSE prevention has costs because it\ncan foil other optimizations, and because it can incur high overheads on\nsome backends, especially GPU. The default is True because otherwise,\nunder a :func:`~jax.jit` or :func:`~jax.pmap`, CSE can defeat the purpose\nof this decorator.\nBut in some settings, like when used inside a :func:`~jax.lax.scan`, this\nCSE prevention mechanism is unnecessary, in which case ``prevent_cse`` can\nbe set to False.\nstatic_argnums: Optional, int or sequence of ints, a keyword-only argument\nindicating which argument values on which to specialize for tracing and\ncaching purposes. Specifying arguments as static can avoid\nConcretizationTypeErrors when tracing, but at the cost of more retracing\noverheads. See the example below.\npolicy: Optional, callable keyword-only argument. It should be one of the\nattributes of ``jax.checkpoint_policies``. The callable takes as input a\ntype-level specification of a first-order primitive application and\nreturns a boolean indicating whether the corresponding output value(s) can\nbe saved as residuals (or instead must be recomputed in the (co)tangent\ncomputation if needed).",
+        "parameters": {},
+        "returns": "A function (callable) with the same input/output behavior as ``fun`` but\nwhich, when differentiated using e.g. :func:`jax.grad`, :func:`jax.vjp`, or\n:func:`jax.linearize`, recomputes rather than stores intermediate\nlinearization points, thus potentially saving memory at the cost of extra\ncomputation.\nHere is a simple example:\n>>> import jax\n>>> import jax.numpy as jnp\n>>> @jax.checkpoint\n... def g(x):\n...   y = jnp.sin(x)\n...   z = jnp.sin(y)\n...   return z\n...\n>>> jax.value_and_grad(g)(2.0)\n(Array(0.78907233, dtype=float32, weak_type=True), Array(-0.2556391, dtype=float32, weak_type=True))\nHere, the same value is produced whether or not the :func:`jax.checkpoint`\ndecorator is present. When the decorator is not present, the values\n``jnp.cos(2.0)`` and ``jnp.cos(jnp.sin(2.0))`` are computed on the forward\npass and are stored for use in the backward pass, because they are needed\non the backward pass and depend only on the primal inputs. When using\n:func:`jax.checkpoint`, the forward pass will compute only the primal outputs\nand only the primal inputs (``2.0``) will be stored for the backward pass.\nAt that time, the value ``jnp.sin(2.0)`` is recomputed, along with the values\n``jnp.cos(2.0)`` and ``jnp.cos(jnp.sin(2.0))``.\nWhile :func:`jax.checkpoint` controls what values are stored from the\nforward-pass to be used on the backward pass, the total amount of memory\nrequired to evaluate a function or its VJP depends on many additional internal\ndetails of that function. Those details include which numerical primitives are\nused, how they're composed, where jit and control flow primitives like scan\nare used, and other factors.\nThe :func:`jax.checkpoint` decorator can be applied recursively to express\nsophisticated autodiff rematerialization strategies. For example:\n>>> def recursive_checkpoint(funs):\n...   if len(funs) == 1:\n...     return funs[0]\n...   elif len(funs) == 2:\n...     f1, f2 = funs\n...     return lambda x: f1(f2(x))\n...   else:\n...     f1 = recursive_checkpoint(funs[:len(funs)//2])\n...     f2 = recursive_checkpoint(funs[len(funs)//2:])\n...     return lambda x: f1(jax.checkpoint(f2)(x))\n...\nIf ``fun`` involves Python control flow that depends on argument values,\nit may be necessary to use the ``static_argnums`` parameter. For example,\nconsider a boolean flag argument::\nfrom functools import partial\n@partial(jax.checkpoint, static_argnums=(1,))\ndef foo(x, is_training):\nif is_training:\n...\nelse:\n...\nHere, the use of ``static_argnums`` allows the ``if`` statement's condition\nto depends on the value of ``is_training``. The cost to using\n``static_argnums`` is that it introduces re-tracing overheads across calls:\nin the example, ``foo`` is re-traced every time it is called with a new value\nof ``is_training``. In some situations, ``jax.ensure_compile_time_eval``\nis needed as well::\n@partial(jax.checkpoint, static_argnums=(1,))\ndef foo(x, y):\nwith jax.ensure_compile_time_eval():\ny_pos = y > 0\nif y_pos:\n...\nelse:\n...\nAs an alternative to using ``static_argnums`` (and\n``jax.ensure_compile_time_eval``), it may be easier to compute some values\noutside the :func:`jax.checkpoint`-decorated function and then close over them.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Offloadable",
+      "documentation": {
+        "description": "Offloadable(src, dst)",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "count",
+          "signature": "count(self, value, /)",
+          "documentation": {
+            "description": "Return number of occurrences of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "index",
+          "signature": "index(self, value, start=0, stop=9223372036854775807, /)",
+          "documentation": {
+            "description": "Return first index of value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

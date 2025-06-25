@@ -1,0 +1,1077 @@
+{
+  "description": "Sub-package containing the matrix class and related functions.",
+  "functions": [
+    {
+      "name": "asmatrix",
+      "signature": "asmatrix(data, dtype=None)",
+      "documentation": {
+        "description": "Interpret the input as a matrix.\nUnlike `matrix`, `asmatrix` does not make a copy if the input is already\na matrix or an ndarray.  Equivalent to ``matrix(data, copy=False)``.",
+        "parameters": {
+          "data": {
+            "type": "array_like",
+            "description": "Input data."
+          },
+          "dtype": {
+            "type": "data-type",
+            "description": "Data-type of the output matrix."
+          }
+        },
+        "returns": "-------\nmat : matrix\n`data` interpreted as a matrix.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n>>> x = np.array([[1, 2], [3, 4]])\n>>> m = np.asmatrix(x)\n>>> x[0,0] = 5\n>>> m\nmatrix([[5, 2],\n[3, 4]])"
+      }
+    },
+    {
+      "name": "bmat",
+      "signature": "bmat(obj, ldict=None, gdict=None)",
+      "documentation": {
+        "description": "Build a matrix object from a string, nested sequence, or array.",
+        "parameters": {
+          "obj": {
+            "type": "str or array_like",
+            "description": "Input data. If a string, variables in the current scope may be\nreferenced by name."
+          },
+          "ldict": {
+            "type": "dict, optional",
+            "description": "A dictionary that replaces local operands in current frame.\nIgnored if `obj` is not a string or `gdict` is None."
+          },
+          "gdict": {
+            "type": "dict, optional",
+            "description": "A dictionary that replaces global operands in current frame.\nIgnored if `obj` is not a string."
+          }
+        },
+        "returns": "-------\nout : matrix",
+        "raises": "",
+        "see_also": "--------\nblock :\nA generalization of this function for N-d arrays, that returns normal\nndarrays.",
+        "notes": "",
+        "examples": "--------\n>>> A = np.mat('1 1; 1 1')\n>>> B = np.mat('2 2; 2 2')\n>>> C = np.mat('3 4; 5 6')\n>>> D = np.mat('7 8; 9 0')\nAll the following expressions construct the same block matrix:\n>>> np.bmat([[A, B], [C, D]])\nmatrix([[1, 1, 2, 2],\n[1, 1, 2, 2],\n[3, 4, 7, 8],\n[5, 6, 9, 0]])\n>>> np.bmat(np.r_[np.c_[A, B], np.c_[C, D]])\nmatrix([[1, 1, 2, 2],\n[1, 1, 2, 2],\n[3, 4, 7, 8],\n[5, 6, 9, 0]])\n>>> np.bmat('A,B; C,D')\nmatrix([[1, 1, 2, 2],\n[1, 1, 2, 2],\n[3, 4, 7, 8],\n[5, 6, 9, 0]])"
+      }
+    },
+    {
+      "name": "mat",
+      "signature": "asmatrix(data, dtype=None)",
+      "documentation": {
+        "description": "Interpret the input as a matrix.\nUnlike `matrix`, `asmatrix` does not make a copy if the input is already\na matrix or an ndarray.  Equivalent to ``matrix(data, copy=False)``.",
+        "parameters": {
+          "data": {
+            "type": "array_like",
+            "description": "Input data."
+          },
+          "dtype": {
+            "type": "data-type",
+            "description": "Data-type of the output matrix."
+          }
+        },
+        "returns": "-------\nmat : matrix\n`data` interpreted as a matrix.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n>>> x = np.array([[1, 2], [3, 4]])\n>>> m = np.asmatrix(x)\n>>> x[0,0] = 5\n>>> m\nmatrix([[5, 2],\n[3, 4]])"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "matrix",
+      "documentation": {
+        "description": "matrix(data, dtype=None, copy=True)\n.. note:: It is no longer recommended to use this class, even for linear\nalgebra. Instead use regular arrays. The class may be removed\nin the future.",
+        "parameters": {
+          "data": {
+            "type": "array_like or string",
+            "description": "If `data` is a string, it is interpreted as a matrix with commas\nor spaces separating columns, and semicolons separating rows."
+          },
+          "dtype": {
+            "type": "data-type",
+            "description": "Data-type of the output matrix."
+          },
+          "copy": {
+            "type": "bool",
+            "description": "If `data` is already an `ndarray`, then this flag determines\nwhether the data is copied (the default), or whether a view is\nconstructed."
+          }
+        },
+        "returns": "A matrix is a specialized 2-D array that retains its 2-D nature\nthrough operations.  It has certain special operators, such as ``*``\n(matrix multiplication) and ``**`` (matrix power).",
+        "raises": "",
+        "see_also": "--------\narray",
+        "notes": "",
+        "examples": "--------\n>>> a = np.matrix('1 2; 3 4')\n>>> a\nmatrix([[1, 2],\n[3, 4]])\n>>> np.matrix([[1, 2], [3, 4]])\nmatrix([[1, 2],\n[3, 4]])"
+      },
+      "methods": [
+        {
+          "name": "all",
+          "signature": "all(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Test whether all matrix elements along a given axis evaluate to True.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.all",
+            "notes": "-----\nThis is the same as `ndarray.all`, but it returns a `matrix` object.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> y = x[0]; y\nmatrix([[0, 1, 2, 3]])\n>>> (x == y)\nmatrix([[ True,  True,  True,  True],\n[False, False, False, False],\n[False, False, False, False]])\n>>> (x == y).all()\nFalse\n>>> (x == y).all(0)\nmatrix([[False, False, False, False]])\n>>> (x == y).all(1)\nmatrix([[ True],\n[False],\n[False]])"
+          }
+        },
+        {
+          "name": "any",
+          "signature": "any(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Test whether any array element along a given axis evaluates to True.\nRefer to `numpy.any` for full documentation.",
+            "parameters": {
+              "axis": {
+                "type": "int, optional",
+                "description": "Axis along which logical OR is performed"
+              },
+              "out": {
+                "type": "ndarray, optional",
+                "description": "Output to existing array instead of creating new one, must have\nsame shape as expected output"
+              }
+            },
+            "returns": "-------\nany : bool, ndarray\nreturns `ndarray`",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argmax",
+          "signature": "argmax(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Indexes of the maximum values along an axis.\nReturn the indexes of the first occurrences of the maximum values\nalong the specified axis.  If axis is None, the index is for the\nflattened matrix.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.argmax",
+            "notes": "-----\nThis is the same as `ndarray.argmax`, but returns a `matrix` object\nwhere `ndarray.argmax` would return an `ndarray`.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.argmax()\n11\n>>> x.argmax(0)\nmatrix([[2, 2, 2, 2]])\n>>> x.argmax(1)\nmatrix([[3],\n[3],\n[3]])"
+          }
+        },
+        {
+          "name": "argmin",
+          "signature": "argmin(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Indexes of the minimum values along an axis.\nReturn the indexes of the first occurrences of the minimum values\nalong the specified axis.  If axis is None, the index is for the\nflattened matrix.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.argmin",
+            "notes": "-----\nThis is the same as `ndarray.argmin`, but returns a `matrix` object\nwhere `ndarray.argmin` would return an `ndarray`.",
+            "examples": "--------\n>>> x = -np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[  0,  -1,  -2,  -3],\n[ -4,  -5,  -6,  -7],\n[ -8,  -9, -10, -11]])\n>>> x.argmin()\n11\n>>> x.argmin(0)\nmatrix([[2, 2, 2, 2]])\n>>> x.argmin(1)\nmatrix([[3],\n[3],\n[3]])"
+          }
+        },
+        {
+          "name": "argpartition",
+          "signature": "argpartition(...)",
+          "documentation": {
+            "description": "a.argpartition(kth, axis=-1, kind='introselect', order=None)",
+            "parameters": {},
+            "returns": "Refer to `numpy.argpartition` for full documentation.\n.. versionadded:: 1.8.0",
+            "raises": "",
+            "see_also": "--------\nnumpy.argpartition : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argsort",
+          "signature": "argsort(...)",
+          "documentation": {
+            "description": "a.argsort(axis=-1, kind=None, order=None)",
+            "parameters": {},
+            "returns": "Refer to `numpy.argsort` for full documentation.",
+            "raises": "",
+            "see_also": "--------\nnumpy.argsort : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "astype",
+          "signature": "astype(...)",
+          "documentation": {
+            "description": "a.astype(dtype, order='K', casting='unsafe', subok=True, copy=True)\nCopy of the array, cast to a specified type.",
+            "parameters": {
+              "dtype": {
+                "type": "str or dtype",
+                "description": "Typecode or data-type to which the array is cast."
+              },
+              "order": {
+                "type": "{'C', 'F', 'A', 'K'}, optional",
+                "description": "Controls the memory layout order of the result.\n'C' means C order, 'F' means Fortran order, 'A'\nmeans 'F' order if all the arrays are Fortran contiguous,\n'C' order otherwise, and 'K' means as close to the\norder the array elements appear in memory as possible.\nDefault is 'K'."
+              },
+              "casting": {
+                "type": "{'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional",
+                "description": "Controls what kind of data casting may occur. Defaults to 'unsafe'\nfor backwards compatibility.\n* 'no' means the data types should not be cast at all.\n* 'equiv' means only byte-order changes are allowed.\n* 'safe' means only casts which can preserve values are allowed.\n* 'same_kind' means only safe casts or casts within a kind,\nlike float64 to float32, are allowed.\n* 'unsafe' means any data conversions may be done."
+              },
+              "subok": {
+                "type": "bool, optional",
+                "description": "If True, then sub-classes will be passed-through (default), otherwise\nthe returned array will be forced to be a base-class array."
+              },
+              "copy": {
+                "type": "bool, optional",
+                "description": "By default, astype always returns a newly allocated array. If this\nis set to false, and the `dtype`, `order`, and `subok`\nrequirements are satisfied, the input array is returned instead\nof a copy."
+              }
+            },
+            "returns": "-------\narr_t : ndarray\nUnless `copy` is False and the other conditions for returning the input\narray are satisfied (see description for `copy` input parameter), `arr_t`\nis a new array of the same shape as the input array, with dtype, order\ngiven by `dtype`, `order`.",
+            "raises": "------\nComplexWarning\nWhen casting from complex to float or int. To avoid this,\none should use ``a.real.astype(t)``.",
+            "see_also": "",
+            "notes": "-----\n.. versionchanged:: 1.17.0\nCasting between a simple data type and a structured one is possible only\nfor \"unsafe\" casting.  Casting to multiple fields is allowed, but\ncasting from multiple fields is not.\n.. versionchanged:: 1.9.0\nCasting from numeric to string types in 'safe' casting mode requires\nthat the string dtype length is long enough to store the max\ninteger/float value converted.",
+            "examples": "--------\n>>> x = np.array([1, 2, 2.5])\n>>> x\narray([1. ,  2. ,  2.5])\n>>> x.astype(int)\narray([1, 2, 2])"
+          }
+        },
+        {
+          "name": "byteswap",
+          "signature": "byteswap(...)",
+          "documentation": {
+            "description": "a.byteswap(inplace=False)\nSwap the bytes of the array elements\nToggle between low-endian and big-endian data representation by\nreturning a byteswapped array, optionally swapped in-place.\nArrays of byte-strings are not swapped. The real and imaginary\nparts of a complex number are swapped individually.",
+            "parameters": {
+              "inplace": {
+                "type": "bool, optional",
+                "description": "If ``True``, swap bytes in-place, default is ``False``."
+              }
+            },
+            "returns": "-------\nout : ndarray\nThe byteswapped array. If `inplace` is ``True``, this is\na view to self.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> A = np.array([1, 256, 8755], dtype=np.int16)\n>>> list(map(hex, A))\n['0x1', '0x100', '0x2233']\n>>> A.byteswap(inplace=True)\narray([  256,     1, 13090], dtype=int16)\n>>> list(map(hex, A))\n['0x100', '0x1', '0x3322']\nArrays of byte-strings are not swapped\n>>> A = np.array([b'ceg', b'fac'])\n>>> A.byteswap()\narray([b'ceg', b'fac'], dtype='|S3')\n``A.newbyteorder().byteswap()`` produces an array with the same values\nbut different representation in memory\n>>> A = np.array([1, 2, 3])\n>>> A.view(np.uint8)\narray([1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0,\n0, 0], dtype=uint8)\n>>> A.newbyteorder().byteswap(inplace=True)\narray([1, 2, 3])\n>>> A.view(np.uint8)\narray([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,\n0, 3], dtype=uint8)"
+          }
+        },
+        {
+          "name": "choose",
+          "signature": "choose(...)",
+          "documentation": {
+            "description": "a.choose(choices, out=None, mode='raise')\nUse an index array to construct a new array from a set of choices.\nRefer to `numpy.choose` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.choose : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "clip",
+          "signature": "clip(...)",
+          "documentation": {
+            "description": "a.clip(min=None, max=None, out=None, **kwargs)\nReturn an array whose values are limited to ``[min, max]``.\nOne of max or min must be given.\nRefer to `numpy.clip` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.clip : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "compress",
+          "signature": "compress(...)",
+          "documentation": {
+            "description": "a.compress(condition, axis=None, out=None)\nReturn selected slices of this array along given axis.\nRefer to `numpy.compress` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.compress : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conj",
+          "signature": "conj(...)",
+          "documentation": {
+            "description": "a.conj()\nComplex-conjugate all elements.\nRefer to `numpy.conjugate` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.conjugate : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conjugate",
+          "signature": "conjugate(...)",
+          "documentation": {
+            "description": "a.conjugate()\nReturn the complex conjugate, element-wise.\nRefer to `numpy.conjugate` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.conjugate : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy(...)",
+          "documentation": {
+            "description": "a.copy(order='C')\nReturn a copy of the array.",
+            "parameters": {
+              "order": {
+                "type": "{'C', 'F', 'A', 'K'}, optional",
+                "description": "Controls the memory layout of the copy. 'C' means C-order,\n'F' means F-order, 'A' means 'F' if `a` is Fortran contiguous,\n'C' otherwise. 'K' means match the layout of `a` as closely\nas possible. (Note that this function and :func:`numpy.copy` are very\nsimilar but have different default values for their order=\narguments, and this function always passes sub-classes through.)\nSee also\n--------"
+              },
+              "numpy.copy": {
+                "type": "Similar function with different default behavior",
+                "description": "numpy.copyto"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\nThis function is the preferred method for creating an array copy.  The\nfunction :func:`numpy.copy` is similar, but it defaults to using order 'K',\nand will not pass sub-classes through by default.",
+            "examples": "--------\n>>> x = np.array([[1,2,3],[4,5,6]], order='F')\n>>> y = x.copy()\n>>> x.fill(0)\n>>> x\narray([[0, 0, 0],\n[0, 0, 0]])\n>>> y\narray([[1, 2, 3],\n[4, 5, 6]])\n>>> y.flags['C_CONTIGUOUS']\nTrue"
+          }
+        },
+        {
+          "name": "cumprod",
+          "signature": "cumprod(...)",
+          "documentation": {
+            "description": "a.cumprod(axis=None, dtype=None, out=None)\nReturn the cumulative product of the elements along the given axis.\nRefer to `numpy.cumprod` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.cumprod : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cumsum",
+          "signature": "cumsum(...)",
+          "documentation": {
+            "description": "a.cumsum(axis=None, dtype=None, out=None)\nReturn the cumulative sum of the elements along the given axis.\nRefer to `numpy.cumsum` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.cumsum : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "diagonal",
+          "signature": "diagonal(...)",
+          "documentation": {
+            "description": "a.diagonal(offset=0, axis1=0, axis2=1)\nReturn specified diagonals. In NumPy 1.9 the returned array is a\nread-only view instead of a copy as in previous NumPy versions.  In\na future version the read-only restriction will be removed.\nRefer to :func:`numpy.diagonal` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.diagonal : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dot",
+          "signature": "dot(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dump",
+          "signature": "dump(...)",
+          "documentation": {
+            "description": "a.dump(file)\nDump a pickle of the array to the specified file.\nThe array can be read back with pickle.load or numpy.load.",
+            "parameters": {
+              "file": {
+                "type": "str or Path",
+                "description": "A string naming the dump file.\n.. versionchanged:: 1.17.0\n`pathlib.Path` objects are now accepted."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dumps",
+          "signature": "dumps(...)",
+          "documentation": {
+            "description": "a.dumps()",
+            "parameters": {},
+            "returns": "pickle.loads will convert the string back to an array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fill",
+          "signature": "fill(...)",
+          "documentation": {
+            "description": "a.fill(value)\nFill the array with a scalar value.",
+            "parameters": {
+              "value": {
+                "type": "scalar",
+                "description": "All elements of `a` will be assigned this value."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> a = np.array([1, 2])\n>>> a.fill(0)\n>>> a\narray([0, 0])\n>>> a = np.empty(2)\n>>> a.fill(1)\n>>> a\narray([1.,  1.])\nFill expects a scalar value and always behaves the same as assigning\nto a single array element.  The following is a rare example where this\ndistinction is important:\n>>> a = np.array([None, None], dtype=object)\n>>> a[0] = np.array(3)\n>>> a\narray([array(3), None], dtype=object)\n>>> a.fill(np.array(3))\n>>> a\narray([array(3), array(3)], dtype=object)\nWhere other forms of assignments will unpack the array being assigned:\n>>> a[...] = np.array(3)\n>>> a\narray([3, 3], dtype=object)"
+          }
+        },
+        {
+          "name": "flatten",
+          "signature": "flatten(self, order='C')",
+          "documentation": {
+            "description": "Return a flattened copy of the matrix.\nAll `N` elements of the matrix are placed into a single row.",
+            "parameters": {
+              "order": {
+                "type": "{'C', 'F', 'A', 'K'}, optional",
+                "description": "'C' means to flatten in row-major (C-style) order. 'F' means to\nflatten in column-major (Fortran-style) order. 'A' means to\nflatten in column-major order if `m` is Fortran *contiguous* in\nmemory, row-major order otherwise. 'K' means to flatten `m` in\nthe order the elements occur in memory. The default is 'C'."
+              }
+            },
+            "returns": "-------\ny : matrix\nA copy of the matrix, flattened to a `(1, N)` matrix where `N`\nis the number of elements in the original matrix.",
+            "raises": "",
+            "see_also": "--------\nravel : Return a flattened array.\nflat : A 1-D flat iterator over the matrix.",
+            "notes": "",
+            "examples": "--------\n>>> m = np.matrix([[1,2], [3,4]])\n>>> m.flatten()\nmatrix([[1, 2, 3, 4]])\n>>> m.flatten('F')\nmatrix([[1, 3, 2, 4]])"
+          }
+        },
+        {
+          "name": "getA",
+          "signature": "A(self)",
+          "documentation": {
+            "description": "Return `self` as an `ndarray` object.\nEquivalent to ``np.asarray(self)``.",
+            "parameters": {},
+            "returns": "-------\nret : ndarray\n`self` as an `ndarray`",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.getA()\narray([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])"
+          }
+        },
+        {
+          "name": "getA1",
+          "signature": "A1(self)",
+          "documentation": {
+            "description": "Return `self` as a flattened `ndarray`.\nEquivalent to ``np.asarray(x).ravel()``",
+            "parameters": {},
+            "returns": "-------\nret : ndarray\n`self`, 1-D, as an `ndarray`",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.getA1()\narray([ 0,  1,  2, ...,  9, 10, 11])"
+          }
+        },
+        {
+          "name": "getH",
+          "signature": "H(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "Equivalent to ``np.transpose(self)`` if `self` is real-valued.\n-------\nret : matrix object\ncomplex conjugate transpose of `self`",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4)))\n>>> z = x - 1j*x; z\nmatrix([[  0. +0.j,   1. -1.j,   2. -2.j,   3. -3.j],\n[  4. -4.j,   5. -5.j,   6. -6.j,   7. -7.j],\n[  8. -8.j,   9. -9.j,  10.-10.j,  11.-11.j]])\n>>> z.getH()\nmatrix([[ 0. -0.j,  4. +4.j,  8. +8.j],\n[ 1. +1.j,  5. +5.j,  9. +9.j],\n[ 2. +2.j,  6. +6.j, 10.+10.j],\n[ 3. +3.j,  7. +7.j, 11.+11.j]])"
+          }
+        },
+        {
+          "name": "getI",
+          "signature": "I(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "-------\nret : matrix object\nIf `self` is non-singular, `ret` is such that ``ret * self`` ==\n``self * ret`` == ``np.matrix(np.eye(self[0,:].size))`` all return\n``True``.",
+            "raises": "------\nnumpy.linalg.LinAlgError: Singular matrix\nIf `self` is singular.",
+            "see_also": "--------\nlinalg.inv",
+            "notes": "",
+            "examples": "--------\n>>> m = np.matrix('[1, 2; 3, 4]'); m\nmatrix([[1, 2],\n[3, 4]])\n>>> m.getI()\nmatrix([[-2. ,  1. ],\n[ 1.5, -0.5]])\n>>> m.getI() * m\nmatrix([[ 1.,  0.], # may vary\n[ 0.,  1.]])"
+          }
+        },
+        {
+          "name": "getT",
+          "signature": "T(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "Does *not* conjugate!  For the complex conjugate transpose, use ``.H``.\n-------\nret : matrix object\nThe (non-conjugated) transpose of the matrix.",
+            "raises": "",
+            "see_also": "--------\ntranspose, getH",
+            "notes": "",
+            "examples": "--------\n>>> m = np.matrix('[1, 2; 3, 4]')\n>>> m\nmatrix([[1, 2],\n[3, 4]])\n>>> m.getT()\nmatrix([[1, 3],\n[2, 4]])"
+          }
+        },
+        {
+          "name": "getfield",
+          "signature": "getfield(...)",
+          "documentation": {
+            "description": "a.getfield(dtype, offset=0)",
+            "parameters": {
+              "dtype": {
+                "type": "str or dtype",
+                "description": "The data type of the view. The dtype size of the view can not be larger\nthan that of the array itself."
+              },
+              "offset": {
+                "type": "int",
+                "description": "Number of bytes to skip before beginning the element view."
+              }
+            },
+            "returns": "A field is a view of the array data with a given data-type. The values in\nthe view are determined by the given type and the offset into the current\narray in bytes. The offset needs to be such that the view dtype fits in the\narray dtype; for example an array of dtype complex128 has 16-byte elements.\nIf taking a view with a 32-bit integer (4 bytes), the offset needs to be\nbetween 0 and 12 bytes.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> x = np.diag([1.+1.j]*2)\n>>> x[1, 1] = 2 + 4.j\n>>> x\narray([[1.+1.j,  0.+0.j],\n[0.+0.j,  2.+4.j]])\n>>> x.getfield(np.float64)\narray([[1.,  0.],\n[0.,  2.]])\nBy choosing an offset of 8 bytes we can select the complex part of the\narray for our view:\n>>> x.getfield(np.float64, offset=8)\narray([[1.,  0.],\n[0.,  4.]])"
+          }
+        },
+        {
+          "name": "item",
+          "signature": "item(...)",
+          "documentation": {
+            "description": "a.item(*args)\nCopy an element of an array to a standard Python scalar and return it.",
+            "parameters": {},
+            "returns": "-------\nz : Standard Python scalar object\nA copy of the specified element of the array as a suitable\nPython scalar",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\nWhen the data type of `a` is longdouble or clongdouble, item() returns\na scalar array object because there is no available Python scalar that\nwould not lose information. Void arrays return a buffer object for item(),\nunless fields are defined, in which case a tuple is returned.\n`item` is very similar to a[args], except, instead of an array scalar,\na standard Python scalar is returned. This can be useful for speeding up\naccess to elements of the array and doing arithmetic on elements of the\narray using Python's optimized math.",
+            "examples": "--------\n>>> np.random.seed(123)\n>>> x = np.random.randint(9, size=(3, 3))\n>>> x\narray([[2, 2, 6],\n[1, 3, 6],\n[1, 0, 1]])\n>>> x.item(3)\n1\n>>> x.item(7)\n0\n>>> x.item((0, 1))\n2\n>>> x.item((2, 2))\n1"
+          }
+        },
+        {
+          "name": "itemset",
+          "signature": "itemset(...)",
+          "documentation": {
+            "description": "a.itemset(*args)\nInsert scalar into an array (scalar is cast to array's dtype, if possible)\nThere must be at least 1 argument, and define the last argument\nas *item*.  Then, ``a.itemset(*args)`` is equivalent to but faster\nthan ``a[args] = item``.  The item should be a scalar value and `args`\nmust select a single item in the array `a`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\nCompared to indexing syntax, `itemset` provides some speed increase\nfor placing a scalar into a particular location in an `ndarray`,\nif you must do this.  However, generally this is discouraged:\namong other problems, it complicates the appearance of the code.\nAlso, when using `itemset` (and `item`) inside a loop, be sure\nto assign the methods to a local variable to avoid the attribute\nlook-up at each loop iteration.",
+            "examples": "--------\n>>> np.random.seed(123)\n>>> x = np.random.randint(9, size=(3, 3))\n>>> x\narray([[2, 2, 6],\n[1, 3, 6],\n[1, 0, 1]])\n>>> x.itemset(4, 0)\n>>> x.itemset((2, 2), 9)\n>>> x\narray([[2, 2, 6],\n[1, 0, 6],\n[1, 0, 9]])"
+          }
+        },
+        {
+          "name": "max",
+          "signature": "max(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Return the maximum value along an axis.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\namax, ndarray.max",
+            "notes": "-----\nThis is the same as `ndarray.max`, but returns a `matrix` object\nwhere `ndarray.max` would return an ndarray.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.max()\n11\n>>> x.max(0)\nmatrix([[ 8,  9, 10, 11]])\n>>> x.max(1)\nmatrix([[ 3],\n[ 7],\n[11]])"
+          }
+        },
+        {
+          "name": "mean",
+          "signature": "mean(self, axis=None, dtype=None, out=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "Refer to `numpy.mean` for full documentation.",
+            "raises": "",
+            "see_also": "--------\nnumpy.mean",
+            "notes": "-----\nSame as `ndarray.mean` except that, where that returns an `ndarray`,\nthis returns a `matrix` object.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3, 4)))\n>>> x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.mean()\n5.5\n>>> x.mean(0)\nmatrix([[4., 5., 6., 7.]])\n>>> x.mean(1)\nmatrix([[ 1.5],\n[ 5.5],\n[ 9.5]])"
+          }
+        },
+        {
+          "name": "min",
+          "signature": "min(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Return the minimum value along an axis.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\namin, ndarray.min",
+            "notes": "-----\nThis is the same as `ndarray.min`, but returns a `matrix` object\nwhere `ndarray.min` would return an ndarray.",
+            "examples": "--------\n>>> x = -np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[  0,  -1,  -2,  -3],\n[ -4,  -5,  -6,  -7],\n[ -8,  -9, -10, -11]])\n>>> x.min()\n-11\n>>> x.min(0)\nmatrix([[ -8,  -9, -10, -11]])\n>>> x.min(1)\nmatrix([[ -3],\n[ -7],\n[-11]])"
+          }
+        },
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(...)",
+          "documentation": {
+            "description": "arr.newbyteorder(new_order='S', /)\nReturn the array with the same data viewed with a different byte order.\nEquivalent to::\narr.view(arr.dtype.newbytorder(new_order))\nChanges are also made in all fields and sub-arrays of the array data\ntype.",
+            "parameters": {
+              "new_order": {
+                "type": "string, optional",
+                "description": "Byte order to force; a value from the byte order specifications\nbelow. `new_order` codes can be any of:\n* 'S' - swap dtype from current to opposite endian\n* {'<', 'little'} - little endian\n* {'>', 'big'} - big endian\n* {'=', 'native'} - native order, equivalent to `sys.byteorder`\n* {'|', 'I'} - ignore (no change to byte order)\nThe default value ('S') results in swapping the current\nbyte order."
+              }
+            },
+            "returns": "-------\nnew_arr : array\nNew array object with the dtype reflecting given change to the\nbyte order.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nonzero",
+          "signature": "nonzero(...)",
+          "documentation": {
+            "description": "a.nonzero()\nReturn the indices of the elements that are non-zero.\nRefer to `numpy.nonzero` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.nonzero : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "partition",
+          "signature": "partition(...)",
+          "documentation": {
+            "description": "a.partition(kth, axis=-1, kind='introselect', order=None)\nRearranges the elements in the array in such a way that the value of the\nelement in kth position is in the position it would be in a sorted array.\nAll elements smaller than the kth element are moved before this element and\nall equal or greater are moved behind it. The ordering of the elements in\nthe two partitions is undefined.\n.. versionadded:: 1.8.0",
+            "parameters": {
+              "kth": {
+                "type": "int or sequence of ints",
+                "description": "Element index to partition by. The kth element value will be in its\nfinal sorted position and all smaller elements will be moved before it\nand all equal or greater elements behind it.\nThe order of all elements in the partitions is undefined.\nIf provided with a sequence of kth it will partition all elements\nindexed by kth of them into their sorted position at once.\n.. deprecated:: 1.22.0\nPassing booleans as index is deprecated."
+              },
+              "axis": {
+                "type": "int, optional",
+                "description": "Axis along which to sort. Default is -1, which means sort along the\nlast axis."
+              },
+              "kind": {
+                "type": "{'introselect'}, optional",
+                "description": "Selection algorithm. Default is 'introselect'."
+              },
+              "order": {
+                "type": "str or list of str, optional",
+                "description": "When `a` is an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc. A single field can\nbe specified as a string, and not all fields need to be specified,\nbut unspecified fields will still be used, in the order in which\nthey come up in the dtype, to break ties."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.partition : Return a partitioned copy of an array.\nargpartition : Indirect partition.\nsort : Full sort.",
+            "notes": "-----\nSee ``np.partition`` for notes on the different algorithms.",
+            "examples": "--------\n>>> a = np.array([3, 4, 2, 1])\n>>> a.partition(3)\n>>> a\narray([2, 1, 3, 4])\n>>> a.partition((1, 3))\n>>> a\narray([1, 2, 3, 4])"
+          }
+        },
+        {
+          "name": "prod",
+          "signature": "prod(self, axis=None, dtype=None, out=None)",
+          "documentation": {
+            "description": "Return the product of the array elements over the given axis.\nRefer to `prod` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nprod, ndarray.prod",
+            "notes": "-----\nSame as `ndarray.prod`, except, where that returns an `ndarray`, this\nreturns a `matrix` object instead.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.prod()\n0\n>>> x.prod(0)\nmatrix([[  0,  45, 120, 231]])\n>>> x.prod(1)\nmatrix([[   0],\n[ 840],\n[7920]])"
+          }
+        },
+        {
+          "name": "ptp",
+          "signature": "ptp(self, axis=None, out=None)",
+          "documentation": {
+            "description": "Peak-to-peak (maximum - minimum) value along the given axis.\nRefer to `numpy.ptp` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.ptp",
+            "notes": "-----\nSame as `ndarray.ptp`, except, where that would return an `ndarray` object,\nthis returns a `matrix` object.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.ptp()\n11\n>>> x.ptp(0)\nmatrix([[8, 8, 8, 8]])\n>>> x.ptp(1)\nmatrix([[3],\n[3],\n[3]])"
+          }
+        },
+        {
+          "name": "put",
+          "signature": "put(...)",
+          "documentation": {
+            "description": "a.put(indices, values, mode='raise')\nSet ``a.flat[n] = values[n]`` for all `n` in indices.\nRefer to `numpy.put` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.put : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "ravel",
+          "signature": "ravel(self, order='C')",
+          "documentation": {
+            "description": "Return a flattened matrix.\nRefer to `numpy.ravel` for more documentation.",
+            "parameters": {
+              "order": {
+                "type": "{'C', 'F', 'A', 'K'}, optional",
+                "description": "The elements of `m` are read using this index order. 'C' means to\nindex the elements in C-like order, with the last axis index\nchanging fastest, back to the first axis index changing slowest.\n'F' means to index the elements in Fortran-like index order, with\nthe first index changing fastest, and the last index changing\nslowest. Note that the 'C' and 'F' options take no account of the\nmemory layout of the underlying array, and only refer to the order\nof axis indexing.  'A' means to read the elements in Fortran-like\nindex order if `m` is Fortran *contiguous* in memory, C-like order\notherwise.  'K' means to read the elements in the order they occur\nin memory, except for reversing the data when strides are negative.\nBy default, 'C' index order is used."
+              }
+            },
+            "returns": "-------\nret : matrix\nReturn the matrix flattened to shape `(1, N)` where `N`\nis the number of elements in the original matrix.\nA copy is made only if necessary.",
+            "raises": "",
+            "see_also": "--------\nmatrix.flatten : returns a similar output matrix but always a copy\nmatrix.flat : a flat iterator on the array.\nnumpy.ravel : related function which returns an ndarray",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "repeat",
+          "signature": "repeat(...)",
+          "documentation": {
+            "description": "a.repeat(repeats, axis=None)\nRepeat elements of an array.\nRefer to `numpy.repeat` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.repeat : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reshape",
+          "signature": "reshape(...)",
+          "documentation": {
+            "description": "a.reshape(shape, order='C')",
+            "parameters": {},
+            "returns": "Refer to `numpy.reshape` for full documentation.",
+            "raises": "",
+            "see_also": "--------\nnumpy.reshape : equivalent function",
+            "notes": "-----\nUnlike the free function `numpy.reshape`, this method on `ndarray` allows\nthe elements of the shape parameter to be passed in as separate arguments.\nFor example, ``a.reshape(10, 11)`` is equivalent to\n``a.reshape((10, 11))``.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resize",
+          "signature": "resize(...)",
+          "documentation": {
+            "description": "a.resize(new_shape, refcheck=True)\nChange shape and size of array in-place.",
+            "parameters": {
+              "new_shape": {
+                "type": "tuple of ints, or `n` ints",
+                "description": "Shape of resized array."
+              },
+              "refcheck": {
+                "type": "bool, optional",
+                "description": "If False, reference count will not be checked. Default is True."
+              }
+            },
+            "returns": "-------\nNone",
+            "raises": "------\nValueError\nIf `a` does not own its own data or references or views to it exist,\nand the data memory must be changed.\nPyPy only: will always raise if the data memory must be changed, since\nthere is no reliable way to determine if references or views to it\nexist.\nSystemError\nIf the `order` keyword argument is specified. This behaviour is a\nbug in NumPy.",
+            "see_also": "--------\nresize : Return a new array with the specified shape.",
+            "notes": "-----\nThis reallocates space for the data area if necessary.\nOnly contiguous arrays (data elements consecutive in memory) can be\nresized.\nThe purpose of the reference count check is to make sure you\ndo not use this array as a buffer for another Python object and then\nreallocate the memory. However, reference counts can increase in\nother ways so if you are sure that you have not shared the memory\nfor this array with another Python object, then you may safely set\n`refcheck` to False.",
+            "examples": "--------\nShrinking an array: array is flattened (in the order that the data are\nstored in memory), resized, and reshaped:\n>>> a = np.array([[0, 1], [2, 3]], order='C')\n>>> a.resize((2, 1))\n>>> a\narray([[0],\n[1]])\n>>> a = np.array([[0, 1], [2, 3]], order='F')\n>>> a.resize((2, 1))\n>>> a\narray([[0],\n[2]])\nEnlarging an array: as above, but missing entries are filled with zeros:\n>>> b = np.array([[0, 1], [2, 3]])\n>>> b.resize(2, 3) # new_shape parameter doesn't have to be a tuple\n>>> b\narray([[0, 1, 2],\n[3, 0, 0]])\nReferencing an array prevents resizing...\n>>> c = a\n>>> a.resize((1, 1))\nTraceback (most recent call last):\n...\nValueError: cannot resize an array that references or is referenced ...\nUnless `refcheck` is False:\n>>> a.resize((1, 1), refcheck=False)\n>>> a\narray([[0]])\n>>> c\narray([[0]])"
+          }
+        },
+        {
+          "name": "round",
+          "signature": "round(...)",
+          "documentation": {
+            "description": "a.round(decimals=0, out=None)\nReturn `a` with each element rounded to the given number of decimals.\nRefer to `numpy.around` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.around : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "searchsorted",
+          "signature": "searchsorted(...)",
+          "documentation": {
+            "description": "a.searchsorted(v, side='left', sorter=None)\nFind indices where elements of v should be inserted in a to maintain order.\nFor full documentation, see `numpy.searchsorted`",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.searchsorted : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setfield",
+          "signature": "setfield(...)",
+          "documentation": {
+            "description": "a.setfield(val, dtype, offset=0)\nPut a value into a specified place in a field defined by a data-type.\nPlace `val` into `a`'s field defined by `dtype` and beginning `offset`\nbytes into the field.",
+            "parameters": {
+              "val": {
+                "type": "object",
+                "description": "Value to be placed in field."
+              },
+              "dtype": {
+                "type": "dtype object",
+                "description": "Data-type of the field in which to place `val`."
+              },
+              "offset": {
+                "type": "int, optional",
+                "description": "The number of bytes into the field at which to place `val`."
+              }
+            },
+            "returns": "-------\nNone",
+            "raises": "",
+            "see_also": "--------\ngetfield",
+            "notes": "",
+            "examples": "--------\n>>> x = np.eye(3)\n>>> x.getfield(np.float64)\narray([[1.,  0.,  0.],\n[0.,  1.,  0.],\n[0.,  0.,  1.]])\n>>> x.setfield(3, np.int32)\n>>> x.getfield(np.int32)\narray([[3, 3, 3],\n[3, 3, 3],\n[3, 3, 3]], dtype=int32)\n>>> x\narray([[1.0e+000, 1.5e-323, 1.5e-323],\n[1.5e-323, 1.0e+000, 1.5e-323],\n[1.5e-323, 1.5e-323, 1.0e+000]])\n>>> x.setfield(np.eye(3), np.int32)\n>>> x\narray([[1.,  0.,  0.],\n[0.,  1.,  0.],\n[0.,  0.,  1.]])"
+          }
+        },
+        {
+          "name": "setflags",
+          "signature": "setflags(...)",
+          "documentation": {
+            "description": "a.setflags(write=None, align=None, uic=None)\nSet array flags WRITEABLE, ALIGNED, WRITEBACKIFCOPY,\nrespectively.\nThese Boolean-valued flags affect how numpy interprets the memory\narea used by `a` (see Notes below). The ALIGNED flag can only\nbe set to True if the data is actually aligned according to the type.\nThe WRITEBACKIFCOPY and flag can never be set\nto True. The flag WRITEABLE can only be set to True if the array owns its\nown memory, or the ultimate owner of the memory exposes a writeable buffer\ninterface, or is a string. (The exception for string is made so that\nunpickling can be done without copying memory.)",
+            "parameters": {
+              "write": {
+                "type": "bool, optional",
+                "description": "Describes whether or not `a` can be written to."
+              },
+              "align": {
+                "type": "bool, optional",
+                "description": "Describes whether or not `a` is aligned properly for its type."
+              },
+              "uic": {
+                "type": "bool, optional",
+                "description": "Describes whether or not `a` is a copy of another \"base\" array."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\nArray flags provide information about how the memory area used\nfor the array is to be interpreted. There are 7 Boolean flags\nin use, only four of which can be changed by the user:\nWRITEBACKIFCOPY, WRITEABLE, and ALIGNED.\nWRITEABLE (W) the data area can be written to;\nALIGNED (A) the data and strides are aligned appropriately for the hardware\n(as determined by the compiler);\nWRITEBACKIFCOPY (X) this array is a copy of some other array (referenced\nby .base). When the C-API function PyArray_ResolveWritebackIfCopy is\ncalled, the base array will be updated with the contents of this array.\nAll flags can be accessed using the single (upper case) letter as well\nas the full name.",
+            "examples": "--------\n>>> y = np.array([[3, 1, 7],\n...               [2, 0, 0],\n...               [8, 5, 9]])\n>>> y\narray([[3, 1, 7],\n[2, 0, 0],\n[8, 5, 9]])\n>>> y.flags\nC_CONTIGUOUS : True\nF_CONTIGUOUS : False\nOWNDATA : True\nWRITEABLE : True\nALIGNED : True\nWRITEBACKIFCOPY : False\n>>> y.setflags(write=0, align=0)\n>>> y.flags\nC_CONTIGUOUS : True\nF_CONTIGUOUS : False\nOWNDATA : True\nWRITEABLE : False\nALIGNED : False\nWRITEBACKIFCOPY : False\n>>> y.setflags(uic=1)\nTraceback (most recent call last):\nFile \"<stdin>\", line 1, in <module>\nValueError: cannot set WRITEBACKIFCOPY flag to True"
+          }
+        },
+        {
+          "name": "sort",
+          "signature": "sort(...)",
+          "documentation": {
+            "description": "a.sort(axis=-1, kind=None, order=None)\nSort an array in-place. Refer to `numpy.sort` for full documentation.",
+            "parameters": {
+              "axis": {
+                "type": "int, optional",
+                "description": "Axis along which to sort. Default is -1, which means sort along the\nlast axis."
+              },
+              "kind": {
+                "type": "{'quicksort', 'mergesort', 'heapsort', 'stable'}, optional",
+                "description": "Sorting algorithm. The default is 'quicksort'. Note that both 'stable'\nand 'mergesort' use timsort under the covers and, in general, the\nactual implementation will vary with datatype. The 'mergesort' option\nis retained for backwards compatibility.\n.. versionchanged:: 1.15.0\nThe 'stable' option was added."
+              },
+              "order": {
+                "type": "str or list of str, optional",
+                "description": "When `a` is an array with fields defined, this argument specifies\nwhich fields to compare first, second, etc.  A single field can\nbe specified as a string, and not all fields need be specified,\nbut unspecified fields will still be used, in the order in which\nthey come up in the dtype, to break ties."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.sort : Return a sorted copy of an array.\nnumpy.argsort : Indirect sort.\nnumpy.lexsort : Indirect stable sort on multiple keys.\nnumpy.searchsorted : Find elements in sorted array.\nnumpy.partition: Partial sort.",
+            "notes": "-----\nSee `numpy.sort` for notes on the different sorting algorithms.",
+            "examples": "--------\n>>> a = np.array([[1,4], [3,1]])\n>>> a.sort(axis=1)\n>>> a\narray([[1, 4],\n[1, 3]])\n>>> a.sort(axis=0)\n>>> a\narray([[1, 3],\n[1, 4]])\nUse the `order` keyword to specify a field to use when sorting a\nstructured array:\n>>> a = np.array([('a', 2), ('c', 1)], dtype=[('x', 'S1'), ('y', int)])\n>>> a.sort(order='y')\n>>> a\narray([(b'c', 1), (b'a', 2)],\ndtype=[('x', 'S1'), ('y', '<i8')])"
+          }
+        },
+        {
+          "name": "squeeze",
+          "signature": "squeeze(self, axis=None)",
+          "documentation": {
+            "description": "Return a possibly reshaped matrix.\nRefer to `numpy.squeeze` for more documentation.",
+            "parameters": {
+              "axis": {
+                "type": "None or int or tuple of ints, optional",
+                "description": "Selects a subset of the axes of length one in the shape.\nIf an axis is selected with shape entry greater than one,\nan error is raised."
+              }
+            },
+            "returns": "-------\nsqueezed : matrix\nThe matrix, but as a (1, N) matrix if it had shape (N, 1).",
+            "raises": "",
+            "see_also": "--------\nnumpy.squeeze : related function",
+            "notes": "-----\nIf `m` has a single column then that column is returned\nas the single row of a matrix.  Otherwise `m` is returned.\nThe returned matrix is always either `m` itself or a view into `m`.\nSupplying an axis keyword argument will not affect the returned matrix\nbut it may cause an error to be raised.",
+            "examples": "--------\n>>> c = np.matrix([[1], [2]])\n>>> c\nmatrix([[1],\n[2]])\n>>> c.squeeze()\nmatrix([[1, 2]])\n>>> r = c.T\n>>> r\nmatrix([[1, 2]])\n>>> r.squeeze()\nmatrix([[1, 2]])\n>>> m = np.matrix([[1, 2], [3, 4]])\n>>> m.squeeze()\nmatrix([[1, 2],\n[3, 4]])"
+          }
+        },
+        {
+          "name": "std",
+          "signature": "std(self, axis=None, dtype=None, out=None, ddof=0)",
+          "documentation": {
+            "description": "Return the standard deviation of the array elements along the given axis.\nRefer to `numpy.std` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.std",
+            "notes": "-----\nThis is the same as `ndarray.std`, except that where an `ndarray` would\nbe returned, a `matrix` object is returned instead.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3, 4)))\n>>> x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.std()\n3.4520525295346629 # may vary\n>>> x.std(0)\nmatrix([[ 3.26598632,  3.26598632,  3.26598632,  3.26598632]]) # may vary\n>>> x.std(1)\nmatrix([[ 1.11803399],\n[ 1.11803399],\n[ 1.11803399]])"
+          }
+        },
+        {
+          "name": "sum",
+          "signature": "sum(self, axis=None, dtype=None, out=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "Refer to `numpy.sum` for full documentation.",
+            "raises": "",
+            "see_also": "--------\nnumpy.sum",
+            "notes": "-----\nThis is the same as `ndarray.sum`, except that where an `ndarray` would\nbe returned, a `matrix` object is returned instead.",
+            "examples": "--------\n>>> x = np.matrix([[1, 2], [4, 3]])\n>>> x.sum()\n10\n>>> x.sum(axis=1)\nmatrix([[3],\n[7]])\n>>> x.sum(axis=1, dtype='float')\nmatrix([[3.],\n[7.]])\n>>> out = np.zeros((2, 1), dtype='float')\n>>> x.sum(axis=1, dtype='float', out=np.asmatrix(out))\nmatrix([[3.],\n[7.]])"
+          }
+        },
+        {
+          "name": "swapaxes",
+          "signature": "swapaxes(...)",
+          "documentation": {
+            "description": "a.swapaxes(axis1, axis2)\nReturn a view of the array with `axis1` and `axis2` interchanged.\nRefer to `numpy.swapaxes` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.swapaxes : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "take",
+          "signature": "take(...)",
+          "documentation": {
+            "description": "a.take(indices, axis=None, out=None, mode='raise')\nReturn an array formed from the elements of `a` at the given indices.\nRefer to `numpy.take` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.take : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tobytes",
+          "signature": "tobytes(...)",
+          "documentation": {
+            "description": "a.tobytes(order='C')\nConstruct Python bytes containing the raw data bytes in the array.\nConstructs Python bytes showing a copy of the raw contents of\ndata memory. The bytes object is produced in C-order by default.\nThis behavior is controlled by the ``order`` parameter.\n.. versionadded:: 1.9.0",
+            "parameters": {
+              "order": {
+                "type": "{'C', 'F', 'A'}, optional",
+                "description": "Controls the memory layout of the bytes object. 'C' means C-order,\n'F' means F-order, 'A' (short for *Any*) means 'F' if `a` is\nFortran contiguous, 'C' otherwise. Default is 'C'."
+              }
+            },
+            "returns": "-------\ns : bytes\nPython bytes exhibiting a copy of `a`'s raw data.\nSee also\n--------\nfrombuffer\nInverse of this operation, construct a 1-dimensional array from Python\nbytes.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n>>> x = np.array([[0, 1], [2, 3]], dtype='<u2')\n>>> x.tobytes()\nb'\\x00\\x00\\x01\\x00\\x02\\x00\\x03\\x00'\n>>> x.tobytes('C') == x.tobytes()\nTrue\n>>> x.tobytes('F')\nb'\\x00\\x00\\x02\\x00\\x01\\x00\\x03\\x00'"
+          }
+        },
+        {
+          "name": "tofile",
+          "signature": "tofile(...)",
+          "documentation": {
+            "description": "a.tofile(fid, sep=\"\", format=\"%s\")\nWrite array to a file as text or binary (default).\nData is always written in 'C' order, independent of the order of `a`.\nThe data produced by this method can be recovered using the function\nfromfile().",
+            "parameters": {
+              "fid": {
+                "type": "file or str or Path",
+                "description": "An open file object, or a string containing a filename.\n.. versionchanged:: 1.17.0\n`pathlib.Path` objects are now accepted."
+              },
+              "sep": {
+                "type": "str",
+                "description": "Separator between array items for text output.\nIf \"\" (empty), a binary file is written, equivalent to\n``file.write(a.tobytes())``."
+              },
+              "format": {
+                "type": "str",
+                "description": "Format string for text file output.\nEach entry in the array is formatted to text by first converting\nit to the closest Python type, and then using \"format\" % item."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\nThis is a convenience function for quick storage of array data.\nInformation on endianness and precision is lost, so this method is not a\ngood choice for files intended to archive data or transport data between\nmachines with different endianness. Some of these problems can be overcome\nby outputting the data as text files, at the expense of speed and file\nsize.\nWhen fid is a file object, array contents are directly written to the\nfile, bypassing the file object's ``write`` method. As a result, tofile\ncannot be used with files objects supporting compression (e.g., GzipFile)\nor file-like objects that do not support ``fileno()`` (e.g., BytesIO).",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tolist",
+          "signature": "tolist(self)",
+          "documentation": {
+            "description": "Return the matrix as a (possibly nested) list.\nSee `ndarray.tolist` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nndarray.tolist",
+            "notes": "",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3,4))); x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.tolist()\n[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]"
+          }
+        },
+        {
+          "name": "tostring",
+          "signature": "tostring(...)",
+          "documentation": {
+            "description": "a.tostring(order='C')\nA compatibility alias for `tobytes`, with exactly the same behavior.\nDespite its name, it returns `bytes` not `str`\\ s.\n.. deprecated:: 1.19.0",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "trace",
+          "signature": "trace(...)",
+          "documentation": {
+            "description": "a.trace(offset=0, axis1=0, axis2=1, dtype=None, out=None)\nReturn the sum along diagonals of the array.\nRefer to `numpy.trace` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "--------\nnumpy.trace : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transpose",
+          "signature": "transpose(...)",
+          "documentation": {
+            "description": "a.transpose(*axes)",
+            "parameters": {
+              "axes": {
+                "type": "None, tuple of ints, or `n` ints",
+                "description": "* None or no argument: reverses the order of the axes.\n* tuple of ints: `i` in the `j`-th place in the tuple means that the\narray's `i`-th axis becomes the transposed array's `j`-th axis.\n* `n` ints: same as an n-tuple of the same ints (this form is\nintended simply as a \"convenience\" alternative to the tuple form)."
+              }
+            },
+            "returns": "Refer to `numpy.transpose` for full documentation.\n-------\np : ndarray\nView of the array with its axes suitably permuted.",
+            "raises": "",
+            "see_also": "--------\ntranspose : Equivalent function.\nndarray.T : Array property returning the array transposed.\nndarray.reshape : Give a new shape to an array without changing its data.",
+            "notes": "",
+            "examples": "--------\n>>> a = np.array([[1, 2], [3, 4]])\n>>> a\narray([[1, 2],\n[3, 4]])\n>>> a.transpose()\narray([[1, 3],\n[2, 4]])\n>>> a.transpose((1, 0))\narray([[1, 3],\n[2, 4]])\n>>> a.transpose(1, 0)\narray([[1, 3],\n[2, 4]])\n>>> a = np.array([1, 2, 3, 4])\n>>> a\narray([1, 2, 3, 4])\n>>> a.transpose()\narray([1, 2, 3, 4])"
+          }
+        },
+        {
+          "name": "var",
+          "signature": "var(self, axis=None, dtype=None, out=None, ddof=0)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "Refer to `numpy.var` for full documentation.",
+            "raises": "",
+            "see_also": "--------\nnumpy.var",
+            "notes": "-----\nThis is the same as `ndarray.var`, except that where an `ndarray` would\nbe returned, a `matrix` object is returned instead.",
+            "examples": "--------\n>>> x = np.matrix(np.arange(12).reshape((3, 4)))\n>>> x\nmatrix([[ 0,  1,  2,  3],\n[ 4,  5,  6,  7],\n[ 8,  9, 10, 11]])\n>>> x.var()\n11.916666666666666\n>>> x.var(0)\nmatrix([[ 10.66666667,  10.66666667,  10.66666667,  10.66666667]]) # may vary\n>>> x.var(1)\nmatrix([[1.25],\n[1.25],\n[1.25]])"
+          }
+        },
+        {
+          "name": "view",
+          "signature": "view(...)",
+          "documentation": {
+            "description": "a.view([dtype][, type])\nNew view of array with the same data.\n.. note::\nPassing None for ``dtype`` is different from omitting the parameter,\nsince the former invokes ``dtype(None)`` which is an alias for\n``dtype('float_')``.",
+            "parameters": {
+              "dtype": {
+                "type": "data-type or ndarray sub-class, optional",
+                "description": "Data-type descriptor of the returned view, e.g., float32 or int16.\nOmitting it results in the view having the same data-type as `a`.\nThis argument can also be specified as an ndarray sub-class, which\nthen specifies the type of the returned object (this is equivalent to\nsetting the ``type`` parameter)."
+              },
+              "type": {
+                "type": "Python type, optional",
+                "description": "Type of the returned view, e.g., ndarray or matrix.  Again, omission\nof the parameter results in type preservation."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n``a.view()`` is used two different ways:\n``a.view(some_dtype)`` or ``a.view(dtype=some_dtype)`` constructs a view\nof the array's memory with a different data-type.  This can cause a\nreinterpretation of the bytes of memory.\n``a.view(ndarray_subclass)`` or ``a.view(type=ndarray_subclass)`` just\nreturns an instance of `ndarray_subclass` that looks at the same array\n(same shape, dtype, etc.)  This does not cause a reinterpretation of the\nmemory.\nFor ``a.view(some_dtype)``, if ``some_dtype`` has a different number of\nbytes per entry than the previous dtype (for example, converting a regular\narray to a structured array), then the last axis of ``a`` must be\ncontiguous. This axis will be resized in the result.\n.. versionchanged:: 1.23.0\nOnly the last axis needs to be contiguous. Previously, the entire array\nhad to be C-contiguous.",
+            "examples": "--------\n>>> x = np.array([(1, 2)], dtype=[('a', np.int8), ('b', np.int8)])\nViewing array data using a different type and dtype:\n>>> y = x.view(dtype=np.int16, type=np.matrix)\n>>> y\nmatrix([[513]], dtype=int16)\n>>> print(type(y))\n<class 'numpy.matrix'>\nCreating a view on a structured array so it can be used in calculations\n>>> x = np.array([(1, 2),(3,4)], dtype=[('a', np.int8), ('b', np.int8)])\n>>> xv = x.view(dtype=np.int8).reshape(-1,2)\n>>> xv\narray([[1, 2],\n[3, 4]], dtype=int8)\n>>> xv.mean(0)\narray([2.,  3.])\nMaking changes to the view changes the underlying array\n>>> xv[0,1] = 20\n>>> x\narray([(1, 20), (3,  4)], dtype=[('a', 'i1'), ('b', 'i1')])\nUsing a view to convert an array to a recarray:\n>>> z = x.view(np.recarray)\n>>> z.a\narray([1, 3], dtype=int8)\nViews share data:\n>>> x[0] = (9, 10)\n>>> z[0]\n(9, 10)\nViews that change the dtype size (bytes per entry) should normally be\navoided on arrays defined by slices, transposes, fortran-ordering, etc.:\n>>> x = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.int16)\n>>> y = x[:, ::2]\n>>> y\narray([[1, 3],\n[4, 6]], dtype=int16)\n>>> y.view(dtype=[('width', np.int16), ('length', np.int16)])\nTraceback (most recent call last):\n...\nValueError: To change to a dtype of a different size, the last axis must be contiguous\n>>> z = y.copy()\n>>> z.view(dtype=[('width', np.int16), ('length', np.int16)])\narray([[(1, 3)],\n[(4, 6)]], dtype=[('width', '<i2'), ('length', '<i2')])\nHowever, views that change dtype are totally fine for arrays with a\ncontiguous last axis, even if the rest of the axes are not C-contiguous:\n>>> x = np.arange(2 * 3 * 4, dtype=np.int8).reshape(2, 3, 4)\n>>> x.transpose(1, 0, 2).view(np.int16)\narray([[[ 256,  770],\n[3340, 3854]],\n<BLANKLINE>\n[[1284, 1798],\n[4368, 4882]],\n<BLANKLINE>\n[[2312, 2826],\n[5396, 5910]]], dtype=int16)"
+          }
+        }
+      ]
+    }
+  ]
+}

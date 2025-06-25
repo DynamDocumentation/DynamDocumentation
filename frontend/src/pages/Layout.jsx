@@ -20,6 +20,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import HomeIcon from '@mui/icons-material/Home';
+import CodeIcon from '@mui/icons-material/Code';
+import InfoIcon from '@mui/icons-material/Info';
 import { Outlet } from 'react-router';
 
 /*
@@ -103,94 +107,109 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const options = [
-    "seaborn.despine",
-    "seaborn.move_legend",
-    "seaborn.saturate",
-    "seaborn.desaturate",
-    "seaborn.set_hls_values",
-    "seaborn.load_dataset",
-    "seaborn.get_dataset_names",
-    "seaborn.get_data_home"
-]
+  { text: "seaborn.despine", icon: <InboxIcon /> },
+  { text: "seaborn.move_legend", icon: <MailIcon /> },
+  { text: "seaborn.saturate", icon: <InboxIcon /> },
+  { text: "seaborn.desaturate", icon: <MailIcon /> },
+  { text: "seaborn.set_hls_values", icon: <InboxIcon /> },
+  { text: "seaborn.load_dataset", icon: <MailIcon /> },
+  { text: "seaborn.get_dataset_names", icon: <InboxIcon /> },
+  { text: "seaborn.get_data_home", icon: <MailIcon /> },
+];
+
+// Menu navigation items
+const navigationItems = [
+  { text: "Home", icon: <HomeIcon />, path: "/" },
+  { text: "Documentation", icon: <CodeIcon />, path: "/documentation" },
+  { text: "Generate Library Docs", icon: <LibraryBooksIcon />, path: "/library-input" },
+  { text: "Users", icon: <InboxIcon />, path: "/users" },
+  { text: "About", icon: <InfoIcon />, path: "/about" },
+];
 
 export default function Layout() {
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={[
-                        {
-                            mr: 2,
-                        },
-                        open && { display: 'none' },
-                        ]}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        DynamDocumentation
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: drawerWidth,
-                    boxSizing: 'border-box',
-                    backgroundColor: (theme) => theme.palette.background.default,
-                    color: (theme) => theme.palette.text.primary,
-                },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={open}
-            >
-                <DrawerHeader>
-                <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                     <ListItem disablePadding>
-                        <ListItemButton component={Link} to="/users">
-                          <ListItemText primary="Users" />
-                        </ListItemButton>
-                      </ListItem>
-                    {options.map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <Main open={open}>
-                <DrawerHeader />
-                <Paper elevation={3}>
-                    <Outlet />
-                </Paper>
-            </Main>
-        </Box>
-    );
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              mr: 2,
+              ...(open && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            DynamDocumentation
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+            borderRight: `1px solid ${theme.palette.divider}`,
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose} aria-label="close drawer">
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {/* Navigation menu items */}
+          {navigationItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton component={Link} to={item.path}>
+                <ListItemIcon>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {options.map((option, index) => (
+            <ListItem key={option.text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {option.icon}
+                </ListItemIcon>
+                <ListItemText primary={option.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <Main open={open}>
+        <DrawerHeader />
+        <Paper elevation={3} sx={{ p: 2, background: theme.palette.background.paper }}>
+          <Outlet />
+        </Paper>
+      </Main>
+    </Box>
+  );
 }

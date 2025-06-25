@@ -1,0 +1,170 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Optional",
+      "signature": "Optional(*args, **kwds)",
+      "documentation": {
+        "description": "Optional[X] is equivalent to Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "SobolEngine",
+      "documentation": {
+        "description": "The :class:`torch.quasirandom.SobolEngine` is an engine for generating\n(scrambled) Sobol sequences. Sobol sequences are an example of low\ndiscrepancy quasi-random sequences.\n\nThis implementation of an engine for Sobol sequences is capable of\nsampling sequences up to a maximum dimension of 21201. It uses direction\nnumbers from https://web.maths.unsw.edu.au/~fkuo/sobol/ obtained using the\nsearch criterion D(6) up to the dimension 21201. This is the recommended\nchoice by the authors.\n\nReferences:\n  - Art B. Owen. Scrambling Sobol and Niederreiter-Xing points.\n    Journal of Complexity, 14(4):466-489, December 1998.\n\n  - I. M. Sobol. The distribution of points in a cube and the accurate\n    evaluation of integrals.\n    Zh. Vychisl. Mat. i Mat. Phys., 7:784-802, 1967.",
+        "parameters": {
+          "dimension": {
+            "type": "Int",
+            "description": "The dimensionality of the sequence to be drawn"
+          },
+          "scramble": {
+            "type": "bool, optional",
+            "description": "Setting this to ``True`` will produce"
+          },
+          "scrambled": {
+            "type": "",
+            "description": "Sobol sequences. Scrambling is"
+          },
+          "capable": {
+            "type": "",
+            "description": "of producing better Sobol"
+          },
+          "sequences": {
+            "type": "",
+            "description": ". Default: ``False``."
+          },
+          "seed": {
+            "type": "Int, optional",
+            "description": "This is the seed for the scrambling. The seed"
+          },
+          "of": {
+            "type": "",
+            "description": "the random number generator is set to this,"
+          },
+          "if": {
+            "type": "",
+            "description": "specified. Otherwise, it uses a random seed."
+          },
+          "Default": {
+            "type": "",
+            "description": "``None``"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "draw",
+          "signature": "draw(self, n: int = 1, out: Optional[torch.Tensor] = None, dtype: Optional[torch.dtype] = None) -> torch.Tensor",
+          "documentation": {
+            "description": "Function to draw a sequence of :attr:`n` points from a Sobol sequence.\nNote that the samples are dependent on the previous samples. The size\nof the result is :math:`(n, dimension)`.",
+            "parameters": {
+              "n": {
+                "type": "Int, optional",
+                "description": "The length of sequence of points to draw."
+              },
+              "Default": {
+                "type": "",
+                "description": "``None``"
+              },
+              "out": {
+                "type": "Tensor, optional",
+                "description": "The output tensor"
+              },
+              "dtype": {
+                "type": ":class:`torch.dtype`, optional",
+                "description": "the desired data type of the"
+              },
+              "returned": {
+                "type": "",
+                "description": "tensor."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "draw_base2",
+          "signature": "draw_base2(self, m: int, out: Optional[torch.Tensor] = None, dtype: Optional[torch.dtype] = None) -> torch.Tensor",
+          "documentation": {
+            "description": "Function to draw a sequence of :attr:`2**m` points from a Sobol sequence.\nNote that the samples are dependent on the previous samples. The size\nof the result is :math:`(2**m, dimension)`.",
+            "parameters": {
+              "m": {
+                "type": "Int",
+                "description": "The (base2) exponent of the number of points to draw."
+              },
+              "out": {
+                "type": "Tensor, optional",
+                "description": "The output tensor"
+              },
+              "dtype": {
+                "type": ":class:`torch.dtype`, optional",
+                "description": "the desired data type of the"
+              },
+              "returned": {
+                "type": "",
+                "description": "tensor."
+              },
+              "Default": {
+                "type": "",
+                "description": "``None``"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fast_forward",
+          "signature": "fast_forward(self, n)",
+          "documentation": {
+            "description": "Function to fast-forward the state of the ``SobolEngine`` by\n:attr:`n` steps. This is equivalent to drawing :attr:`n` samples\nwithout using the samples.",
+            "parameters": {
+              "n": {
+                "type": "Int",
+                "description": "The number of steps to fast-forward by."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reset",
+          "signature": "reset(self)",
+          "documentation": {
+            "description": "Function to reset the ``SobolEngine`` to base state.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

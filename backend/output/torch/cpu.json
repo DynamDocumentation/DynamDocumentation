@@ -1,0 +1,274 @@
+{
+  "description": "This package implements abstractions found in ``torch.cuda``\nto facilitate writing device-agnostic code.",
+  "functions": [
+    {
+      "name": "Optional",
+      "signature": "Optional(*args, **kwds)",
+      "documentation": {
+        "description": "Optional[X] is equivalent to Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Union",
+      "signature": "Union(*args, **kwds)",
+      "documentation": {
+        "description": "Union type; Union[X, Y] means either X or Y.\n\nOn Python 3.10 and higher, the | operator\ncan also be used to denote unions;\nX | Y means the same thing to the type checker as Union[X, Y].\n\nTo define a union, use e.g. Union[int, str]. Details:\n- The arguments must be types and there must be at least one.\n- None as an argument is a special case and is replaced by\n  type(None).\n- Unions of unions are flattened, e.g.::\n\n    assert Union[Union[int, str], float] == Union[int, str, float]\n\n- Unions of a single argument vanish, e.g.::\n\n    assert Union[int] == int  # The constructor actually returns int\n\n- Redundant arguments are skipped, e.g.::\n\n    assert Union[int, str, int] == Union[int, str]\n\n- When comparing unions, the argument order is ignored, e.g.::\n\n    assert Union[int, str] == Union[str, int]\n\n- You cannot subclass or instantiate a union.\n- You can use Optional[X] as a shorthand for Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "current_device",
+      "signature": "current_device() -> str",
+      "documentation": {
+        "description": "Returns current device for cpu. Always 'cpu'.\n\nN.B. This function only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "current_stream",
+      "signature": "current_stream(device: Union[torch.device, str, int, NoneType] = None) -> torch.cpu.Stream",
+      "documentation": {
+        "description": "Returns the currently selected :class:`Stream` for a given device.",
+        "parameters": {
+          "device": {
+            "type": "torch.device or int, optional",
+            "description": "Ignored."
+          },
+          "N": {
+            "type": "",
+            "description": ".B. This function only exists to facilitate device-agnostic code"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "device_count",
+      "signature": "device_count() -> int",
+      "documentation": {
+        "description": "Returns number of CPU devices (not cores). Always 1.\n\nN.B. This function only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "is_available",
+      "signature": "is_available() -> bool",
+      "documentation": {
+        "description": "Returns a bool indicating if CPU is currently available.\n\nN.B. This function only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_device",
+      "signature": "set_device(device: Union[torch.device, str, int, NoneType]) -> None",
+      "documentation": {
+        "description": "Sets the current device, in CPU we do nothing.\n\nN.B. This function only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "stream",
+      "signature": "stream(stream: torch.cpu.Stream) -> contextlib.AbstractContextManager",
+      "documentation": {
+        "description": "Wrapper around the Context-manager StreamContext that\nselects a given stream.\n\nN.B. This function only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "synchronize",
+      "signature": "synchronize(device: Union[torch.device, str, int, NoneType] = None) -> None",
+      "documentation": {
+        "description": "Waits for all kernels in all streams on the CPU device to complete.",
+        "parameters": {
+          "device": {
+            "type": "torch.device or int, optional",
+            "description": "ignored, there's only one CPU device."
+          },
+          "N": {
+            "type": "",
+            "description": ".B. This function only exists to facilitate device-agnostic code."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "AbstractContextManager",
+      "documentation": {
+        "description": "An abstract base class for context managers.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "Any",
+      "documentation": {
+        "description": "Special type indicating an unconstrained type.\n\n- Any is compatible with every type.\n- Any assumed to have all methods.\n- All values assumed to be instances of Any.\n\nNote that all the above statements are true from the point of view of\nstatic type checkers. At runtime, Any should not be used with instance\nchecks.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "Event",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "query",
+          "signature": "query(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "record",
+          "signature": "record(self, stream=None) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "synchronize",
+          "signature": "synchronize(self) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "wait",
+          "signature": "wait(self, stream=None) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stream",
+      "documentation": {
+        "description": "N.B. This class only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "wait_stream",
+          "signature": "wait_stream(self, stream) -> None",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "StreamContext",
+      "documentation": {
+        "description": "Context-manager that selects a given stream.\n\nN.B. This class only exists to facilitate device-agnostic code",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    }
+  ]
+}

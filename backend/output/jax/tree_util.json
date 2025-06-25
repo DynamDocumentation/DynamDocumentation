@@ -1,0 +1,528 @@
+{
+  "description": "Utilities for working with tree-like container data structures.\n\nThis module provides a small set of utility functions for working with tree-like\ndata structures, such as nested tuples, lists, and dicts. We call these\nstructures pytrees. They are trees in that they are defined recursively (any\nnon-pytree is a pytree, i.e. a leaf, and any pytree of pytrees is a pytree) and\ncan be operated on recursively (object identity equivalence is not preserved by\nmapping operations, and the structures cannot contain reference cycles).\n\nThe set of Python types that are considered pytree nodes (e.g. that can be\nmapped over, rather than treated as leaves) is extensible. There is a single\nmodule-level registry of types, and class hierarchy is ignored. By registering a\nnew pytree node type, that type in effect becomes transparent to the utility\nfunctions in this file.\n\nThe primary purpose of this module is to enable the interoperability between\nuser defined data structures and JAX transformations (e.g. `jit`). This is not\nmeant to be a general purpose tree-like data structure handling library.\n\nSee the `JAX pytrees note <pytrees.html>`_\nfor examples.",
+  "functions": [
+    {
+      "name": "KeyPath",
+      "signature": "tuple(*args, **kwargs)",
+      "documentation": {
+        "description": "Built-in immutable sequence.\nIf no argument is given, the constructor returns an empty tuple.\nIf iterable is specified the tuple is initialized from iterable's items.\nIf the argument is a tuple, the return value is the same object.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "all_leaves",
+      "signature": "all_leaves(iterable: 'Iterable[Any]', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'bool'",
+      "documentation": {
+        "description": "Tests whether all elements in the given iterable are all leaves.\nThis function is useful in advanced cases, for example if a library allows\narbitrary map operations on a flat iterable of leaves it may want to check\nif the result is still a flat iterable of leaves.\nArgs:\niterable: Iterable of leaves.",
+        "parameters": {},
+        "returns": "A boolean indicating if all elements in the input are leaves.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import jax\n>>> tree = {\"a\": [1, 2, 3]}\n>>> assert all_leaves(jax.tree_util.tree_leaves(tree))\n>>> assert not all_leaves([tree])"
+      }
+    },
+    {
+      "name": "build_tree",
+      "signature": "build_tree(treedef: 'PyTreeDef', xs: 'Any') -> 'Any'",
+      "documentation": {
+        "description": "Build a treedef from a nested iterable structure\nArgs:\ntreedef: the PyTreeDef structure to build.\nxs: nested iterables matching the arity as the treedef",
+        "parameters": {},
+        "returns": "object with structure defined by treedef",
+        "raises": "",
+        "see_also": "- :func:`jax.tree.unflatten`",
+        "notes": "",
+        "examples": ">>> import jax\n>>> tree = [(1, 2), {'a': 3, 'b': 4}]\n>>> treedef = jax.tree.structure(tree)\nBoth ``build_tree`` and :func:`jax.tree_util.tree_unflatten` can reconstruct\nthe tree from new values, but ``build_tree`` takes these values in terms of\na nested rather than flat structure:\n>>> jax.tree_util.build_tree(treedef, [[10, 11], [12, 13]])\n[(10, 11), {'a': 12, 'b': 13}]\n>>> jax.tree_util.tree_unflatten(treedef, [10, 11, 12, 13])\n[(10, 11), {'a': 12, 'b': 13}]"
+      }
+    },
+    {
+      "name": "keystr",
+      "signature": "keystr(keys: 'KeyPath', *, simple: 'bool' = False, separator: 'str' = '') -> 'str'",
+      "documentation": {
+        "description": "Helper to pretty-print a tuple of keys.\nArgs:\nkeys: A tuple of ``KeyEntry`` or any class that can be converted to string.\nsimple: If True, use a simplified string representation for keys. The\nsimple representation of keys will be more compact than the default, but\nis ambiguous in some cases (for example \"0\" might refer to the first item\nin a list or a dictionary key for the integer 0 or string \"0\").\nseparator: The separator to use to join string representations of the keys.",
+        "parameters": {},
+        "returns": "A string that joins all string representations of the keys.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import jax\n>>> params = {'foo': {'bar': {'baz': 1, 'bat': [2, 3]}}}\n>>> for path, _ in jax.tree_util.tree_leaves_with_path(params):\n...   print(jax.tree_util.keystr(path))\n['foo']['bar']['bat'][0]\n['foo']['bar']['bat'][1]\n['foo']['bar']['baz']\n>>> for path, _ in jax.tree_util.tree_leaves_with_path(params):\n...   print(jax.tree_util.keystr(path, simple=True, separator='/'))\nfoo/bar/bat/0\nfoo/bar/bat/1\nfoo/bar/baz"
+      }
+    },
+    {
+      "name": "register_dataclass",
+      "signature": "register_dataclass(nodetype: 'Typ', data_fields: 'Sequence[str] | None' = None, meta_fields: 'Sequence[str] | None' = None, drop_fields: 'Sequence[str]' = ()) -> 'Typ'",
+      "documentation": {
+        "description": "Extends the set of types that are considered internal nodes in pytrees.\nThis differs from ``register_pytree_with_keys_class`` in that the C++\nregistries use the optimized C++ dataclass builtin instead of the argument\nfunctions.\nSee :ref:`extending-pytrees` for more information about registering pytrees.\nArgs:\nnodetype: a Python type to treat as an internal pytree node. This is assumed\nto have the semantics of a :obj:`~dataclasses.dataclass`: namely, class\nattributes represent the whole of the object state, and can be passed\nas keywords to the class constructor to create a copy of the object.\nAll defined attributes should be listed among ``meta_fields`` or ``data_fields``.\nmeta_fields: metadata field names: these are attributes which will be treated as\n{term}`static` when this pytree is passed to :func:`jax.jit`. ``meta_fields`` is\noptional only if ``nodetype`` is a dataclass, in which case individual fields can\nbe marked static via :func:`dataclasses.field` (see examples below).\nMetadata fields *must* be static, hashable, immutable objects, as these objects\nare used to generate JIT cache keys. In particular, metadata fields cannot contain\n:class:`jax.Array` or :class:`numpy.ndarray` objects.\ndata_fields: data field names: these are attributes which will be treated as non-static\nwhen this pytree is passed to :func:`jax.jit`. ``data_fields`` is optional only if\n``nodetype`` is a dataclass, in which case fields are assumed data fields unless\nmarked via :func:`dataclasses.field` (see examples below).\nData fields *must* be JAX-compatible objects such as arrays (:class:`jax.Array`\nor :class:`numpy.ndarray`), scalars, or pytrees whose leaves are arrays or scalars.\nNote that ``None`` is a valid data field, as JAX recognizes this as an empty pytree.",
+        "parameters": {},
+        "returns": "The input class ``nodetype`` is returned unchanged after being added to JAX's\npytree registry, so that :func:`register_dataclass` can be used as a decorator.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "In JAX v0.4.35 or older, you must specify ``data_fields`` and ``meta_fields``\nin order to use this decorator:\n>>> import jax\n>>> from dataclasses import dataclass\n>>> from functools import partial\n...\n>>> @partial(jax.tree_util.register_dataclass,\n...          data_fields=['x', 'y'],\n...          meta_fields=['op'])\n... @dataclass\n... class MyStruct:\n...   x: jax.Array\n...   y: jax.Array\n...   op: str\n...\n>>> m = MyStruct(x=jnp.ones(3), y=jnp.arange(3), op='add')\n>>> m\nMyStruct(x=Array([1., 1., 1.], dtype=float32), y=Array([0, 1, 2], dtype=int32), op='add')\nStarting in JAX v0.4.36, the ``data_fields`` and ``meta_fields`` arguments are optional\nfor :func:`~dataclasses.dataclass` inputs, with fields defaulting to ``data_fields``\nunless marked as static using `static` metadata in :func:`dataclasses.field`.\n>>> import jax\n>>> from dataclasses import dataclass, field\n...\n>>> @jax.tree_util.register_dataclass\n... @dataclass\n... class MyStruct:\n...   x: jax.Array  # defaults to non-static data field\n...   y: jax.Array  # defaults to non-static data field\n...   op: str = field(metadata=dict(static=True))  # marked as static meta field.\n...\n>>> m = MyStruct(x=jnp.ones(3), y=jnp.arange(3), op='add')\n>>> m\nMyStruct(x=Array([1., 1., 1.], dtype=float32), y=Array([0, 1, 2], dtype=int32), op='add')\nOnce this class is registered, it can be used with functions in :mod:`jax.tree` and\n:mod:`jax.tree_util`:\n>>> leaves, treedef = jax.tree.flatten(m)\n>>> leaves\n[Array([1., 1., 1.], dtype=float32), Array([0, 1, 2], dtype=int32)]\n>>> treedef\nPyTreeDef(CustomNode(MyStruct[('add',)], [*, *]))\n>>> jax.tree.unflatten(treedef, leaves)\nMyStruct(x=Array([1., 1., 1.], dtype=float32), y=Array([0, 1, 2], dtype=int32), op='add')\nIn particular, this registration allows ``m`` to be passed seamlessly through code\nwrapped in :func:`jax.jit` and other JAX transformations, with ``data_fields`` being\ntreated as dynamic arguments, and ``meta_fields`` being treated as static arguments:\n>>> @jax.jit\n... def compiled_func(m):\n...   if m.op == 'add':\n...     return m.x + m.y\n...   else:\n...     raise ValueError(f\"{m.op=}\")\n...\n>>> compiled_func(m)\nArray([1., 2., 3.], dtype=float32)"
+      }
+    },
+    {
+      "name": "register_pytree_node",
+      "signature": "register_pytree_node(nodetype: 'type[T]', flatten_func: 'Callable[[T], tuple[_Children, _AuxData]]', unflatten_func: 'Callable[[_AuxData, _Children], T]', flatten_with_keys_func: 'Callable[[T], tuple[KeyLeafPairs, _AuxData]] | None' = None) -> 'None'",
+      "documentation": {
+        "description": "Extends the set of types that are considered internal nodes in pytrees.\nSee :ref:`example usage <pytrees>`.\nArgs:\nnodetype: a Python type to register as a pytree.\nflatten_func: a function to be used during flattening, taking a value of\ntype ``nodetype`` and returning a pair, with (1) an iterable for the\nchildren to be flattened recursively, and (2) some hashable auxiliary data\nto be stored in the treedef and to be passed to the ``unflatten_func``.\nunflatten_func: a function taking two arguments: the auxiliary data that was\nreturned by ``flatten_func`` and stored in the treedef, and the\nunflattened children. The function should return an instance of\n``nodetype``.\nSee also:\n- :func:`~jax.tree_util.register_static`: simpler API for registering a static pytree.\n- :func:`~jax.tree_util.register_dataclass`: simpler API for registering a dataclass.\n- :func:`~jax.tree_util.register_pytree_with_keys`\n- :func:`~jax.tree_util.register_pytree_node_class`\n- :func:`~jax.tree_util.register_pytree_with_keys_class`",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "First we'll define a custom type:\n>>> class MyContainer:\n...   def __init__(self, size):\n...     self.x = jnp.zeros(size)\n...     self.y = jnp.ones(size)\n...     self.size = size\nIf we try using this in a JIT-compiled function, we'll get an error because JAX\ndoes not yet know how to handle this type:\n>>> m = MyContainer(size=5)\n>>> def f(m):\n...   return m.x + m.y + jnp.arange(m.size)\n>>> jax.jit(f)(m)  # doctest: +IGNORE_EXCEPTION_DETAIL\nTraceback (most recent call last):\n...\nTypeError: Cannot interpret value of type <class 'jax.tree_util.MyContainer'> as an abstract array; it does not have a dtype attribute\nIn order to make our object recognized by JAX, we must register it as\na pytree:\n>>> def flatten_func(obj):\n...   children = (obj.x, obj.y)  # children must contain arrays & pytrees\n...   aux_data = (obj.size,)  # aux_data must contain static, hashable data.\n...   return (children, aux_data)\n...\n>>> def unflatten_func(aux_data, children):\n...   # Here we avoid `__init__` because it has extra logic we don't require:\n...   obj = object.__new__(MyContainer)\n...   obj.x, obj.y = children\n...   obj.size, = aux_data\n...   return obj\n...\n>>> jax.tree_util.register_pytree_node(MyContainer, flatten_func, unflatten_func)\nNow with this defined, we can use instances of this type in JIT-compiled functions.\n>>> jax.jit(f)(m)\nArray([1., 2., 3., 4., 5.], dtype=float32)"
+      }
+    },
+    {
+      "name": "register_pytree_node_class",
+      "signature": "register_pytree_node_class(cls: 'Typ') -> 'Typ'",
+      "documentation": {
+        "description": "Extends the set of types that are considered internal nodes in pytrees.\nThis function is a thin wrapper around ``register_pytree_node``, and provides\na class-oriented interface.\nArgs:\ncls: a type to register as a pytree",
+        "parameters": {},
+        "returns": "The input class ``cls`` is returned unchanged after being added to JAX's pytree\nregistry. This return value allows ``register_pytree_node_class`` to be used as\na decorator.\nSee also:\n- :func:`~jax.tree_util.register_static`: simpler API for registering a static pytree.\n- :func:`~jax.tree_util.register_dataclass`: simpler API for registering a dataclass.\n- :func:`~jax.tree_util.register_pytree_node`\n- :func:`~jax.tree_util.register_pytree_with_keys`\n- :func:`~jax.tree_util.register_pytree_with_keys_class`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "Here we'll define a custom container that will be compatible with :func:`jax.jit`\nand other JAX transformations:\n>>> import jax\n>>> @jax.tree_util.register_pytree_node_class\n... class MyContainer:\n...   def __init__(self, x, y):\n...     self.x = x\n...     self.y = y\n...   def tree_flatten(self):\n...     return ((self.x, self.y), None)\n...   @classmethod\n...   def tree_unflatten(cls, aux_data, children):\n...     return cls(*children)\n...\n>>> m = MyContainer(jnp.zeros(4), jnp.arange(4))\n>>> def f(m):\n...   return m.x + 2 * m.y\n>>> jax.jit(f)(m)\nArray([0., 2., 4., 6.], dtype=float32)"
+      }
+    },
+    {
+      "name": "register_pytree_with_keys",
+      "signature": "register_pytree_with_keys(nodetype: 'type[T]', flatten_with_keys: 'Callable[[T], tuple[Iterable[KeyLeafPair], _AuxData]]', unflatten_func: 'Callable[[_AuxData, Iterable[Any]], T]', flatten_func: 'None | Callable[[T], tuple[Iterable[Any], _AuxData]]' = None)",
+      "documentation": {
+        "description": "Extends the set of types that are considered internal nodes in pytrees.\nThis is a more powerful alternative to ``register_pytree_node`` that allows\nyou to access each pytree leaf's key path when flattening and tree-mapping.\nArgs:\nnodetype: a Python type to treat as an internal pytree node.\nflatten_with_keys: a function to be used during flattening, taking a value\nof type ``nodetype`` and returning a pair, with (1) an iterable for tuples\nof each key path and its child, and (2) some hashable auxiliary data to be\nstored in the treedef and to be passed to the ``unflatten_func``.\nunflatten_func: a function taking two arguments: the auxiliary data that was\nreturned by ``flatten_func`` and stored in the treedef, and the\nunflattened children. The function should return an instance of\n``nodetype``.\nflatten_func: an optional function similar to ``flatten_with_keys``, but\nreturns only children and auxiliary data. It must return the children\nin the same order as ``flatten_with_keys``, and return the same aux data.\nThis argument is optional and only needed for faster traversal when\ncalling functions without keys like ``tree_map`` and ``tree_flatten``.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "First we'll define a custom type:\n>>> class MyContainer:\n...   def __init__(self, size):\n...     self.x = jnp.zeros(size)\n...     self.y = jnp.ones(size)\n...     self.size = size\nNow register it using a key-aware flatten function:\n>>> from jax.tree_util import register_pytree_with_keys_class, GetAttrKey\n>>> def flatten_with_keys(obj):\n...   children = [(GetAttrKey('x'), obj.x),\n...               (GetAttrKey('y'), obj.y)]  # children must contain arrays & pytrees\n...   aux_data = (obj.size,)  # aux_data must contain static, hashable data.\n...   return children, aux_data\n...\n>>> def unflatten(aux_data, children):\n...   # Here we avoid `__init__` because it has extra logic we don't require:\n...   obj = object.__new__(MyContainer)\n...   obj.x, obj.y = children\n...   obj.size, = aux_data\n...   return obj\n...\n>>> jax.tree_util.register_pytree_node(MyContainer, flatten_with_keys, unflatten)\nNow this can be used with functions like :func:`~jax.tree_util.tree_flatten_with_path`:\n>>> m = MyContainer(4)\n>>> leaves, treedef = jax.tree_util.tree_flatten_with_path(m)"
+      }
+    },
+    {
+      "name": "register_pytree_with_keys_class",
+      "signature": "register_pytree_with_keys_class(cls: 'Typ') -> 'Typ'",
+      "documentation": {
+        "description": "Extends the set of types that are considered internal nodes in pytrees.\nThis function is similar to ``register_pytree_node_class``, but requires a\nclass that defines how it could be flattened with keys.\nIt is a thin wrapper around ``register_pytree_with_keys``, and\nprovides a class-oriented interface:\nArgs:\ncls: a type to register as a pytree",
+        "parameters": {},
+        "returns": "The input class ``cls`` is returned unchanged after being added to JAX's pytree\nregistry. This return value allows ``register_pytree_node_class`` to be used as\na decorator.\nSee also:\n- :func:`~jax.tree_util.register_static`: simpler API for registering a static pytree.\n- :func:`~jax.tree_util.register_dataclass`: simpler API for registering a dataclass.\n- :func:`~jax.tree_util.register_pytree_node`\n- :func:`~jax.tree_util.register_pytree_with_keys`\n- :func:`~jax.tree_util.register_pytree_node_class`",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> from jax.tree_util import register_pytree_with_keys_class, GetAttrKey\n>>> @register_pytree_with_keys_class\n... class Special:\n...   def __init__(self, x, y):\n...     self.x = x\n...     self.y = y\n...   def tree_flatten_with_keys(self):\n...     return (((GetAttrKey('x'), self.x), (GetAttrKey('y'), self.y)), None)\n...   @classmethod\n...   def tree_unflatten(cls, aux_data, children):\n...     return cls(*children)"
+      }
+    },
+    {
+      "name": "register_static",
+      "signature": "register_static(cls: 'type[H]') -> 'type[H]'",
+      "documentation": {
+        "description": "Registers `cls` as a pytree with no leaves.\nInstances are treated as static by :func:`jax.jit`, :func:`jax.pmap`, etc. This can\nbe an alternative to labeling inputs as static using ``jit``'s ``static_argnums``\nand ``static_argnames`` kwargs, ``pmap``'s ``static_broadcasted_argnums``, etc.\nArgs:\ncls: type to be registered as static. Must be hashable, as defined in\nhttps://docs.python.org/3/glossary.html#term-hashable.",
+        "parameters": {},
+        "returns": "The input class ``cls`` is returned unchanged after being added to JAX's\npytree registry. This allows ``register_static`` to be used as a decorator.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import jax\n>>> @jax.tree_util.register_static\n... class StaticStr(str):\n...   pass\nThis static string can now be used directly in :func:`jax.jit`-compiled\nfunctions, without marking the variable static using ``static_argnums``:\n>>> @jax.jit\n... def f(x, y, s):\n...   return x + y if s == 'add' else x - y\n...\n>>> f(1, 2, StaticStr('add'))\nArray(3, dtype=int32, weak_type=True)"
+      }
+    },
+    {
+      "name": "tree_all",
+      "signature": "tree_all(tree: 'Any', *, is_leaf: 'Callable[[Any], bool] | None' = None) -> 'bool'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.all`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_flatten",
+      "signature": "tree_flatten(tree: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'tuple[list[Leaf], PyTreeDef]'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.flatten`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_flatten_with_path",
+      "signature": "tree_flatten_with_path(tree: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'tuple[list[tuple[KeyPath, Any]], PyTreeDef]'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.flatten_with_path`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_leaves",
+      "signature": "tree_leaves(tree: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'list[Leaf]'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.leaves`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_leaves_with_path",
+      "signature": "tree_leaves_with_path(tree: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'list[tuple[KeyPath, Any]]'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.leaves_with_path`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_map",
+      "signature": "tree_map(f: 'Callable[..., Any]', tree: 'Any', *rest: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'Any'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.map`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_map_with_path",
+      "signature": "tree_map_with_path(f: 'Callable[..., Any]', tree: 'Any', *rest: 'Any', is_leaf: 'Callable[[Any], bool] | None' = None) -> 'Any'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.map_with_path`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_reduce",
+      "signature": "tree_reduce(function: 'Callable[[T, Any], T]', tree: 'Any', initializer: 'Any' = <object object at 0x7b2236d7adb0>, is_leaf: 'Callable[[Any], bool] | None' = None) -> 'T'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.reduce`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_structure",
+      "signature": "tree_structure(tree: 'Any', is_leaf: 'None | Callable[[Any], bool]' = None) -> 'PyTreeDef'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.structure`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_transpose",
+      "signature": "tree_transpose(outer_treedef: 'PyTreeDef', inner_treedef: 'PyTreeDef | None', pytree_to_transpose: 'Any') -> 'Any'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.transpose`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tree_unflatten",
+      "signature": "tree_unflatten(treedef: 'PyTreeDef', leaves: 'Iterable[Leaf]') -> 'Any'",
+      "documentation": {
+        "description": "Alias of :func:`jax.tree.unflatten`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "treedef_children",
+      "signature": "treedef_children(treedef: 'PyTreeDef') -> 'list[PyTreeDef]'",
+      "documentation": {
+        "description": "Return a list of treedefs for immediate children\nArgs:\ntreedef: a single PyTreeDef",
+        "parameters": {},
+        "returns": "a list of PyTreeDefs representing the children of treedef.",
+        "raises": "",
+        "see_also": "- :func:`jax.tree_util.treedef_tuple`",
+        "notes": "",
+        "examples": ">>> import jax\n>>> x = [(1, 2), 3, {'a': 4}]\n>>> treedef = jax.tree.structure(x)\n>>> jax.tree_util.treedef_children(treedef)\n[PyTreeDef((*, *)), PyTreeDef(*), PyTreeDef({'a': *})]\n>>> _ == [jax.tree.structure(vals) for vals in x]\nTrue"
+      }
+    },
+    {
+      "name": "treedef_is_leaf",
+      "signature": "treedef_is_leaf(treedef: 'PyTreeDef') -> 'bool'",
+      "documentation": {
+        "description": "Return True if the treedef represents a leaf.\nArgs:\ntreedef: tree to check",
+        "parameters": {},
+        "returns": "True if treedef is a leaf (i.e. has a single node); False otherwise.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ">>> import jax\n>>> tree1 = jax.tree.structure(1)\n>>> jax.tree_util.treedef_is_leaf(tree1)\nTrue\n>>> tree2 = jax.tree.structure([1, 2])\n>>> jax.tree_util.treedef_is_leaf(tree2)\nFalse"
+      }
+    },
+    {
+      "name": "treedef_tuple",
+      "signature": "treedef_tuple(treedefs: 'Iterable[PyTreeDef]') -> 'PyTreeDef'",
+      "documentation": {
+        "description": "Makes a tuple treedef from an iterable of child treedefs.\nArgs:\ntreedefs: iterable of PyTree structures",
+        "parameters": {},
+        "returns": "a single treedef representing a tuple of the structures",
+        "raises": "",
+        "see_also": "- :func:`jax.tree_util.treedef_children`",
+        "notes": "",
+        "examples": ">>> import jax\n>>> x = [1, 2, 3]\n>>> y = {'a': 4, 'b': 5}\n>>> x_tree = jax.tree.structure(x)\n>>> y_tree = jax.tree.structure(y)\n>>> xy_tree = jax.tree_util.treedef_tuple([x_tree, y_tree])\n>>> xy_tree == jax.tree.structure((x, y))\nTrue"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "DictKey",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "FlattenedIndexKey",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "GetAttrKey",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "Partial",
+      "documentation": {
+        "description": "A version of functools.partial that works in pytrees.\nUse it for partial function evaluation in a way that is compatible with JAX's\ntransformations, e.g., ``Partial(func, *args, **kwargs)``.\n(You need to explicitly opt-in to this behavior because we didn't want to give\nfunctools.partial different semantics than normal function closures.)\nFor example, here is a basic usage of ``Partial`` in a manner similar to\n``functools.partial``:\n>>> import jax.numpy as jnp\n>>> add_one = Partial(jnp.add, 1)\n>>> add_one(2)\nArray(3, dtype=int32, weak_type=True)\nPytree compatibility means that the resulting partial function can be passed\nas an argument within transformed JAX functions, which is not possible with a\nstandard ``functools.partial`` function:\n>>> from jax import jit\n>>> @jit\n... def call_func(f, *args):\n...   return f(*args)\n...\n>>> call_func(add_one, 2)\nArray(3, dtype=int32, weak_type=True)\nPassing zero arguments to ``Partial`` effectively wraps the original function,\nmaking it a valid argument in JAX transformed functions:\n>>> call_func(Partial(jnp.add), 1, 2)\nArray(3, dtype=int32, weak_type=True)\nHad we passed ``jnp.add`` to ``call_func`` directly, it would have resulted in\na ``TypeError``.\nNote that if the result of ``Partial`` is used in the context where the\nvalue is traced, it results in all bound arguments being traced when passed\nto the partially-evaluated function:\n>>> print_zero = Partial(print, 0)\n>>> print_zero()\n0\n>>> call_func(print_zero)  # doctest:+ELLIPSIS\nTraced<ShapedArray(int32[], weak_type=True)>with<DynamicJaxprTrace...>",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "PyTreeDef",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "children",
+          "signature": "children(self)",
+          "documentation": {
+            "description": "children(self) -> list[object]",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "compose",
+          "signature": "compose(self, arg: jaxlib.xla_extension.pytree.PyTreeDef, /)",
+          "documentation": {
+            "description": "compose(self, arg: jaxlib.xla_extension.pytree.PyTreeDef, /) -> object",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "deserialize_using_proto",
+          "signature": "deserialize_using_proto(*args, **kwargs)",
+          "documentation": {
+            "description": "deserialize_using_proto(registry: object, data: bytes) -> object",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "flatten_up_to",
+          "signature": "flatten_up_to(self, tree: object | None)",
+          "documentation": {
+            "description": "flatten_up_to(self, tree: object | None) -> list",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_iterable_tree",
+          "signature": "from_iterable_tree(self, arg: object, /)",
+          "documentation": {
+            "description": "from_iterable_tree(self, arg: object, /) -> object",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "make_from_node_data_and_children",
+          "signature": "make_from_node_data_and_children(*args, **kwargs)",
+          "documentation": {
+            "description": "make_from_node_data_and_children(registry: object, node_data: tuple[object, object] | None, children: collections.abc.Iterable) -> object\nReconstructs a pytree from `node_data()` and `children()`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "node_data",
+          "signature": "node_data(self)",
+          "documentation": {
+            "description": "node_data(self) -> tuple[object, object] | None",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "serialize_using_proto",
+          "signature": "serialize_using_proto(self)",
+          "documentation": {
+            "description": "serialize_using_proto(self) -> bytes",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "unflatten",
+          "signature": "unflatten(self, arg: collections.abc.Iterable, /)",
+          "documentation": {
+            "description": "unflatten(self, arg: collections.abc.Iterable, /) -> object",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "walk",
+          "signature": "walk(self, f_node: collections.abc.Callable, f_leaf: object, leaves: collections.abc.Iterable)",
+          "documentation": {
+            "description": "walk(self, f_node: collections.abc.Callable, f_leaf: object, leaves: collections.abc.Iterable) -> object\nWalk pytree, calling f_node(node, node_data) at nodes, and f_leaf at leaves",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SequenceKey",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    }
+  ]
+}

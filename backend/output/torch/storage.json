@@ -1,0 +1,1428 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Self",
+      "signature": "Self(*args, **kwds)",
+      "documentation": {
+        "description": "Used to spell the type of \"self\" in classes.\n\nExample::\n\n    from typing import Self\n\n    class Foo:\n        def return_self(self) -> Self:\n            ...\n            return self\n\nThis is especially useful for:\n    - classmethods that are used as alternative constructors\n    - annotating an `__enter__` method which returns self",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Type",
+      "signature": "Type(*args, **kwargs)",
+      "documentation": {
+        "description": "Deprecated alias to builtins.type.\n\nbuiltins.type or typing.Type can be used to annotate class objects.\nFor example, suppose we have the following classes::\n\n    class User: ...  # Abstract base for User classes\n    class BasicUser(User): ...\n    class ProUser(User): ...\n    class TeamUser(User): ...\n\nAnd a function that takes a class argument that's a subclass of\nUser and returns an instance of the corresponding class::\n\n    def new_user[U](user_class: Type[U]) -> U:\n        user = user_class()\n        # (Here we could write the user object to a database)\n        return user\n\n    joe = new_user(BasicUser)\n\nAt this point the type checker knows that joe has type BasicUser.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Union",
+      "signature": "Union(*args, **kwds)",
+      "documentation": {
+        "description": "Union type; Union[X, Y] means either X or Y.\n\nOn Python 3.10 and higher, the | operator\ncan also be used to denote unions;\nX | Y means the same thing to the type checker as Union[X, Y].\n\nTo define a union, use e.g. Union[int, str]. Details:\n- The arguments must be types and there must be at least one.\n- None as an argument is a special case and is replaced by\n  type(None).\n- Unions of unions are flattened, e.g.::\n\n    assert Union[Union[int, str], float] == Union[int, str, float]\n\n- Unions of a single argument vanish, e.g.::\n\n    assert Union[int] == int  # The constructor actually returns int\n\n- Redundant arguments are skipped, e.g.::\n\n    assert Union[int, str, int] == Union[int, str]\n\n- When comparing unions, the argument order is ignored, e.g.::\n\n    assert Union[int, str] == Union[str, int]\n\n- You cannot subclass or instantiate a union.\n- You can use Optional[X] as a shorthand for Union[X, None].",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "cast",
+      "signature": "cast(typ, val)",
+      "documentation": {
+        "description": "Cast a value to a type.\n\nThis returns the value unchanged.  To the type checker this\nsignals that the return value has the designated type, but at\nruntime we intentionally don't check anything (we want this\nto be as fast as possible).",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Any",
+      "documentation": {
+        "description": "Special type indicating an unconstrained type.\n\n- Any is compatible with every type.\n- Any assumed to have all methods.\n- All values assumed to be instances of Any.\n\nNote that all the above statements are true from the point of view of\nstatic type checkers. At runtime, Any should not be used with instance\nchecks.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "Storage",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "cpu",
+          "signature": "cpu(self) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "data_ptr",
+          "signature": "data_ptr(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "element_size",
+          "signature": "element_size(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_file",
+          "signature": "from_file(self, filename: str, shared: bool = False, nbytes: int = 0) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_shared",
+          "signature": "is_shared(self) -> bool",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nbytes",
+          "signature": "nbytes(self) -> int",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "share_memory_",
+          "signature": "share_memory_(self) -> 'Storage'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TypeVar",
+      "documentation": {
+        "description": "Type variable.\n\nThe preferred way to construct a type variable is via the dedicated\nsyntax for generic functions, classes, and type aliases::\n\n    class Sequence[T]:  # T is a TypeVar\n        ...\n\nThis syntax can also be used to create bound and constrained type\nvariables::\n\n    # S is a TypeVar bound to str\n    class StrSequence[S: str]:\n        ...\n\n    # A is a TypeVar constrained to str or bytes\n    class StrOrBytesSequence[A: (str, bytes)]:\n        ...\n\nHowever, if desired, reusable type variables can also be constructed\nmanually, like so::\n\n   T = TypeVar('T')  # Can be anything\n   S = TypeVar('S', bound=str)  # Can be any subtype of str\n   A = TypeVar('A', str, bytes)  # Must be exactly str or bytes\n\nType variables exist primarily for the benefit of static type\ncheckers.  They serve as the parameters for generic types as well\nas for generic function and type alias definitions.\n\nThe variance of type variables is inferred by type checkers when they\nare created through the type parameter syntax and when\n``infer_variance=True`` is passed. Manually created type variables may\nbe explicitly marked covariant or contravariant by passing\n``covariant=True`` or ``contravariant=True``. By default, manually\ncreated type variables are invariant. See PEP 484 and PEP 695 for more\ndetails.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "TypedStorage",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "bfloat16",
+          "signature": "bfloat16(self)",
+          "documentation": {
+            "description": "Casts this storage to bfloat16 type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "bool",
+          "signature": "bool(self)",
+          "documentation": {
+            "description": "Casts this storage to bool type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "byte",
+          "signature": "byte(self)",
+          "documentation": {
+            "description": "Casts this storage to byte type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "char",
+          "signature": "char(self)",
+          "documentation": {
+            "description": "Casts this storage to char type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "clone",
+          "signature": "clone(self)",
+          "documentation": {
+            "description": "Return a copy of this storage.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "complex_double",
+          "signature": "complex_double(self)",
+          "documentation": {
+            "description": "Casts this storage to complex double type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "complex_float",
+          "signature": "complex_float(self)",
+          "documentation": {
+            "description": "Casts this storage to complex float type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy_",
+          "signature": "copy_(self, source: 'T', non_blocking: '_Optional[bool]' = None)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cpu",
+          "signature": "cpu(self)",
+          "documentation": {
+            "description": "Return a CPU copy of this storage if it's not already on the CPU.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cuda",
+          "signature": "cuda(self, device=None, non_blocking=False) -> 'Self'",
+          "documentation": {
+            "description": "Returns a copy of this object in CUDA memory.\n\nIf this object is already in CUDA memory and on the correct device, then\nno copy is performed and the original object is returned.",
+            "parameters": {
+              "device": {
+                "type": "int",
+                "description": "The destination GPU id. Defaults to the current device."
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True`` and the source is in pinned memory,"
+              },
+              "the": {
+                "type": "",
+                "description": "argument has no effect."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "data_ptr",
+          "signature": "data_ptr(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "double",
+          "signature": "double(self)",
+          "documentation": {
+            "description": "Casts this storage to double type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "element_size",
+          "signature": "element_size(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fill_",
+          "signature": "fill_(self, value)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float",
+          "signature": "float(self)",
+          "documentation": {
+            "description": "Casts this storage to float type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e4m3fn",
+          "signature": "float8_e4m3fn(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e4m3fn type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e4m3fnuz",
+          "signature": "float8_e4m3fnuz(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e4m3fnuz type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e5m2",
+          "signature": "float8_e5m2(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e5m2 type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e5m2fnuz",
+          "signature": "float8_e5m2fnuz(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e5m2fnuz type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_buffer",
+          "signature": "from_buffer(*args, **kwargs)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_file",
+          "signature": "from_file(filename, shared, size)",
+          "documentation": {
+            "description": "from_file(filename, shared=False, size=0) -> Storage\n\nCreates a CPU storage backed by a memory-mapped file.\n\nIf ``shared`` is ``True``, then memory is shared between all processes.\nAll changes are written to the file. If ``shared`` is ``False``, then the changes on\nthe storage do not affect the file.\n\n``size`` is the number of elements in the storage. If ``shared`` is ``False``,\nthen the file must contain at least ``size * sizeof(Type)`` bytes\n(``Type`` is the type of storage). If ``shared`` is ``True`` the file will be created if needed.",
+            "parameters": {
+              "filename": {
+                "type": "str",
+                "description": "file name to map"
+              },
+              "shared": {
+                "type": "bool",
+                "description": "whether to share memory (whether ``MAP_SHARED`` or ``MAP_PRIVATE`` is passed to the"
+              },
+              "underlying": {
+                "type": "",
+                "description": "`mmap(2) call <https://man7.org/linux/man-pages/man2/mmap.2.html>`_)"
+              },
+              "size": {
+                "type": "int",
+                "description": "number of elements in the storage"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_device",
+          "signature": "get_device(self) -> '_int'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "half",
+          "signature": "half(self)",
+          "documentation": {
+            "description": "Casts this storage to half type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "hpu",
+          "signature": "hpu(self, device=None, non_blocking=False) -> 'Self'",
+          "documentation": {
+            "description": "Returns a copy of this object in HPU memory.\n\nIf this object is already in HPU memory and on the correct device, then\nno copy is performed and the original object is returned.",
+            "parameters": {
+              "device": {
+                "type": "int",
+                "description": "The destination HPU id. Defaults to the current device."
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True`` and the source is in pinned memory,"
+              },
+              "the": {
+                "type": "",
+                "description": "argument has no effect."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "int",
+          "signature": "int(self)",
+          "documentation": {
+            "description": "Casts this storage to int type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_pinned",
+          "signature": "is_pinned(self, device: 'Union[str, torch.device]' = 'cuda')",
+          "documentation": {
+            "description": "Determine whether the CPU TypedStorage is already pinned on device.",
+            "parameters": {
+              "device": {
+                "type": "str or torch.device",
+                "description": "The device to pin memory on. Default: ``'cuda'``"
+              }
+            },
+            "returns": "A boolean variable.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_shared",
+          "signature": "is_shared(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "long",
+          "signature": "long(self)",
+          "documentation": {
+            "description": "Casts this storage to long type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nbytes",
+          "signature": "nbytes(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pickle_storage_type",
+          "signature": "pickle_storage_type(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pin_memory",
+          "signature": "pin_memory(self, device: 'Union[str, torch.device]' = 'cuda')",
+          "documentation": {
+            "description": "Copy the CPU TypedStorage to pinned memory, if it's not already pinned.",
+            "parameters": {
+              "device": {
+                "type": "str or torch.device",
+                "description": "The device to pin memory on. Default: ``'cuda'``."
+              }
+            },
+            "returns": "A pinned CPU storage.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resizable",
+          "signature": "resizable(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resize_",
+          "signature": "resize_(self, size)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "share_memory_",
+          "signature": "share_memory_(self)",
+          "documentation": {
+            "description": "See :meth:`torch.UntypedStorage.share_memory_`",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "short",
+          "signature": "short(self)",
+          "documentation": {
+            "description": "Casts this storage to short type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "size",
+          "signature": "size(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "to",
+          "signature": "to(self, *, device: 'DeviceLikeType', non_blocking: 'bool' = False) -> 'Self'",
+          "documentation": {
+            "description": "Returns a copy of this object in device memory.\n\nIf this object is already on the correct device, then no copy is performed\nand the original object is returned.",
+            "parameters": {
+              "device": {
+                "type": "int",
+                "description": "The destination device."
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True`` and the source is in pinned memory,"
+              },
+              "the": {
+                "type": "",
+                "description": "argument has no effect."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tolist",
+          "signature": "tolist(self)",
+          "documentation": {
+            "description": "Return a list containing the elements of this storage.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "type",
+          "signature": "type(self, dtype: '_Optional[str]' = None, non_blocking: 'bool' = False) -> 'Union[_StorageBase, TypedStorage, str]'",
+          "documentation": {
+            "description": "Returns the type if `dtype` is not provided, else casts this object to\nthe specified type.\n\nIf this is already of the correct type, no copy is performed and the\noriginal object is returned.",
+            "parameters": {
+              "dtype": {
+                "type": "type or string",
+                "description": "The desired type"
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True``, and the source is in pinned memory"
+              },
+              "and": {
+                "type": "",
+                "description": "destination is on the GPU or vice versa, the copy is performed"
+              },
+              "asynchronously": {
+                "type": "",
+                "description": "with respect to the host. Otherwise, the argument"
+              },
+              "has": {
+                "type": "",
+                "description": "no effect.\n**kwargs: For compatibility, may contain the key ``async`` in place of"
+              },
+              "the": {
+                "type": "",
+                "description": "``non_blocking`` argument. The ``async`` arg is deprecated."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "untyped",
+          "signature": "untyped(self)",
+          "documentation": {
+            "description": "Return the internal :class:`torch.UntypedStorage`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UntypedStorage",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "bfloat16",
+          "signature": "bfloat16(self)",
+          "documentation": {
+            "description": "Casts this storage to bfloat16 type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "bool",
+          "signature": "bool(self)",
+          "documentation": {
+            "description": "Casts this storage to bool type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "byte",
+          "signature": "byte(self)",
+          "documentation": {
+            "description": "Casts this storage to byte type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "byteswap",
+          "signature": "byteswap(self, dtype)",
+          "documentation": {
+            "description": "Swap bytes in underlying data.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "char",
+          "signature": "char(self)",
+          "documentation": {
+            "description": "Casts this storage to char type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "clone",
+          "signature": "clone(self)",
+          "documentation": {
+            "description": "Return a copy of this storage.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "complex_double",
+          "signature": "complex_double(self)",
+          "documentation": {
+            "description": "Casts this storage to complex double type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "complex_float",
+          "signature": "complex_float(self)",
+          "documentation": {
+            "description": "Casts this storage to complex float type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy_",
+          "signature": "copy_(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cpu",
+          "signature": "cpu(self)",
+          "documentation": {
+            "description": "Return a CPU copy of this storage if it's not already on the CPU.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cuda",
+          "signature": "cuda(self, device=None, non_blocking=False) -> 'Union[_StorageBase, TypedStorage]'",
+          "documentation": {
+            "description": "Returns a copy of this object in CUDA memory.\n\nIf this object is already in CUDA memory and on the correct device, then\nno copy is performed and the original object is returned.",
+            "parameters": {
+              "device": {
+                "type": "int",
+                "description": "The destination GPU id. Defaults to the current device."
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True`` and the source is in pinned memory,"
+              },
+              "the": {
+                "type": "",
+                "description": "argument has no effect."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "data_ptr",
+          "signature": "data_ptr(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "double",
+          "signature": "double(self)",
+          "documentation": {
+            "description": "Casts this storage to double type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "element_size",
+          "signature": "element_size(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fill_",
+          "signature": "fill_(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float",
+          "signature": "float(self)",
+          "documentation": {
+            "description": "Casts this storage to float type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e4m3fn",
+          "signature": "float8_e4m3fn(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e4m3fn type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e4m3fnuz",
+          "signature": "float8_e4m3fnuz(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e4m3fnuz type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e5m2",
+          "signature": "float8_e5m2(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e5m2 type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "float8_e5m2fnuz",
+          "signature": "float8_e5m2fnuz(self)",
+          "documentation": {
+            "description": "Casts this storage to float8_e5m2fnuz type",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_buffer",
+          "signature": "from_buffer(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_file",
+          "signature": "from_file(filename, shared=False, size=0)",
+          "documentation": {
+            "description": "from_file(filename, shared=False, size=0) -> Storage\n\nCreates a CPU storage backed by a memory-mapped file.\n\nIf ``shared`` is ``True``, then memory is shared between all processes.\nAll changes are written to the file. If ``shared`` is ``False``, then the changes on\nthe storage do not affect the file.\n\n``size`` is the number of elements in the storage. If ``shared`` is ``False``,\nthen the file must contain at least ``size * sizeof(Type)`` bytes\n(``Type`` is the type of storage, in the case of an ``UnTypedStorage`` the file must contain at\nleast ``size`` bytes). If ``shared`` is ``True`` the file will be created if needed.",
+            "parameters": {
+              "filename": {
+                "type": "str",
+                "description": "file name to map"
+              },
+              "shared": {
+                "type": "bool",
+                "description": "whether to share memory (whether ``MAP_SHARED`` or ``MAP_PRIVATE`` is passed to the"
+              },
+              "underlying": {
+                "type": "",
+                "description": "`mmap(2) call <https://man7.org/linux/man-pages/man2/mmap.2.html>`_)"
+              },
+              "size": {
+                "type": "int",
+                "description": "number of elements in the storage"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_device",
+          "signature": "get_device(self) -> '_int'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "half",
+          "signature": "half(self)",
+          "documentation": {
+            "description": "Casts this storage to half type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "hpu",
+          "signature": "hpu(self, device=None, non_blocking=False) -> 'Union[_StorageBase, TypedStorage]'",
+          "documentation": {
+            "description": "Returns a copy of this object in HPU memory.\n\nIf this object is already in HPU memory and on the correct device, then\nno copy is performed and the original object is returned.",
+            "parameters": {
+              "device": {
+                "type": "int",
+                "description": "The destination HPU id. Defaults to the current device."
+              },
+              "non_blocking": {
+                "type": "bool",
+                "description": "If ``True`` and the source is in pinned memory,"
+              },
+              "the": {
+                "type": "",
+                "description": "argument has no effect."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "int",
+          "signature": "int(self)",
+          "documentation": {
+            "description": "Casts this storage to int type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_pinned",
+          "signature": "is_pinned(self, device: 'Union[str, torch.device]' = 'cuda')",
+          "documentation": {
+            "description": "Determine whether the CPU storage is already pinned on device.",
+            "parameters": {
+              "device": {
+                "type": "str or torch.device",
+                "description": "The device to pin memory on. Default: ``'cuda'``."
+              }
+            },
+            "returns": "A boolean variable.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_shared",
+          "signature": "is_shared(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "long",
+          "signature": "long(self)",
+          "documentation": {
+            "description": "Casts this storage to long type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "mps",
+          "signature": "mps(self)",
+          "documentation": {
+            "description": "Return a MPS copy of this storage if it's not already on the MPS.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nbytes",
+          "signature": "nbytes(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "new",
+          "signature": "new(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pin_memory",
+          "signature": "pin_memory(self, device: 'Union[str, torch.device]' = 'cuda')",
+          "documentation": {
+            "description": "Copy the CPU storage to pinned memory, if it's not already pinned.",
+            "parameters": {
+              "device": {
+                "type": "str or torch.device",
+                "description": "The device to pin memory on. Default: ``'cuda'``."
+              }
+            },
+            "returns": "A pinned CPU storage.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resizable",
+          "signature": "resizable(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resize_",
+          "signature": "resize_(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "share_memory_",
+          "signature": "share_memory_(self, *args, **kwargs)",
+          "documentation": {
+            "description": "Moves the storage to shared memory.\n\nThis is a no-op for storages already in shared memory and for CUDA\nstorages, which do not need to be moved for sharing across processes.\nStorages in shared memory cannot be resized.\n\nNote that to mitigate issues like `this <https://github.com/pytorch/pytorch/issues/95606>`_\nit is thread safe to call this function from multiple threads on the same object.\nIt is NOT thread safe though to call any other function on self without proper\nsynchronization. Please see :doc:`/notes/multiprocessing` for more details.\n\n.. note::\n    When all references to a storage in shared memory are deleted, the associated shared memory\n    object will also be deleted. PyTorch has a special cleanup process to ensure that this happens\n    even if the current process exits unexpectedly.\n\n    It is worth noting the difference between :meth:`share_memory_` and :meth:`from_file` with ``shared = True``\n\n    #. ``share_memory_`` uses `shm_open(3) <https://man7.org/linux/man-pages/man3/shm_open.3.html>`_ to create a\n       POSIX shared memory object while :meth:`from_file` uses\n       `open(2) <https://man7.org/linux/man-pages/man2/open.2.html>`_ to open the filename passed by the user.\n    #. Both use an `mmap(2) call <https://man7.org/linux/man-pages/man2/mmap.2.html>`_ with ``MAP_SHARED``\n       to map the file/object into the current virtual address space\n    #. ``share_memory_`` will call ``shm_unlink(3)`` on the object after mapping it to make sure the shared memory\n       object is freed when no process has the object open. ``torch.from_file(shared=True)`` does not unlink the\n       file. This file is persistent and will remain until it is deleted by the user.",
+            "parameters": {},
+            "returns": "``self``",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "short",
+          "signature": "short(self)",
+          "documentation": {
+            "description": "Casts this storage to short type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "size",
+          "signature": "size(self) -> '_int'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "to",
+          "signature": "to(self, *, device: 'DeviceLikeType', non_blocking: '_bool' = False)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tolist",
+          "signature": "tolist(self)",
+          "documentation": {
+            "description": "Return a list containing the elements of this storage.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "type",
+          "signature": "type(self, dtype: '_Optional[str]' = None, non_blocking: '_bool' = False) -> 'Union[_StorageBase, TypedStorage]'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "untyped",
+          "signature": "untyped(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

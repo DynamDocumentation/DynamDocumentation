@@ -1,0 +1,152 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "Generator",
+      "signature": "Generator(*args, **kwargs)",
+      "documentation": {
+        "description": "A generic version of collections.abc.Generator.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fork_rng",
+      "signature": "fork_rng(devices=None, enabled=True, _caller='fork_rng', _devices_kw='devices', device_type='cuda') -> Generator",
+      "documentation": {
+        "description": "Forks the RNG, so that when you return, the RNG is reset\nto the state that it was previously in.",
+        "parameters": {
+          "devices": {
+            "type": "iterable of Device IDs",
+            "description": "devices for which to fork"
+          },
+          "the": {
+            "type": "",
+            "description": "RNG. CPU RNG state is always forked. By default, :meth:`fork_rng` operates"
+          },
+          "on": {
+            "type": "",
+            "description": "all devices, but will emit a warning if your machine has a lot"
+          },
+          "of": {
+            "type": "",
+            "description": "devices, since this function will run very slowly in that case."
+          },
+          "If": {
+            "type": "",
+            "description": "you explicitly specify devices, this warning will be suppressed"
+          },
+          "enabled": {
+            "type": "bool",
+            "description": "if ``False``, the RNG is not forked.  This is a convenience"
+          },
+          "argument": {
+            "type": "",
+            "description": "for easily disabling the context manager without having"
+          },
+          "to": {
+            "type": "",
+            "description": "delete it and unindent your Python code under it."
+          },
+          "device_type": {
+            "type": "str",
+            "description": "device type str, default is `cuda`. As for custom device,"
+          },
+          "see": {
+            "type": "",
+            "description": "details in [Note: support the custom device with privateuse1]"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_rng_state",
+      "signature": "get_rng_state() -> torch.Tensor",
+      "documentation": {
+        "description": "Returns the random number generator state as a `torch.ByteTensor`.\n\n.. note:: The returned state is for the default generator on CPU only.\n\nSee also: :func:`torch.random.fork_rng`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "initial_seed",
+      "signature": "initial_seed() -> int",
+      "documentation": {
+        "description": "Returns the initial seed for generating random numbers as a\nPython `long`.\n\n.. note:: The returned seed is for the default generator on CPU only.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "manual_seed",
+      "signature": "manual_seed(seed) -> torch._C.Generator",
+      "documentation": {
+        "description": "Sets the seed for generating random numbers on all devices. Returns a\n`torch.Generator` object.",
+        "parameters": {
+          "seed": {
+            "type": "int",
+            "description": "The desired seed. Value must be within the inclusive range\n`[-0x8000_0000_0000_0000, 0xffff_ffff_ffff_ffff]`. Otherwise, a RuntimeError"
+          },
+          "is": {
+            "type": "",
+            "description": "raised. Negative inputs are remapped to positive values with the formula\n`0xffff_ffff_ffff_ffff + seed`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "seed",
+      "signature": "seed() -> int",
+      "documentation": {
+        "description": "Sets the seed for generating random numbers to a non-deterministic\nrandom number on all devices. Returns a 64 bit number used to seed the RNG.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_rng_state",
+      "signature": "set_rng_state(new_state: torch.Tensor) -> None",
+      "documentation": {
+        "description": "Sets the random number generator state.\n\n.. note:: This function only works for CPU. For CUDA, please use\n    :func:`torch.manual_seed`, which works for both CPU and CUDA.",
+        "parameters": {
+          "new_state": {
+            "type": "torch.ByteTensor",
+            "description": "The desired state"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": []
+}

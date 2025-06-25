@@ -1,0 +1,1017 @@
+{
+  "description": "torch.multiprocessing is a wrapper around the native :mod:`multiprocessing` module.\n\nIt registers custom reducers, that use shared memory to provide shared\nviews on the same data in different processes. Once the tensor/storage is moved\nto shared_memory (see :func:`~torch.Tensor.share_memory_`), it will be possible\nto send it to other processes without making any copies.\n\nThe API is 100% compatible with the original module - it's enough to change\n``import multiprocessing`` to ``import torch.multiprocessing`` to have all the\ntensors sent through the queues or shared via other mechanisms, moved to shared\nmemory.\n\nBecause of the similarity of APIs we do not document most of this package\ncontents, and we recommend referring to very good docs of the original module.",
+  "functions": [
+    {
+      "name": "Array",
+      "signature": "Array(typecode_or_type, size_or_initializer, *, lock=True)",
+      "documentation": {
+        "description": "Returns a synchronized shared array",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Barrier",
+      "signature": "Barrier(parties, action=None, timeout=None)",
+      "documentation": {
+        "description": "Returns a barrier object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "BoundedSemaphore",
+      "signature": "BoundedSemaphore(value=1)",
+      "documentation": {
+        "description": "Returns a bounded semaphore object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Condition",
+      "signature": "Condition(lock=None)",
+      "documentation": {
+        "description": "Returns a condition object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Event",
+      "signature": "Event()",
+      "documentation": {
+        "description": "Returns an event object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "JoinableQueue",
+      "signature": "JoinableQueue(maxsize=0)",
+      "documentation": {
+        "description": "Returns a queue object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Lock",
+      "signature": "Lock()",
+      "documentation": {
+        "description": "Returns a non-recursive lock object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Manager",
+      "signature": "Manager()",
+      "documentation": {
+        "description": "Returns a manager associated with a running server process\n\nThe managers methods such as `Lock()`, `Condition()` and `Queue()`\ncan be used to create shared objects.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Pipe",
+      "signature": "Pipe(duplex=True)",
+      "documentation": {
+        "description": "Returns two connection object connected by a pipe",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Pool",
+      "signature": "Pool(processes=None, initializer=None, initargs=(), maxtasksperchild=None)",
+      "documentation": {
+        "description": "Returns a process pool object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Queue",
+      "signature": "Queue(maxsize=0)",
+      "documentation": {
+        "description": "Returns a queue object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "RLock",
+      "signature": "RLock()",
+      "documentation": {
+        "description": "Returns a recursive lock object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "RawArray",
+      "signature": "RawArray(typecode_or_type, size_or_initializer)",
+      "documentation": {
+        "description": "Returns a shared array",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "RawValue",
+      "signature": "RawValue(typecode_or_type, *args)",
+      "documentation": {
+        "description": "Returns a shared object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Semaphore",
+      "signature": "Semaphore(value=1)",
+      "documentation": {
+        "description": "Returns a semaphore object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "SimpleQueue",
+      "signature": "SimpleQueue()",
+      "documentation": {
+        "description": "Returns a queue object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "Value",
+      "signature": "Value(typecode_or_type, *args, lock=True)",
+      "documentation": {
+        "description": "Returns a synchronized shared object",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "active_children",
+      "signature": "active_children()",
+      "documentation": {
+        "description": "Return list of process objects corresponding to live child processes",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "allow_connection_pickling",
+      "signature": "allow_connection_pickling()",
+      "documentation": {
+        "description": "Install support for sending connections and sockets\nbetween processes",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "cpu_count",
+      "signature": "cpu_count()",
+      "documentation": {
+        "description": "Returns the number of CPUs in the system",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "current_process",
+      "signature": "current_process()",
+      "documentation": {
+        "description": "Return process object representing the current process",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "freeze_support",
+      "signature": "freeze_support()",
+      "documentation": {
+        "description": "Check whether this is a fake forked process in a frozen executable.\nIf so then run code specified by commandline and exit.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_all_sharing_strategies",
+      "signature": "get_all_sharing_strategies()",
+      "documentation": {
+        "description": "Return a set of sharing strategies supported on a current system.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_all_start_methods",
+      "signature": "get_all_start_methods()",
+      "documentation": {
+        "description": "Returns a list of the supported start methods, default first.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_context",
+      "signature": "get_context(method=None)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_logger",
+      "signature": "get_logger()",
+      "documentation": {
+        "description": "Return package logger -- if it does not already exist then\nit is created.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_sharing_strategy",
+      "signature": "get_sharing_strategy()",
+      "documentation": {
+        "description": "Return the current strategy for sharing CPU tensors.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_start_method",
+      "signature": "get_start_method(allow_none=False)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "init_reductions",
+      "signature": "init_reductions()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "log_to_stderr",
+      "signature": "log_to_stderr(level=None)",
+      "documentation": {
+        "description": "Turn on logging and add a handler which prints to stderr",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "parent_process",
+      "signature": "parent_process()",
+      "documentation": {
+        "description": "Return process object representing the parent process",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_executable",
+      "signature": "set_executable(executable)",
+      "documentation": {
+        "description": "Sets the path to a python.exe or pythonw.exe binary used to run\nchild processes instead of sys.executable when using the 'spawn'\nstart method.  Useful for people embedding Python.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_forkserver_preload",
+      "signature": "set_forkserver_preload(module_names)",
+      "documentation": {
+        "description": "Set list of module names to try to load in forkserver process.\nThis is really just a hint.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_sharing_strategy",
+      "signature": "set_sharing_strategy(new_strategy)",
+      "documentation": {
+        "description": "Set the strategy for sharing CPU tensors.",
+        "parameters": {
+          "new_strategy": {
+            "type": "str",
+            "description": "Name of the selected strategy. Should be one of"
+          },
+          "the": {
+            "type": "",
+            "description": "values returned by :func:`get_all_sharing_strategies()`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_start_method",
+      "signature": "set_start_method(method, force=False)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "spawn",
+      "signature": "spawn(fn, args=(), nprocs=1, join=True, daemon=False, start_method='spawn')",
+      "documentation": {
+        "description": "Spawns ``nprocs`` processes that run ``fn`` with ``args``.\n\nIf one of the processes exits with a non-zero exit status, the\nremaining processes are killed and an exception is raised with the\ncause of termination. In the case an exception was caught in the\nchild process, it is forwarded and its traceback is included in\nthe exception raised in the parent process.",
+        "parameters": {
+          "fn": {
+            "type": "function",
+            "description": "Function is called as the entrypoint of the"
+          },
+          "spawned": {
+            "type": "",
+            "description": "process. This function must be defined at the top"
+          },
+          "level": {
+            "type": "",
+            "description": "of a module so it can be pickled and spawned. This"
+          },
+          "is": {
+            "type": "",
+            "description": "a requirement imposed by multiprocessing."
+          },
+          "The": {
+            "type": "",
+            "description": "function is called as ``fn(i, *args)``, where ``i`` is"
+          },
+          "the": {
+            "type": "",
+            "description": "process index and ``args`` is the passed through tuple"
+          },
+          "of": {
+            "type": "",
+            "description": "arguments."
+          },
+          "args": {
+            "type": "tuple",
+            "description": "Arguments passed to ``fn``."
+          },
+          "nprocs": {
+            "type": "int",
+            "description": "Number of processes to spawn."
+          },
+          "join": {
+            "type": "bool",
+            "description": "Perform a blocking join on all processes."
+          },
+          "daemon": {
+            "type": "bool",
+            "description": "The spawned processes' daemon flag. If set to True,"
+          },
+          "daemonic": {
+            "type": "",
+            "description": "processes will be created."
+          },
+          "start_method": {
+            "type": "str",
+            "description": "(deprecated) this method will always use ``spawn``"
+          },
+          "as": {
+            "type": "",
+            "description": "the start method. To use a different start method"
+          },
+          "use": {
+            "type": "",
+            "description": "``start_processes()``."
+          }
+        },
+        "returns": "None if ``join`` is ``True``,\n    :class:`~ProcessContext` if ``join`` is ``False``",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "start_processes",
+      "signature": "start_processes(fn, args=(), nprocs=1, join=True, daemon=False, start_method='spawn')",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "AuthenticationError",
+      "documentation": {
+        "description": "Common base class for all non-exit exceptions.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "BufferTooShort",
+      "documentation": {
+        "description": "Common base class for all non-exit exceptions.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Process",
+      "documentation": {
+        "description": "Process objects represent activity that is run in a separate process\n\nThe class is analogous to `threading.Thread`",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "close",
+          "signature": "close(self)",
+          "documentation": {
+            "description": "Close the Process object.\n\nThis method releases resources held by the Process object.  It is\nan error to call this method if the child process is still running.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_alive",
+          "signature": "is_alive(self)",
+          "documentation": {
+            "description": "Return whether process is alive",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "join",
+          "signature": "join(self, timeout=None)",
+          "documentation": {
+            "description": "Wait until child process terminates",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "kill",
+          "signature": "kill(self)",
+          "documentation": {
+            "description": "Terminate process; sends SIGKILL signal or uses TerminateProcess()",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "run",
+          "signature": "run(self)",
+          "documentation": {
+            "description": "Method to be run in sub-process; can be overridden in sub-class",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "start",
+          "signature": "start(self)",
+          "documentation": {
+            "description": "Start child process",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "terminate",
+          "signature": "terminate(self)",
+          "documentation": {
+            "description": "Terminate process; sends SIGTERM signal or uses TerminateProcess()",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessContext",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "join",
+          "signature": "join(self, timeout: Optional[float] = None, grace_period: Optional[float] = None)",
+          "documentation": {
+            "description": "Join one or more processes within spawn context.\n\nAttempt to join one or more processes in this spawn context.\nIf one of them exited with a non-zero exit status, this function\nkills the remaining processes (optionally with a grace period)\nand raises an exception with the cause of the first process exiting.\n\nReturns ``True`` if all processes have been joined successfully,\n``False`` if there are more processes that need to be joined.",
+            "parameters": {
+              "timeout": {
+                "type": "float",
+                "description": "Wait this long (in seconds) before giving up on waiting."
+              },
+              "grace_period": {
+                "type": "float",
+                "description": "When any processes fail, wait this long (in seconds)"
+              },
+              "for": {
+                "type": "",
+                "description": "others to shutdown gracefully before terminating them. If they"
+              },
+              "still": {
+                "type": "",
+                "description": "don't exit, wait another grace period before killing them."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pids",
+          "signature": "pids(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessError",
+      "documentation": {
+        "description": "Common base class for all non-exit exceptions.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessExitedException",
+      "documentation": {
+        "description": "Exception raised when a process failed due to signal or exited with a specific code.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProcessRaisedException",
+      "documentation": {
+        "description": "Exception raised when a process failed due to an exception raised by the code.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SpawnContext",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "join",
+          "signature": "join(self, timeout: Optional[float] = None, grace_period: Optional[float] = None)",
+          "documentation": {
+            "description": "Join one or more processes within spawn context.\n\nAttempt to join one or more processes in this spawn context.\nIf one of them exited with a non-zero exit status, this function\nkills the remaining processes (optionally with a grace period)\nand raises an exception with the cause of the first process exiting.\n\nReturns ``True`` if all processes have been joined successfully,\n``False`` if there are more processes that need to be joined.",
+            "parameters": {
+              "timeout": {
+                "type": "float",
+                "description": "Wait this long (in seconds) before giving up on waiting."
+              },
+              "grace_period": {
+                "type": "float",
+                "description": "When any processes fail, wait this long (in seconds)"
+              },
+              "for": {
+                "type": "",
+                "description": "others to shutdown gracefully before terminating them. If they"
+              },
+              "still": {
+                "type": "",
+                "description": "don't exit, wait another grace period before killing them."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pids",
+          "signature": "pids(self)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TimeoutError",
+      "documentation": {
+        "description": "Common base class for all non-exit exceptions.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(...)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\nadd a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(...)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\nset self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}
