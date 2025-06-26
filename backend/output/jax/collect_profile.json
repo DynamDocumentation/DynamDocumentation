@@ -1,3 +1,0 @@
-{
-  "error": "Could not import module jax.collect_profile: This script requires `tensorboard_plugin_profile` to be installed."
-}

@@ -1,5 +1,0 @@
-{
-  "description": "Modules for JAX extensions.\n\nThe :mod:`jax.extend` module provides modules for access to JAX\ninternal machinery. See\n`JEP #15856 <https://jax.readthedocs.io/en/latest/jep/15856-jex.html>`_.\n\nThis module is not the only means by which JAX aims to be\nextensible. For example, the main JAX API offers mechanisms for\n`customizing derivatives\n<https://jax.readthedocs.io/en/latest/notebooks/Custom_derivative_rules_for_Python_code.html>`_,\n`registering custom pytree definitions\n<https://jax.readthedocs.io/en/latest/pytrees.html#extending-pytrees>`_,\nand more.\n\nAPI policy\n----------\n\nUnlike the\n`public API <https://jax.readthedocs.io/en/latest/api_compatibility.html>`_,\nthis module offers **no compatibility guarantee** across releases.\nBreaking changes will be announced via the\n`JAX project changelog <https://jax.readthedocs.io/en/latest/changelog.html>`_.",
-  "functions": [],
-  "classes": []
-}

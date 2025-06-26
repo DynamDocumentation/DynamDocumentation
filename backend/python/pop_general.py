@@ -1,4 +1,3 @@
-# filepath: /home/espala/Exercicios/EPs/DynamDocumentation/population/pop_general.py
 import inspect
 import importlib
 import json
@@ -8,45 +7,68 @@ import re
 import warnings
 from typing import Dict, List, Optional, Union, Any, Tuple
 
+# Library detection functions
 def is_torch_module(module_name: str) -> bool:
     """Verifica se estamos processando o PyTorch."""
     return module_name == "torch" or module_name.startswith("torch.")
 
-def get_function_signature(func, is_torch: bool = False) -> str:
-    """Extrai a assinatura da função com suporte especial para PyTorch."""
+def is_jax_module(module_name: str) -> bool:
+    """Verifica se estamos processando o JAX."""
+    return module_name == "jax" or module_name.startswith("jax.")
+
+def is_tensorflow_module(module_name: str) -> bool:
+    """Verifica se estamos processando o TensorFlow."""
+    return module_name == "tensorflow" or module_name.startswith("tensorflow.") or \
+           module_name == "tf" or module_name.startswith("tf.")
+
+def is_numpy_module(module_name: str) -> bool:
+    """Verifica se estamos processando o NumPy."""
+    return module_name == "numpy" or module_name.startswith("numpy.")
+
+def is_requests_module(module_name: str) -> bool:
+    """Verifica se estamos processando o Requests."""
+    return module_name == "requests" or module_name.startswith("requests.")
+
+def is_matplotlib_module(module_name: str) -> bool:
+    """Verifica se estamos processando o Matplotlib."""
+    return module_name == "matplotlib" or module_name.startswith("matplotlib.")
+
+def is_seaborn_module(module_name: str) -> bool:
+    """Verifica se estamos processando o Seaborn."""
+    return module_name == "seaborn" or module_name.startswith("seaborn.")
+
+def get_function_signature(func, library_type: str = "") -> str:
+    """
+    Tenta extrair assinatura, mesmo para funções geradas em C/Cython.
+    Se não encontrar, retorna um fallback.
+    """
     try:
         sig = inspect.signature(func)
         return f"{func.__name__}{sig}"
     except (ValueError, TypeError):
-        # Para funções em C/Cython, tenta extrair da docstring
-        doc = inspect.getdoc(func) or ""
+        # Para wrappers C/C++, tentamos extrair da docstring (às vezes há algo ali)
+        doc = getattr(func, "__doc__", "") or ""
+        first_line = doc.split('\n', 1)[0].strip()
         
-        # Estratégia 1: Tentar encontrar a assinatura na primeira linha (comum em NumPy e PyTorch)
-        first_line = doc.split('\n')[0].strip()
-        match = re.match(r'^([a-zA-Z0-9_]+)\((.*?)\)', first_line)
-        if match:
-            return f"{func.__name__}({match.group(2)})"
-            
-        # Estratégia 2 (PyTorch): Procurar por uma assinatura após o nome da função
-        if is_torch:
-            torch_sig_pattern = fr'{func.__name__}\s*\((.*?)\)\s*->'
-            torch_match = re.search(torch_sig_pattern, doc)
-            if torch_match:
-                return f"{func.__name__}({torch_match.group(1)})"
-            
-            # Estratégia 3 (PyTorch): Procurar linha "Args:" e extrair parâmetros
-            args_match = re.search(r'Args:\s*\n(.*?)(?:\n\n|\n[A-Z]|\Z)', doc, re.DOTALL)
-            if args_match:
-                args_text = args_match.group(1).strip()
-                params = []
-                for line in args_text.split('\n'):
-                    param_match = re.match(r'^\s*([a-zA-Z0-9_]+)[\s:]', line)
-                    if param_match:
-                        params.append(param_match.group(1))
-                if params:
-                    return f"{func.__name__}({', '.join(params)})"
+        # Pattern melhorado para capturar várias formas de assinaturas em docstrings
+        patterns = [
+            r'^([a-zA-Z0-9_\.]+)\((.*?)\)',  # func(args)
+            r'^([a-zA-Z0-9_\.]+)\s*\((.*?)\)',  # func (args)
+            r'^(?:[a-zA-Z0-9_\.]+\.)?([a-zA-Z0-9_]+)\((.*?)\)',  # module.func(args)
+            r'^(?:[a-zA-Z0-9_\.]+\.)?([a-zA-Z0-9_]+)\s*\((.*?)\)'  # module.func (args)
+        ]
         
-        # Fallback
+        for pattern in patterns:
+            match = re.search(pattern, first_line)
+            if match:
+                return f"{func.__name__}({match.group(2)})"
+        
+        # Fallback específico para bibliotecas com formatos conhecidos
+        if is_tensorflow_module(library_type):
+            match = re.search(r'tf\.(?:[a-zA-Z0-9_\.]+\.)?([a-zA-Z0-9_]+)\((.*?)\)', doc)
+            if match:
+                return f"{func.__name__}({match.group(2)})"
+        
         return f"{func.__name__}(...)"
 
 def parse_torch_docstring(doc: str) -> Dict[str, Any]:
@@ -72,13 +94,16 @@ def parse_torch_docstring(doc: str) -> Dict[str, Any]:
         "examples": ""
     }
     
-    # Extrai a descrição (tudo antes de Args:, Returns:, etc.)
-    desc_match = re.search(r'^(.*?)(?:\n\s*(?:Args|Arguments|Parameters|Returns|Raises|Examples|Note|Warning):|$)', doc, re.DOTALL)
+    desc_match = re.search(
+        r'^(.*?)(?:\n\s*(?:Args|Arguments|Parameters|Returns|Raises|Examples|Note|Warning):|$)',
+        doc, re.DOTALL)
     if desc_match:
         result["description"] = desc_match.group(1).strip()
     
-    # Extrai parâmetros
-    args_match = re.search(r'(?:Args|Arguments|Parameters):\s*\n(.*?)(?:\n\s*(?:Returns|Raises|Examples|Note|Warning):|$)', doc, re.DOTALL)
+    # Args/Parameters
+    args_match = re.search(
+        r'(?:Args|Arguments|Parameters):\s*\n(.*?)(?:\n\s*(?:Returns|Raises|Examples|Note|Warning):|$)',
+        doc, re.DOTALL)
     if args_match:
         args_text = args_match.group(1)
         current_param = None
@@ -89,65 +114,53 @@ def parse_torch_docstring(doc: str) -> Dict[str, Any]:
             line = line.strip()
             if not line:
                 continue
-                
-            # Detecta novo parâmetro (formatos diversos do PyTorch)
-            param_match = re.match(r'^([a-zA-Z0-9_]+)(?:\s*\(([^)]*)\))?(?:\s*:)?\s*(.*)$', line)
             
+            param_match = re.match(r'^([a-zA-Z0-9_]+)(?:\s*\(([^)]*)\))?(?:\s*:)?\s*(.*)$', line)
             if param_match:
-                # Salva parâmetro anterior
                 if current_param:
                     result["parameters"][current_param] = {
                         "type": current_type.strip(),
-                        "description": '\n'.join(current_desc).strip()
+                        "description": "\n".join(current_desc).strip()
                     }
-                
-                # Novo parâmetro
                 current_param = param_match.group(1)
                 current_type = param_match.group(2) or ""
                 current_desc = [param_match.group(3) or ""]
             elif current_param:
-                # Continua descrição do parâmetro atual
                 current_desc.append(line)
         
-        # Salva o último parâmetro
         if current_param:
             result["parameters"][current_param] = {
                 "type": current_type.strip(),
-                "description": '\n'.join(current_desc).strip()
+                "description": "\n".join(current_desc).strip()
             }
     
-    # Extrai returns
+    # Returns
     returns_match = re.search(r'Returns:\s*\n(.*?)(?:\n\s*(?:Raises|Examples|Note|Warning):|$)', doc, re.DOTALL)
     if returns_match:
         result["returns"] = returns_match.group(1).strip()
     
-    # Extrai raises
+    # Raises
     raises_match = re.search(r'Raises:\s*\n(.*?)(?:\n\s*(?:Examples|Note|Warning):|$)', doc, re.DOTALL)
     if raises_match:
         result["raises"] = raises_match.group(1).strip()
     
-    # Extrai exemplos
+    # Examples
     examples_match = re.search(r'(?:Example|Examples):\s*\n(.*?)(?:\n\s*(?:Note|Warning):|$)', doc, re.DOTALL)
     if examples_match:
         result["examples"] = examples_match.group(1).strip()
     
-    # Extrai notas
+    # Notes
     notes_match = re.search(r'(?:Note|Notes):\s*\n(.*?)(?:\n\s*(?:Warning|Example|Examples):|$)', doc, re.DOTALL)
     if notes_match:
         result["notes"] = notes_match.group(1).strip()
     
     return result
 
-def parse_docstring(doc: Optional[str], is_torch: bool = False) -> dict:
+def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
     """
-    Parse uma docstring no estilo NumPy/Sphinx ou PyTorch.
-    
-    Args:
-        doc: A docstring para analisar
-        is_torch: Se True, usa um parser especializado para o formato PyTorch
+    Parser para docstrings no estilo NumPy/TensorFlow.
     """
     if not doc:
-        # Docstring vazia ou None
         return {
             "description": "",
             "parameters": {},
@@ -158,20 +171,6 @@ def parse_docstring(doc: Optional[str], is_torch: bool = False) -> dict:
             "examples": ""
         }
     
-    # Para PyTorch, use o parser especializado
-    if is_torch:
-        return parse_torch_docstring(doc)
-
-    # Código existente para outras bibliotecas
-    known_sections = [
-        "Parameters",
-        "Returns",
-        "Raises",
-        "See Also",
-        "Notes",
-        "Examples"
-    ]
-
     result = {
         "description": "",
         "parameters": {},
@@ -181,94 +180,443 @@ def parse_docstring(doc: Optional[str], is_torch: bool = False) -> dict:
         "notes": "",
         "examples": ""
     }
-
-    lines = doc.split('\n')
-    current_section = "description"
-    param_name = None
-    param_type = ""
-    param_desc: List[str] = []
-
-    def finalize_param():
-        """Guarda o texto coletado para o parâmetro atual e reinicia."""
-        nonlocal param_name, param_type, param_desc
-        if param_name:
-            result["parameters"][param_name] = {
-                "type": param_type.strip(),
-                "description": "\n".join(param_desc).strip()
-            }
-        # Reset
-        param_name = None
-        param_type = ""
-        param_desc = []
-
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        
-        # Verificar se é início de seção
-        is_section = False
-        for section in known_sections:
-            if line.startswith(section) and (len(line) == len(section) or line[len(section)] in [':', ' ', '\t', '-']):
-                # Se estávamos processando um parâmetro, finalize-o
-                if current_section == "parameters" and param_name:
-                    finalize_param()
-                
-                current_section = section.lower().replace(' ', '_')
-                is_section = True
-                break
-                
-        if is_section:
-            i += 1
+    
+    # Divide a docstring por seções
+    sections = re.split(r'\n\s*(?:Parameters|Returns|Raises|See Also|Notes|Examples)\s*\n\s*-+\s*\n', doc)
+    
+    if sections:
+        result["description"] = sections[0].strip()
+    
+    # Identifica seções específicas
+    for i, section_content in enumerate(sections[1:], 1):
+        # Determina qual seção estamos processando
+        section_header_match = re.search(r'\n\s*(Parameters|Returns|Raises|See Also|Notes|Examples)\s*\n\s*-+\s*\n', 
+                                          doc[:doc.find(section_content)])
+        if not section_header_match:
             continue
         
-        # Processamento específico para a seção Parameters
-        if current_section == "parameters":
-            # Tenta identificar um novo parâmetro
-            # Formato 1: param_name : param_type
-            param_match = re.match(r'^([a-zA-Z0-9_\.\[\]]+)\s*:\s*(.*?)$', line)
-            # Formato 2: param_name -- descrição
-            if not param_match:
-                param_match = re.match(r'^([a-zA-Z0-9_\.\[\]]+)\s+--\s+(.*?)$', line)
-            
-            if param_match:
-                # Se já estávamos processando um parâmetro, finalize-o
-                if param_name:
-                    finalize_param()
-                
-                param_name = param_match.group(1)
-                if param_match.group(2):
-                    # Se capturamos tipo ou descrição
-                    if current_section == "parameters" and ":" in line:
-                        param_type = param_match.group(2)
-                    else:
-                        param_desc.append(param_match.group(2))
-            elif line and param_name:
-                # Continuação da descrição de um parâmetro existente
-                # Tenta identificar se é uma linha de tipo
-                type_match = re.match(r'^\s*([a-zA-Z0-9_\,\s\[\]\(\)\{\}\<\>\|\.\"\'\*]+)$', line)
-                if not param_type and type_match and not param_desc:
-                    param_type = type_match.group(1)
-                else:
-                    param_desc.append(line)
-        else:
-            # Adiciona a linha à seção atual
-            if line:  # Ignora linhas vazias
-                current_text = result[current_section]
-                if current_text:
-                    result[current_section] = current_text + "\n" + line
-                else:
-                    result[current_section] = line
+        section_name = section_header_match.group(1)
         
-        i += 1
+        if section_name == "Parameters":
+            # Processa parâmetros no estilo NumPy
+            param_blocks = re.split(r'\n\s*(?=[a-zA-Z0-9_]+\s*:)', section_content)
+            for block in param_blocks:
+                if not block.strip():
+                    continue
+                
+                # Match parameter name and type
+                param_match = re.match(r'([a-zA-Z0-9_]+)\s*:\s*([^,\n]+)(?:,\s*optional)?(?:,\s*default=.+)?', block)
+                if param_match:
+                    param_name = param_match.group(1).strip()
+                    param_type = param_match.group(2).strip()
+                    param_desc = re.sub(r'^[a-zA-Z0-9_]+\s*:\s*[^,\n]+(?:,\s*optional)?(?:,\s*default=.+)?\s*', '', block, 1).strip()
+                    
+                    result["parameters"][param_name] = {
+                        "type": param_type,
+                        "description": param_desc
+                    }
+        
+        elif section_name == "Returns":
+            result["returns"] = section_content.strip()
+        elif section_name == "Raises":
+            result["raises"] = section_content.strip()
+        elif section_name == "See Also":
+            result["see_also"] = section_content.strip()
+        elif section_name == "Notes":
+            result["notes"] = section_content.strip()
+        elif section_name == "Examples":
+            result["examples"] = section_content.strip()
     
-    # Finaliza o último parâmetro, se houver
-    if current_section == "parameters" and param_name:
-        finalize_param()
+    # Se não encontrou seções NumPy-style, tenta Google-style
+    if not result["parameters"] and not result["returns"]:
+        # Args/Parameters (Google style)
+        args_match = re.search(r'(?:Args|Arguments|Parameters):\s*\n(.*?)(?:\n\s*(?:Returns|Raises|Examples|Notes):|$)', doc, re.DOTALL)
+        if args_match:
+            args_text = args_match.group(1)
+            current_param = None
+            current_type = ""
+            current_desc = []
+            
+            for line in args_text.split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+                
+                # Formatos comuns no Google style
+                param_match = re.match(r'^([a-zA-Z0-9_]+)(?:\s*\(([^)]*)\))?(?:\s*:)?\s*(.*)$', line)
+                if param_match:
+                    if current_param:
+                        result["parameters"][current_param] = {
+                            "type": current_type.strip(),
+                            "description": "\n".join(current_desc).strip()
+                        }
+                    current_param = param_match.group(1)
+                    current_type = param_match.group(2) or ""
+                    current_desc = [param_match.group(3) or ""]
+                elif current_param:
+                    current_desc.append(line)
+            
+            if current_param:
+                result["parameters"][current_param] = {
+                    "type": current_type.strip(),
+                    "description": "\n".join(current_desc).strip()
+                }
     
     return result
 
+def parse_jax_docstring(doc: str) -> Dict[str, Any]:
+    """
+    Parser específico para docstrings do JAX.
+    """
+    if not doc:
+        return {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+        }
+    
+    result = {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+    }
+    
+    # Extrai descrição (até a primeira seção)
+    sections = re.split(r'\n\s*(?:Args|Arguments|Parameters|Returns|Raises|Examples|Notes|See Also):', doc)
+    if sections:
+        result["description"] = sections[0].strip()
+    
+    # Parâmetros no formato JAX
+    params_match = re.search(r'(?:Args|Arguments|Parameters):(.*?)(?:\n\s*(?:Returns|Raises|Examples|Notes|See Also):|$)', doc, re.DOTALL)
+    if params_match:
+        params_text = params_match.group(1)
+        # JAX usa diversos formatos para parâmetros
+        current_param = None
+        current_type = ""
+        current_desc = []
+        
+        for line in params_text.split('\n'):
+            stripped_line = line.strip()
+            if not stripped_line:
+                continue
+            
+            # Verifica se é um novo parâmetro
+            indent = len(line) - len(line.lstrip())
+            
+            # Pattern mais comum no JAX: parameter_name: parameter_type
+            param_match = re.match(r'^([a-zA-Z0-9_]+)\s*:\s*([^-\s][^-]*?)(?:\s*-\s*(.*))?$', stripped_line)
+            
+            # Alternativa: parameter_name (param_type): description
+            if not param_match:
+                param_match = re.match(r'^([a-zA-Z0-9_]+)\s*\(([^)]*)\)(?:\s*:)?\s*(.*)$', stripped_line)
+            
+            # Alternativa: parameter_name -- description
+            if not param_match:
+                param_match = re.match(r'^([a-zA-Z0-9_]+)\s*--\s*(.*)$', stripped_line)
+                if param_match:
+                    param_match = (param_match.group(1), "", param_match.group(2))
+            
+            if param_match and (indent == 0 or current_param is None):
+                # Finalize o parâmetro anterior
+                if current_param:
+                    result["parameters"][current_param] = {
+                        "type": current_type.strip(),
+                        "description": "\n".join(current_desc).strip()
+                    }
+                
+                current_param = param_match.group(1)
+                if len(param_match.groups()) > 1:
+                    current_type = param_match.group(2) or ""
+                else:
+                    current_type = ""
+                
+                if len(param_match.groups()) > 2 and param_match.group(3):
+                    current_desc = [param_match.group(3)]
+                else:
+                    current_desc = []
+            elif current_param and indent > 0:
+                # Linha de continuação para a descrição
+                current_desc.append(stripped_line)
+        
+        # Finaliza o último parâmetro
+        if current_param:
+            result["parameters"][current_param] = {
+                "type": current_type.strip(),
+                "description": "\n".join(current_desc).strip()
+            }
+    
+    # Returns
+    returns_match = re.search(r'Returns:(.*?)(?:\n\s*(?:Raises|Examples|Notes|See Also):|$)', doc, re.DOTALL)
+    if returns_match:
+        result["returns"] = returns_match.group(1).strip()
+    
+    # Raises
+    raises_match = re.search(r'Raises:(.*?)(?:\n\s*(?:Examples|Notes|See Also):|$)', doc, re.DOTALL)
+    if raises_match:
+        result["raises"] = raises_match.group(1).strip()
+    
+    # Examples
+    examples_match = re.search(r'Examples:(.*?)(?:\n\s*(?:Notes|See Also):|$)', doc, re.DOTALL)
+    if examples_match:
+        result["examples"] = examples_match.group(1).strip()
+    
+    # Notes
+    notes_match = re.search(r'Notes:(.*?)(?:\n\s*(?:Examples|See Also):|$)', doc, re.DOTALL)
+    if notes_match:
+        result["notes"] = notes_match.group(1).strip()
+    
+    # See Also
+    see_also_match = re.search(r'See Also:(.*?)(?:\n\s*(?:Examples|Notes):|$)', doc, re.DOTALL)
+    if see_also_match:
+        result["see_also"] = see_also_match.group(1).strip()
+    
+    return result
+
+def parse_requests_docstring(doc: str) -> Dict[str, Any]:
+    """
+    Parser especializado para docstrings do Requests.
+    """
+    if not doc:
+        return {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+        }
+    
+    result = {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+    }
+    
+    # Requests usa muitos docstrings no formato :param param_name: description
+    result["description"] = re.sub(r':(?:param|return|returns|raises|rtype).*$', '', doc, flags=re.MULTILINE).strip()
+    
+    # Extrai parâmetros no formato :param name: description
+    param_matches = re.finditer(r':param\s+([^:]+):\s*(.*?)(?=\n\s*:(?:param|return|returns|raises|rtype)|$)', doc, re.DOTALL)
+    for match in param_matches:
+        param_name = match.group(1).strip()
+        param_desc = match.group(2).strip()
+        
+        # Tenta extrair tipo se estiver presente no nome do parâmetro
+        type_match = re.match(r'^([^\s]+)\s+(.+)$', param_name)
+        if type_match:
+            param_type = type_match.group(1)
+            param_name = type_match.group(2)
+        else:
+            param_type = ""
+        
+        result["parameters"][param_name] = {
+            "type": param_type,
+            "description": param_desc
+        }
+    
+    # Return
+    return_match = re.search(r':(?:return|returns):\s*(.*?)(?=\n\s*:(?:param|raises|rtype)|$)', doc, re.DOTALL)
+    if return_match:
+        result["returns"] = return_match.group(1).strip()
+    
+    # Return type
+    rtype_match = re.search(r':rtype:\s*(.*?)(?=\n\s*:(?:param|return|returns|raises)|$)', doc, re.DOTALL)
+    if rtype_match and "returns" in result:
+        result["returns"] = f"{result['returns']} (tipo: {rtype_match.group(1).strip()})"
+    
+    # Raises
+    raises_match = re.search(r':raises:\s*(.*?)(?=\n\s*:(?:param|return|returns|rtype)|$)', doc, re.DOTALL)
+    if raises_match:
+        result["raises"] = raises_match.group(1).strip()
+    
+    return result
+
+def parse_generic_docstring(doc: str) -> Dict[str, Any]:
+    """
+    Parser genérico que tenta lidar com vários estilos de docstrings
+    """
+    if not doc:
+        return {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+        }
+    
+    result = {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+    }
+    
+    # Primeiro, tenta encontrar seções principais
+    known_sections = ["Parameters", "Args", "Arguments", "Returns", "Return", "Raises", "Exceptions", 
+                      "See Also", "Notes", "Note", "Examples", "Example"]
+    
+    # Divide a docstring em seções
+    current_section = "description"
+    result["description"] = doc.strip()
+    
+    for section in known_sections:
+        # Diferentes formatos de seções
+        patterns = [
+            fr'\n\s*{section}:\s*\n',  # NumPy style: Section:\n
+            fr'\n\s*{section}\s*\n\s*-+\s*\n',  # NumPy style: Section\n------\n
+            fr'\n\s*{section}:',  # Google style: Section:
+            fr'\n\s*{section}\s+'  # Section seguido de espaço
+        ]
+        
+        for pattern in patterns:
+            section_parts = re.split(pattern, doc, flags=re.IGNORECASE)
+            if len(section_parts) > 1:
+                # Atualiza a descrição para ser apenas a parte antes da primeira seção
+                if current_section == "description":
+                    result["description"] = section_parts[0].strip()
+                
+                # Trata o conteúdo desta seção
+                section_content = section_parts[1]
+                next_section_match = None
+                
+                # Encontra onde começa a próxima seção
+                for next_section in known_sections:
+                    for next_pattern in patterns:
+                        match = re.search(next_pattern, section_content, re.IGNORECASE)
+                        if match and (next_section_match is None or match.start() < next_section_match.start()):
+                            next_section_match = match
+                
+                # Extrai o conteúdo até a próxima seção
+                if next_section_match:
+                    section_content = section_content[:next_section_match.start()]
+                
+                section_key = section.lower().replace(' ', '_')
+                
+                # Processa parâmetros
+                if section.lower() in ["parameters", "args", "arguments"]:
+                    # Tenta extrair parâmetros em vários formatos
+                    param_lines = section_content.split('\n')
+                    current_param = None
+                    current_type = ""
+                    current_desc = []
+                    
+                    for line in param_lines:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        
+                        # Diversos padrões para definição de parâmetros
+                        param_patterns = [
+                            r'^([a-zA-Z0-9_]+)\s*:\s*([^-]*)(?:\s*-\s*(.*))?$',  # name: type - desc
+                            r'^([a-zA-Z0-9_]+)\s*\(([^)]*)\)(?:\s*:)?\s*(.*)$',  # name(type): desc
+                            r'^([a-zA-Z0-9_]+)\s+--\s+(.*)$',  # name -- desc
+                            r'^([a-zA-Z0-9_]+)\s+(.*)$'  # name desc
+                        ]
+                        
+                        matched = False
+                        for param_pattern in param_patterns:
+                            param_match = re.match(param_pattern, line)
+                            if param_match:
+                                if current_param:  # Finaliza o parâmetro anterior
+                                    result["parameters"][current_param] = {
+                                        "type": current_type.strip(),
+                                        "description": "\n".join(current_desc).strip()
+                                    }
+                                
+                                current_param = param_match.group(1)
+                                if len(param_match.groups()) > 1:
+                                    if param_pattern == r'^([a-zA-Z0-9_]+)\s+--\s+(.*)$':
+                                        current_type = ""
+                                        current_desc = [param_match.group(2)]
+                                    else:
+                                        current_type = param_match.group(2) or ""
+                                        if len(param_match.groups()) > 2:
+                                            current_desc = [param_match.group(3) or ""]
+                                        else:
+                                            current_desc = []
+                                else:
+                                    current_type = ""
+                                    current_desc = []
+                                
+                                matched = True
+                                break
+                        
+                        if not matched and current_param:
+                            # Linha de continuação
+                            current_desc.append(line)
+                    
+                    # Finaliza o último parâmetro
+                    if current_param:
+                        result["parameters"][current_param] = {
+                            "type": current_type.strip(),
+                            "description": "\n".join(current_desc).strip()
+                        }
+                else:
+                    # Outras seções
+                    if section_key in ["returns", "return", "raises", "exceptions", "see_also", "notes", "note", "examples", "example"]:
+                        if section_key.startswith("return"):
+                            section_key = "returns"
+                        elif section_key.startswith("raise") or section_key.startswith("exception"):
+                            section_key = "raises"
+                        elif section_key.startswith("see"):
+                            section_key = "see_also"
+                        elif section_key.startswith("note"):
+                            section_key = "notes"
+                        elif section_key.startswith("example"):
+                            section_key = "examples"
+                        
+                        result[section_key] = section_content.strip()
+    
+    return result
+
+def parse_docstring(doc: Optional[str], module_name: str) -> dict:
+    """
+    Decide o parser com base na biblioteca, com fallback para parser genérico.
+    """
+    if not doc:
+        return {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+        }
+    
+    # Escolhe o parser especializado com base no módulo
+    if is_torch_module(module_name):
+        return parse_torch_docstring(doc)
+    elif is_jax_module(module_name):
+        return parse_jax_docstring(doc)
+    elif is_requests_module(module_name):
+        return parse_requests_docstring(doc)
+    elif is_numpy_module(module_name) or is_tensorflow_module(module_name):
+        return parse_numpy_tensorflow_style(doc)
+    else:
+        # Parser genérico para outras bibliotecas
+        return parse_generic_docstring(doc)
+
 def safe_extract(module, name):
-    """Extrai um objeto do módulo de forma segura, lidando com erros."""
+    """Tenta acessar o atributo de forma segura."""
     try:
         return getattr(module, name)
     except (AttributeError, TypeError):
@@ -278,214 +626,130 @@ def safe_extract(module, name):
         return None
 
 def extract_functions(module, module_name: str) -> List[Dict]:
-    """Extrai todas as funções públicas do módulo com docstrings parseados."""
+    """Extrai todas as funções públicas do módulo com docstrings parseadas."""
+    import inspect  # Import local para não quebrar se não for usado
     functions = []
-    is_torch = is_torch_module(module_name)
-    
     for name in dir(module):
-        # Ignora funções internas e privadas
         if name.startswith('_'):
             continue
-        
         try:
             obj = safe_extract(module, name)
             if obj is None:
                 continue
-                
-            # Verifica se é uma função ou builtin
             if inspect.isfunction(obj) or inspect.isbuiltin(obj) or callable(obj):
-                # Ignora se for uma classe
                 if inspect.isclass(obj):
                     continue
-                    
-                doc = inspect.getdoc(obj) or ""
-                signature = get_function_signature(obj, is_torch=is_torch)
-                parsed_doc = parse_docstring(doc, is_torch=is_torch)
-                
+                doc = getattr(obj, "__doc__", "") or ""
+                signature = get_function_signature(obj, module_name)
+                parsed_doc = parse_docstring(doc, module_name)
                 functions.append({
                     "name": name,
                     "signature": signature,
                     "documentation": parsed_doc
                 })
         except Exception as e:
-            warnings.warn(f"Erro ao processar função {name}: {str(e)}")
-    
+            warnings.warn(f"Erro ao processar função {name} no módulo {module_name}: {str(e)}")
     return sorted(functions, key=lambda x: x["name"])
 
 def extract_methods(cls, module_name: str) -> List[Dict]:
-    """Extrai todos os métodos de uma classe."""
+    import inspect
     methods = []
-    is_torch = is_torch_module(module_name)
-    
     for name in dir(cls):
         if name.startswith('_'):
             continue
-            
         try:
             method = safe_extract(cls, name)
             if method is None:
                 continue
-                
-            # Checa se é um método, função ou callable
             if inspect.isfunction(method) or inspect.ismethod(method) or inspect.isbuiltin(method) or callable(method):
-                doc = inspect.getdoc(method) or ""
-                signature = get_function_signature(method, is_torch=is_torch)
-                parsed_doc = parse_docstring(doc, is_torch=is_torch)
-                
+                doc = getattr(method, "__doc__", "") or ""
+                signature = get_function_signature(method, module_name)
+                parsed_doc = parse_docstring(doc, module_name)
                 methods.append({
                     "name": name,
                     "signature": signature,
                     "documentation": parsed_doc
                 })
         except Exception as e:
-            warnings.warn(f"Erro ao processar método {name}: {str(e)}")
-    
+            warnings.warn(f"Erro ao processar método {name} em {cls}: {str(e)}")
     return sorted(methods, key=lambda x: x["name"])
 
 def extract_classes(module, module_name: str) -> List[Dict]:
-    """Extrai todas as classes públicas do módulo e seus métodos."""
+    import inspect
     classes = []
-    is_torch = is_torch_module(module_name)
-    
     for name in dir(module):
         if name.startswith('_'):
             continue
-            
         try:
             obj = safe_extract(module, name)
             if obj is None:
                 continue
-                
             if inspect.isclass(obj):
-                doc = inspect.getdoc(obj) or ""
-                parsed_doc = parse_docstring(doc, is_torch=is_torch)
+                doc = getattr(obj, "__doc__", "") or ""
+                parsed_doc = parse_docstring(doc, module_name)
                 methods = extract_methods(obj, module_name)
-                
                 classes.append({
                     "name": name,
                     "documentation": parsed_doc,
                     "methods": methods
                 })
         except Exception as e:
-            warnings.warn(f"Erro ao processar classe {name}: {str(e)}")
-    
+            warnings.warn(f"Erro ao processar classe {name} em {module_name}: {str(e)}")
     return sorted(classes, key=lambda x: x["name"])
 
 def extract_module_api(module_name: str) -> Dict:
     """
-    Retorna as informações de API de um módulo.
+    Retorna as informações de API de um módulo, 
+    tentando lidar com codegen e wrappers em C++.
     """
     print(f"Extraindo API de {module_name}...")
     try:
         module = importlib.import_module(module_name)
     except ImportError as e:
-        return {
-            "error": f"Could not import module {module_name}: {str(e)}"
-        }
-
-    description = inspect.getdoc(module) or "No description available"
-    is_torch = is_torch_module(module_name)
+        return {"error": f"Não foi possível importar {module_name}: {str(e)}"}
     
-    # Extrair funções e classes
+    description = getattr(module, "__doc__", "") or "No description available"
     functions = extract_functions(module, module_name)
     classes = extract_classes(module, module_name)
-    
-    print(f"  Encontradas {len(functions)} funções e {len(classes)} classes")
-    
-    # Para o PyTorch, tentamos extrair atributos importantes 
-    # que podem não ser detectados automaticamente
-    if is_torch:
-        print(f"  Modo PyTorch: processando APIs específicas...")
-        try:
-            # O PyTorch tem muitas funções que são acessadas diretamente
-            # como atributos do módulo principal torch._C
-            if module_name == "torch" and hasattr(module, "_C"):
-                for name in dir(module._C):
-                    if not name.startswith('_'):
-                        try:
-                            obj = getattr(module._C, name)
-                            if callable(obj) and not inspect.isclass(obj):
-                                doc = inspect.getdoc(obj) or ""
-                                if doc and name not in [f["name"] for f in functions]:
-                                    functions.append({
-                                        "name": name,
-                                        "signature": f"{name}(...)",
-                                        "documentation": parse_docstring(doc, is_torch=True)
-                                    })
-                        except:
-                            pass
-        except Exception as e:
-            warnings.warn(f"Erro ao processar APIs específicas do PyTorch: {str(e)}")
-    
     return {
-        "description": description,
+        "description": description.strip(),
         "functions": functions,
         "classes": classes
     }
 
 def build_module_structure(library_name: str) -> Dict[str, Dict]:
-    """Constrói a estrutura completa de módulos de uma biblioteca."""
-    result = {}
+    import pkgutil
     
+    result = {}
     print(f"Processando biblioteca: {library_name}")
     
-    # Tenta importar o módulo principal
     try:
         main_module = importlib.import_module(library_name)
     except ImportError as e:
-        return {"error": f"Could not import library {library_name}: {str(e)}"}
+        return {"error": f"Não foi possível importar {library_name}: {str(e)}"}
     
-    # Cria o diretório de saída para JSON, se não existir
     output_dir = os.path.join("output", library_name)
     os.makedirs(output_dir, exist_ok=True)
     
-    # Documenta o módulo principal
     main_structure = extract_module_api(library_name)
     result[library_name] = main_structure
-    
-    # Salva o JSON do módulo principal
     with open(os.path.join(output_dir, f"{library_name}.json"), "w", encoding='utf-8') as f:
         json.dump(main_structure, f, indent=2, ensure_ascii=False)
     
-    # Tenta descobrir submódulos (se a biblioteca for um pacote com __path__)
-    try:
-        import pkgutil
-        if hasattr(main_module, '__path__'):
-            package_path = main_module.__path__
-            for _, name, is_pkg in pkgutil.iter_modules(package_path):
-                if not name.startswith('_'):  # ignora submódulos "privados"
-                    submodule_name = f"{library_name}.{name}"
-                    try:
-                        submodule_structure = extract_module_api(submodule_name)
-                        result[submodule_name] = submodule_structure
-
-                        # Salva o JSON do submódulo
-                        with open(os.path.join(output_dir, f"{name}.json"), "w", encoding='utf-8') as f:
-                            json.dump(submodule_structure, f, indent=2, ensure_ascii=False)
-
-                        print(f"  Processado submódulo: {submodule_name}")
-                    except Exception as e:
-                        print(f"  Erro ao processar submódulo {submodule_name}: {str(e)}")
-    
-            # Para PyTorch, processamos alguns módulos especiais
-            if is_torch_module(library_name):
-                special_modules = ["nn", "optim", "autograd", "cuda", "linalg"]
-                for name in special_modules:
-                    submodule_name = f"{library_name}.{name}"
-                    if submodule_name not in result:
-                        try:
-                            print(f"  Processando módulo especial do PyTorch: {submodule_name}")
-                            submodule_structure = extract_module_api(submodule_name)
-                            result[submodule_name] = submodule_structure
-
-                            # Salva o JSON do submódulo
-                            with open(os.path.join(output_dir, f"{name}.json"), "w", encoding='utf-8') as f:
-                                json.dump(submodule_structure, f, indent=2, ensure_ascii=False)
-                        except Exception as e:
-                            print(f"  Erro ao processar módulo especial {submodule_name}: {str(e)}")
-    
-    except (AttributeError, ImportError) as e:
-        print(f"  Aviso: não foi possível descobrir submódulos: {str(e)}")
+    # Descobre submódulos
+    if hasattr(main_module, '__path__'):
+        package_path = main_module.__path__
+        for _, name, is_pkg in pkgutil.iter_modules(package_path):
+            if name.startswith('_'):
+                continue
+            submodule_name = f"{library_name}.{name}"
+            try:
+                submodule_data = extract_module_api(submodule_name)
+                result[submodule_name] = submodule_data
+                with open(os.path.join(output_dir, f"{name}.json"), "w", encoding='utf-8') as f:
+                    json.dump(submodule_data, f, indent=2, ensure_ascii=False)
+            except Exception as e:
+                print(f"Erro ao processar submódulo {submodule_name}: {str(e)}")
     
     # Gera índice global
     index = {
@@ -499,14 +763,12 @@ def build_module_structure(library_name: str) -> Dict[str, Dict]:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python pop_general.py <library_name>")
+        print("Uso: python pop_general.py <library_name>")
         sys.exit(1)
-    
     library_name = sys.argv[1]
-    
     try:
         structure = build_module_structure(library_name)
         print(f"Documentação gerada com sucesso para {library_name}!")
     except Exception as e:
-        print(f"Erro ao gerar documentação: {str(e)}")
+        print(f"Erro ao gerar documentação para {library_name}: {str(e)}")
         sys.exit(1)
