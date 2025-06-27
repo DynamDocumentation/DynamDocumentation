@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class VariableType {
-    ATTRIBUTE, PARAMETER, RETURN
+    DESCRIPTION, NAME, PARAMETER, SIGNATURE, RETURN, RAISES, NOTES, EXAMPLES, TYPE
 }

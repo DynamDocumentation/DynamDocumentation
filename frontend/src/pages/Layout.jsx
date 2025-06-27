@@ -1,53 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Paper, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { 
+    Paper, Select, MenuItem, FormControl, InputLabel
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import { Link } from 'react-router-dom';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import HomeIcon from '@mui/icons-material/Home';
-import CodeIcon from '@mui/icons-material/Code';
-import InfoIcon from '@mui/icons-material/Info';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
-import axios from 'axios'
-import { useEffect } from 'react';
+import axios from 'axios';
 
+// Componentes customizados
 import NamespaceAccordion from '../components/NamespaceAccordion';
-
-/*
-
-#040D12
-#183D3D
-#5C8374
-#93B1A6
-
-#18230F
-#27391C
-#255F38
-#1F7D53
-
-#181C14
-#3C3D37
-#697565
-#ECDFCC
-
-*/
+import FileExplorer from '../components/FileExplorer';
+import ToolsMenu from '../components/ToolsMenu';
 
 const drawerWidth = 260;
 
@@ -78,8 +52,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
-    // backgroundColor: "#4F6F52",
-
     transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -98,7 +70,6 @@ const AppBar = styled(MuiAppBar, {
         },
         },
     ],
-
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -109,119 +80,22 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
-const options = [
-  { text: "seaborn.despine", icon: <InboxIcon /> },
-  { text: "seaborn.move_legend", icon: <MailIcon /> },
-  { text: "seaborn.saturate", icon: <InboxIcon /> },
-  { text: "seaborn.desaturate", icon: <MailIcon /> },
-  { text: "seaborn.set_hls_values", icon: <InboxIcon /> },
-  { text: "seaborn.load_dataset", icon: <MailIcon /> },
-  { text: "seaborn.get_dataset_names", icon: <InboxIcon /> },
-  { text: "seaborn.get_data_home", icon: <MailIcon /> },
-];
 
-// Menu navigation items
-const navigationItems = [
-  { text: "Home", icon: <HomeIcon />, path: "/" },
-  { text: "Documentation", icon: <CodeIcon />, path: "/documentation" },
-  { text: "Generate Library Docs", icon: <LibraryBooksIcon />, path: "/library-input" },
-  { text: "Users", icon: <InboxIcon />, path: "/users" },
-  { text: "About", icon: <InfoIcon />, path: "/about" },
-];
-
-export default function Layout() {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
-
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              mr: 2,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            DynamDocumentation
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            backgroundColor: theme.palette.background.default,
-            color: theme.palette.text.primary,
-            borderRight: `1px solid ${theme.palette.divider}`,
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} aria-label="close drawer">
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {/* Navigation menu items */}
-          {navigationItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton component={Link} to={item.path}>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {options.map((option, index) => (
-            <ListItem key={option.text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {option.icon}
-                </ListItemIcon>
-                <ListItemText primary={option.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <Paper elevation={3} sx={{ p: 2, background: theme.palette.background.paper }}>
-          <Outlet />
-        </Paper>
-      </Main>
-    </Box>
-  );
 export default function Layout() {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-    const [data, setData] = React.useState(null);
-    const [selectedLibrary, setSelectedLibrary] = React.useState('sklearn');
-    const [libraries, _] = React.useState(['sklearn', 'pandas', 'numpy']); // Example libraries
+    const navigate = useNavigate();
     
+    // Estados
+    const [open, setOpen] = useState(false);
+    const [data, setData] = useState(null);
+    const [selectedLibrary, setSelectedLibrary] = useState('sklearn');
+    const [libraries] = useState(['sklearn', 'pandas', 'numpy']);
+    const [toolsOpen, setToolsOpen] = useState(false);
+    const [fileDialogOpen, setFileDialogOpen] = useState(false);
+    const [selectedFolder, setSelectedFolder] = useState('');
+    const [folderFiles, setFolderFiles] = useState([]);
+    
+    // Handlers
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -233,7 +107,52 @@ export default function Layout() {
     const handleLibraryChange = (event) => {
         setSelectedLibrary(event.target.value);
     };
+    
+    const handleToolsToggle = () => {
+        setToolsOpen(!toolsOpen);
+    };
+    
+    const navigateToLibraryInstaller = () => {
+        navigate('/library-input');
+        setToolsOpen(false);
+    };
+    
+    const handleTestButtonClick = (folder) => {
+        setSelectedFolder(folder);
+        
+        // Simular obtenção de arquivos de uma pasta (em produção, seria uma chamada de API)
+        let files = [];
+        if (folder === 'numpy') {
+            files = [
+                { name: 'numpy.json', size: '856 KB' },
+                { name: 'random.json', size: '142 KB' },
+                { name: 'testing.json', size: '75 KB' },
+                { name: 'matlib.json', size: '121 KB' },
+                { name: 'lib.json', size: '223 KB' },
+                { name: 'tests.json', size: '1 KB' },
+                { name: 'conftest.json', size: '1 KB' }
+            ];
+        } else if (folder === 'sklearn') {
+            files = [
+                { name: 'sklearn_cluster.json', size: '325 KB' },
+                { name: 'sklearn_model_selection.json', size: '498 KB' },
+                { name: 'sklearn_linear_model.json', size: '712 KB' },
+                { name: 'sklearn_tree.json', size: '158 KB' },
+                { name: 'sklearn_pipeline.json', size: '89 KB' },
+                { name: 'sklearn_svm.json', size: '254 KB' },
+                { name: 'sklearn_preprocessing.json', size: '387 KB' }
+            ];
+        }
+        
+        setFolderFiles(files);
+        setFileDialogOpen(true);
+    };
+    
+    const handleCloseDialog = () => {
+        setFileDialogOpen(false);
+    };
 
+    // Efeitos
     useEffect(() => {
         if (selectedLibrary) {
             axios.get(`http://127.0.0.1:8080/library/${selectedLibrary}`).then((response) => {
@@ -307,6 +226,16 @@ export default function Layout() {
                 </IconButton>
                 </DrawerHeader>
                 <Divider />
+                
+                {/* Menu de ferramentas */}
+                <ToolsMenu 
+                    toolsOpen={toolsOpen}
+                    onToggleTools={handleToolsToggle}
+                    onNavigateToLibraryInstaller={navigateToLibraryInstaller}
+                    onTestButtonClick={handleTestButtonClick}
+                />
+                
+                <Divider />
                 <NamespaceAccordion data={data} />
             </Drawer>
             <Main open={open}>
@@ -315,6 +244,14 @@ export default function Layout() {
                     <Outlet />
                 </Paper>
             </Main>
+            
+            {/* Dialog do explorador de arquivos */}
+            <FileExplorer 
+                open={fileDialogOpen}
+                onClose={handleCloseDialog}
+                folder={selectedFolder}
+                files={folderFiles}
+            />
         </Box>
     );
 }

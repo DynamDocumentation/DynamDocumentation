@@ -4,8 +4,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Layout from './pages/Layout';
 import LibraryInput from './pages/LibraryInput';
-import { BrowserRouter, Routes, Route } from "react-router";
-import Layout from "./pages/Layout";
 import Login from "./pages/Test";
 import UserPage from './pages/UserPage';
 import Welcome from "./pages/Welcome";
@@ -33,23 +31,16 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<div>Página Inicial</div>} />
+            <Route index element={<Welcome />} />
             <Route path="/documentation" element={<div>Documentação</div>} />
             <Route path="/library-input" element={<LibraryInput />} />
             <Route path="/users" element={<div>Usuários</div>} />
             <Route path="/about" element={<div>Sobre</div>} />
+            <Route path="details/:entityId" element={<Details />} />
           </Route>
         </Routes>
       </Router>
     </ThemeProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Welcome />} />
-          <Route path="details/:entityId" element={<Details />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
   );
 }
 

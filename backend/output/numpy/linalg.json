@@ -1,0 +1,508 @@
+{
+  "description": "``numpy.linalg``\n================\n\nThe NumPy linear algebra functions rely on BLAS and LAPACK to provide efficient\nlow level implementations of standard linear algebra algorithms. Those\nlibraries may be provided by NumPy itself using C versions of a subset of their\nreference implementations but, when possible, highly optimized libraries that\ntake advantage of specialized processor functionality are preferred. Examples\nof such libraries are OpenBLAS, MKL (TM), and ATLAS. Because those libraries\nare multithreaded and processor dependent, environmental variables and external\npackages such as threadpoolctl may be needed to control the number of threads\nor specify the processor architecture.\n\n- OpenBLAS: https://www.openblas.net/\n- threadpoolctl: https://github.com/joblib/threadpoolctl\n\nPlease note that the most-used linear algebra functions in NumPy are present in\nthe main ``numpy`` namespace rather than in ``numpy.linalg``.  There are:\n``dot``, ``vdot``, ``inner``, ``outer``, ``matmul``, ``tensordot``, ``einsum``,\n``einsum_path`` and ``kron``.\n\nFunctions present in numpy.linalg are listed below.\n\n\nMatrix and vector products\n--------------------------\n\n   multi_dot\n   matrix_power\n\nDecompositions\n--------------\n\n   cholesky\n   qr\n   svd\n\nMatrix eigenvalues\n------------------\n\n   eig\n   eigh\n   eigvals\n   eigvalsh\n\nNorms and other numbers\n-----------------------\n\n   norm\n   cond\n   det\n   matrix_rank\n   slogdet\n\nSolving equations and inverting matrices\n----------------------------------------\n\n   solve\n   tensorsolve\n   lstsq\n   inv\n   pinv\n   tensorinv\n\nExceptions\n----------\n\n   LinAlgError",
+  "functions": [
+    {
+      "name": "cholesky",
+      "signature": "cholesky(a)",
+      "documentation": {
+        "description": "Cholesky decomposition.\n\n    Return the Cholesky decomposition, `L * L.H`, of the square matrix `a`,\n    where `L` is lower-triangular and .H is the conjugate transpose operator\n    (which is the ordinary transpose if `a` is real-valued).  `a` must be\n    Hermitian (symmetric if real-valued) and positive-definite. No\n    checking is performed to verify whether `a` is Hermitian or not.\n    In addition, only the lower-triangular and diagonal elements of `a`\n    are used. Only `L` is actually returned.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "cond",
+      "signature": "cond(x, p=None)",
+      "documentation": {
+        "description": "Compute the condition number of a matrix.\n\n    This function is capable of returning the condition number using\n    one of seven different norms, depending on the value of `p` (see\n    Parameters below).",
+        "parameters": {
+          "p": {
+            "type": "{None",
+            "description": ", 1, -1, 2, -2, inf, -inf, 'fro'}, optional\n        Order of the norm used in the condition number computation:\n\n        =====  ============================\n        p      norm for matrices\n        =====  ============================\n        None   2-norm, computed directly using the ``SVD``\n        'fro'  Frobenius norm\n        inf    max(sum(abs(x), axis=1))\n        -inf   min(sum(abs(x), axis=1))\n        1      max(sum(abs(x), axis=0))\n        -1     min(sum(abs(x), axis=0))\n        2      2-norm (largest sing. value)\n        -2     smallest singular value\n        =====  ============================\n\n        inf means the `numpy.inf` object, and the Frobenius norm is\n        the root-of-sum-of-squares norm."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "det",
+      "signature": "det(a)",
+      "documentation": {
+        "description": "Compute the determinant of an array.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "eig",
+      "signature": "eig(a)",
+      "documentation": {
+        "description": "Compute the eigenvalues and right eigenvectors of a square array.",
+        "parameters": {
+          "eigenvalues": {
+            "type": "(...",
+            "description": ", M) array\n        The eigenvalues, each repeated according to its multiplicity.\n        The eigenvalues are not necessarily ordered. The resulting\n        array will be of complex type, unless the imaginary part is\n        zero in which case it will be cast to a real type. When `a`\n        is real the resulting eigenvalues will be real (0 imaginary\n        part) or occur in conjugate pairs"
+          },
+          "eigenvectors": {
+            "type": "(...",
+            "description": ", M, M) array\n        The normalized (unit \"length\") eigenvectors, such that the\n        column ``eigenvectors[:,i]`` is the eigenvector corresponding to the\n        eigenvalue ``eigenvalues[i]``."
+          },
+          "eigh": {
+            "type": "eigenvalues and eigenvectors of a real symmetric or complex",
+            "description": "Hermitian (conjugate symmetric) array."
+          },
+          "eigvalsh": {
+            "type": "eigenvalues of a real symmetric or complex Hermitian",
+            "description": "(conjugate symmetric) array.\n    scipy.linalg.eig : Similar function in SciPy that also solves the\n                       generalized eigenvalue problem.\n    scipy.linalg.schur : Best choice for unitary and other non-Hermitian\n                         normal matrices."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "eigh",
+      "signature": "eigh(a, UPLO='L')",
+      "documentation": {
+        "description": "Return the eigenvalues and eigenvectors of a complex Hermitian\n    (conjugate symmetric) or a real symmetric matrix.\n\n    Returns two objects, a 1-D array containing the eigenvalues of `a`, and\n    a 2-D square array or matrix (depending on the input type) of the\n    corresponding eigenvectors (in columns).",
+        "parameters": {
+          "UPLO": {
+            "type": "{'L'",
+            "description": ", 'U'}, optional\n        Specifies whether the calculation is done with the lower triangular\n        part of `a` ('L', default) or the upper triangular part ('U').\n        Irrespective of this value only the real parts of the diagonal will\n        be considered in the computation to preserve the notion of a Hermitian\n        matrix. It therefore follows that the imaginary part of the diagonal\n        will always be treated as zero."
+          },
+          "eigenvalues": {
+            "type": "(...",
+            "description": ", M) ndarray\n        The eigenvalues in ascending order, each repeated according to\n        its multiplicity."
+          },
+          "eigenvectors": {
+            "type": "{(...",
+            "description": ", M, M) ndarray, (..., M, M) matrix}\n        The column ``eigenvectors[:, i]`` is the normalized eigenvector\n        corresponding to the eigenvalue ``eigenvalues[i]``.  Will return a\n        matrix object if `a` is a matrix object."
+          },
+          "eig": {
+            "type": "eigenvalues and right eigenvectors for non-symmetric arrays.",
+            "description": ""
+          },
+          "eigvals": {
+            "type": "eigenvalues of non-symmetric arrays.",
+            "description": "scipy.linalg.eigh : Similar function in SciPy (but also solves the\n                        generalized eigenvalue problem)."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "eigvals",
+      "signature": "eigvals(a)",
+      "documentation": {
+        "description": "Compute the eigenvalues of a general matrix.\n\n    Main difference between `eigvals` and `eig`: the eigenvectors aren't\n    returned.",
+        "parameters": {
+          "eigvalsh": {
+            "type": "eigenvalues of real symmetric or complex Hermitian",
+            "description": "(conjugate symmetric) arrays."
+          },
+          "eigh": {
+            "type": "eigenvalues and eigenvectors of real symmetric or complex",
+            "description": "Hermitian (conjugate symmetric) arrays.\n    scipy.linalg.eigvals : Similar function in SciPy."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "eigvalsh",
+      "signature": "eigvalsh(a, UPLO='L')",
+      "documentation": {
+        "description": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix.\n\n    Main difference from eigh: the eigenvectors are not computed.",
+        "parameters": {
+          "UPLO": {
+            "type": "{'L'",
+            "description": ", 'U'}, optional\n        Specifies whether the calculation is done with the lower triangular\n        part of `a` ('L', default) or the upper triangular part ('U').\n        Irrespective of this value only the real parts of the diagonal will\n        be considered in the computation to preserve the notion of a Hermitian\n        matrix. It therefore follows that the imaginary part of the diagonal\n        will always be treated as zero."
+          },
+          "eigvals": {
+            "type": "eigenvalues of general real or complex arrays.",
+            "description": ""
+          },
+          "eig": {
+            "type": "eigenvalues and right eigenvectors of general real or complex",
+            "description": "arrays.\n    scipy.linalg.eigvalsh : Similar function in SciPy."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "inv",
+      "signature": "inv(a)",
+      "documentation": {
+        "description": "Compute the (multiplicative) inverse of a matrix.\n\n    Given a square matrix `a`, return the matrix `ainv` satisfying\n    ``dot(a, ainv) = dot(ainv, a) = eye(a.shape[0])``.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "lstsq",
+      "signature": "lstsq(a, b, rcond='warn')",
+      "documentation": {
+        "description": "Return the least-squares solution to a linear matrix equation.\n\n    Computes the vector `x` that approximately solves the equation\n    ``a @ x = b``. The equation may be under-, well-, or over-determined\n    (i.e., the number of linearly independent rows of `a` can be less than,\n    equal to, or greater than its number of linearly independent columns).\n    If `a` is square and of full rank, then `x` (but for round-off error)\n    is the \"exact\" solution of the equation. Else, `x` minimizes the\n    Euclidean 2-norm :math:`||b - ax||`. If there are multiple minimizing\n    solutions, the one with the smallest 2-norm :math:`||x||` is returned.",
+        "parameters": {
+          "b": {
+            "type": "{(M",
+            "description": ",), (M, K)} array_like\n        Ordinate or \"dependent variable\" values. If `b` is two-dimensional,\n        the least-squares solution is calculated for each of the `K` columns\n        of `b`."
+          },
+          "rcond": {
+            "type": "float",
+            "description": "Cut-off ratio for small singular values of `a`.\n        For the purposes of rank determination, singular values are treated\n        as zero if they are smaller than `rcond` times the largest singular\n        value of `a`.\n\n        .. versionchanged:: 1.14.0\n           If not set, a FutureWarning is given. The previous default\n           of ``-1`` will use the machine precision as `rcond` parameter,\n           the new default will use the machine precision times `max(M, N)`.\n           To silence the warning and use the new default, use ``rcond=None``,\n           to keep using the old behavior, use ``rcond=-1``."
+          },
+          "residuals": {
+            "type": "{(1",
+            "description": ",), (K,), (0,)} ndarray\n        Sums of squared residuals: Squared Euclidean 2-norm for each column in\n        ``b - a @ x``.\n        If the rank of `a` is < N or M <= N, this is an empty array.\n        If `b` is 1-dimensional, this is a (1,) shape array.\n        Otherwise the shape is (K,)."
+          },
+          "rank": {
+            "type": "int",
+            "description": "Rank of matrix `a`."
+          },
+          "s": {
+            "type": "(min(M",
+            "description": ", N),) ndarray\n        Singular values of `a`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "matrix_power",
+      "signature": "matrix_power(a, n)",
+      "documentation": {
+        "description": "Raise a square matrix to the (integer) power `n`.\n\n    For positive integers `n`, the power is computed by repeated matrix\n    squarings and matrix multiplications. If ``n == 0``, the identity matrix\n    of the same shape as M is returned. If ``n < 0``, the inverse\n    is computed and then raised to the ``abs(n)``.\n\n    .. note:: Stacks of object matrices are not currently supported.",
+        "parameters": {
+          "n": {
+            "type": "int",
+            "description": "The exponent can be any integer or long integer, positive,\n        negative, or zero."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "matrix_rank",
+      "signature": "matrix_rank(A, tol=None, hermitian=False)",
+      "documentation": {
+        "description": "Return matrix rank of array using SVD method\n\n    Rank of the array is the number of singular values of the array that are\n    greater than `tol`.\n\n    .. versionchanged:: 1.14\n       Can now operate on stacks of matrices",
+        "parameters": {
+          "tol": {
+            "type": "(...) array_like",
+            "description": ", float, optional\n        Threshold below which SVD values are considered zero. If `tol` is\n        None, and ``S`` is an array with singular values for `M`, and\n        ``eps`` is the epsilon value for datatype of ``S``, then `tol` is\n        set to ``S.max() * max(M, N) * eps``.\n\n        .. versionchanged:: 1.14\n           Broadcasted against the stack of matrices"
+          },
+          "hermitian": {
+            "type": "bool",
+            "description": "If True, `A` is assumed to be Hermitian (symmetric if real-valued),\n        enabling a more efficient method for finding singular values.\n        Defaults to False.\n\n        .. versionadded:: 1.14"
+          },
+          "https": {
+            "type": "//www.mathworks.com/help/techdoc/ref/rank.html",
+            "description": ".. [2] W. H. Press, S. A. Teukolsky, W. T. Vetterling and B. P. Flannery,\n           \"Numerical Recipes (3rd edition)\", Cambridge University Press, 2007,\n           page 795."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "multi_dot",
+      "signature": "multi_dot(arrays, *, out=None)",
+      "documentation": {
+        "description": "Compute the dot product of two or more arrays in a single function call,\n    while automatically selecting the fastest evaluation order.\n\n    `multi_dot` chains `numpy.dot` and uses optimal parenthesization\n    of the matrices [1]_ [2]_. Depending on the shapes of the matrices,\n    this can speed up the multiplication a lot.\n\n    If the first argument is 1-D it is treated as a row vector.\n    If the last argument is 1-D it is treated as a column vector.\n    The other arguments must be 2-D.\n\n    Think of `multi_dot` as::\n\n        def multi_dot(arrays): return functools.reduce(np.dot, arrays)",
+        "parameters": {
+          "out": {
+            "type": "ndarray",
+            "description": "Output argument. This must have the exact kind that would be returned\n        if it was not used. In particular, it must have the right type, must be\n        C-contiguous, and its dtype must be the dtype that would be returned\n        for `dot(a, b)`. This is a performance feature. Therefore, if these\n        conditions are not met, an exception is raised, instead of attempting\n        to be flexible.\n\n        .. versionadded:: 1.19.0"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "norm",
+      "signature": "norm(x, ord=None, axis=None, keepdims=False)",
+      "documentation": {
+        "description": "Matrix or vector norm.\n\n    This function is able to return one of eight different matrix norms,\n    or one of an infinite number of vector norms (described below), depending\n    on the value of the ``ord`` parameter.",
+        "parameters": {
+          "ord": {
+            "type": "{non-zero int",
+            "description": ", inf, -inf, 'fro', 'nuc'}, optional\n        Order of the norm (see table under ``Notes``). inf means numpy's\n        `inf` object. The default is None."
+          },
+          "axis": {
+            "type": "{None",
+            "description": ", int, 2-tuple of ints}, optional.\n        If `axis` is an integer, it specifies the axis of `x` along which to\n        compute the vector norms.  If `axis` is a 2-tuple, it specifies the\n        axes that hold 2-D matrices, and the matrix norms of these matrices\n        are computed.  If `axis` is None then either a vector norm (when `x`\n        is 1-D) or a matrix norm (when `x` is 2-D) is returned. The default\n        is None.\n\n        .. versionadded:: 1.8.0"
+          },
+          "keepdims": {
+            "type": "bool",
+            "description": "If this is set to True, the axes which are normed over are left in the\n        result as dimensions with size one.  With this option the result will\n        broadcast correctly against the original `x`.\n\n        .. versionadded:: 1.10.0"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pinv",
+      "signature": "pinv(a, rcond=1e-15, hermitian=False)",
+      "documentation": {
+        "description": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.\n\n    Calculate the generalized inverse of a matrix using its\n    singular-value decomposition (SVD) and including all\n    *large* singular values.\n\n    .. versionchanged:: 1.14\n       Can now operate on stacks of matrices",
+        "parameters": {
+          "rcond": {
+            "type": "(...) array_like of float",
+            "description": "Cutoff for small singular values.\n        Singular values less than or equal to\n        ``rcond * largest_singular_value`` are set to zero.\n        Broadcasts against the stack of matrices."
+          },
+          "hermitian": {
+            "type": "bool",
+            "description": "If True, `a` is assumed to be Hermitian (symmetric if real-valued),\n        enabling a more efficient method for finding singular values.\n        Defaults to False.\n\n        .. versionadded:: 1.17.0"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "qr",
+      "signature": "qr(a, mode='reduced')",
+      "documentation": {
+        "description": "Compute the qr factorization of a matrix.\n\n    Factor the matrix `a` as *qr*, where `q` is orthonormal and `r` is\n    upper-triangular.",
+        "parameters": {
+          "mode": {
+            "type": "{'reduced'",
+            "description": ", 'complete', 'r', 'raw'}, optional\n        If K = min(M, N), then\n\n        * 'reduced'  : returns Q, R with dimensions (..., M, K), (..., K, N) (default)\n        * 'complete' : returns Q, R with dimensions (..., M, M), (..., M, N)\n        * 'r'        : returns R only with dimensions (..., K, N)\n        * 'raw'      : returns h, tau with dimensions (..., N, M), (..., K,)\n\n        The options 'reduced', 'complete, and 'raw' are new in numpy 1.8,\n        see the notes for more information. The default is 'reduced', and to\n        maintain backward compatibility with earlier versions of numpy both\n        it and the old default 'full' can be omitted. Note that array h\n        returned in 'raw' mode is transposed for calling Fortran. The\n        'economic' mode is deprecated.  The modes 'full' and 'economic' may\n        be passed using only the first letter for backwards compatibility,\n        but all others must be spelled out. See the Notes for more\n        explanation."
+          },
+          "Q": {
+            "type": "ndarray of float or complex",
+            "description": "A matrix with orthonormal columns. When mode = 'complete' the\n        result is an orthogonal/unitary matrix depending on whether or not\n        a is real/complex. The determinant may be either +/- 1 in that\n        case. In case the number of dimensions in the input array is\n        greater than 2 then a stack of the matrices with above properties\n        is returned."
+          },
+          "R": {
+            "type": "ndarray of float or complex",
+            "description": "The upper-triangular matrix or a stack of upper-triangular\n        matrices if the number of dimensions in the input array is greater\n        than 2.\n    (h, tau) : ndarrays of np.double or np.cdouble, optional\n        The array h contains the Householder reflectors that generate q\n        along with r. The tau array contains scaling factors for the\n        reflectors. In the deprecated  'economic' mode only h is returned."
+          },
+          "https": {
+            "type": "//en.wikipedia.org/wiki/QR_factorization",
+            "description": "Subclasses of `ndarray` are preserved except for the 'raw' mode. So if\n    `a` is of type `matrix`, all the return values will be matrices too.\n\n    New 'reduced', 'complete', and 'raw' options for mode were added in\n    NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In\n    addition the options 'full' and 'economic' were deprecated.  Because\n    'full' was the previous default and 'reduced' is the new default,\n    backward compatibility can be maintained by letting `mode` default.\n    The 'raw' option was added so that LAPACK routines that can multiply\n    arrays by q using the Householder reflectors can be used. Note that in\n    this case the returned arrays are of type np.double or np.cdouble and\n    the h array is transposed to be FORTRAN compatible.  No routines using\n    the 'raw' return are currently exposed by numpy, but some are available\n    in lapack_lite and just await the necessary work."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "slogdet",
+      "signature": "slogdet(a)",
+      "documentation": {
+        "description": "Compute the sign and (natural) logarithm of the determinant of an array.\n\n    If an array has a very small or very large determinant, then a call to\n    `det` may overflow or underflow. This routine is more robust against such\n    issues, because it computes the logarithm of the determinant rather than\n    the determinant itself.",
+        "parameters": {
+          "sign": {
+            "type": "(...) array_like",
+            "description": "A number representing the sign of the determinant. For a real matrix,\n        this is 1, 0, or -1. For a complex matrix, this is a complex number\n        with absolute value 1 (i.e., it is on the unit circle), or else 0."
+          },
+          "logabsdet": {
+            "type": "(...) array_like",
+            "description": "The natural log of the absolute value of the determinant.\n\n    If the determinant is zero, then `sign` will be 0 and `logabsdet` will be\n    -Inf. In all cases, the determinant is equal to ``sign * np.exp(logabsdet)``."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "solve",
+      "signature": "solve(a, b)",
+      "documentation": {
+        "description": "Solve a linear matrix equation, or system of linear scalar equations.\n\n    Computes the \"exact\" solution, `x`, of the well-determined, i.e., full\n    rank, linear matrix equation `ax = b`.",
+        "parameters": {
+          "b": {
+            "type": "{(...",
+            "description": ", M,), (..., M, K)}, array_like\n        Ordinate or \"dependent variable\" values."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "svd",
+      "signature": "svd(a, full_matrices=True, compute_uv=True, hermitian=False)",
+      "documentation": {
+        "description": "Singular Value Decomposition.\n\n    When `a` is a 2D array, and ``full_matrices=False``, then it is\n    factorized as ``u @ np.diag(s) @ vh = (u * s) @ vh``, where\n    `u` and the Hermitian transpose of `vh` are 2D arrays with\n    orthonormal columns and `s` is a 1D array of `a`'s singular\n    values. When `a` is higher-dimensional, SVD is applied in\n    stacked mode as explained below.",
+        "parameters": {
+          "full_matrices": {
+            "type": "bool",
+            "description": "If True (default), `u` and `vh` have the shapes ``(..., M, M)`` and\n        ``(..., N, N)``, respectively.  Otherwise, the shapes are\n        ``(..., M, K)`` and ``(..., K, N)``, respectively, where\n        ``K = min(M, N)``."
+          },
+          "compute_uv": {
+            "type": "bool",
+            "description": "Whether or not to compute `u` and `vh` in addition to `s`.  True\n        by default."
+          },
+          "hermitian": {
+            "type": "bool",
+            "description": "If True, `a` is assumed to be Hermitian (symmetric if real-valued),\n        enabling a more efficient method for finding singular values.\n        Defaults to False.\n\n        .. versionadded:: 1.17.0"
+          },
+          "U": {
+            "type": "{ (...",
+            "description": ", M, M), (..., M, K) } array\n        Unitary array(s). The first ``a.ndim - 2`` dimensions have the same\n        size as those of the input `a`. The size of the last two dimensions\n        depends on the value of `full_matrices`. Only returned when\n        `compute_uv` is True."
+          },
+          "S": {
+            "type": "(...",
+            "description": ", K) array\n        Vector(s) with the singular values, within each vector sorted in\n        descending order. The first ``a.ndim - 2`` dimensions have the same\n        size as those of the input `a`."
+          },
+          "Vh": {
+            "type": "{ (...",
+            "description": ", N, N), (..., K, N) } array\n        Unitary array(s). The first ``a.ndim - 2`` dimensions have the same\n        size as those of the input `a`. The size of the last two dimensions\n        depends on the value of `full_matrices`. Only returned when\n        `compute_uv` is True."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tensorinv",
+      "signature": "tensorinv(a, ind=2)",
+      "documentation": {
+        "description": "Compute the 'inverse' of an N-dimensional array.\n\n    The result is an inverse for `a` relative to the tensordot operation\n    ``tensordot(a, b, ind)``, i. e., up to floating-point accuracy,\n    ``tensordot(tensorinv(a), a, ind)`` is the \"identity\" tensor for the\n    tensordot operation.",
+        "parameters": {
+          "ind": {
+            "type": "int",
+            "description": "Number of first indices that are involved in the inverse sum.\n        Must be a positive integer, default is 2."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "tensorsolve",
+      "signature": "tensorsolve(a, b, axes=None)",
+      "documentation": {
+        "description": "Solve the tensor equation ``a x = b`` for x.\n\n    It is assumed that all indices of `x` are summed over in the product,\n    together with the rightmost indices of `a`, as is done in, for example,\n    ``tensordot(a, x, axes=x.ndim)``.",
+        "parameters": {
+          "b": {
+            "type": "array_like",
+            "description": "Right-hand tensor, which can be of any shape."
+          },
+          "axes": {
+            "type": "tuple of ints",
+            "description": "Axes in `a` to reorder to the right, before inversion.\n        If None (default), no reordering is done."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "LinAlgError",
+      "documentation": {
+        "description": "Generic Python-exception-derived object raised by linalg functions.\n\n    General purpose exception class, derived from Python's ValueError\n    class, programmatically raised in linalg functions when a Linear\n    Algebra-related condition would prevent further correct execution of the\n    function.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

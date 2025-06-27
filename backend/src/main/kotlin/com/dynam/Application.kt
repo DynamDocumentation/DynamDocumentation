@@ -9,23 +9,32 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.http.content.*
-
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
-
-import com.dynam.database.DatabaseSimulator
-import com.dynam.routes.UserRoutes
 import com.dynam.routes.LibraryRoutes
 import com.dynam.database.*
-import com.dynam.controllers.*
-import com.dynam.routes.*
 import com.dynam.models.*
 import com.dynam.enums.*
 
-
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
+
+fun Application.configureCORS() {
+    install(CORS) {
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Patch)
+        allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
+        allowCredentials = true
+        anyHost()
+    }
+}
 
 fun Application.module() {
     // 0) Logs
@@ -34,8 +43,7 @@ fun Application.module() {
     // 1) CORS
     configureCORS()
 
-  
-
+    // 2) Content negotiation
     install(ContentNegotiation) {
         json(Json {
             prettyPrint = true
@@ -52,21 +60,15 @@ fun Application.module() {
 
     configureDatabases()
 
-    // val navigationController = NavigationController();
-    // val classModel = ClassModel()
-    // val functionModel = FunctionModel()
-
     routing {
         singlePageApplication {
             react("../frontend/build")
         }
 
-        UserRoutes(db).registerRoutes(this)
+        // Initialize library routes
         LibraryRoutes().registerRoutes(this)
-    }
-}
-
-fun Application.configureCORS() {
+        
+        // API routes
         route("/library") {
             get("/{libname}") {
                 try {
@@ -118,7 +120,7 @@ fun Application.configureCORS() {
                     
                     val response = EntityResponse(
                         entity = entity,
-                        attributes = variables[VariableType.ATTRIBUTE] ?: emptyList(),
+                        attributes = variables[VariableType.DESCRIPTION] ?: emptyList(), // Changed from ATTRIBUTE to DESCRIPTION
                         parameters = variables[VariableType.PARAMETER] ?: emptyList(),
                         returns = variables[VariableType.RETURN] ?: emptyList()
                     )

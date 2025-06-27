@@ -1,0 +1,3 @@
+{
+  "error": "Não foi possível importar numpy.conftest: No module named 'hypothesis'"
+}
