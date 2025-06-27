@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Paper } from '@mui/material';
+import { Paper, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +25,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import CodeIcon from '@mui/icons-material/Code';
 import InfoIcon from '@mui/icons-material/Info';
 import { Outlet } from 'react-router';
+import axios from 'axios'
+import { useEffect } from 'react';
+
+import NamespaceAccordion from '../components/NamespaceAccordion';
 
 /*
 
@@ -105,7 +109,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
-
 const options = [
   { text: "seaborn.despine", icon: <InboxIcon /> },
   { text: "seaborn.move_legend", icon: <MailIcon /> },
@@ -212,4 +215,106 @@ export default function Layout() {
       </Main>
     </Box>
   );
+export default function Layout() {
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+    const [data, setData] = React.useState(null);
+    const [selectedLibrary, setSelectedLibrary] = React.useState('sklearn');
+    const [libraries, _] = React.useState(['sklearn', 'pandas', 'numpy']); // Example libraries
+    
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+    
+    const handleLibraryChange = (event) => {
+        setSelectedLibrary(event.target.value);
+    };
+
+    useEffect(() => {
+        if (selectedLibrary) {
+            axios.get(`http://127.0.0.1:8080/library/${selectedLibrary}`).then((response) => {
+                setData(response.data);
+                console.log(response.data);
+            }).catch((error) => {
+                console.error("Error fetching library data:", error);
+                setData(null);
+            });
+        }
+    }, [selectedLibrary]);
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={[
+                        {
+                            mr: 2,
+                        },
+                        open && { display: 'none' },
+                        ]}
+                        disabled={!selectedLibrary}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+                        DynamDocumentation
+                    </Typography>
+                    <FormControl variant="outlined" size="small" sx={{ minWidth: 120, mr: 1, bgcolor: 'rgba(255,255,255,0.15)', borderRadius: 1 }}>
+                        <InputLabel id="library-select-label" sx={{ color: 'white' }}>Biblioteca</InputLabel>
+                        <Select
+                            labelId="library-select-label"
+                            id="library-select"
+                            value={selectedLibrary}
+                            onChange={handleLibraryChange}
+                            label="Library"
+                            sx={{ color: 'white' }}
+                        >
+                            {libraries.map((lib) => (
+                                <MenuItem key={lib} value={lib}>{lib}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                sx={{
+                width: drawerWidth,
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                    width: drawerWidth,
+                    boxSizing: 'border-box',
+                    backgroundColor: (theme) => theme.palette.background.default,
+                    color: (theme) => theme.palette.text.primary,
+                },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <DrawerHeader>
+                <IconButton onClick={handleDrawerClose}>
+                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <NamespaceAccordion data={data} />
+            </Drawer>
+            <Main open={open}>
+                <DrawerHeader />
+                <Paper elevation={3}>
+                    <Outlet />
+                </Paper>
+            </Main>
+        </Box>
+    );
 }

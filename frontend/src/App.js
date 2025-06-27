@@ -4,6 +4,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Layout from './pages/Layout';
 import LibraryInput from './pages/LibraryInput';
+import { BrowserRouter, Routes, Route } from "react-router";
+import Layout from "./pages/Layout";
+import Login from "./pages/Test";
+import UserPage from './pages/UserPage';
+import Welcome from "./pages/Welcome";
+import Details from "./pages/Details";
 
 const theme = createTheme({
   palette: {
@@ -36,6 +42,14 @@ function App() {
         </Routes>
       </Router>
     </ThemeProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Welcome />} />
+          <Route path="details/:entityId" element={<Details />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
