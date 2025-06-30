@@ -12,13 +12,14 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import com.dynam.database.tables.Namespaces
 import com.dynam.database.tables.Variables
 import com.dynam.database.tables.Entities
+import com.dynam.database.tables.Constants
 
 fun Application.configureDatabases() {
     val driverClass = environment.config.property("ktor.storage.driverClassName").getString()
     val jdbcUrl = environment.config.property("ktor.storage.jdbcURL").getString()
     val db = Database.connect(provideDataSource(jdbcUrl, driverClass))
     transaction(db) {
-        SchemaUtils.create(Namespaces, Variables, Entities)
+        SchemaUtils.create(Namespaces, Variables, Entities, Constants)
     }
 }
 
@@ -37,12 +38,3 @@ private fun provideDataSource(url: String, driverClass: String): HikariDataSourc
 suspend fun <T> dbQuery(block: suspend ()->T): T {
     return newSuspendedTransaction(Dispatchers.IO) { block() }
 }
-
-/*
-
-rotate(180°)
-translate(2, 2)
-desenhaCasa()
-
-
- */
