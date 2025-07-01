@@ -1,5 +1,3 @@
-// Arquivo: com/dynam/models/Models.kt
-
 package com.dynam.models
 
 import com.dynam.database.dbQuery
@@ -8,7 +6,9 @@ import com.dynam.enums.EntityType
 import com.dynam.enums.VariableType
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
+
+/* -------------------- NAMESPACE -------------------- */
 
 @Serializable
 data class Namespace(
@@ -20,20 +20,35 @@ data class Namespace(
             id = row[Namespaces.id],
             name = row[Namespaces.name]
         )
-        
+
         suspend fun getAll(): List<Namespace> = dbQuery {
             Namespaces.selectAll().map { fromRow(it) }
         }
-        
+
+        suspend fun getByLibrary(prefix: String): List<Namespace> = dbQuery {
+            Namespaces.select { Namespaces.name.like("$prefix%") }.map { fromRow(it) }
+        }
+
         suspend fun create(name: String): Namespace = dbQuery {
+            val existingNamespace = Namespaces
+                .select { Namespaces.name eq name }
+                .map { fromRow(it) }
+                .singleOrNull()
+
+            if (existingNamespace != null) {
+                return@dbQuery existingNamespace
+            }
+
             val id = Namespaces.insert {
                 it[Namespaces.name] = name
             } get Namespaces.id
-            
+
             Namespace(id, name)
         }
     }
 }
+
+/* -------------------- ENTITY -------------------- */
 
 @Serializable
 data class Entity(
@@ -51,30 +66,11 @@ data class Entity(
             description = row[Entities.description],
             namespaceId = row[Entities.namespaceId]
         )
-        
+
         suspend fun getAll(): List<Entity> = dbQuery {
             Entities.selectAll().map { fromRow(it) }
         }
-        
-        suspend fun getById(id: Int): Entity? = dbQuery {
-            Entities.select { Entities.id eq id }
-                .map { fromRow(it) }
-                .singleOrNull()
-        }
-        
-        suspend fun getEntitiesByNamespaceId(namespaceId: Int, type: EntityType): List<Entity> = dbQuery {
-            Entities.select { 
-                (Entities.type eq type) and (Entities.namespaceId eq namespaceId)
-            }.map { fromRow(it) }
-        }
-        
-        suspend fun getEntityVariables(entityId: Int): Map<VariableType, List<Variable>> = dbQuery {
-            Variables
-                .select { Variables.entityId eq entityId }
-                .map { Variable.fromRow(it) }
-                .groupBy { it.type }
-        }
-        
+
         suspend fun create(
             type: EntityType,
             name: String,
@@ -87,11 +83,31 @@ data class Entity(
                 it[Entities.description] = description
                 it[Entities.namespaceId] = namespaceId
             } get Entities.id
-            
+
             Entity(id, type, name, description, namespaceId)
+        }
+
+        suspend fun getEntitiesByNamespaceId(namespaceId: Int, type: EntityType): List<Entity> = dbQuery {
+            Entities.select {
+                (Entities.type eq type) and (Entities.namespaceId eq namespaceId)
+            }.map { fromRow(it) }
+        }
+
+        suspend fun getById(id: Int): Entity? = dbQuery {
+            Entities.select { Entities.id eq id }
+                .map { fromRow(it) }
+                .singleOrNull()
+        }
+
+        suspend fun getEntityVariables(entityId: Int): Map<VariableType, List<Variable>> = dbQuery {
+            Variables.select { Variables.entityId eq entityId }
+                .map { Variable.fromRow(it) }
+                .groupBy { it.type }
         }
     }
 }
+
+/* -------------------- VARIABLE -------------------- */
 
 @Serializable
 data class Variable(
@@ -99,9 +115,9 @@ data class Variable(
     val entityId: Int,
     val type: VariableType,
     val name: String,
-    val dataType: String?,
-    val description: String,
-    val defaultValue: String?
+    val dataType: String?, // Alterado para nullable
+    val description: String?, // Alterado para nullable
+    val defaultValue: String? // Já era nullable
 ) {
     companion object {
         fun fromRow(row: ResultRow) = Variable(
@@ -113,13 +129,17 @@ data class Variable(
             description = row[Variables.description],
             defaultValue = row[Variables.defaultValue]
         )
-        
+
+        suspend fun getAll(): List<Variable> = dbQuery {
+            Variables.selectAll().map { fromRow(it) }
+        }
+
         suspend fun create(
             entityId: Int,
             type: VariableType,
             name: String,
-            dataType: String?,
-            description: String,
+            dataType: String?, // Alterado para nullable
+            description: String?, // Alterado para nullable
             defaultValue: String?
         ): Variable = dbQuery {
             val id = Variables.insert {
@@ -130,11 +150,13 @@ data class Variable(
                 it[Variables.description] = description
                 it[Variables.defaultValue] = defaultValue
             } get Variables.id
-            
+
             Variable(id, entityId, type, name, dataType, description, defaultValue)
         }
     }
 }
+
+/* -------------------- CONSTANT -------------------- */
 
 @Serializable
 data class Constant(
@@ -150,7 +172,7 @@ data class Constant(
             name = row[Constants.name],
             value = row[Constants.value]
         )
-        
+
         suspend fun create(
             entityId: Int,
             name: String,
@@ -161,7 +183,7 @@ data class Constant(
                 it[Constants.name] = name
                 it[Constants.value] = value
             } get Constants.id
-            
+
             Constant(id, entityId, name, value)
         }
     }

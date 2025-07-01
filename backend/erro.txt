@@ -1,0 +1,88 @@
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:65:25 Unresolved reference: delay
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:95:12 Unresolved reference: setProperty
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:12 Unresolved reference: connection
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:47 Cannot infer a type for this parameter. Please specify it explicitly.
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:15:34 Unresolved reference: exceptions
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:103:29 Unresolved reference: ExposedSQLException
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:122:5 A 'return' expression required in a function with a block body ('{...}')
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 10s
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:65:25 Unresolved reference: delay
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:95:12 Unresolved reference: setProperty
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:12 Unresolved reference: connection
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:47 Cannot infer a type for this parameter. Please specify it explicitly.
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:15:34 Unresolved reference: exceptions
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:103:29 Unresolved reference: ExposedSQLException
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:122:5 A 'return' expression required in a function with a block body ('{...}')
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 10s
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:65:25 Unresolved reference: delaye: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:65:25 Unresolved reference: delay
+
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:95:12 Unresolved reference: setProperty
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:95:12 Unresolved reference: setProperty
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:12 Unresolved reference: connection
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:12 Unresolved reference: connection
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:47 Cannot infer a type for this parameter. Please specify it explicitly.e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/database/Databases.kt:98:47 Cannot infer a type for this parameter. Please specify it explicitly.
+
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:15:34 Unresolved reference: exceptionse: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:15:34 Unresolved reference: exceptions
+
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:103:29 Unresolved reference: ExposedSQLException
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:103:29 Unresolved reference: ExposedSQLException
+e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:122:5 A 'return' expression required in a function with a block body ('{...}')e: file:///home/espala/Exercicios/EPs/DynamDocumentation/backend/src/main/kotlin/com/dynam/utils/ImportUtil.kt:122:5 A 'return' expression required in a function with a block body ('{...}')
+
+
+
+FAILURE: FAILURE: Build failed with an exception.
+Build failed with an exception.
+
+
+* What went wrong:
+* What went wrong:
+Execution failed for task ':compileKotlin'.Execution failed for task ':compileKotlin'.
+
+> > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+      > > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug--debug option to get more log output. option to get more log output.
+
+> > Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s

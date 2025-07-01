@@ -16,6 +16,7 @@ import com.dynam.routes.LibraryRoutes
 import com.dynam.database.*
 import com.dynam.models.*
 import com.dynam.enums.*
+import io.ktor.server.request.receive
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -136,6 +137,31 @@ fun Application.module() {
                         HttpStatusCode.NotFound,
                         mapOf("error" to e.message)
                     )
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e.message)
+                    )
+                }
+            }
+        }
+
+        route("/install") {
+            post {
+                try {
+                    // Get library parameter from request body
+                    val requestBody = call.receive<Map<String, String>>()
+                    val libraryName = requestBody["library"]
+                        ?: return@post call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Parameter 'library' is required"))
+                        
+                    val installer = LibraryInstaller()
+                    val success = installer.installLibrary(libraryName)
+                    
+                    if (success) {
+                        call.respond(mapOf("status" to "success", "message" to "Biblioteca $libraryName instalada com sucesso"))
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError, mapOf("status" to "error", "message" to "Falha ao instalar biblioteca $libraryName"))
+                    }
                 } catch (e: Exception) {
                     call.respond(
                         HttpStatusCode.InternalServerError,
