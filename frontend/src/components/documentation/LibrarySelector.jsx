@@ -296,11 +296,12 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle>
-                {step === 1 ? "Selecione uma Biblioteca" : 
-                 step === 2 ? `Selecione um Namespace em ${selectedLibrary}` : 
-                 `Selecione uma Função ou Classe em ${selectedNamespace?.name}`}
-                
+            <DialogTitle sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                pl: step > 1 ? 6 : 2, // Add padding on the left when the back button is present
+                position: 'relative'
+            }}>
                 {step > 1 && (
                     <IconButton
                         aria-label="back"
@@ -308,12 +309,16 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
                         sx={{
                             position: 'absolute',
                             left: 8,
-                            top: 8,
                         }}
                     >
                         <ArrowBackIcon />
                     </IconButton>
                 )}
+                <Typography sx={{ width: '100%', textAlign: 'center' }}>
+                    {step === 1 ? "Selecione uma Biblioteca" : 
+                     step === 2 ? `Selecione um Namespace em ${selectedLibrary}` : 
+                     `Selecione uma Função ou Classe em ${selectedNamespace?.name}`}
+                </Typography>
             </DialogTitle>
             <DialogContent dividers>
                 {loading ? (
