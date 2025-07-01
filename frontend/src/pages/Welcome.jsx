@@ -52,26 +52,41 @@ export default function Welcome() {
             sx={{ 
                 px: 3, /* Horizontal padding */
                 py: 2, /* Vertical padding */
-                height: '100%',
-                backgroundColor: 'white' 
+                height: '100vh', /* Fixed viewport height */
+                width: '100%',
+                backgroundColor: 'white',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden' /* Contain scrolling to children */
             }}
         >
             <Header />
             
             <Box 
                 sx={{ 
-                    height: 'calc(100% - 100px)', 
+                    height: 'calc(100vh - 120px)', /* Fixed height based on viewport minus header */
                     width: '100%', 
                     overflow: 'auto',
                     display: 'flex',
-                    flexDirection: 'row',
+                    // Use Material UI breakpoints for responsive layout
+                    flexDirection: {
+                        xs: 'column', // Mobile devices - vertical layout
+                        sm: 'column', // Small screens - vertical layout
+                        md: 'row',    // Medium screens and up - horizontal layout
+                    },
                     padding: '0.5px', /* 0.5 on each side, matching the card mx of 0.5 */
+                    // Improved scrollbar styling
                     '&::-webkit-scrollbar': {
-                        height: '10px'
+                        height: '8px',
+                        width: '8px',
+                        background: 'white' // Match the container background
                     },
                     '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: 'rgba(0,0,0,0.2)',
-                        borderRadius: '5px'
+                        backgroundColor: 'rgba(0,0,0,0.15)',
+                        borderRadius: '4px'
+                    },
+                    '&::-webkit-scrollbar-track': {
+                        background: 'white' // Match the container background
                     }
                 }}
             >
