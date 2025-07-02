@@ -108,7 +108,7 @@ fun Application.module() {
                     val entity = Entity.getById(entityId) ?: throw NoSuchElementException("Entity not found with ID: $entityId")
                     
                     // Get all variables associated with this entity, grouped by type
-                    val variables = Entity.getEntityVariables(entityId)
+                    val variables = Variable.getVariablesByFunctionId(entityId)
                     
                     // Create a serializable response structure
                     @Serializable

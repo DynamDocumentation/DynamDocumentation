@@ -98,12 +98,6 @@ data class Entity(
                 .map { fromRow(it) }
                 .singleOrNull()
         }
-
-        suspend fun getEntityVariables(entityId: Int): Map<VariableType, List<Variable>> = dbQuery {
-            Variables.select { Variables.entityId eq entityId }
-                .map { Variable.fromRow(it) }
-                .groupBy { it.type }
-        }
     }
 }
 
@@ -112,17 +106,19 @@ data class Entity(
 @Serializable
 data class Variable(
     val id: Int,
-    val entityId: Int,
+    val classId: Int?,       // Changed from entityId to optional classId
+    val functionId: Int?,    // Added optional functionId
     val type: VariableType,
     val name: String,
-    val dataType: String?, // Alterado para nullable
-    val description: String?, // Alterado para nullable
-    val defaultValue: String? // Já era nullable
+    val dataType: String?,
+    val description: String?,
+    val defaultValue: String?
 ) {
     companion object {
         fun fromRow(row: ResultRow) = Variable(
             id = row[Variables.id],
-            entityId = row[Variables.entityId],
+            classId = row[Variables.classId],      // Updated
+            functionId = row[Variables.functionId], // Updated
             type = row[Variables.type],
             name = row[Variables.name],
             dataType = row[Variables.dataType],
@@ -134,16 +130,19 @@ data class Variable(
             Variables.selectAll().map { fromRow(it) }
         }
 
+        // Update the create method
         suspend fun create(
-            entityId: Int,
+            classId: Int? = null,        // Changed
+            functionId: Int? = null,      // Changed
             type: VariableType,
             name: String,
-            dataType: String?, // Alterado para nullable
-            description: String?, // Alterado para nullable
+            dataType: String?,
+            description: String?,
             defaultValue: String?
         ): Variable = dbQuery {
             val id = Variables.insert {
-                it[Variables.entityId] = entityId
+                it[Variables.classId] = classId         // Updated
+                it[Variables.functionId] = functionId   // Updated
                 it[Variables.type] = type
                 it[Variables.name] = name
                 it[Variables.dataType] = dataType
@@ -151,7 +150,19 @@ data class Variable(
                 it[Variables.defaultValue] = defaultValue
             } get Variables.id
 
-            Variable(id, entityId, type, name, dataType, description, defaultValue)
+            Variable(id, classId, functionId, type, name, dataType, description, defaultValue)
+        }
+
+        suspend fun getVariablesByClassId(classId: Int): Map<VariableType, List<Variable>> = dbQuery {
+            Variables.select { Variables.classId eq classId }
+                .map { Variable.fromRow(it) }
+                .groupBy { it.type }
+        }
+
+        suspend fun getVariablesByFunctionId(functionId: Int): Map<VariableType, List<Variable>> = dbQuery {
+            Variables.select { Variables.functionId eq functionId }
+                .map { Variable.fromRow(it) }
+                .groupBy { it.type }
         }
     }
 }

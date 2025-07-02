@@ -1,0 +1,148 @@
+{
+  "description": "No description available",
+  "functions": [],
+  "classes": [
+    {
+      "name": "FrozenEstimator",
+      "documentation": {
+        "description": "Estimator that wraps a fitted estimator to prevent re-fitting.\n\n    This meta-estimator takes an estimator and freezes it, in the sense that calling\n    `fit` on it has no effect. `fit_predict` and `fit_transform` are also disabled.\n    All other methods are delegated to the original estimator and original estimator's\n    attributes are accessible as well.\n\n    This is particularly useful when you have a fitted or a pre-trained model as a\n    transformer in a pipeline, and you'd like `pipeline.fit` to have no effect on this\n    step.\n\n    Parameters\n    ----------\n    estimator : estimator\n        The estimator which is to be kept frozen.\n\n    See Also\n    --------\n    None: No similar entry in the scikit-learn documentation.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator",
+            "description": ""
+          },
+          "The": {
+            "type": "estimator which is to be kept frozen.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "None": {
+            "type": "No similar entry in the scikit",
+            "description": "learn documentation.\nExamples\n--------\n>>> from sklearn.datasets import make_classification\n>>> from sklearn.frozen import FrozenEstimator\n>>> from sklearn.linear_model import LogisticRegression\n>>> X, y = make_classification(random_state=0)\n>>> clf = LogisticRegression(random_state=0).fit(X, y)\n>>> frozen_clf = FrozenEstimator(clf)\n>>> frozen_clf.fit(X, y)  # No-op"
+          },
+          "FrozenEstimator": {
+            "type": "estimator=LogisticRegression(random_state=0",
+            "description": ")\n>>> frozen_clf.predict(X)  # Predictions from `clf.predict`"
+          },
+          "array": {
+            "type": "...",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    None: No similar entry in the scikit-learn documentation.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import make_classification\n    >>> from sklearn.frozen import FrozenEstimator\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X, y = make_classification(random_state=0)\n    >>> clf = LogisticRegression(random_state=0).fit(X, y)\n    >>> frozen_clf = FrozenEstimator(clf)\n    >>> frozen_clf.fit(X, y)  # No-op\n    FrozenEstimator(estimator=LogisticRegression(random_state=0))\n    >>> frozen_clf.predict(X)  # Predictions from `clf.predict`\n    array(...)",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import make_classification\n    >>> from sklearn.frozen import FrozenEstimator\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X, y = make_classification(random_state=0)\n    >>> clf = LogisticRegression(random_state=0).fit(X, y)\n    >>> frozen_clf = FrozenEstimator(clf)\n    >>> frozen_clf.fit(X, y)  # No-op\n    FrozenEstimator(estimator=LogisticRegression(random_state=0))\n    >>> frozen_clf.predict(X)  # Predictions from `clf.predict`\n    array(...)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y, *args, **kwargs)",
+          "documentation": {
+            "description": "No-op.\n\n        As a frozen estimator, calling `fit` has no effect.\n\n        Parameters\n        ----------\n        X : object\n            Ignored.\n\n        y : object\n            Ignored.\n\n        *args : tuple\n            Additional positional arguments. Ignored, but present for API compatibility\n            with `self.estimator`.\n\n        **kwargs : dict\n            Additional keyword arguments. Ignored, but present for API compatibility\n            with `self.estimator`.",
+            "parameters": {
+              "X": {
+                "type": "object",
+                "description": "Ignored."
+              },
+              "y": {
+                "type": "object",
+                "description": "Ignored.\n*args : tuple"
+              },
+              "Additional": {
+                "type": "keyword arguments. Ignored, but present for API compatibility",
+                "description": ""
+              },
+              "with": {
+                "type": "`self.estimator`.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Returns": {
+                "type": "the instance itself.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": "Ignored.\nReturns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "a `{\"estimator\": estimator}` dict. The parameters of the inner\n        estimator are not included.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            Ignored.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **kwargs)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The only valid key here is `estimator`. You cannot set the parameters of the\n        inner estimator.\n\n        Parameters\n        ----------\n        **kwargs : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "parameters.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "FrozenEstimator",
+                "description": ""
+              },
+              "This": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : FrozenEstimator\n            This estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

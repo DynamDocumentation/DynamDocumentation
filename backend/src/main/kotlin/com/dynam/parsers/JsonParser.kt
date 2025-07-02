@@ -54,7 +54,8 @@ class JsonParser {
         
         // Process description as variable
         Variable.create(
-            entityId = classEntity.id,
+            classId = classEntity.id,
+            functionId = null,
             type = VariableType.DESCRIPTION,
             name = "description",
             dataType = null,
@@ -63,26 +64,15 @@ class JsonParser {
         )
         
         // Process class parameters
-        docstring?.get("parameters")?.jsonObject?.forEach { (paramName, paramObj) ->
-            if (paramObj is JsonObject) {
-                val paramType = paramObj["type"]?.jsonPrimitive?.content
-                val paramDesc = paramObj["description"]?.jsonPrimitive?.content ?: ""
-                
-                Variable.create(
-                    entityId = classEntity.id,
-                    type = VariableType.PARAMETER,
-                    name = paramName,
-                    dataType = paramType,
-                    description = paramDesc,
-                    defaultValue = null
-                )
-            }
+        docstring?.get("parameters")?.jsonObject?.let { parameters ->
+            processClassParameters(classEntity.id, parameters)
         }
         
         // Process returns
         docstring?.get("returns")?.jsonPrimitive?.content?.let { returns ->
             Variable.create(
-                entityId = classEntity.id,
+                classId = classEntity.id,
+                functionId = null,
                 type = VariableType.RETURN,
                 name = "return",
                 dataType = null,
@@ -94,7 +84,8 @@ class JsonParser {
         // Process raises
         docstring?.get("raises")?.jsonPrimitive?.content?.let { raises ->
             Variable.create(
-                entityId = classEntity.id,
+                classId = classEntity.id,
+                functionId = null,
                 type = VariableType.RAISE,
                 name = "raises",
                 dataType = null,
@@ -106,7 +97,8 @@ class JsonParser {
         // Process examples
         docstring?.get("examples")?.jsonPrimitive?.content?.let { examples ->
             Variable.create(
-                entityId = classEntity.id,
+                classId = classEntity.id,
+                functionId = null,
                 type = VariableType.EXAMPLE,
                 name = "examples",
                 dataType = null,
@@ -133,7 +125,8 @@ class JsonParser {
             
             // Process description
             Variable.create(
-                entityId = functionEntity.id,
+                classId = null,
+                functionId = functionEntity.id,
                 type = VariableType.DESCRIPTION,
                 name = "description",
                 dataType = null,
@@ -143,7 +136,8 @@ class JsonParser {
             
             // Process signature as a special attribute
             Variable.create(
-                entityId = functionEntity.id,
+                classId = null,
+                functionId = functionEntity.id,
                 type = VariableType.ATTRIBUTE,
                 name = "signature",
                 dataType = null,
@@ -152,26 +146,15 @@ class JsonParser {
             )
             
             // Process function parameters
-            methodDocstring?.get("parameters")?.jsonObject?.forEach { (paramName, paramObj) ->
-                if (paramObj is JsonObject) {
-                    val paramType = paramObj["type"]?.jsonPrimitive?.content
-                    val paramDesc = paramObj["description"]?.jsonPrimitive?.content ?: ""
-                    
-                    Variable.create(
-                        entityId = functionEntity.id,
-                        type = VariableType.PARAMETER,
-                        name = paramName,
-                        dataType = paramType,
-                        description = paramDesc,
-                        defaultValue = null
-                    )
-                }
+            methodDocstring?.get("parameters")?.jsonObject?.let { parameters ->
+                processFunctionParameters(functionEntity.id, parameters)
             }
             
             // Process returns
             methodDocstring?.get("returns")?.jsonPrimitive?.content?.let { returns ->
                 Variable.create(
-                    entityId = functionEntity.id,
+                    classId = null,
+                    functionId = functionEntity.id,
                     type = VariableType.RETURN,
                     name = "return",
                     dataType = null,
@@ -183,7 +166,8 @@ class JsonParser {
             // Process raises
             methodDocstring?.get("raises")?.jsonPrimitive?.content?.let { raises ->
                 Variable.create(
-                    entityId = functionEntity.id,
+                    classId = null,
+                    functionId = functionEntity.id,
                     type = VariableType.RAISE,
                     name = "raises",
                     dataType = null,
@@ -195,7 +179,8 @@ class JsonParser {
             // Process examples
             methodDocstring?.get("examples")?.jsonPrimitive?.content?.let { examples ->
                 Variable.create(
-                    entityId = functionEntity.id,
+                    classId = null,
+                    functionId = functionEntity.id,
                     type = VariableType.EXAMPLE,
                     name = "examples",
                     dataType = null,
@@ -223,7 +208,8 @@ class JsonParser {
         
         // Process description
         Variable.create(
-            entityId = functionEntity.id,
+            classId = null,
+            functionId = functionEntity.id,
             type = VariableType.DESCRIPTION,
             name = "description",
             dataType = null,
@@ -233,7 +219,8 @@ class JsonParser {
         
         // Process signature as a special attribute
         Variable.create(
-            entityId = functionEntity.id,
+            classId = null,
+            functionId = functionEntity.id,
             type = VariableType.ATTRIBUTE,
             name = "signature",
             dataType = null,
@@ -242,26 +229,15 @@ class JsonParser {
         )
         
         // Process parameters
-        docstringObj?.get("parameters")?.jsonObject?.forEach { (paramName, paramObj) ->
-            if (paramObj is JsonObject) {
-                val paramType = paramObj["type"]?.jsonPrimitive?.content
-                val paramDesc = paramObj["description"]?.jsonPrimitive?.content ?: ""
-                
-                Variable.create(
-                    entityId = functionEntity.id,
-                    type = VariableType.PARAMETER,
-                    name = paramName,
-                    dataType = paramType,
-                    description = paramDesc,
-                    defaultValue = null
-                )
-            }
+        docstringObj?.get("parameters")?.jsonObject?.let { parameters ->
+            processFunctionParameters(functionEntity.id, parameters)
         }
         
         // Process returns
         docstringObj?.get("returns")?.jsonPrimitive?.content?.let { returns ->
             Variable.create(
-                entityId = functionEntity.id,
+                classId = null,
+                functionId = functionEntity.id,
                 type = VariableType.RETURN,
                 name = "return",
                 dataType = null,
@@ -273,7 +249,8 @@ class JsonParser {
         // Process raises
         docstringObj?.get("raises")?.jsonPrimitive?.content?.let { raises ->
             Variable.create(
-                entityId = functionEntity.id,
+                classId = null,
+                functionId = functionEntity.id,
                 type = VariableType.RAISE,
                 name = "raises",
                 dataType = null,
@@ -285,7 +262,8 @@ class JsonParser {
         // Process examples
         docstringObj?.get("examples")?.jsonPrimitive?.content?.let { examples ->
             Variable.create(
-                entityId = functionEntity.id,
+                classId = null,
+                functionId = functionEntity.id,
                 type = VariableType.EXAMPLE,
                 name = "examples",
                 dataType = null,
@@ -312,5 +290,36 @@ class JsonParser {
             name = constantName,
             value = value
         )
+    }
+    
+    // Update your methods to pass the right ID type
+    private suspend fun processClassParameters(classId: Int, parameters: JsonObject) {
+        for ((paramName, paramInfo) in parameters.entries) {
+            // Create parameter with classId
+            Variable.create(
+                classId = classId,
+                functionId = null,
+                type = VariableType.PARAMETER,
+                name = paramName,
+                dataType = null,
+                description = paramInfo.jsonObject["description"]?.jsonPrimitive?.content ?: "",
+                defaultValue = null
+            )
+        }
+    }
+    
+    private suspend fun processFunctionParameters(functionId: Int, parameters: JsonObject) {
+        for ((paramName, paramInfo) in parameters.entries) {
+            // Create parameter with functionId
+            Variable.create(
+                classId = null,
+                functionId = functionId,
+                type = VariableType.PARAMETER,
+                name = paramName,
+                dataType = null,
+                description = paramInfo.jsonObject["description"]?.jsonPrimitive?.content ?: "",
+                defaultValue = null
+            )
+        }
     }
 }

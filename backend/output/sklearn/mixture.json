@@ -1,0 +1,1002 @@
+{
+  "description": "Mixture modeling algorithms.",
+  "functions": [],
+  "classes": [
+    {
+      "name": "BayesianGaussianMixture",
+      "documentation": {
+        "description": "Variational Bayesian estimation of a Gaussian mixture.\n\n    This class allows to infer an approximate posterior distribution over the\n    parameters of a Gaussian mixture distribution. The effective number of\n    components can be inferred from the data.\n\n    This class implements two types of prior for the weights distribution: a\n    finite mixture model with Dirichlet distribution and an infinite mixture\n    model with the Dirichlet Process. In practice Dirichlet Process inference\n    algorithm is approximated and uses a truncated distribution with a fixed\n    maximum number of components (called the Stick-breaking representation).\n    The number of components actually used almost always depends on the data.\n\n    .. versionadded:: 0.18\n\n    Read more in the :ref:`User Guide <bgmm>`.\n\n    Parameters\n    ----------\n    n_components : int, default=1\n        The number of mixture components. Depending on the data and the value\n        of the `weight_concentration_prior` the model can decide to not use\n        all the components by setting some component `weights_` to values very\n        close to zero. The number of effective components is therefore smaller\n        than n_components.\n\n    covariance_type : {'full', 'tied', 'diag', 'spherical'}, default='full'\n        String describing the type of covariance parameters to use.\n        Must be one of:\n\n        - 'full' (each component has its own general covariance matrix),\n        - 'tied' (all components share the same general covariance matrix),\n        - 'diag' (each component has its own diagonal covariance matrix),\n        - 'spherical' (each component has its own single variance).\n\n    tol : float, default=1e-3\n        The convergence threshold. EM iterations will stop when the\n        lower bound average gain on the likelihood (of the training data with\n        respect to the model) is below this threshold.\n\n    reg_covar : float, default=1e-6\n        Non-negative regularization added to the diagonal of covariance.\n        Allows to assure that the covariance matrices are all positive.\n\n    max_iter : int, default=100\n        The number of EM iterations to perform.\n\n    n_init : int, default=1\n        The number of initializations to perform. The result with the highest\n        lower bound value on the likelihood is kept.\n\n    init_params : {'kmeans', 'k-means++', 'random', 'random_from_data'},     default='kmeans'\n        The method used to initialize the weights, the means and the\n        covariances. String must be one of:\n\n        - 'kmeans': responsibilities are initialized using kmeans.\n        - 'k-means++': use the k-means++ method to initialize.\n        - 'random': responsibilities are initialized randomly.\n        - 'random_from_data': initial means are randomly selected data points.\n\n        .. versionchanged:: v1.1\n            `init_params` now accepts 'random_from_data' and 'k-means++' as\n            initialization methods.\n\n    weight_concentration_prior_type : {'dirichlet_process', 'dirichlet_distribution'},             default='dirichlet_process'\n        String describing the type of the weight concentration prior.\n\n    weight_concentration_prior : float or None, default=None\n        The dirichlet concentration of each component on the weight\n        distribution (Dirichlet). This is commonly called gamma in the\n        literature. The higher concentration puts more mass in\n        the center and will lead to more components being active, while a lower\n        concentration parameter will lead to more mass at the edge of the\n        mixture weights simplex. The value of the parameter must be greater\n        than 0. If it is None, it's set to ``1. / n_components``.\n\n    mean_precision_prior : float or None, default=None\n        The precision prior on the mean distribution (Gaussian).\n        Controls the extent of where means can be placed. Larger\n        values concentrate the cluster means around `mean_prior`.\n        The value of the parameter must be greater than 0.\n        If it is None, it is set to 1.\n\n    mean_prior : array-like, shape (n_features,), default=None\n        The prior on the mean distribution (Gaussian).\n        If it is None, it is set to the mean of X.\n\n    degrees_of_freedom_prior : float or None, default=None\n        The prior of the number of degrees of freedom on the covariance\n        distributions (Wishart). If it is None, it's set to `n_features`.\n\n    covariance_prior : float or array-like, default=None\n        The prior on the covariance distribution (Wishart).\n        If it is None, the emiprical covariance prior is initialized using the\n        covariance of X. The shape depends on `covariance_type`::\n\n                (n_features, n_features) if 'full',\n                (n_features, n_features) if 'tied',\n                (n_features)             if 'diag',\n                float                    if 'spherical'\n\n    random_state : int, RandomState instance or None, default=None\n        Controls the random seed given to the method chosen to initialize the\n        parameters (see `init_params`).\n        In addition, it controls the generation of random samples from the\n        fitted distribution (see the method `sample`).\n        Pass an int for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    warm_start : bool, default=False\n        If 'warm_start' is True, the solution of the last fitting is used as\n        initialization for the next call of fit(). This can speed up\n        convergence when fit is called several times on similar problems.\n        See :term:`the Glossary <warm_start>`.\n\n    verbose : int, default=0\n        Enable verbose output. If 1 then it prints the current\n        initialization and each iteration step. If greater than 1 then\n        it prints also the log probability and the time needed\n        for each step.\n\n    verbose_interval : int, default=10\n        Number of iteration done before the next print.\n\n    Attributes\n    ----------\n    weights_ : array-like of shape (n_components,)\n        The weights of each mixture components.\n\n    means_ : array-like of shape (n_components, n_features)\n        The mean of each mixture component.\n\n    covariances_ : array-like\n        The covariance of each mixture component.\n        The shape depends on `covariance_type`::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    precisions_ : array-like\n        The precision matrices for each component in the mixture. A precision\n        matrix is the inverse of a covariance matrix. A covariance matrix is\n        symmetric positive definite so the mixture of Gaussian can be\n        equivalently parameterized by the precision matrices. Storing the\n        precision matrices instead of the covariance matrices makes it more\n        efficient to compute the log-likelihood of new samples at test time.\n        The shape depends on ``covariance_type``::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    precisions_cholesky_ : array-like\n        The cholesky decomposition of the precision matrices of each mixture\n        component. A precision matrix is the inverse of a covariance matrix.\n        A covariance matrix is symmetric positive definite so the mixture of\n        Gaussian can be equivalently parameterized by the precision matrices.\n        Storing the precision matrices instead of the covariance matrices makes\n        it more efficient to compute the log-likelihood of new samples at test\n        time. The shape depends on ``covariance_type``::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    converged_ : bool\n        True when convergence of the best fit of inference was reached, False otherwise.\n\n    n_iter_ : int\n        Number of step used by the best fit of inference to reach the\n        convergence.\n\n    lower_bound_ : float\n        Lower bound value on the model evidence (of the training data) of the\n        best fit of inference.\n\n    weight_concentration_prior_ : tuple or float\n        The dirichlet concentration of each component on the weight\n        distribution (Dirichlet). The type depends on\n        ``weight_concentration_prior_type``::\n\n            (float, float) if 'dirichlet_process' (Beta parameters),\n            float          if 'dirichlet_distribution' (Dirichlet parameters).\n\n        The higher concentration puts more mass in\n        the center and will lead to more components being active, while a lower\n        concentration parameter will lead to more mass at the edge of the\n        simplex.\n\n    weight_concentration_ : array-like of shape (n_components,)\n        The dirichlet concentration of each component on the weight\n        distribution (Dirichlet).\n\n    mean_precision_prior_ : float\n        The precision prior on the mean distribution (Gaussian).\n        Controls the extent of where means can be placed.\n        Larger values concentrate the cluster means around `mean_prior`.\n        If mean_precision_prior is set to None, `mean_precision_prior_` is set\n        to 1.\n\n    mean_precision_ : array-like of shape (n_components,)\n        The precision of each components on the mean distribution (Gaussian).\n\n    mean_prior_ : array-like of shape (n_features,)\n        The prior on the mean distribution (Gaussian).\n\n    degrees_of_freedom_prior_ : float\n        The prior of the number of degrees of freedom on the covariance\n        distributions (Wishart).\n\n    degrees_of_freedom_ : array-like of shape (n_components,)\n        The number of degrees of freedom of each components in the model.\n\n    covariance_prior_ : float or array-like\n        The prior on the covariance distribution (Wishart).\n        The shape depends on `covariance_type`::\n\n            (n_features, n_features) if 'full',\n            (n_features, n_features) if 'tied',\n            (n_features)             if 'diag',\n            float                    if 'spherical'\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianMixture : Finite Gaussian mixture fit with EM.\n\n    References\n    ----------\n\n    .. [1] `Bishop, Christopher M. (2006). \"Pattern recognition and machine\n       learning\". Vol. 4 No. 4. New York: Springer.\n       <https://www.springer.com/kr/book/9780387310732>`_\n\n    .. [2] `Hagai Attias. (2000). \"A Variational Bayesian Framework for\n       Graphical Models\". In Advances in Neural Information Processing\n       Systems 12.\n       <https://citeseerx.ist.psu.edu/doc_view/pid/ee844fd96db7041a9681b5a18bff008912052c7e>`_\n\n    .. [3] `Blei, David M. and Michael I. Jordan. (2006). \"Variational\n       inference for Dirichlet process mixtures\". Bayesian analysis 1.1\n       <https://www.cs.princeton.edu/courses/archive/fall11/cos597C/reading/BleiJordan2005.pdf>`_",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "The": {
+            "type": "number of components actually used almost always depends on the data.",
+            "description": ".. versionadded:: 0.18"
+          },
+          "of": {
+            "type": "a Gaussian mixture distribution. The effective number of",
+            "description": ""
+          },
+          "all": {
+            "type": "the components by setting some component `weights_` to values very",
+            "description": ""
+          },
+          "close": {
+            "type": "to zero. The number of effective components is therefore smaller",
+            "description": ""
+          },
+          "than": {
+            "type": "0. If it is None, it's set to ``1. / n_components``.",
+            "description": ""
+          },
+          "covariance_type": {
+            "type": "{'full', 'tied', 'diag', 'spherical'}, default='full'",
+            "description": ""
+          },
+          "String": {
+            "type": "describing the type of the weight concentration prior.",
+            "description": ""
+          },
+          "Must": {
+            "type": "be one of:",
+            "description": "- 'full' (each component has its own general covariance matrix),\n- 'tied' (all components share the same general covariance matrix),\n- 'diag' (each component has its own diagonal covariance matrix),\n- 'spherical' (each component has its own single variance)."
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "lower": {
+            "type": "bound value on the likelihood is kept.",
+            "description": ""
+          },
+          "respect": {
+            "type": "to the model) is below this threshold.",
+            "description": ""
+          },
+          "reg_covar": {
+            "type": "float, default=1e",
+            "description": "6\nNon-negative regularization added to the diagonal of covariance."
+          },
+          "Allows": {
+            "type": "to assure that the covariance matrices are all positive.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=100",
+            "description": ""
+          },
+          "n_init": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "init_params": {
+            "type": "{'kmeans', 'k",
+            "description": "means++', 'random', 'random_from_data'},     default='kmeans'"
+          },
+          "initialization": {
+            "type": "methods.",
+            "description": ""
+          },
+          "weight_concentration_prior_type": {
+            "type": "{'dirichlet_process', 'dirichlet_distribution'},             default='dirichlet_process'",
+            "description": ""
+          },
+          "weight_concentration_prior": {
+            "type": "float or None, default=None",
+            "description": ""
+          },
+          "distribution": {
+            "type": "Dirichlet",
+            "description": ". This is commonly called gamma in the\nliterature. The higher concentration puts more mass in"
+          },
+          "the": {
+            "type": "center and will lead to more components being active, while a lower",
+            "description": ""
+          },
+          "concentration": {
+            "type": "parameter will lead to more mass at the edge of the",
+            "description": ""
+          },
+          "mixture": {
+            "type": "weights simplex. The value of the parameter must be greater",
+            "description": ""
+          },
+          "mean_precision_prior": {
+            "type": "float or None, default=None",
+            "description": ""
+          },
+          "Controls": {
+            "type": "the random seed given to the method chosen to initialize the",
+            "description": ""
+          },
+          "values": {
+            "type": "concentrate the cluster means around `mean_prior`.",
+            "description": ""
+          },
+          "If": {
+            "type": "it is None, the emiprical covariance prior is initialized using the",
+            "description": ""
+          },
+          "mean_prior": {
+            "type": "array",
+            "description": "like, shape (n_features,), default=None"
+          },
+          "degrees_of_freedom_prior": {
+            "type": "float or None, default=None",
+            "description": ""
+          },
+          "distributions": {
+            "type": "Wishart",
+            "description": ". If it is None, it's set to `n_features`."
+          },
+          "covariance_prior": {
+            "type": "float or array",
+            "description": "like, default=None"
+          },
+          "covariance": {
+            "type": "of X. The shape depends on `covariance_type`::",
+            "description": "(n_features, n_features) if 'full',\n(n_features, n_features) if 'tied',\n(n_features)             if 'diag',"
+          },
+          "float": {
+            "type": "if 'spherical'",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "components": {
+            "type": "can be inferred from the data.",
+            "description": ""
+          },
+          "This": {
+            "type": "class implements two types of prior for the weights distribution: a",
+            "description": ""
+          },
+          "finite": {
+            "type": "mixture model with Dirichlet distribution and an infinite mixture",
+            "description": ""
+          },
+          "model": {
+            "type": "with the Dirichlet Process. In practice Dirichlet Process inference",
+            "description": ""
+          },
+          "algorithm": {
+            "type": "is approximated and uses a truncated distribution with a fixed",
+            "description": ""
+          },
+          "maximum": {
+            "type": "number of components (called the Stick-breaking representation).",
+            "description": ""
+          },
+          "Read": {
+            "type": "more in the :ref:`User Guide <bgmm>`.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    GaussianMixture : Finite Gaussian mixture fit with EM.\n\n    References\n    ----------\n\n    .. [1] `Bishop, Christopher M. (2006). \"Pattern recognition and machine\n       learning\". Vol. 4 No. 4. New York: Springer.\n       <https://www.springer.com/kr/book/9780387310732>`_\n\n    .. [2] `Hagai Attias. (2000). \"A Variational Bayesian Framework for\n       Graphical Models\". In Advances in Neural Information Processing\n       Systems 12.\n       <https://citeseerx.ist.psu.edu/doc_view/pid/ee844fd96db7041a9681b5a18bff008912052c7e>`_\n\n    .. [3] `Blei, David M. and Michael I. Jordan. (2006). \"Variational\n       inference for Dirichlet process mixtures\". Bayesian analysis 1.1\n       <https://www.cs.princeton.edu/courses/archive/fall11/cos597C/reading/BleiJordan2005.pdf>`_\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.mixture import BayesianGaussianMixture\n    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [12, 4], [10, 7]])\n    >>> bgm = BayesianGaussianMixture(n_components=2, random_state=42).fit(X)\n    >>> bgm.means_\n    array([[2.49... , 2.29...],\n           [8.45..., 4.52... ]])\n    >>> bgm.predict([[0, 0], [9, 3]])\n    array([0, 1])",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.mixture import BayesianGaussianMixture\n    >>> X = np.array([[1, 2], [1, 4], [1, 0], [4, 2], [12, 4], [10, 7]])\n    >>> bgm = BayesianGaussianMixture(n_components=2, random_state=42).fit(X)\n    >>> bgm.means_\n    array([[2.49... , 2.29...],\n           [8.45..., 4.52... ]])\n    >>> bgm.predict([[0, 0], [9, 3]])\n    array([0, 1])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Estimate model parameters with the EM algorithm.\n\n        The method fits the model ``n_init`` times and sets the parameters with\n        which the model has the largest likelihood or lower bound. Within each\n        trial, the method iterates between E-step and M-step for ``max_iter``\n        times until the change of likelihood or lower bound is less than\n        ``tol``, otherwise, a ``ConvergenceWarning`` is raised.\n        If ``warm_start`` is ``True``, then ``n_init`` is ignored and a single\n        initialization is performed upon the first call. Upon consecutive\n        calls, training starts where it left off.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "fitted mixture.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            The fitted mixture.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_predict",
+          "signature": "fit_predict(self, X, y=None)",
+          "documentation": {
+            "description": "Estimate model parameters using X and predict the labels for X.\n\n        The method fits the model n_init times and sets the parameters with\n        which the model has the largest likelihood or lower bound. Within each\n        trial, the method iterates between E-step and M-step for `max_iter`\n        times until the change of likelihood or lower bound is less than\n        `tol`, otherwise, a :class:`~sklearn.exceptions.ConvergenceWarning` is\n        raised. After fitting, it predicts the most probable label for the\n        input data points.\n\n        .. versionadded:: 0.20\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "labels": {
+                "type": "array, shape (n_samples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        labels : array, shape (n_samples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Predict the labels for the data samples in X using trained model.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "labels": {
+                "type": "array, shape (n_samples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        labels : array, shape (n_samples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_proba",
+          "signature": "predict_proba(self, X)",
+          "documentation": {
+            "description": "Evaluate the components' density for each sample.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "resp": {
+                "type": "array, shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Density": {
+                "type": "of each Gaussian component for each sample in X.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        resp : array, shape (n_samples, n_components)\n            Density of each Gaussian component for each sample in X.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sample",
+          "signature": "sample(self, n_samples=1)",
+          "documentation": {
+            "description": "Generate random samples from the fitted Gaussian distribution.\n\n        Parameters\n        ----------\n        n_samples : int, default=1\n            Number of samples to generate.",
+            "parameters": {
+              "n_samples": {
+                "type": "int, default=1",
+                "description": ""
+              },
+              "Number": {
+                "type": "of samples to generate.",
+                "description": "Returns\n-------"
+              },
+              "X": {
+                "type": "array, shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Randomly": {
+                "type": "generated sample.",
+                "description": ""
+              },
+              "y": {
+                "type": "array, shape (nsamples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X : array, shape (n_samples, n_features)\n            Randomly generated sample.\n\n        y : array, shape (nsamples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y=None)",
+          "documentation": {
+            "description": "Compute the per-sample average log-likelihood of the given data X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_dimensions)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_dimensions)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "log_likelihood": {
+                "type": "float",
+                "description": "Log-likelihood of `X` under the Gaussian mixture model."
+              }
+            },
+            "returns": "-------\n        log_likelihood : float\n            Log-likelihood of `X` under the Gaussian mixture model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score_samples",
+          "signature": "score_samples(self, X)",
+          "documentation": {
+            "description": "Compute the log-likelihood of each sample.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "log_prob": {
+                "type": "array, shape (n_samples,)",
+                "description": "Log-likelihood of each sample in `X` under the current model."
+              }
+            },
+            "returns": "-------\n        log_prob : array, shape (n_samples,)\n            Log-likelihood of each sample in `X` under the current model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "GaussianMixture",
+      "documentation": {
+        "description": "Gaussian Mixture.\n\n    Representation of a Gaussian mixture model probability distribution.\n    This class allows to estimate the parameters of a Gaussian mixture\n    distribution.\n\n    Read more in the :ref:`User Guide <gmm>`.\n\n    .. versionadded:: 0.18\n\n    Parameters\n    ----------\n    n_components : int, default=1\n        The number of mixture components.\n\n    covariance_type : {'full', 'tied', 'diag', 'spherical'}, default='full'\n        String describing the type of covariance parameters to use.\n        Must be one of:\n\n        - 'full': each component has its own general covariance matrix.\n        - 'tied': all components share the same general covariance matrix.\n        - 'diag': each component has its own diagonal covariance matrix.\n        - 'spherical': each component has its own single variance.\n\n    tol : float, default=1e-3\n        The convergence threshold. EM iterations will stop when the\n        lower bound average gain is below this threshold.\n\n    reg_covar : float, default=1e-6\n        Non-negative regularization added to the diagonal of covariance.\n        Allows to assure that the covariance matrices are all positive.\n\n    max_iter : int, default=100\n        The number of EM iterations to perform.\n\n    n_init : int, default=1\n        The number of initializations to perform. The best results are kept.\n\n    init_params : {'kmeans', 'k-means++', 'random', 'random_from_data'},     default='kmeans'\n        The method used to initialize the weights, the means and the\n        precisions.\n        String must be one of:\n\n        - 'kmeans' : responsibilities are initialized using kmeans.\n        - 'k-means++' : use the k-means++ method to initialize.\n        - 'random' : responsibilities are initialized randomly.\n        - 'random_from_data' : initial means are randomly selected data points.\n\n        .. versionchanged:: v1.1\n            `init_params` now accepts 'random_from_data' and 'k-means++' as\n            initialization methods.\n\n    weights_init : array-like of shape (n_components, ), default=None\n        The user-provided initial weights.\n        If it is None, weights are initialized using the `init_params` method.\n\n    means_init : array-like of shape (n_components, n_features), default=None\n        The user-provided initial means,\n        If it is None, means are initialized using the `init_params` method.\n\n    precisions_init : array-like, default=None\n        The user-provided initial precisions (inverse of the covariance\n        matrices).\n        If it is None, precisions are initialized using the 'init_params'\n        method.\n        The shape depends on 'covariance_type'::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    random_state : int, RandomState instance or None, default=None\n        Controls the random seed given to the method chosen to initialize the\n        parameters (see `init_params`).\n        In addition, it controls the generation of random samples from the\n        fitted distribution (see the method `sample`).\n        Pass an int for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    warm_start : bool, default=False\n        If 'warm_start' is True, the solution of the last fitting is used as\n        initialization for the next call of fit(). This can speed up\n        convergence when fit is called several times on similar problems.\n        In that case, 'n_init' is ignored and only a single initialization\n        occurs upon the first call.\n        See :term:`the Glossary <warm_start>`.\n\n    verbose : int, default=0\n        Enable verbose output. If 1 then it prints the current\n        initialization and each iteration step. If greater than 1 then\n        it prints also the log probability and the time needed\n        for each step.\n\n    verbose_interval : int, default=10\n        Number of iteration done before the next print.\n\n    Attributes\n    ----------\n    weights_ : array-like of shape (n_components,)\n        The weights of each mixture components.\n\n    means_ : array-like of shape (n_components, n_features)\n        The mean of each mixture component.\n\n    covariances_ : array-like\n        The covariance of each mixture component.\n        The shape depends on `covariance_type`::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    precisions_ : array-like\n        The precision matrices for each component in the mixture. A precision\n        matrix is the inverse of a covariance matrix. A covariance matrix is\n        symmetric positive definite so the mixture of Gaussian can be\n        equivalently parameterized by the precision matrices. Storing the\n        precision matrices instead of the covariance matrices makes it more\n        efficient to compute the log-likelihood of new samples at test time.\n        The shape depends on `covariance_type`::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    precisions_cholesky_ : array-like\n        The cholesky decomposition of the precision matrices of each mixture\n        component. A precision matrix is the inverse of a covariance matrix.\n        A covariance matrix is symmetric positive definite so the mixture of\n        Gaussian can be equivalently parameterized by the precision matrices.\n        Storing the precision matrices instead of the covariance matrices makes\n        it more efficient to compute the log-likelihood of new samples at test\n        time. The shape depends on `covariance_type`::\n\n            (n_components,)                        if 'spherical',\n            (n_features, n_features)               if 'tied',\n            (n_components, n_features)             if 'diag',\n            (n_components, n_features, n_features) if 'full'\n\n    converged_ : bool\n        True when convergence of the best fit of EM was reached, False otherwise.\n\n    n_iter_ : int\n        Number of step used by the best fit of EM to reach the convergence.\n\n    lower_bound_ : float\n        Lower bound value on the log-likelihood (of the training data with\n        respect to the model) of the best fit of EM.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    BayesianGaussianMixture : Gaussian mixture model fit with a variational\n        inference.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "The": {
+            "type": "shape depends on 'covariance_type'::",
+            "description": "(n_components,)                        if 'spherical',\n(n_features, n_features)               if 'tied',\n(n_components, n_features)             if 'diag',\n(n_components, n_features, n_features) if 'full'"
+          },
+          "covariance_type": {
+            "type": "{'full', 'tied', 'diag', 'spherical'}, default='full'",
+            "description": ""
+          },
+          "String": {
+            "type": "must be one of:",
+            "description": "- 'kmeans' : responsibilities are initialized using kmeans.\n- 'k-means++' : use the k-means++ method to initialize.\n- 'random' : responsibilities are initialized randomly.\n- 'random_from_data' : initial means are randomly selected data points.\n.. versionchanged:: v1.1\n`init_params` now accepts 'random_from_data' and 'k-means++' as"
+          },
+          "Must": {
+            "type": "be one of:",
+            "description": "- 'full': each component has its own general covariance matrix.\n- 'tied': all components share the same general covariance matrix.\n- 'diag': each component has its own diagonal covariance matrix.\n- 'spherical': each component has its own single variance."
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "lower": {
+            "type": "bound average gain is below this threshold.",
+            "description": ""
+          },
+          "reg_covar": {
+            "type": "float, default=1e",
+            "description": "6\nNon-negative regularization added to the diagonal of covariance."
+          },
+          "Allows": {
+            "type": "to assure that the covariance matrices are all positive.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=100",
+            "description": ""
+          },
+          "n_init": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "init_params": {
+            "type": "{'kmeans', 'k",
+            "description": "means++', 'random', 'random_from_data'},     default='kmeans'"
+          },
+          "initialization": {
+            "type": "methods.",
+            "description": ""
+          },
+          "weights_init": {
+            "type": "array",
+            "description": "like of shape (n_components, ), default=None"
+          },
+          "If": {
+            "type": "it is None, precisions are initialized using the 'init_params'",
+            "description": "method."
+          },
+          "means_init": {
+            "type": "array",
+            "description": "like of shape (n_components, n_features), default=None"
+          },
+          "precisions_init": {
+            "type": "array",
+            "description": "like, default=None"
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Controls": {
+            "type": "the random seed given to the method chosen to initialize the",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    BayesianGaussianMixture : Gaussian mixture model fit with a variational\n        inference.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.mixture import GaussianMixture\n    >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])\n    >>> gm = GaussianMixture(n_components=2, random_state=0).fit(X)\n    >>> gm.means_\n    array([[10.,  2.],\n           [ 1.,  2.]])\n    >>> gm.predict([[0, 0], [12, 3]])\n    array([1, 0])",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.mixture import GaussianMixture\n    >>> X = np.array([[1, 2], [1, 4], [1, 0], [10, 2], [10, 4], [10, 0]])\n    >>> gm = GaussianMixture(n_components=2, random_state=0).fit(X)\n    >>> gm.means_\n    array([[10.,  2.],\n           [ 1.,  2.]])\n    >>> gm.predict([[0, 0], [12, 3]])\n    array([1, 0])"
+      },
+      "methods": [
+        {
+          "name": "aic",
+          "signature": "aic(self, X)",
+          "documentation": {
+            "description": "Akaike information criterion for the current model on the input X.\n\n        You can refer to this :ref:`mathematical section <aic_bic>` for more\n        details regarding the formulation of the AIC used.\n\n        Parameters\n        ----------\n        X : array of shape (n_samples, n_dimensions)\n            The input samples.",
+            "parameters": {
+              "X": {
+                "type": "array of shape (n_samples, n_dimensions)",
+                "description": ""
+              },
+              "The": {
+                "type": "lower the better.",
+                "description": ""
+              },
+              "aic": {
+                "type": "float",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        aic : float\n            The lower the better.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "bic",
+          "signature": "bic(self, X)",
+          "documentation": {
+            "description": "Bayesian information criterion for the current model on the input X.\n\n        You can refer to this :ref:`mathematical section <aic_bic>` for more\n        details regarding the formulation of the BIC used.\n\n        Parameters\n        ----------\n        X : array of shape (n_samples, n_dimensions)\n            The input samples.",
+            "parameters": {
+              "X": {
+                "type": "array of shape (n_samples, n_dimensions)",
+                "description": ""
+              },
+              "The": {
+                "type": "lower the better.",
+                "description": ""
+              },
+              "bic": {
+                "type": "float",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        bic : float\n            The lower the better.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Estimate model parameters with the EM algorithm.\n\n        The method fits the model ``n_init`` times and sets the parameters with\n        which the model has the largest likelihood or lower bound. Within each\n        trial, the method iterates between E-step and M-step for ``max_iter``\n        times until the change of likelihood or lower bound is less than\n        ``tol``, otherwise, a ``ConvergenceWarning`` is raised.\n        If ``warm_start`` is ``True``, then ``n_init`` is ignored and a single\n        initialization is performed upon the first call. Upon consecutive\n        calls, training starts where it left off.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "fitted mixture.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            The fitted mixture.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_predict",
+          "signature": "fit_predict(self, X, y=None)",
+          "documentation": {
+            "description": "Estimate model parameters using X and predict the labels for X.\n\n        The method fits the model n_init times and sets the parameters with\n        which the model has the largest likelihood or lower bound. Within each\n        trial, the method iterates between E-step and M-step for `max_iter`\n        times until the change of likelihood or lower bound is less than\n        `tol`, otherwise, a :class:`~sklearn.exceptions.ConvergenceWarning` is\n        raised. After fitting, it predicts the most probable label for the\n        input data points.\n\n        .. versionadded:: 0.20\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "labels": {
+                "type": "array, shape (n_samples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        labels : array, shape (n_samples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Predict the labels for the data samples in X using trained model.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "labels": {
+                "type": "array, shape (n_samples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        labels : array, shape (n_samples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_proba",
+          "signature": "predict_proba(self, X)",
+          "documentation": {
+            "description": "Evaluate the components' density for each sample.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "resp": {
+                "type": "array, shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Density": {
+                "type": "of each Gaussian component for each sample in X.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        resp : array, shape (n_samples, n_components)\n            Density of each Gaussian component for each sample in X.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sample",
+          "signature": "sample(self, n_samples=1)",
+          "documentation": {
+            "description": "Generate random samples from the fitted Gaussian distribution.\n\n        Parameters\n        ----------\n        n_samples : int, default=1\n            Number of samples to generate.",
+            "parameters": {
+              "n_samples": {
+                "type": "int, default=1",
+                "description": ""
+              },
+              "Number": {
+                "type": "of samples to generate.",
+                "description": "Returns\n-------"
+              },
+              "X": {
+                "type": "array, shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Randomly": {
+                "type": "generated sample.",
+                "description": ""
+              },
+              "y": {
+                "type": "array, shape (nsamples,)",
+                "description": ""
+              },
+              "Component": {
+                "type": "labels.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X : array, shape (n_samples, n_features)\n            Randomly generated sample.\n\n        y : array, shape (nsamples,)\n            Component labels.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y=None)",
+          "documentation": {
+            "description": "Compute the per-sample average log-likelihood of the given data X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_dimensions)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_dimensions)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "log_likelihood": {
+                "type": "float",
+                "description": "Log-likelihood of `X` under the Gaussian mixture model."
+              }
+            },
+            "returns": "-------\n        log_likelihood : float\n            Log-likelihood of `X` under the Gaussian mixture model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score_samples",
+          "signature": "score_samples(self, X)",
+          "documentation": {
+            "description": "Compute the log-likelihood of each sample.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            List of n_features-dimensional data points. Each row\n            corresponds to a single data point.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "List": {
+                "type": "of n_features-dimensional data points. Each row",
+                "description": ""
+              },
+              "corresponds": {
+                "type": "to a single data point.",
+                "description": "Returns\n-------"
+              },
+              "log_prob": {
+                "type": "array, shape (n_samples,)",
+                "description": "Log-likelihood of each sample in `X` under the current model."
+              }
+            },
+            "returns": "-------\n        log_prob : array, shape (n_samples,)\n            Log-likelihood of each sample in `X` under the current model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

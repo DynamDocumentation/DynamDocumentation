@@ -1,0 +1,853 @@
+{
+  "description": "Feature extraction from raw data.",
+  "functions": [
+    {
+      "name": "grid_to_graph",
+      "signature": "grid_to_graph(n_x, n_y, n_z=1, *, mask=None, return_as=<class 'scipy.sparse._coo.coo_matrix'>, dtype=<class 'int'>)",
+      "documentation": {
+        "description": "Graph of the pixel-to-pixel connections.\n\n    Edges exist if 2 voxels are connected.\n\n    Parameters\n    ----------\n    n_x : int\n        Dimension in x axis.\n    n_y : int\n        Dimension in y axis.\n    n_z : int, default=1\n        Dimension in z axis.\n    mask : ndarray of shape (n_x, n_y, n_z), dtype=bool, default=None\n        An optional mask of the image, to consider only part of the\n        pixels.\n    return_as : np.ndarray or a sparse matrix class,             default=sparse.coo_matrix\n        The class to use to build the returned adjacency matrix.\n    dtype : dtype, default=int\n        The data of the returned sparse matrix. By default it is int.\n\n    Returns\n    -------\n    graph : np.ndarray or a sparse matrix class\n        The computed adjacency matrix.",
+        "parameters": {
+          "n_x": {
+            "type": "int",
+            "description": ""
+          },
+          "Dimension": {
+            "type": "in z axis.",
+            "description": ""
+          },
+          "n_y": {
+            "type": "int",
+            "description": ""
+          },
+          "n_z": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "mask": {
+            "type": "ndarray of shape (n_x, n_y, n_z), dtype=bool, default=None",
+            "description": ""
+          },
+          "An": {
+            "type": "optional mask of the image, to consider only part of the",
+            "description": "pixels."
+          },
+          "return_as": {
+            "type": "np.ndarray or a sparse matrix class,             default=sparse.coo_matrix",
+            "description": ""
+          },
+          "The": {
+            "type": "computed adjacency matrix.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.feature_extraction.image import grid_to_graph\n>>> shape_img = (4, 4, 1)\n>>> mask = np.zeros(shape=shape_img, dtype=bool)\n>>> mask[[1, 2], [1, 2], :] = True\n>>> graph = grid_to_graph(*shape_img, mask=mask)\n>>> print(graph)\n<COOrdinate sparse matrix of dtype 'int64'"
+          },
+          "dtype": {
+            "type": "dtype, default=int",
+            "description": ""
+          },
+          "graph": {
+            "type": "np.ndarray or a sparse matrix class",
+            "description": ""
+          },
+          "with": {
+            "type": "2 stored elements and shape (2, 2)>",
+            "description": ""
+          },
+          "Coords": {
+            "type": "Values",
+            "description": "(0, 0)    1\n(1, 1)    1"
+          }
+        },
+        "returns": "-------\n    graph : np.ndarray or a sparse matrix class\n        The computed adjacency matrix.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.feature_extraction.image import grid_to_graph\n    >>> shape_img = (4, 4, 1)\n    >>> mask = np.zeros(shape=shape_img, dtype=bool)\n    >>> mask[[1, 2], [1, 2], :] = True\n    >>> graph = grid_to_graph(*shape_img, mask=mask)\n    >>> print(graph)\n    <COOrdinate sparse matrix of dtype 'int64'\n      with 2 stored elements and shape (2, 2)>\n      Coords\tValues\n      (0, 0)    1\n      (1, 1)    1",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.feature_extraction.image import grid_to_graph\n    >>> shape_img = (4, 4, 1)\n    >>> mask = np.zeros(shape=shape_img, dtype=bool)\n    >>> mask[[1, 2], [1, 2], :] = True\n    >>> graph = grid_to_graph(*shape_img, mask=mask)\n    >>> print(graph)\n    <COOrdinate sparse matrix of dtype 'int64'\n      with 2 stored elements and shape (2, 2)>\n      Coords\tValues\n      (0, 0)    1\n      (1, 1)    1"
+      }
+    },
+    {
+      "name": "img_to_graph",
+      "signature": "img_to_graph(img, *, mask=None, return_as=<class 'scipy.sparse._coo.coo_matrix'>, dtype=None)",
+      "documentation": {
+        "description": "Graph of the pixel-to-pixel gradient connections.\n\n    Edges are weighted with the gradient values.\n\n    Read more in the :ref:`User Guide <image_feature_extraction>`.\n\n    Parameters\n    ----------\n    img : array-like of shape (height, width) or (height, width, channel)\n        2D or 3D image.\n    mask : ndarray of shape (height, width) or             (height, width, channel), dtype=bool, default=None\n        An optional mask of the image, to consider only part of the\n        pixels.\n    return_as : np.ndarray or a sparse matrix class,             default=sparse.coo_matrix\n        The class to use to build the returned adjacency matrix.\n    dtype : dtype, default=None\n        The data of the returned sparse matrix. By default it is the\n        dtype of img.\n\n    Returns\n    -------\n    graph : ndarray or a sparse matrix class\n        The computed adjacency matrix.",
+        "parameters": {
+          "img": {
+            "type": "array",
+            "description": "like of shape (height, width) or (height, width, channel)"
+          },
+          "2D": {
+            "type": "or 3D image.",
+            "description": ""
+          },
+          "mask": {
+            "type": "ndarray of shape (height, width) or             (height, width, channel), dtype=bool, default=None",
+            "description": ""
+          },
+          "An": {
+            "type": "optional mask of the image, to consider only part of the",
+            "description": "pixels."
+          },
+          "return_as": {
+            "type": "np.ndarray or a sparse matrix class,             default=sparse.coo_matrix",
+            "description": ""
+          },
+          "The": {
+            "type": "computed adjacency matrix.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.feature_extraction.image import img_to_graph\n>>> img = np.array([[0, 0], [0, 1]])\n>>> img_to_graph(img, return_as=np.ndarray)\narray([[0, 0, 0, 0],\n[0, 0, 0, 1],\n[0, 0, 0, 1],\n[0, 1, 1, 1]])"
+          },
+          "dtype": {
+            "type": "of img.",
+            "description": "Returns\n-------"
+          },
+          "graph": {
+            "type": "ndarray or a sparse matrix class",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    graph : ndarray or a sparse matrix class\n        The computed adjacency matrix.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.feature_extraction.image import img_to_graph\n    >>> img = np.array([[0, 0], [0, 1]])\n    >>> img_to_graph(img, return_as=np.ndarray)\n    array([[0, 0, 0, 0],\n           [0, 0, 0, 1],\n           [0, 0, 0, 1],\n           [0, 1, 1, 1]])",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.feature_extraction.image import img_to_graph\n    >>> img = np.array([[0, 0], [0, 1]])\n    >>> img_to_graph(img, return_as=np.ndarray)\n    array([[0, 0, 0, 0],\n           [0, 0, 0, 1],\n           [0, 0, 0, 1],\n           [0, 1, 1, 1]])"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "DictVectorizer",
+      "documentation": {
+        "description": "Transforms lists of feature-value mappings to vectors.\n\n    This transformer turns lists of mappings (dict-like objects) of feature\n    names to feature values into Numpy arrays or scipy.sparse matrices for use\n    with scikit-learn estimators.\n\n    When feature values are strings, this transformer will do a binary one-hot\n    (aka one-of-K) coding: one boolean-valued feature is constructed for each\n    of the possible string values that the feature can take on. For instance,\n    a feature \"f\" that can take on the values \"ham\" and \"spam\" will become two\n    features in the output, one signifying \"f=ham\", the other \"f=spam\".\n\n    If a feature value is a sequence or set of strings, this transformer\n    will iterate over the values and will count the occurrences of each string\n    value.\n\n    However, note that this transformer will only do a binary one-hot encoding\n    when feature values are of type string. If categorical features are\n    represented as numeric values such as int or iterables of strings, the\n    DictVectorizer can be followed by\n    :class:`~sklearn.preprocessing.OneHotEncoder` to complete\n    binary one-hot encoding.\n\n    Features that do not occur in a sample (mapping) will have a zero value\n    in the resulting array/matrix.\n\n    For an efficiency comparison of the different feature extractors, see\n    :ref:`sphx_glr_auto_examples_text_plot_hashing_vs_dict_vectorizer.py`.\n\n    Read more in the :ref:`User Guide <dict_feature_extraction>`.\n\n    Parameters\n    ----------\n    dtype : dtype, default=np.float64\n        The type of feature values. Passed to Numpy array/scipy.sparse matrix\n        constructors as the dtype argument.\n    separator : str, default=\"=\"\n        Separator string used when constructing new features for one-hot\n        coding.\n    sparse : bool, default=True\n        Whether transform should produce scipy.sparse matrices.\n    sort : bool, default=True\n        Whether ``feature_names_`` and ``vocabulary_`` should be\n        sorted when fitting.\n\n    Attributes\n    ----------\n    vocabulary_ : dict\n        A dictionary mapping feature names to feature indices.\n\n    feature_names_ : list\n        A list of length n_features containing the feature names (e.g., \"f=ham\"\n        and \"f=spam\").\n\n    See Also\n    --------\n    FeatureHasher : Performs vectorization using only a hash function.\n    sklearn.preprocessing.OrdinalEncoder : Handles nominal/categorical\n        features encoded as columns of arbitrary data types.",
+        "parameters": {
+          "dtype": {
+            "type": "dtype, default=np.float64",
+            "description": ""
+          },
+          "The": {
+            "type": "type of feature values. Passed to Numpy array/scipy.sparse matrix",
+            "description": ""
+          },
+          "constructors": {
+            "type": "as the dtype argument.",
+            "description": ""
+          },
+          "separator": {
+            "type": "str, default=\"=\"",
+            "description": ""
+          },
+          "Separator": {
+            "type": "string used when constructing new features for one-hot",
+            "description": "coding."
+          },
+          "sparse": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "``feature_names_`` and ``vocabulary_`` should be",
+            "description": ""
+          },
+          "sort": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "sorted": {
+            "type": "when fitting.",
+            "description": "Attributes\n----------"
+          },
+          "vocabulary_": {
+            "type": "dict",
+            "description": ""
+          },
+          "A": {
+            "type": "list of length n_features containing the feature names (e.g., \"f=ham\"",
+            "description": ""
+          },
+          "feature_names_": {
+            "type": "list",
+            "description": ""
+          },
+          "and": {
+            "type": "\"f=spam\").",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "FeatureHasher": {
+            "type": "Performs vectorization using only a hash function.",
+            "description": "sklearn.preprocessing.OrdinalEncoder : Handles nominal/categorical"
+          },
+          "features": {
+            "type": "encoded as columns of arbitrary data types.",
+            "description": "Examples\n--------\n>>> from sklearn.feature_extraction import DictVectorizer\n>>> v = DictVectorizer(sparse=False)\n>>> D = [{'foo': 1, 'bar': 2}, {'foo': 3, 'baz': 1}]\n>>> X = v.fit_transform(D)\n>>> X\narray([[2., 0., 1.],\n[0., 1., 3.]])\n>>> v.inverse_transform(X) == [{'bar': 2.0, 'foo': 1.0},\n...                            {'baz': 1.0, 'foo': 3.0}]\nTrue\n>>> v.transform({'foo': 4, 'unseen_feature': 3})"
+          },
+          "array": {
+            "type": "[[0., 0., 4.]]",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    FeatureHasher : Performs vectorization using only a hash function.\n    sklearn.preprocessing.OrdinalEncoder : Handles nominal/categorical\n        features encoded as columns of arbitrary data types.\n\n    Examples\n    --------\n    >>> from sklearn.feature_extraction import DictVectorizer\n    >>> v = DictVectorizer(sparse=False)\n    >>> D = [{'foo': 1, 'bar': 2}, {'foo': 3, 'baz': 1}]\n    >>> X = v.fit_transform(D)\n    >>> X\n    array([[2., 0., 1.],\n           [0., 1., 3.]])\n    >>> v.inverse_transform(X) == [{'bar': 2.0, 'foo': 1.0},\n    ...                            {'baz': 1.0, 'foo': 3.0}]\n    True\n    >>> v.transform({'foo': 4, 'unseen_feature': 3})\n    array([[0., 0., 4.]])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.feature_extraction import DictVectorizer\n    >>> v = DictVectorizer(sparse=False)\n    >>> D = [{'foo': 1, 'bar': 2}, {'foo': 3, 'baz': 1}]\n    >>> X = v.fit_transform(D)\n    >>> X\n    array([[2., 0., 1.],\n           [0., 1., 3.]])\n    >>> v.inverse_transform(X) == [{'bar': 2.0, 'foo': 1.0},\n    ...                            {'baz': 1.0, 'foo': 3.0}]\n    True\n    >>> v.transform({'foo': 4, 'unseen_feature': 3})\n    array([[0., 0., 4.]])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Learn a list of feature name -> indices mappings.\n\n        Parameters\n        ----------\n        X : Mapping or iterable over Mappings\n            Dict(s) or Mapping(s) from feature names (arbitrary Python\n            objects) to feature values (strings or convertible to dtype).\n\n            .. versionchanged:: 0.24\n               Accepts multiple string values for one categorical feature.\n\n        y : (ignored)\n            Ignored parameter.",
+            "parameters": {
+              "X": {
+                "type": "Mapping or iterable over Mappings",
+                "description": ""
+              },
+              "Dict": {
+                "type": "s",
+                "description": "or Mapping(s) from feature names (arbitrary Python\nobjects) to feature values (strings or convertible to dtype).\n.. versionchanged:: 0.24"
+              },
+              "Accepts": {
+                "type": "multiple string values for one categorical feature.",
+                "description": ""
+              },
+              "y": {
+                "type": "(ignored)",
+                "description": ""
+              },
+              "Ignored": {
+                "type": "parameter.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "DictVectorizer": {
+                "type": "class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            DictVectorizer class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Learn a list of feature name -> indices mappings and transform X.\n\n        Like fit(X) followed by transform(X), but does not require\n        materializing X in memory.\n\n        Parameters\n        ----------\n        X : Mapping or iterable over Mappings\n            Dict(s) or Mapping(s) from feature names (arbitrary Python\n            objects) to feature values (strings or convertible to dtype).\n\n            .. versionchanged:: 0.24\n               Accepts multiple string values for one categorical feature.\n\n        y : (ignored)\n            Ignored parameter.",
+            "parameters": {
+              "X": {
+                "type": "Mapping or iterable over Mappings",
+                "description": ""
+              },
+              "Dict": {
+                "type": "s",
+                "description": "or Mapping(s) from feature names (arbitrary Python\nobjects) to feature values (strings or convertible to dtype).\n.. versionchanged:: 0.24"
+              },
+              "Accepts": {
+                "type": "multiple string values for one categorical feature.",
+                "description": ""
+              },
+              "y": {
+                "type": "(ignored)",
+                "description": ""
+              },
+              "Ignored": {
+                "type": "parameter.",
+                "description": "Returns\n-------"
+              },
+              "Xa": {
+                "type": "{array, sparse matrix}",
+                "description": ""
+              },
+              "Feature": {
+                "type": "vectors; always 2-d.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Xa : {array, sparse matrix}\n            Feature vectors; always 2-d.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X, dict_type=<class 'dict'>)",
+          "documentation": {
+            "description": "Transform array or sparse matrix X back to feature mappings.\n\n        X must have been produced by this DictVectorizer's transform or\n        fit_transform method; it may only have passed through transformers\n        that preserve the number of features and their order.\n\n        In the case of one-hot/one-of-K coding, the constructed feature\n        names and values are returned rather than the original ones.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Sample matrix.\n        dict_type : type, default=dict\n            Constructor for feature mappings. Must conform to the\n            collections.Mapping API.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)"
+              },
+              "Sample": {
+                "type": "matrix.",
+                "description": ""
+              },
+              "dict_type": {
+                "type": "type, default=dict",
+                "description": ""
+              },
+              "Constructor": {
+                "type": "for feature mappings. Must conform to the",
+                "description": "collections.Mapping API.\nReturns\n-------"
+              },
+              "D": {
+                "type": "list of dict_type objects of shape (n_samples,)",
+                "description": ""
+              },
+              "Feature": {
+                "type": "mappings for the samples in X.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        D : list of dict_type objects of shape (n_samples,)\n            Feature mappings for the samples in X.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "restrict",
+          "signature": "restrict(self, support, indices=False)",
+          "documentation": {
+            "description": "Restrict the features to those in support using feature selection.\n\n        This function modifies the estimator in-place.\n\n        Parameters\n        ----------\n        support : array-like\n            Boolean mask or list of indices (as returned by the get_support\n            member of feature selectors).\n        indices : bool, default=False\n            Whether support is a list of indices.\n\n        Returns\n        -------\n        self : object\n            DictVectorizer class instance.",
+            "parameters": {
+              "support": {
+                "type": "array",
+                "description": "like"
+              },
+              "Boolean": {
+                "type": "mask or list of indices (as returned by the get_support",
+                "description": ""
+              },
+              "member": {
+                "type": "of feature selectors).",
+                "description": ""
+              },
+              "indices": {
+                "type": "bool, default=False",
+                "description": ""
+              },
+              "Whether": {
+                "type": "support is a list of indices.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "DictVectorizer": {
+                "type": "",
+                "description": ">>> v.get_feature_names_out()"
+              },
+              "array": {
+                "type": "['bar', 'foo'], ...",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            DictVectorizer class instance.\n\n        Examples\n        --------\n        >>> from sklearn.feature_extraction import DictVectorizer\n        >>> from sklearn.feature_selection import SelectKBest, chi2\n        >>> v = DictVectorizer()\n        >>> D = [{'foo': 1, 'bar': 2}, {'foo': 3, 'baz': 1}]\n        >>> X = v.fit_transform(D)\n        >>> support = SelectKBest(chi2, k=2).fit(X, [0, 1])\n        >>> v.get_feature_names_out()\n        array(['bar', 'baz', 'foo'], ...)\n        >>> v.restrict(support.get_support())\n        DictVectorizer()\n        >>> v.get_feature_names_out()\n        array(['bar', 'foo'], ...)",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "--------\n        >>> from sklearn.feature_extraction import DictVectorizer\n        >>> from sklearn.feature_selection import SelectKBest, chi2\n        >>> v = DictVectorizer()\n        >>> D = [{'foo': 1, 'bar': 2}, {'foo': 3, 'baz': 1}]\n        >>> X = v.fit_transform(D)\n        >>> support = SelectKBest(chi2, k=2).fit(X, [0, 1])\n        >>> v.get_feature_names_out()\n        array(['bar', 'baz', 'foo'], ...)\n        >>> v.restrict(support.get_support())\n        DictVectorizer()\n        >>> v.get_feature_names_out()\n        array(['bar', 'foo'], ...)"
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Transform feature->value dicts to array or sparse matrix.\n\n        Named features not encountered during fit or fit_transform will be\n        silently ignored.\n\n        Parameters\n        ----------\n        X : Mapping or iterable over Mappings of shape (n_samples,)\n            Dict(s) or Mapping(s) from feature names (arbitrary Python\n            objects) to feature values (strings or convertible to dtype).",
+            "parameters": {
+              "X": {
+                "type": "Mapping or iterable over Mappings of shape (n_samples,)",
+                "description": ""
+              },
+              "Dict": {
+                "type": "s",
+                "description": "or Mapping(s) from feature names (arbitrary Python\nobjects) to feature values (strings or convertible to dtype).\nReturns\n-------"
+              },
+              "Xa": {
+                "type": "{array, sparse matrix}",
+                "description": ""
+              },
+              "Feature": {
+                "type": "vectors; always 2-d.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Xa : {array, sparse matrix}\n            Feature vectors; always 2-d.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "FeatureHasher",
+      "documentation": {
+        "description": "Implements feature hashing, aka the hashing trick.\n\n    This class turns sequences of symbolic feature names (strings) into\n    scipy.sparse matrices, using a hash function to compute the matrix column\n    corresponding to a name. The hash function employed is the signed 32-bit\n    version of Murmurhash3.\n\n    Feature names of type byte string are used as-is. Unicode strings are\n    converted to UTF-8 first, but no Unicode normalization is done.\n    Feature values must be (finite) numbers.\n\n    This class is a low-memory alternative to DictVectorizer and\n    CountVectorizer, intended for large-scale (online) learning and situations\n    where memory is tight, e.g. when running prediction code on embedded\n    devices.\n\n    For an efficiency comparison of the different feature extractors, see\n    :ref:`sphx_glr_auto_examples_text_plot_hashing_vs_dict_vectorizer.py`.\n\n    Read more in the :ref:`User Guide <feature_hashing>`.\n\n    .. versionadded:: 0.13\n\n    Parameters\n    ----------\n    n_features : int, default=2**20\n        The number of features (columns) in the output matrices. Small numbers\n        of features are likely to cause hash collisions, but large numbers\n        will cause larger coefficient dimensions in linear learners.\n    input_type : str, default='dict'\n        Choose a string from {'dict', 'pair', 'string'}.\n        Either \"dict\" (the default) to accept dictionaries over\n        (feature_name, value); \"pair\" to accept pairs of (feature_name, value);\n        or \"string\" to accept single strings.\n        feature_name should be a string, while value should be a number.\n        In the case of \"string\", a value of 1 is implied.\n        The feature_name is hashed to find the appropriate column for the\n        feature. The value's sign might be flipped in the output (but see\n        non_negative, below).\n    dtype : numpy dtype, default=np.float64\n        The type of feature values. Passed to scipy.sparse matrix constructors\n        as the dtype argument. Do not set this to bool, np.boolean or any\n        unsigned integer type.\n    alternate_sign : bool, default=True\n        When True, an alternating sign is added to the features as to\n        approximately conserve the inner product in the hashed space even for\n        small n_features. This approach is similar to sparse random projection.\n\n        .. versionchanged:: 0.19\n            ``alternate_sign`` replaces the now deprecated ``non_negative``\n            parameter.\n\n    See Also\n    --------\n    DictVectorizer : Vectorizes string-valued features using a hash table.\n    sklearn.preprocessing.OneHotEncoder : Handles nominal/categorical features.\n\n    Notes\n    -----\n    This estimator is :term:`stateless` and does not need to be fitted.\n    However, we recommend to call :meth:`fit_transform` instead of\n    :meth:`transform`, as parameter validation is only performed in\n    :meth:`fit`.",
+        "parameters": {
+          "n_features": {
+            "type": "int, default=2**20",
+            "description": ""
+          },
+          "The": {
+            "type": "type of feature values. Passed to scipy.sparse matrix constructors",
+            "description": ""
+          },
+          "of": {
+            "type": "features are likely to cause hash collisions, but large numbers",
+            "description": ""
+          },
+          "will": {
+            "type": "cause larger coefficient dimensions in linear learners.",
+            "description": ""
+          },
+          "input_type": {
+            "type": "str, default='dict'",
+            "description": ""
+          },
+          "Choose": {
+            "type": "a string from {'dict', 'pair', 'string'}.",
+            "description": ""
+          },
+          "Either": {
+            "type": "\"dict\" (the default) to accept dictionaries over",
+            "description": "(feature_name, value); \"pair\" to accept pairs of (feature_name, value);"
+          },
+          "or": {
+            "type": "\"string\" to accept single strings.",
+            "description": ""
+          },
+          "feature_name": {
+            "type": "should be a string, while value should be a number.",
+            "description": ""
+          },
+          "In": {
+            "type": "the case of \"string\", a value of 1 is implied.",
+            "description": ""
+          },
+          "dtype": {
+            "type": "numpy dtype, default=np.float64",
+            "description": ""
+          },
+          "as": {
+            "type": "the dtype argument. Do not set this to bool, np.boolean or any",
+            "description": ""
+          },
+          "unsigned": {
+            "type": "integer type.",
+            "description": ""
+          },
+          "alternate_sign": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "When": {
+            "type": "True, an alternating sign is added to the features as to",
+            "description": ""
+          },
+          "approximately": {
+            "type": "conserve the inner product in the hashed space even for",
+            "description": ""
+          },
+          "small": {
+            "type": "n_features. This approach is similar to sparse random projection.",
+            "description": ".. versionchanged:: 0.19\n``alternate_sign`` replaces the now deprecated ``non_negative``\nparameter."
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "DictVectorizer": {
+            "type": "Vectorizes string",
+            "description": "valued features using a hash table.\nsklearn.preprocessing.OneHotEncoder : Handles nominal/categorical features.\nNotes\n-----"
+          },
+          "This": {
+            "type": "estimator is :term:`stateless` and does not need to be fitted.",
+            "description": "However, we recommend to call :meth:`fit_transform` instead of\n:meth:`transform`, as parameter validation is only performed in\n:meth:`fit`.\nExamples\n--------\n>>> from sklearn.feature_extraction import FeatureHasher\n>>> h = FeatureHasher(n_features=10)\n>>> D = [{'dog': 1, 'cat':2, 'elephant':4},{'dog': 2, 'run': 5}]\n>>> f = h.transform(D)\n>>> f.toarray()\narray([[ 0.,  0., -4., -1.,  0.,  0.,  0.,  0.,  0.,  2.],\n[ 0.,  0.,  0., -2., -5.,  0.,  0.,  0.,  0.,  0.]])"
+          },
+          "With": {
+            "type": "`input_type=\"string\"`, the input must be an iterable over iterables of",
+            "description": ""
+          },
+          "strings": {
+            "type": "",
+            "description": ">>> h = FeatureHasher(n_features=8, input_type=\"string\")\n>>> raw_X = [[\"dog\", \"cat\", \"snake\"], [\"snake\", \"dog\"], [\"cat\", \"bird\"]]\n>>> f = h.transform(raw_X)\n>>> f.toarray()\narray([[ 0.,  0.,  0., -1.,  0., -1.,  0.,  1.],\n[ 0.,  0.,  0., -1.,  0., -1.,  0.,  0.],\n[ 0., -1.,  0.,  0.,  0.,  0.,  0.,  1.]])"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    DictVectorizer : Vectorizes string-valued features using a hash table.\n    sklearn.preprocessing.OneHotEncoder : Handles nominal/categorical features.\n\n    Notes\n    -----\n    This estimator is :term:`stateless` and does not need to be fitted.\n    However, we recommend to call :meth:`fit_transform` instead of\n    :meth:`transform`, as parameter validation is only performed in\n    :meth:`fit`.\n\n    Examples\n    --------\n    >>> from sklearn.feature_extraction import FeatureHasher\n    >>> h = FeatureHasher(n_features=10)\n    >>> D = [{'dog': 1, 'cat':2, 'elephant':4},{'dog': 2, 'run': 5}]\n    >>> f = h.transform(D)\n    >>> f.toarray()\n    array([[ 0.,  0., -4., -1.,  0.,  0.,  0.,  0.,  0.,  2.],\n           [ 0.,  0.,  0., -2., -5.,  0.,  0.,  0.,  0.,  0.]])\n\n    With `input_type=\"string\"`, the input must be an iterable over iterables of\n    strings:\n\n    >>> h = FeatureHasher(n_features=8, input_type=\"string\")\n    >>> raw_X = [[\"dog\", \"cat\", \"snake\"], [\"snake\", \"dog\"], [\"cat\", \"bird\"]]\n    >>> f = h.transform(raw_X)\n    >>> f.toarray()\n    array([[ 0.,  0.,  0., -1.,  0., -1.,  0.,  1.],\n           [ 0.,  0.,  0., -1.,  0., -1.,  0.,  0.],\n           [ 0., -1.,  0.,  0.,  0.,  0.,  0.,  1.]])",
+        "notes": "-----\n    This estimator is :term:`stateless` and does not need to be fitted.\n    However, we recommend to call :meth:`fit_transform` instead of\n    :meth:`transform`, as parameter validation is only performed in\n    :meth:`fit`.\n\n    Examples\n    --------\n    >>> from sklearn.feature_extraction import FeatureHasher\n    >>> h = FeatureHasher(n_features=10)\n    >>> D = [{'dog': 1, 'cat':2, 'elephant':4},{'dog': 2, 'run': 5}]\n    >>> f = h.transform(D)\n    >>> f.toarray()\n    array([[ 0.,  0., -4., -1.,  0.,  0.,  0.,  0.,  0.,  2.],\n           [ 0.,  0.,  0., -2., -5.,  0.,  0.,  0.,  0.,  0.]])\n\n    With `input_type=\"string\"`, the input must be an iterable over iterables of\n    strings:\n\n    >>> h = FeatureHasher(n_features=8, input_type=\"string\")\n    >>> raw_X = [[\"dog\", \"cat\", \"snake\"], [\"snake\", \"dog\"], [\"cat\", \"bird\"]]\n    >>> f = h.transform(raw_X)\n    >>> f.toarray()\n    array([[ 0.,  0.,  0., -1.,  0., -1.,  0.,  1.],\n           [ 0.,  0.,  0., -1.,  0., -1.,  0.,  0.],\n           [ 0., -1.,  0.,  0.,  0.,  0.,  0.,  1.]])",
+        "examples": "--------\n    >>> from sklearn.feature_extraction import FeatureHasher\n    >>> h = FeatureHasher(n_features=10)\n    >>> D = [{'dog': 1, 'cat':2, 'elephant':4},{'dog': 2, 'run': 5}]\n    >>> f = h.transform(D)\n    >>> f.toarray()\n    array([[ 0.,  0., -4., -1.,  0.,  0.,  0.,  0.,  0.,  2.],\n           [ 0.,  0.,  0., -2., -5.,  0.,  0.,  0.,  0.,  0.]])\n\n    With `input_type=\"string\"`, the input must be an iterable over iterables of\n    strings:\n\n    >>> h = FeatureHasher(n_features=8, input_type=\"string\")\n    >>> raw_X = [[\"dog\", \"cat\", \"snake\"], [\"snake\", \"dog\"], [\"cat\", \"bird\"]]\n    >>> f = h.transform(raw_X)\n    >>> f.toarray()\n    array([[ 0.,  0.,  0., -1.,  0., -1.,  0.,  1.],\n           [ 0.,  0.,  0., -1.,  0., -1.,  0.,  0.],\n           [ 0., -1.,  0.,  0.,  0.,  0.,  0.,  1.]])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X=None, y=None)",
+          "documentation": {
+            "description": "Only validates estimator's parameters.\n\n        This method allows to: (i) validate the estimator's parameters and\n        (ii) be consistent with the scikit-learn transformer API.\n\n        Parameters\n        ----------\n        X : Ignored\n            Not used, present here for API consistency by convention.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "FeatureHasher": {
+                "type": "class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            FeatureHasher class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit to data, then transform it.\n\n        Fits transformer to `X` and `y` with optional parameters `fit_params`\n        and returns a transformed version of `X`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input samples.\n\n        y :  array-like of shape (n_samples,) or (n_samples, n_outputs),                 default=None\n            Target values (None for unsupervised transformations).\n\n        **fit_params : dict\n            Additional fit parameters.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs),                 default=None"
+              },
+              "Target": {
+                "type": "values (None for unsupervised transformations).",
+                "description": "**fit_params : dict"
+              },
+              "Additional": {
+                "type": "fit parameters.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray array of shape (n_samples, n_features_new)",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "array.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray array of shape (n_samples, n_features_new)\n            Transformed array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, raw_X)",
+          "documentation": {
+            "description": "Transform a sequence of instances to a scipy.sparse matrix.\n\n        Parameters\n        ----------\n        raw_X : iterable over iterable over raw features, length = n_samples\n            Samples. Each sample must be iterable an (e.g., a list or tuple)\n            containing/generating feature names (and optionally values, see\n            the input_type constructor argument) which will be hashed.\n            raw_X need not support the len function, so it can be the result\n            of a generator; n_samples is determined on the fly.",
+            "parameters": {
+              "raw_X": {
+                "type": "need not support the len function, so it can be the result",
+                "description": ""
+              },
+              "the": {
+                "type": "input_type constructor argument) which will be hashed.",
+                "description": ""
+              },
+              "of": {
+                "type": "a generator; n_samples is determined on the fly.",
+                "description": "Returns\n-------"
+              },
+              "X": {
+                "type": "sparse matrix of shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Feature": {
+                "type": "matrix, for use with estimators or further transformers.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X : sparse matrix of shape (n_samples, n_features)\n            Feature matrix, for use with estimators or further transformers.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

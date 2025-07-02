@@ -1,0 +1,2954 @@
+{
+  "description": "Data embedding techniques.",
+  "functions": [
+    {
+      "name": "locally_linear_embedding",
+      "signature": "locally_linear_embedding(X, *, n_neighbors, n_components, reg=0.001, eigen_solver='auto', tol=1e-06, max_iter=100, method='standard', hessian_tol=0.0001, modified_tol=1e-12, random_state=None, n_jobs=None)",
+      "documentation": {
+        "description": "Perform a Locally Linear Embedding analysis on the data.\n\n    Read more in the :ref:`User Guide <locally_linear_embedding>`.\n\n    Parameters\n    ----------\n    X : {array-like, NearestNeighbors}\n        Sample data, shape = (n_samples, n_features), in the form of a\n        numpy array or a NearestNeighbors object.\n\n    n_neighbors : int\n        Number of neighbors to consider for each point.\n\n    n_components : int\n        Number of coordinates for the manifold.\n\n    reg : float, default=1e-3\n        Regularization constant, multiplies the trace of the local covariance\n        matrix of the distances.\n\n    eigen_solver : {'auto', 'arpack', 'dense'}, default='auto'\n        auto : algorithm will attempt to choose the best method for input data\n\n        arpack : use arnoldi iteration in shift-invert mode.\n                    For this method, M may be a dense matrix, sparse matrix,\n                    or general linear operator.\n                    Warning: ARPACK can be unstable for some problems.  It is\n                    best to try several random seeds in order to check results.\n\n        dense  : use standard dense matrix operations for the eigenvalue\n                    decomposition.  For this method, M must be an array\n                    or matrix type.  This method should be avoided for\n                    large problems.\n\n    tol : float, default=1e-6\n        Tolerance for 'arpack' method\n        Not used if eigen_solver=='dense'.\n\n    max_iter : int, default=100\n        Maximum number of iterations for the arpack solver.\n\n    method : {'standard', 'hessian', 'modified', 'ltsa'}, default='standard'\n        standard : use the standard locally linear embedding algorithm.\n                   see reference [1]_\n        hessian  : use the Hessian eigenmap method.  This method requires\n                   n_neighbors > n_components * (1 + (n_components + 1) / 2.\n                   see reference [2]_\n        modified : use the modified locally linear embedding algorithm.\n                   see reference [3]_\n        ltsa     : use local tangent space alignment algorithm\n                   see reference [4]_\n\n    hessian_tol : float, default=1e-4\n        Tolerance for Hessian eigenmapping method.\n        Only used if method == 'hessian'.\n\n    modified_tol : float, default=1e-12\n        Tolerance for modified LLE method.\n        Only used if method == 'modified'.\n\n    random_state : int, RandomState instance, default=None\n        Determines the random number generator when ``solver`` == 'arpack'.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    n_jobs : int or None, default=None\n        The number of parallel jobs to run for neighbors search.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Returns\n    -------\n    Y : ndarray of shape (n_samples, n_components)\n        Embedding vectors.\n\n    squared_error : float\n        Reconstruction error for the embedding vectors. Equivalent to\n        ``norm(Y - W Y, 'fro')**2``, where W are the reconstruction weights.\n\n    References\n    ----------\n\n    .. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction\n        by locally linear embedding.  Science 290:2323 (2000).\n    .. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally\n        linear embedding techniques for high-dimensional data.\n        Proc Natl Acad Sci U S A.  100:5591 (2003).\n    .. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear\n        Embedding Using Multiple Weights.\n        <https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n    .. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear\n        dimensionality reduction via tangent space alignment.\n        Journal of Shanghai Univ.  8:406 (2004)",
+        "parameters": {
+          "X": {
+            "type": "{array",
+            "description": "like, NearestNeighbors}"
+          },
+          "Sample": {
+            "type": "data, shape = (n_samples, n_features), in the form of a",
+            "description": ""
+          },
+          "numpy": {
+            "type": "array or a NearestNeighbors object.",
+            "description": ""
+          },
+          "n_neighbors": {
+            "type": "> n_components * (1 + (n_components + 1) / 2.",
+            "description": ""
+          },
+          "Number": {
+            "type": "of coordinates for the manifold.",
+            "description": ""
+          },
+          "n_components": {
+            "type": "int",
+            "description": ""
+          },
+          "reg": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "Regularization": {
+            "type": "constant, multiplies the trace of the local covariance",
+            "description": ""
+          },
+          "matrix": {
+            "type": "of the distances.",
+            "description": ""
+          },
+          "eigen_solver": {
+            "type": "{'auto', 'arpack', 'dense'}, default='auto'",
+            "description": ""
+          },
+          "auto": {
+            "type": "algorithm will attempt to choose the best method for input data",
+            "description": ""
+          },
+          "arpack": {
+            "type": "use arnoldi iteration in shift",
+            "description": "invert mode."
+          },
+          "For": {
+            "type": "this method, M may be a dense matrix, sparse matrix,",
+            "description": ""
+          },
+          "or": {
+            "type": "matrix type.  This method should be avoided for",
+            "description": ""
+          },
+          "Warning": {
+            "type": "ARPACK can be unstable for some problems.  It is",
+            "description": ""
+          },
+          "best": {
+            "type": "to try several random seeds in order to check results.",
+            "description": ""
+          },
+          "dense": {
+            "type": "use standard dense matrix operations for the eigenvalue",
+            "description": "decomposition.  For this method, M must be an array"
+          },
+          "large": {
+            "type": "problems.",
+            "description": ""
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "6"
+          },
+          "Tolerance": {
+            "type": "for modified LLE method.",
+            "description": ""
+          },
+          "Not": {
+            "type": "used if eigen_solver=='dense'.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=100",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations for the arpack solver.",
+            "description": ""
+          },
+          "method": {
+            "type": "{'standard', 'hessian', 'modified', 'ltsa'}, default='standard'",
+            "description": ""
+          },
+          "standard": {
+            "type": "use the standard locally linear embedding algorithm.",
+            "description": ""
+          },
+          "see": {
+            "type": "reference [4]_",
+            "description": ""
+          },
+          "hessian": {
+            "type": "use the Hessian eigenmap method.  This method requires",
+            "description": ""
+          },
+          "modified": {
+            "type": "use the modified locally linear embedding algorithm.",
+            "description": ""
+          },
+          "ltsa": {
+            "type": "use local tangent space alignment algorithm",
+            "description": ""
+          },
+          "hessian_tol": {
+            "type": "float, default=1e",
+            "description": "4"
+          },
+          "Only": {
+            "type": "used if method == 'modified'.",
+            "description": ""
+          },
+          "modified_tol": {
+            "type": "float, default=1e",
+            "description": "12"
+          },
+          "random_state": {
+            "type": "int, RandomState instance, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "the random number generator when ``solver`` == 'arpack'.",
+            "description": ""
+          },
+          "Pass": {
+            "type": "an int for reproducible results across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int or None, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of parallel jobs to run for neighbors search.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": "Returns\n-------"
+          },
+          "Y": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "Embedding": {
+            "type": "Using Multiple Weights.",
+            "description": "<https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n.. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear"
+          },
+          "squared_error": {
+            "type": "float",
+            "description": ""
+          },
+          "Reconstruction": {
+            "type": "error for the embedding vectors. Equivalent to",
+            "description": "``norm(Y - W Y, 'fro')**2``, where W are the reconstruction weights.\nReferences\n----------\n.. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction"
+          },
+          "by": {
+            "type": "locally linear embedding.  Science 290:2323 (2000).",
+            "description": ".. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally"
+          },
+          "linear": {
+            "type": "embedding techniques for high-dimensional data.",
+            "description": ""
+          },
+          "Proc": {
+            "type": "Natl Acad Sci U S A.  100:5591 (2003).",
+            "description": ".. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear"
+          },
+          "dimensionality": {
+            "type": "reduction via tangent space alignment.",
+            "description": ""
+          },
+          "Journal": {
+            "type": "of Shanghai Univ.  8:406 (2004)",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.manifold import locally_linear_embedding\n>>> X, _ = load_digits(return_X_y=True)\n>>> X.shape\n(1797, 64)\n>>> embedding, _ = locally_linear_embedding(X[:100],n_neighbors=5, n_components=2)\n>>> embedding.shape\n(100, 2)"
+          }
+        },
+        "returns": "-------\n    Y : ndarray of shape (n_samples, n_components)\n        Embedding vectors.\n\n    squared_error : float\n        Reconstruction error for the embedding vectors. Equivalent to\n        ``norm(Y - W Y, 'fro')**2``, where W are the reconstruction weights.\n\n    References\n    ----------\n\n    .. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction\n        by locally linear embedding.  Science 290:2323 (2000).\n    .. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally\n        linear embedding techniques for high-dimensional data.\n        Proc Natl Acad Sci U S A.  100:5591 (2003).\n    .. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear\n        Embedding Using Multiple Weights.\n        <https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n    .. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear\n        dimensionality reduction via tangent space alignment.\n        Journal of Shanghai Univ.  8:406 (2004)\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import locally_linear_embedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding, _ = locally_linear_embedding(X[:100],n_neighbors=5, n_components=2)\n    >>> embedding.shape\n    (100, 2)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import locally_linear_embedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding, _ = locally_linear_embedding(X[:100],n_neighbors=5, n_components=2)\n    >>> embedding.shape\n    (100, 2)"
+      }
+    },
+    {
+      "name": "smacof",
+      "signature": "smacof(dissimilarities, *, metric=True, n_components=2, init=None, n_init=8, n_jobs=None, max_iter=300, verbose=0, eps=0.001, random_state=None, return_n_iter=False, normalized_stress='auto')",
+      "documentation": {
+        "description": "Compute multidimensional scaling using the SMACOF algorithm.\n\n    The SMACOF (Scaling by MAjorizing a COmplicated Function) algorithm is a\n    multidimensional scaling algorithm which minimizes an objective function\n    (the *stress*) using a majorization technique. Stress majorization, also\n    known as the Guttman Transform, guarantees a monotone convergence of\n    stress, and is more powerful than traditional techniques such as gradient\n    descent.\n\n    The SMACOF algorithm for metric MDS can be summarized by the following\n    steps:\n\n    1. Set an initial start configuration, randomly or not.\n    2. Compute the stress\n    3. Compute the Guttman Transform\n    4. Iterate 2 and 3 until convergence.\n\n    The nonmetric algorithm adds a monotonic regression step before computing\n    the stress.\n\n    Parameters\n    ----------\n    dissimilarities : array-like of shape (n_samples, n_samples)\n        Pairwise dissimilarities between the points. Must be symmetric.\n\n    metric : bool, default=True\n        Compute metric or nonmetric SMACOF algorithm.\n        When ``False`` (i.e. non-metric MDS), dissimilarities with 0 are considered as\n        missing values.\n\n    n_components : int, default=2\n        Number of dimensions in which to immerse the dissimilarities. If an\n        ``init`` array is provided, this option is overridden and the shape of\n        ``init`` is used to determine the dimensionality of the embedding\n        space.\n\n    init : array-like of shape (n_samples, n_components), default=None\n        Starting configuration of the embedding to initialize the algorithm. By\n        default, the algorithm is initialized with a randomly chosen array.\n\n    n_init : int, default=8\n        Number of times the SMACOF algorithm will be run with different\n        initializations. The final results will be the best output of the runs,\n        determined by the run with the smallest final stress. If ``init`` is\n        provided, this option is overridden and a single run is performed.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation. If multiple\n        initializations are used (``n_init``), each run of the algorithm is\n        computed in parallel.\n\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    max_iter : int, default=300\n        Maximum number of iterations of the SMACOF algorithm for a single run.\n\n    verbose : int, default=0\n        Level of verbosity.\n\n    eps : float, default=1e-3\n        Relative tolerance with respect to stress at which to declare\n        convergence. The value of `eps` should be tuned separately depending\n        on whether or not `normalized_stress` is being used.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines the random number generator used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    return_n_iter : bool, default=False\n        Whether or not to return the number of iterations.\n\n    normalized_stress : bool or \"auto\" default=\"auto\"\n        Whether use and return normed stress value (Stress-1) instead of raw\n        stress calculated by default. Only supported in non-metric MDS.\n\n        .. versionadded:: 1.2\n\n        .. versionchanged:: 1.4\n           The default value changed from `False` to `\"auto\"` in version 1.4.\n\n    Returns\n    -------\n    X : ndarray of shape (n_samples, n_components)\n        Coordinates of the points in a ``n_components``-space.\n\n    stress : float\n        The final value of the stress (sum of squared distance of the\n        disparities and the distances for all constrained points).\n        If `normalized_stress=True`, and `metric=False` returns Stress-1.\n        A value of 0 indicates \"perfect\" fit, 0.025 excellent, 0.05 good,\n        0.1 fair, and 0.2 poor [1]_.\n\n    n_iter : int\n        The number of iterations corresponding to the best stress. Returned\n        only if ``return_n_iter`` is set to ``True``.\n\n    References\n    ----------\n    .. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\n           Psychometrika, 29 (1964)\n\n    .. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\n           hypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n\n    .. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;\n           Groenen P. Springer Series in Statistics (1997)",
+        "parameters": {
+          "dissimilarities": {
+            "type": "array",
+            "description": "like of shape (n_samples, n_samples)"
+          },
+          "Pairwise": {
+            "type": "dissimilarities between the points. Must be symmetric.",
+            "description": ""
+          },
+          "metric": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Compute": {
+            "type": "metric or nonmetric SMACOF algorithm.",
+            "description": ""
+          },
+          "When": {
+            "type": "``False`` (i.e. non-metric MDS), dissimilarities with 0 are considered as",
+            "description": ""
+          },
+          "missing": {
+            "type": "values.",
+            "description": ""
+          },
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Number": {
+            "type": "of times the SMACOF algorithm will be run with different",
+            "description": "initializations. The final results will be the best output of the runs,"
+          },
+          "init": {
+            "type": "array",
+            "description": "like of shape (n_samples, n_components), default=None"
+          },
+          "Starting": {
+            "type": "configuration of the embedding to initialize the algorithm. By",
+            "description": "default, the algorithm is initialized with a randomly chosen array."
+          },
+          "n_init": {
+            "type": "int, default=8",
+            "description": ""
+          },
+          "determined": {
+            "type": "by the run with the smallest final stress. If ``init`` is",
+            "description": "provided, this option is overridden and a single run is performed."
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of iterations corresponding to the best stress. Returned",
+            "description": ""
+          },
+          "initializations": {
+            "type": "are used (``n_init``), each run of the algorithm is",
+            "description": ""
+          },
+          "computed": {
+            "type": "in parallel.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=300",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations of the SMACOF algorithm for a single run.",
+            "description": ""
+          },
+          "verbose": {
+            "type": "int, default=0",
+            "description": ""
+          },
+          "Level": {
+            "type": "of verbosity.",
+            "description": ""
+          },
+          "eps": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "Relative": {
+            "type": "tolerance with respect to stress at which to declare",
+            "description": "convergence. The value of `eps` should be tuned separately depending"
+          },
+          "on": {
+            "type": "whether or not `normalized_stress` is being used.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "the random number generator used to initialize the centers.",
+            "description": ""
+          },
+          "Pass": {
+            "type": "an int for reproducible results across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "return_n_iter": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Whether": {
+            "type": "use and return normed stress value (Stress-1) instead of raw",
+            "description": ""
+          },
+          "normalized_stress": {
+            "type": "bool or \"auto\" default=\"auto\"",
+            "description": ""
+          },
+          "stress": {
+            "type": "float",
+            "description": ""
+          },
+          "X": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "Coordinates": {
+            "type": "of the points in a ``n_components``-space.",
+            "description": ""
+          },
+          "disparities": {
+            "type": "and the distances for all constrained points).",
+            "description": ""
+          },
+          "If": {
+            "type": "`normalized_stress=True`, and `metric=False` returns Stress-1.",
+            "description": ""
+          },
+          "A": {
+            "type": "value of 0 indicates \"perfect\" fit, 0.025 excellent, 0.05 good,",
+            "description": "0.1 fair, and 0.2 poor [1]_."
+          },
+          "n_iter": {
+            "type": "int",
+            "description": ""
+          },
+          "only": {
+            "type": "if ``return_n_iter`` is set to ``True``.",
+            "description": "References\n----------\n.. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\nPsychometrika, 29 (1964)\n.. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\nhypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n.. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;"
+          },
+          "Groenen": {
+            "type": "P. Springer Series in Statistics (1997)",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.manifold import smacof\n>>> from sklearn.metrics import euclidean_distances\n>>> X = np.array([[0, 1, 2], [1, 0, 3],[2, 3, 0]])\n>>> dissimilarities = euclidean_distances(X)\n>>> mds_result, stress = smacof(dissimilarities, n_components=2, random_state=42)\n>>> mds_result\narray([[ 0.05... -1.07... ],\n[ 1.74..., -0.75...],\n[-1.79...,  1.83...]])\n>>> stress\nnp.float64(0.0012...)"
+          }
+        },
+        "returns": "-------\n    X : ndarray of shape (n_samples, n_components)\n        Coordinates of the points in a ``n_components``-space.\n\n    stress : float\n        The final value of the stress (sum of squared distance of the\n        disparities and the distances for all constrained points).\n        If `normalized_stress=True`, and `metric=False` returns Stress-1.\n        A value of 0 indicates \"perfect\" fit, 0.025 excellent, 0.05 good,\n        0.1 fair, and 0.2 poor [1]_.\n\n    n_iter : int\n        The number of iterations corresponding to the best stress. Returned\n        only if ``return_n_iter`` is set to ``True``.\n\n    References\n    ----------\n    .. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\n           Psychometrika, 29 (1964)\n\n    .. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\n           hypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n\n    .. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;\n           Groenen P. Springer Series in Statistics (1997)\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.manifold import smacof\n    >>> from sklearn.metrics import euclidean_distances\n    >>> X = np.array([[0, 1, 2], [1, 0, 3],[2, 3, 0]])\n    >>> dissimilarities = euclidean_distances(X)\n    >>> mds_result, stress = smacof(dissimilarities, n_components=2, random_state=42)\n    >>> mds_result\n    array([[ 0.05... -1.07... ],\n           [ 1.74..., -0.75...],\n           [-1.79...,  1.83...]])\n    >>> stress\n    np.float64(0.0012...)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.manifold import smacof\n    >>> from sklearn.metrics import euclidean_distances\n    >>> X = np.array([[0, 1, 2], [1, 0, 3],[2, 3, 0]])\n    >>> dissimilarities = euclidean_distances(X)\n    >>> mds_result, stress = smacof(dissimilarities, n_components=2, random_state=42)\n    >>> mds_result\n    array([[ 0.05... -1.07... ],\n           [ 1.74..., -0.75...],\n           [-1.79...,  1.83...]])\n    >>> stress\n    np.float64(0.0012...)"
+      }
+    },
+    {
+      "name": "spectral_embedding",
+      "signature": "spectral_embedding(adjacency, *, n_components=8, eigen_solver=None, random_state=None, eigen_tol='auto', norm_laplacian=True, drop_first=True)",
+      "documentation": {
+        "description": "Project the sample on the first eigenvectors of the graph Laplacian.\n\n    The adjacency matrix is used to compute a normalized graph Laplacian\n    whose spectrum (especially the eigenvectors associated to the\n    smallest eigenvalues) has an interpretation in terms of minimal\n    number of cuts necessary to split the graph into comparably sized\n    components.\n\n    This embedding can also 'work' even if the ``adjacency`` variable is\n    not strictly the adjacency matrix of a graph but more generally\n    an affinity or similarity matrix between samples (for instance the\n    heat kernel of a euclidean distance matrix or a k-NN matrix).\n\n    However care must taken to always make the affinity matrix symmetric\n    so that the eigenvector decomposition works as expected.\n\n    Note : Laplacian Eigenmaps is the actual algorithm implemented here.\n\n    Read more in the :ref:`User Guide <spectral_embedding>`.\n\n    Parameters\n    ----------\n    adjacency : {array-like, sparse graph} of shape (n_samples, n_samples)\n        The adjacency matrix of the graph to embed.\n\n    n_components : int, default=8\n        The dimension of the projection subspace.\n\n    eigen_solver : {'arpack', 'lobpcg', 'amg'}, default=None\n        The eigenvalue decomposition strategy to use. AMG requires pyamg\n        to be installed. It can be faster on very large, sparse problems,\n        but may also lead to instabilities. If None, then ``'arpack'`` is\n        used.\n\n    random_state : int, RandomState instance or None, default=None\n        A pseudo random number generator used for the initialization\n        of the lobpcg eigen vectors decomposition when `eigen_solver ==\n        'amg'`, and for the K-Means initialization. Use an int to make\n        the results deterministic across calls (See\n        :term:`Glossary <random_state>`).\n\n        .. note::\n            When using `eigen_solver == 'amg'`,\n            it is necessary to also fix the global numpy seed with\n            `np.random.seed(int)` to get deterministic results. See\n            https://github.com/pyamg/pyamg/issues/139 for further\n            information.\n\n    eigen_tol : float, default=\"auto\"\n        Stopping criterion for eigendecomposition of the Laplacian matrix.\n        If `eigen_tol=\"auto\"` then the passed tolerance will depend on the\n        `eigen_solver`:\n\n        - If `eigen_solver=\"arpack\"`, then `eigen_tol=0.0`;\n        - If `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`, then\n          `eigen_tol=None` which configures the underlying `lobpcg` solver to\n          automatically resolve the value according to their heuristics. See,\n          :func:`scipy.sparse.linalg.lobpcg` for details.\n\n        Note that when using `eigen_solver=\"amg\"` values of `tol<1e-5` may lead\n        to convergence issues and should be avoided.\n\n        .. versionadded:: 1.2\n           Added 'auto' option.\n\n    norm_laplacian : bool, default=True\n        If True, then compute symmetric normalized Laplacian.\n\n    drop_first : bool, default=True\n        Whether to drop the first eigenvector. For spectral embedding, this\n        should be True as the first eigenvector should be constant vector for\n        connected graph, but for spectral clustering, this should be kept as\n        False to retain the first eigenvector.\n\n    Returns\n    -------\n    embedding : ndarray of shape (n_samples, n_components)\n        The reduced samples.\n\n    Notes\n    -----\n    Spectral Embedding (Laplacian Eigenmaps) is most useful when the graph\n    has one connected component. If there graph has many components, the first\n    few eigenvectors will simply uncover the connected components of the graph.\n\n    References\n    ----------\n    * https://en.wikipedia.org/wiki/LOBPCG\n\n    * :doi:`\"Toward the Optimal Preconditioned Eigensolver: Locally Optimal\n      Block Preconditioned Conjugate Gradient Method\",\n      Andrew V. Knyazev\n      <10.1137/S1064827500366124>`",
+        "parameters": {
+          "adjacency": {
+            "type": "{array",
+            "description": "like, sparse graph} of shape (n_samples, n_samples)"
+          },
+          "The": {
+            "type": "reduced samples.",
+            "description": "Notes\n-----"
+          },
+          "n_components": {
+            "type": "int, default=8",
+            "description": ""
+          },
+          "eigen_solver": {
+            "type": "{'arpack', 'lobpcg', 'amg'}, default=None",
+            "description": ""
+          },
+          "to": {
+            "type": "convergence issues and should be avoided.",
+            "description": ".. versionadded:: 1.2"
+          },
+          "but": {
+            "type": "may also lead to instabilities. If None, then ``'arpack'`` is",
+            "description": "used."
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "A": {
+            "type": "pseudo random number generator used for the initialization",
+            "description": ""
+          },
+          "of": {
+            "type": "the lobpcg eigen vectors decomposition when `eigen_solver ==",
+            "description": "'amg'`, and for the K-Means initialization. Use an int to make"
+          },
+          "the": {
+            "type": "results deterministic across calls (See",
+            "description": ":term:`Glossary <random_state>`).\n.. note::"
+          },
+          "When": {
+            "type": "using `eigen_solver == 'amg'`,",
+            "description": ""
+          },
+          "it": {
+            "type": "is necessary to also fix the global numpy seed with",
+            "description": "`np.random.seed(int)` to get deterministic results. See"
+          },
+          "https": {
+            "type": "//github.com/pyamg/pyamg/issues/139 for further",
+            "description": "information."
+          },
+          "eigen_tol": {
+            "type": "float, default=\"auto\"",
+            "description": ""
+          },
+          "Stopping": {
+            "type": "criterion for eigendecomposition of the Laplacian matrix.",
+            "description": ""
+          },
+          "If": {
+            "type": "True, then compute symmetric normalized Laplacian.",
+            "description": ""
+          },
+          "automatically": {
+            "type": "resolve the value according to their heuristics. See,",
+            "description": ":func:`scipy.sparse.linalg.lobpcg` for details."
+          },
+          "Note": {
+            "type": "that when using `eigen_solver=\"amg\"` values of `tol<1e-5` may lead",
+            "description": ""
+          },
+          "Added": {
+            "type": "'auto' option.",
+            "description": ""
+          },
+          "norm_laplacian": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "drop_first": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to drop the first eigenvector. For spectral embedding, this",
+            "description": ""
+          },
+          "should": {
+            "type": "be True as the first eigenvector should be constant vector for",
+            "description": ""
+          },
+          "connected": {
+            "type": "graph, but for spectral clustering, this should be kept as",
+            "description": ""
+          },
+          "False": {
+            "type": "to retain the first eigenvector.",
+            "description": "Returns\n-------"
+          },
+          "embedding": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "Spectral": {
+            "type": "Embedding (Laplacian Eigenmaps) is most useful when the graph",
+            "description": ""
+          },
+          "has": {
+            "type": "one connected component. If there graph has many components, the first",
+            "description": ""
+          },
+          "few": {
+            "type": "eigenvectors will simply uncover the connected components of the graph.",
+            "description": "References\n----------\n* https://en.wikipedia.org/wiki/LOBPCG\n* :doi:`\"Toward the Optimal Preconditioned Eigensolver: Locally Optimal"
+          },
+          "Block": {
+            "type": "Preconditioned Conjugate Gradient Method\",",
+            "description": ""
+          },
+          "Andrew": {
+            "type": "V. Knyazev",
+            "description": "<10.1137/S1064827500366124>`\nExamples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.neighbors import kneighbors_graph\n>>> from sklearn.manifold import spectral_embedding\n>>> X, _ = load_digits(return_X_y=True)\n>>> X = X[:100]\n>>> affinity_matrix = kneighbors_graph(\n...     X, n_neighbors=int(X.shape[0] / 10), include_self=True\n... )\n>>> # make the matrix symmetric\n>>> affinity_matrix = 0.5 * (affinity_matrix + affinity_matrix.T)\n>>> embedding = spectral_embedding(affinity_matrix, n_components=2, random_state=42)\n>>> embedding.shape\n(100, 2)"
+          }
+        },
+        "returns": "-------\n    embedding : ndarray of shape (n_samples, n_components)\n        The reduced samples.\n\n    Notes\n    -----\n    Spectral Embedding (Laplacian Eigenmaps) is most useful when the graph\n    has one connected component. If there graph has many components, the first\n    few eigenvectors will simply uncover the connected components of the graph.\n\n    References\n    ----------\n    * https://en.wikipedia.org/wiki/LOBPCG\n\n    * :doi:`\"Toward the Optimal Preconditioned Eigensolver: Locally Optimal\n      Block Preconditioned Conjugate Gradient Method\",\n      Andrew V. Knyazev\n      <10.1137/S1064827500366124>`\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.neighbors import kneighbors_graph\n    >>> from sklearn.manifold import spectral_embedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X = X[:100]\n    >>> affinity_matrix = kneighbors_graph(\n    ...     X, n_neighbors=int(X.shape[0] / 10), include_self=True\n    ... )\n    >>> # make the matrix symmetric\n    >>> affinity_matrix = 0.5 * (affinity_matrix + affinity_matrix.T)\n    >>> embedding = spectral_embedding(affinity_matrix, n_components=2, random_state=42)\n    >>> embedding.shape\n    (100, 2)",
+        "raises": "",
+        "see_also": "",
+        "notes": ": Laplacian Eigenmaps is the actual algorithm implemented here.\n\n    Read more in the :ref:`User Guide <spectral_embedding>`.\n\n    Parameters\n    ----------\n    adjacency : {array-like, sparse graph} of shape (n_samples, n_samples)\n        The adjacency matrix of the graph to embed.\n\n    n_components : int, default=8\n        The dimension of the projection subspace.\n\n    eigen_solver : {'arpack', 'lobpcg', 'amg'}, default=None\n        The eigenvalue decomposition strategy to use. AMG requires pyamg\n        to be installed. It can be faster on very large, sparse problems,\n        but may also lead to instabilities. If None, then ``'arpack'`` is\n        used.\n\n    random_state : int, RandomState instance or None, default=None\n        A pseudo random number generator used for the initialization\n        of the lobpcg eigen vectors decomposition when `eigen_solver ==\n        'amg'`, and for the K-Means initialization. Use an int to make\n        the results deterministic across calls (See\n        :term:`Glossary <random_state>`).\n\n        .. note::\n            When using `eigen_solver == 'amg'`,\n            it is necessary to also fix the global numpy seed with\n            `np.random.seed(int)` to get deterministic results. See\n            https://github.com/pyamg/pyamg/issues/139 for further\n            information.\n\n    eigen_tol : float, default=\"auto\"\n        Stopping criterion for eigendecomposition of the Laplacian matrix.\n        If `eigen_tol=\"auto\"` then the passed tolerance will depend on the\n        `eigen_solver`:\n\n        - If `eigen_solver=\"arpack\"`, then `eigen_tol=0.0`;\n        - If `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`, then\n          `eigen_tol=None` which configures the underlying `lobpcg` solver to\n          automatically resolve the value according to their heuristics. See,\n          :func:`scipy.sparse.linalg.lobpcg` for details.",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.neighbors import kneighbors_graph\n    >>> from sklearn.manifold import spectral_embedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X = X[:100]\n    >>> affinity_matrix = kneighbors_graph(\n    ...     X, n_neighbors=int(X.shape[0] / 10), include_self=True\n    ... )\n    >>> # make the matrix symmetric\n    >>> affinity_matrix = 0.5 * (affinity_matrix + affinity_matrix.T)\n    >>> embedding = spectral_embedding(affinity_matrix, n_components=2, random_state=42)\n    >>> embedding.shape\n    (100, 2)"
+      }
+    },
+    {
+      "name": "trustworthiness",
+      "signature": "trustworthiness(X, X_embedded, *, n_neighbors=5, metric='euclidean')",
+      "documentation": {
+        "description": "Indicate to what extent the local structure is retained.\n\n    The trustworthiness is within [0, 1]. It is defined as\n\n    .. math::\n\n        T(k) = 1 - \\frac{2}{nk (2n - 3k - 1)} \\sum^n_{i=1}\n            \\sum_{j \\in \\mathcal{N}_{i}^{k}} \\max(0, (r(i, j) - k))\n\n    where for each sample i, :math:`\\mathcal{N}_{i}^{k}` are its k nearest\n    neighbors in the output space, and every sample j is its :math:`r(i, j)`-th\n    nearest neighbor in the input space. In other words, any unexpected nearest\n    neighbors in the output space are penalised in proportion to their rank in\n    the input space.\n\n    Parameters\n    ----------\n    X : {array-like, sparse matrix} of shape (n_samples, n_features) or \\\n        (n_samples, n_samples)\n        If the metric is 'precomputed' X must be a square distance\n        matrix. Otherwise it contains a sample per row.\n\n    X_embedded : {array-like, sparse matrix} of shape (n_samples, n_components)\n        Embedding of the training data in low-dimensional space.\n\n    n_neighbors : int, default=5\n        The number of neighbors that will be considered. Should be fewer than\n        `n_samples / 2` to ensure the trustworthiness to lies within [0, 1], as\n        mentioned in [1]_. An error will be raised otherwise.\n\n    metric : str or callable, default='euclidean'\n        Which metric to use for computing pairwise distances between samples\n        from the original input space. If metric is 'precomputed', X must be a\n        matrix of pairwise distances or squared distances. Otherwise, for a list\n        of available metrics, see the documentation of argument metric in\n        `sklearn.pairwise.pairwise_distances` and metrics listed in\n        `sklearn.metrics.pairwise.PAIRWISE_DISTANCE_FUNCTIONS`. Note that the\n        \"cosine\" metric uses :func:`~sklearn.metrics.pairwise.cosine_distances`.\n\n        .. versionadded:: 0.20\n\n    Returns\n    -------\n    trustworthiness : float\n        Trustworthiness of the low-dimensional embedding.\n\n    References\n    ----------\n    .. [1] Jarkko Venna and Samuel Kaski. 2001. Neighborhood\n           Preservation in Nonlinear Projection Methods: An Experimental Study.\n           In Proceedings of the International Conference on Artificial Neural Networks\n           (ICANN '01). Springer-Verlag, Berlin, Heidelberg, 485-491.\n\n    .. [2] Laurens van der Maaten. Learning a Parametric Embedding by Preserving\n           Local Structure. Proceedings of the Twelfth International Conference on\n           Artificial Intelligence and Statistics, PMLR 5:384-391, 2009.",
+        "parameters": {
+          "X": {
+            "type": "{array",
+            "description": "like, sparse matrix} of shape (n_samples, n_features) or \\\n(n_samples, n_samples)"
+          },
+          "If": {
+            "type": "the metric is 'precomputed' X must be a square distance",
+            "description": "matrix. Otherwise it contains a sample per row."
+          },
+          "X_embedded": {
+            "type": "{array",
+            "description": "like, sparse matrix} of shape (n_samples, n_components)"
+          },
+          "Embedding": {
+            "type": "of the training data in low-dimensional space.",
+            "description": ""
+          },
+          "n_neighbors": {
+            "type": "int, default=5",
+            "description": ""
+          },
+          "The": {
+            "type": "number of neighbors that will be considered. Should be fewer than",
+            "description": "`n_samples / 2` to ensure the trustworthiness to lies within [0, 1], as"
+          },
+          "mentioned": {
+            "type": "in [1]_. An error will be raised otherwise.",
+            "description": ""
+          },
+          "metric": {
+            "type": "str or callable, default='euclidean'",
+            "description": ""
+          },
+          "Which": {
+            "type": "metric to use for computing pairwise distances between samples",
+            "description": ""
+          },
+          "from": {
+            "type": "the original input space. If metric is 'precomputed', X must be a",
+            "description": ""
+          },
+          "matrix": {
+            "type": "of pairwise distances or squared distances. Otherwise, for a list",
+            "description": ""
+          },
+          "of": {
+            "type": "available metrics, see the documentation of argument metric in",
+            "description": "`sklearn.pairwise.pairwise_distances` and metrics listed in\n`sklearn.metrics.pairwise.PAIRWISE_DISTANCE_FUNCTIONS`. Note that the\n\"cosine\" metric uses :func:`~sklearn.metrics.pairwise.cosine_distances`.\n.. versionadded:: 0.20\nReturns\n-------"
+          },
+          "trustworthiness": {
+            "type": "float",
+            "description": ""
+          },
+          "Trustworthiness": {
+            "type": "of the low-dimensional embedding.",
+            "description": "References\n----------\n.. [1] Jarkko Venna and Samuel Kaski. 2001. Neighborhood"
+          },
+          "Preservation": {
+            "type": "in Nonlinear Projection Methods: An Experimental Study.",
+            "description": ""
+          },
+          "In": {
+            "type": "Proceedings of the International Conference on Artificial Neural Networks",
+            "description": "(ICANN '01). Springer-Verlag, Berlin, Heidelberg, 485-491.\n.. [2] Laurens van der Maaten. Learning a Parametric Embedding by Preserving"
+          },
+          "Local": {
+            "type": "Structure. Proceedings of the Twelfth International Conference on",
+            "description": ""
+          },
+          "Artificial": {
+            "type": "Intelligence and Statistics, PMLR 5:384-391, 2009.",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import make_blobs\n>>> from sklearn.decomposition import PCA\n>>> from sklearn.manifold import trustworthiness\n>>> X, _ = make_blobs(n_samples=100, n_features=10, centers=3, random_state=42)\n>>> X_embedded = PCA(n_components=2).fit_transform(X)\n>>> print(f\"{trustworthiness(X, X_embedded, n_neighbors=5):.2f}\")\n0.92"
+          }
+        },
+        "returns": "-------\n    trustworthiness : float\n        Trustworthiness of the low-dimensional embedding.\n\n    References\n    ----------\n    .. [1] Jarkko Venna and Samuel Kaski. 2001. Neighborhood\n           Preservation in Nonlinear Projection Methods: An Experimental Study.\n           In Proceedings of the International Conference on Artificial Neural Networks\n           (ICANN '01). Springer-Verlag, Berlin, Heidelberg, 485-491.\n\n    .. [2] Laurens van der Maaten. Learning a Parametric Embedding by Preserving\n           Local Structure. Proceedings of the Twelfth International Conference on\n           Artificial Intelligence and Statistics, PMLR 5:384-391, 2009.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import make_blobs\n    >>> from sklearn.decomposition import PCA\n    >>> from sklearn.manifold import trustworthiness\n    >>> X, _ = make_blobs(n_samples=100, n_features=10, centers=3, random_state=42)\n    >>> X_embedded = PCA(n_components=2).fit_transform(X)\n    >>> print(f\"{trustworthiness(X, X_embedded, n_neighbors=5):.2f}\")\n    0.92",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import make_blobs\n    >>> from sklearn.decomposition import PCA\n    >>> from sklearn.manifold import trustworthiness\n    >>> X, _ = make_blobs(n_samples=100, n_features=10, centers=3, random_state=42)\n    >>> X_embedded = PCA(n_components=2).fit_transform(X)\n    >>> print(f\"{trustworthiness(X, X_embedded, n_neighbors=5):.2f}\")\n    0.92"
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Isomap",
+      "documentation": {
+        "description": "Isomap Embedding.\n\n    Non-linear dimensionality reduction through Isometric Mapping\n\n    Read more in the :ref:`User Guide <isomap>`.\n\n    Parameters\n    ----------\n    n_neighbors : int or None, default=5\n        Number of neighbors to consider for each point. If `n_neighbors` is an int,\n        then `radius` must be `None`.\n\n    radius : float or None, default=None\n        Limiting distance of neighbors to return. If `radius` is a float,\n        then `n_neighbors` must be set to `None`.\n\n        .. versionadded:: 1.1\n\n    n_components : int, default=2\n        Number of coordinates for the manifold.\n\n    eigen_solver : {'auto', 'arpack', 'dense'}, default='auto'\n        'auto' : Attempt to choose the most efficient solver\n        for the given problem.\n\n        'arpack' : Use Arnoldi decomposition to find the eigenvalues\n        and eigenvectors.\n\n        'dense' : Use a direct solver (i.e. LAPACK)\n        for the eigenvalue decomposition.\n\n    tol : float, default=0\n        Convergence tolerance passed to arpack or lobpcg.\n        not used if eigen_solver == 'dense'.\n\n    max_iter : int, default=None\n        Maximum number of iterations for the arpack solver.\n        not used if eigen_solver == 'dense'.\n\n    path_method : {'auto', 'FW', 'D'}, default='auto'\n        Method to use in finding shortest path.\n\n        'auto' : attempt to choose the best algorithm automatically.\n\n        'FW' : Floyd-Warshall algorithm.\n\n        'D' : Dijkstra's algorithm.\n\n    neighbors_algorithm : {'auto', 'brute', 'kd_tree', 'ball_tree'},                           default='auto'\n        Algorithm to use for nearest neighbors search,\n        passed to neighbors.NearestNeighbors instance.\n\n    n_jobs : int or None, default=None\n        The number of parallel jobs to run.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    metric : str, or callable, default=\"minkowski\"\n        The metric to use when calculating distance between instances in a\n        feature array. If metric is a string or callable, it must be one of\n        the options allowed by :func:`sklearn.metrics.pairwise_distances` for\n        its metric parameter.\n        If metric is \"precomputed\", X is assumed to be a distance matrix and\n        must be square. X may be a :term:`Glossary <sparse graph>`.\n\n        .. versionadded:: 0.22\n\n    p : float, default=2\n        Parameter for the Minkowski metric from\n        sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is\n        equivalent to using manhattan_distance (l1), and euclidean_distance\n        (l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.\n\n        .. versionadded:: 0.22\n\n    metric_params : dict, default=None\n        Additional keyword arguments for the metric function.\n\n        .. versionadded:: 0.22\n\n    Attributes\n    ----------\n    embedding_ : array-like, shape (n_samples, n_components)\n        Stores the embedding vectors.\n\n    kernel_pca_ : object\n        :class:`~sklearn.decomposition.KernelPCA` object used to implement the\n        embedding.\n\n    nbrs_ : sklearn.neighbors.NearestNeighbors instance\n        Stores nearest neighbors instance, including BallTree or KDtree\n        if applicable.\n\n    dist_matrix_ : array-like, shape (n_samples, n_samples)\n        Stores the geodesic distance matrix of training data.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    MDS : Manifold learning using multidimensional scaling.\n    TSNE : T-distributed Stochastic Neighbor Embedding.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    References\n    ----------\n\n    .. [1] Tenenbaum, J.B.; De Silva, V.; & Langford, J.C. A global geometric\n           framework for nonlinear dimensionality reduction. Science 290 (5500)",
+        "parameters": {
+          "n_neighbors": {
+            "type": "int or None, default=5",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "then": {
+            "type": "`n_neighbors` must be set to `None`.",
+            "description": ".. versionadded:: 1.1"
+          },
+          "radius": {
+            "type": "float or None, default=None",
+            "description": ""
+          },
+          "Limiting": {
+            "type": "distance of neighbors to return. If `radius` is a float,",
+            "description": ""
+          },
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "eigen_solver": {
+            "type": "{'auto', 'arpack', 'dense'}, default='auto'",
+            "description": "'auto' : Attempt to choose the most efficient solver"
+          },
+          "for": {
+            "type": "more details.",
+            "description": ""
+          },
+          "and": {
+            "type": "eigenvectors.",
+            "description": "'dense' : Use a direct solver (i.e. LAPACK)"
+          },
+          "tol": {
+            "type": "float, default=0",
+            "description": ""
+          },
+          "Convergence": {
+            "type": "tolerance passed to arpack or lobpcg.",
+            "description": ""
+          },
+          "not": {
+            "type": "used if eigen_solver == 'dense'.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations for the arpack solver.",
+            "description": ""
+          },
+          "path_method": {
+            "type": "{'auto', 'FW', 'D'}, default='auto'",
+            "description": ""
+          },
+          "Method": {
+            "type": "to use in finding shortest path.",
+            "description": "'auto' : attempt to choose the best algorithm automatically.\n'FW' : Floyd-Warshall algorithm.\n'D' : Dijkstra's algorithm."
+          },
+          "neighbors_algorithm": {
+            "type": "{'auto', 'brute', 'kd_tree', 'ball_tree'},                           default='auto'",
+            "description": ""
+          },
+          "Algorithm": {
+            "type": "to use for nearest neighbors search,",
+            "description": ""
+          },
+          "passed": {
+            "type": "to neighbors.NearestNeighbors instance.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int or None, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "metric to use when calculating distance between instances in a",
+            "description": ""
+          },
+          "metric": {
+            "type": "str, or callable, default=\"minkowski\"",
+            "description": ""
+          },
+          "feature": {
+            "type": "array. If metric is a string or callable, it must be one of",
+            "description": ""
+          },
+          "the": {
+            "type": "options allowed by :func:`sklearn.metrics.pairwise_distances` for",
+            "description": ""
+          },
+          "its": {
+            "type": "metric parameter.",
+            "description": ""
+          },
+          "If": {
+            "type": "metric is \"precomputed\", X is assumed to be a distance matrix and",
+            "description": ""
+          },
+          "must": {
+            "type": "be square. X may be a :term:`Glossary <sparse graph>`.",
+            "description": ".. versionadded:: 0.22"
+          },
+          "p": {
+            "type": "float, default=2",
+            "description": ""
+          },
+          "Parameter": {
+            "type": "for the Minkowski metric from",
+            "description": "sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is"
+          },
+          "equivalent": {
+            "type": "to using manhattan_distance (l1), and euclidean_distance",
+            "description": "(l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.\n.. versionadded:: 0.22"
+          },
+          "metric_params": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "Additional": {
+            "type": "keyword arguments for the metric function.",
+            "description": ".. versionadded:: 0.22\nAttributes\n----------"
+          },
+          "embedding_": {
+            "type": "array",
+            "description": "like, shape (n_samples, n_components)"
+          },
+          "Stores": {
+            "type": "the geodesic distance matrix of training data.",
+            "description": ""
+          },
+          "kernel_pca_": {
+            "type": "object",
+            "description": ":class:`~sklearn.decomposition.KernelPCA` object used to implement the\nembedding."
+          },
+          "nbrs_": {
+            "type": "sklearn.neighbors.NearestNeighbors instance",
+            "description": ""
+          },
+          "if": {
+            "type": "applicable.",
+            "description": ""
+          },
+          "dist_matrix_": {
+            "type": "array",
+            "description": "like, shape (n_samples, n_samples)"
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------\nsklearn.decomposition.PCA : Principal component analysis that is a linear"
+          },
+          "dimensionality": {
+            "type": "reduction method.",
+            "description": "sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using"
+          },
+          "kernels": {
+            "type": "and PCA.",
+            "description": ""
+          },
+          "MDS": {
+            "type": "Manifold learning using multidimensional scaling.",
+            "description": ""
+          },
+          "TSNE": {
+            "type": "T",
+            "description": "distributed Stochastic Neighbor Embedding."
+          },
+          "LocallyLinearEmbedding": {
+            "type": "Manifold learning using Locally Linear Embedding.",
+            "description": ""
+          },
+          "SpectralEmbedding": {
+            "type": "Spectral embedding for non",
+            "description": "linear dimensionality.\nReferences\n----------\n.. [1] Tenenbaum, J.B.; De Silva, V.; & Langford, J.C. A global geometric"
+          },
+          "framework": {
+            "type": "for nonlinear dimensionality reduction. Science 290 (5500)",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.manifold import Isomap\n>>> X, _ = load_digits(return_X_y=True)\n>>> X.shape\n(1797, 64)\n>>> embedding = Isomap(n_components=2)\n>>> X_transformed = embedding.fit_transform(X[:100])\n>>> X_transformed.shape\n(100, 2)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    MDS : Manifold learning using multidimensional scaling.\n    TSNE : T-distributed Stochastic Neighbor Embedding.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    References\n    ----------\n\n    .. [1] Tenenbaum, J.B.; De Silva, V.; & Langford, J.C. A global geometric\n           framework for nonlinear dimensionality reduction. Science 290 (5500)\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import Isomap\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = Isomap(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import Isomap\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = Isomap(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Compute the embedding vectors for data X.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix, BallTree, KDTree, NearestNeighbors}\n            Sample data, shape = (n_samples, n_features), in the form of a\n            numpy array, sparse matrix, precomputed tree, or NearestNeighbors\n            object.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix, BallTree, KDTree, NearestNeighbors}"
+              },
+              "Sample": {
+                "type": "data, shape = (n_samples, n_features), in the form of a",
+                "description": ""
+              },
+              "numpy": {
+                "type": "array, sparse matrix, precomputed tree, or NearestNeighbors",
+                "description": "object."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Returns": {
+                "type": "a fitted instance of self.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the model from data in X and transform X.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix, BallTree, KDTree}\n            Training vector, where `n_samples` is the number of samples\n            and `n_features` is the number of features.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "transformed in the new space.",
+                "description": ""
+              },
+              "Training": {
+                "type": "vector, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_features` is the number of features.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "array",
+                "description": "like, shape (n_samples, n_components)"
+              }
+            },
+            "returns": "-------\n        X_new : array-like, shape (n_samples, n_components)\n            X transformed in the new space.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reconstruction_error",
+          "signature": "reconstruction_error(self)",
+          "documentation": {
+            "description": "Compute the reconstruction error for the embedding.\n\n        Returns\n        -------\n        reconstruction_error : float\n            Reconstruction error.",
+            "parameters": {},
+            "returns": "-------\n        reconstruction_error : float\n            Reconstruction error.\n\n        Notes\n        -----\n        The cost function of an isomap embedding is\n\n        ``E = frobenius_norm[K(D) - K(D_fit)] / n_samples``\n\n        Where D is the matrix of distances for the input data X,\n        D_fit is the matrix of distances for the output embedding X_fit,\n        and K is the isomap kernel:\n\n        ``K(D) = -0.5 * (I - 1/n_samples) * D^2 * (I - 1/n_samples)``",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        The cost function of an isomap embedding is\n\n        ``E = frobenius_norm[K(D) - K(D_fit)] / n_samples``\n\n        Where D is the matrix of distances for the input data X,\n        D_fit is the matrix of distances for the output embedding X_fit,\n        and K is the isomap kernel:\n\n        ``K(D) = -0.5 * (I - 1/n_samples) * D^2 * (I - 1/n_samples)``",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Transform X.\n\n        This is implemented by linking the points X into the graph of geodesic\n        distances of the training data. First the `n_neighbors` nearest\n        neighbors of X are found in the training data, and from these the\n        shortest geodesic distances from each point in X to each point in\n        the training data are computed in order to construct the kernel.\n        The embedding of X is the projection of this kernel onto the\n        embedding vectors of the training set.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix}, shape (n_queries, n_features)\n            If neighbors_algorithm='precomputed', X is assumed to be a\n            distance matrix or a sparse graph of shape\n            (n_queries, n_samples_fit).",
+            "parameters": {
+              "X": {
+                "type": "transformed in the new space.",
+                "description": ""
+              },
+              "If": {
+                "type": "neighbors_algorithm='precomputed', X is assumed to be a",
+                "description": ""
+              },
+              "distance": {
+                "type": "matrix or a sparse graph of shape",
+                "description": "(n_queries, n_samples_fit).\nReturns\n-------"
+              },
+              "X_new": {
+                "type": "array",
+                "description": "like, shape (n_queries, n_components)"
+              }
+            },
+            "returns": "-------\n        X_new : array-like, shape (n_queries, n_components)\n            X transformed in the new space.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LocallyLinearEmbedding",
+      "documentation": {
+        "description": "Locally Linear Embedding.\n\n    Read more in the :ref:`User Guide <locally_linear_embedding>`.\n\n    Parameters\n    ----------\n    n_neighbors : int, default=5\n        Number of neighbors to consider for each point.\n\n    n_components : int, default=2\n        Number of coordinates for the manifold.\n\n    reg : float, default=1e-3\n        Regularization constant, multiplies the trace of the local covariance\n        matrix of the distances.\n\n    eigen_solver : {'auto', 'arpack', 'dense'}, default='auto'\n        The solver used to compute the eigenvectors. The available options are:\n\n        - `'auto'` : algorithm will attempt to choose the best method for input\n          data.\n        - `'arpack'` : use arnoldi iteration in shift-invert mode. For this\n          method, M may be a dense matrix, sparse matrix, or general linear\n          operator.\n        - `'dense'`  : use standard dense matrix operations for the eigenvalue\n          decomposition. For this method, M must be an array or matrix type.\n          This method should be avoided for large problems.\n\n        .. warning::\n           ARPACK can be unstable for some problems.  It is best to try several\n           random seeds in order to check results.\n\n    tol : float, default=1e-6\n        Tolerance for 'arpack' method\n        Not used if eigen_solver=='dense'.\n\n    max_iter : int, default=100\n        Maximum number of iterations for the arpack solver.\n        Not used if eigen_solver=='dense'.\n\n    method : {'standard', 'hessian', 'modified', 'ltsa'}, default='standard'\n        - `standard`: use the standard locally linear embedding algorithm. see\n          reference [1]_\n        - `hessian`: use the Hessian eigenmap method. This method requires\n          ``n_neighbors > n_components * (1 + (n_components + 1) / 2``. see\n          reference [2]_\n        - `modified`: use the modified locally linear embedding algorithm.\n          see reference [3]_\n        - `ltsa`: use local tangent space alignment algorithm. see\n          reference [4]_\n\n    hessian_tol : float, default=1e-4\n        Tolerance for Hessian eigenmapping method.\n        Only used if ``method == 'hessian'``.\n\n    modified_tol : float, default=1e-12\n        Tolerance for modified LLE method.\n        Only used if ``method == 'modified'``.\n\n    neighbors_algorithm : {'auto', 'brute', 'kd_tree', 'ball_tree'},                           default='auto'\n        Algorithm to use for nearest neighbors search, passed to\n        :class:`~sklearn.neighbors.NearestNeighbors` instance.\n\n    random_state : int, RandomState instance, default=None\n        Determines the random number generator when\n        ``eigen_solver`` == 'arpack'. Pass an int for reproducible results\n        across multiple function calls. See :term:`Glossary <random_state>`.\n\n    n_jobs : int or None, default=None\n        The number of parallel jobs to run.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    embedding_ : array-like, shape [n_samples, n_components]\n        Stores the embedding vectors\n\n    reconstruction_error_ : float\n        Reconstruction error associated with `embedding_`\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    nbrs_ : NearestNeighbors object\n        Stores nearest neighbors instance, including BallTree or KDtree\n        if applicable.\n\n    See Also\n    --------\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality\n        reduction.\n    TSNE : Distributed Stochastic Neighbor Embedding.\n\n    References\n    ----------\n\n    .. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction\n        by locally linear embedding.  Science 290:2323 (2000).\n    .. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally\n        linear embedding techniques for high-dimensional data.\n        Proc Natl Acad Sci U S A.  100:5591 (2003).\n    .. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear\n        Embedding Using Multiple Weights.\n        <https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n    .. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear\n        dimensionality reduction via tangent space alignment.\n        Journal of Shanghai Univ.  8:406 (2004)",
+        "parameters": {
+          "n_neighbors": {
+            "type": "int, default=5",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "reg": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "Regularization": {
+            "type": "constant, multiplies the trace of the local covariance",
+            "description": ""
+          },
+          "matrix": {
+            "type": "of the distances.",
+            "description": ""
+          },
+          "eigen_solver": {
+            "type": "{'auto', 'arpack', 'dense'}, default='auto'",
+            "description": ""
+          },
+          "The": {
+            "type": "number of parallel jobs to run.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "This": {
+            "type": "method should be avoided for large problems.",
+            "description": ".. warning::"
+          },
+          "ARPACK": {
+            "type": "can be unstable for some problems.  It is best to try several",
+            "description": ""
+          },
+          "random": {
+            "type": "seeds in order to check results.",
+            "description": ""
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "6"
+          },
+          "Tolerance": {
+            "type": "for modified LLE method.",
+            "description": ""
+          },
+          "Not": {
+            "type": "used if eigen_solver=='dense'.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=100",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations for the arpack solver.",
+            "description": ""
+          },
+          "method": {
+            "type": "{'standard', 'hessian', 'modified', 'ltsa'}, default='standard'",
+            "description": "- `standard`: use the standard locally linear embedding algorithm. see"
+          },
+          "reference": {
+            "type": "[4]_",
+            "description": ""
+          },
+          "see": {
+            "type": "reference [3]_",
+            "description": "- `ltsa`: use local tangent space alignment algorithm. see"
+          },
+          "hessian_tol": {
+            "type": "float, default=1e",
+            "description": "4"
+          },
+          "Only": {
+            "type": "used if ``method == 'modified'``.",
+            "description": ""
+          },
+          "modified_tol": {
+            "type": "float, default=1e",
+            "description": "12"
+          },
+          "neighbors_algorithm": {
+            "type": "{'auto', 'brute', 'kd_tree', 'ball_tree'},                           default='auto'",
+            "description": ""
+          },
+          "Algorithm": {
+            "type": "to use for nearest neighbors search, passed to",
+            "description": ":class:`~sklearn.neighbors.NearestNeighbors` instance."
+          },
+          "random_state": {
+            "type": "int, RandomState instance, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "the random number generator when",
+            "description": "``eigen_solver`` == 'arpack'. Pass an int for reproducible results"
+          },
+          "across": {
+            "type": "multiple function calls. See :term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int or None, default=None",
+            "description": ""
+          },
+          "for": {
+            "type": "more details.",
+            "description": "Attributes\n----------"
+          },
+          "embedding_": {
+            "type": "array",
+            "description": "like, shape [n_samples, n_components]"
+          },
+          "Stores": {
+            "type": "nearest neighbors instance, including BallTree or KDtree",
+            "description": ""
+          },
+          "reconstruction_error_": {
+            "type": "float",
+            "description": ""
+          },
+          "Reconstruction": {
+            "type": "error associated with `embedding_`",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "nbrs_": {
+            "type": "NearestNeighbors object",
+            "description": ""
+          },
+          "if": {
+            "type": "applicable.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "SpectralEmbedding": {
+            "type": "Spectral embedding for non",
+            "description": "linear dimensionality\nreduction."
+          },
+          "TSNE": {
+            "type": "Distributed Stochastic Neighbor Embedding.",
+            "description": "References\n----------\n.. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction"
+          },
+          "by": {
+            "type": "locally linear embedding.  Science 290:2323 (2000).",
+            "description": ".. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally"
+          },
+          "linear": {
+            "type": "embedding techniques for high-dimensional data.",
+            "description": ""
+          },
+          "Proc": {
+            "type": "Natl Acad Sci U S A.  100:5591 (2003).",
+            "description": ".. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear"
+          },
+          "Embedding": {
+            "type": "Using Multiple Weights.",
+            "description": "<https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n.. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear"
+          },
+          "dimensionality": {
+            "type": "reduction via tangent space alignment.",
+            "description": ""
+          },
+          "Journal": {
+            "type": "of Shanghai Univ.  8:406 (2004)",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.manifold import LocallyLinearEmbedding\n>>> X, _ = load_digits(return_X_y=True)\n>>> X.shape\n(1797, 64)\n>>> embedding = LocallyLinearEmbedding(n_components=2)\n>>> X_transformed = embedding.fit_transform(X[:100])\n>>> X_transformed.shape\n(100, 2)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality\n        reduction.\n    TSNE : Distributed Stochastic Neighbor Embedding.\n\n    References\n    ----------\n\n    .. [1] Roweis, S. & Saul, L. Nonlinear dimensionality reduction\n        by locally linear embedding.  Science 290:2323 (2000).\n    .. [2] Donoho, D. & Grimes, C. Hessian eigenmaps: Locally\n        linear embedding techniques for high-dimensional data.\n        Proc Natl Acad Sci U S A.  100:5591 (2003).\n    .. [3] `Zhang, Z. & Wang, J. MLLE: Modified Locally Linear\n        Embedding Using Multiple Weights.\n        <https://citeseerx.ist.psu.edu/doc_view/pid/0b060fdbd92cbcc66b383bcaa9ba5e5e624d7ee3>`_\n    .. [4] Zhang, Z. & Zha, H. Principal manifolds and nonlinear\n        dimensionality reduction via tangent space alignment.\n        Journal of Shanghai Univ.  8:406 (2004)\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import LocallyLinearEmbedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = LocallyLinearEmbedding(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import LocallyLinearEmbedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = LocallyLinearEmbedding(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Compute the embedding vectors for data X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training set.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "set.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "`LocallyLinearEmbedding` class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted `LocallyLinearEmbedding` class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Compute the embedding vectors for data X and transform X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training set.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "set.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "array",
+                "description": "like, shape (n_samples, n_components)"
+              },
+              "Returns": {
+                "type": "the instance itself.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : array-like, shape (n_samples, n_components)",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Transform new points into embedding space.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training set.\n\n        Returns\n        -------\n        X_new : ndarray of shape (n_samples, n_components)\n            Returns the instance itself.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "set.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Returns": {
+                "type": "the instance itself.",
+                "description": "Notes\n-----"
+              },
+              "Because": {
+                "type": "of scaling performed by this method, it is discouraged to use",
+                "description": ""
+              },
+              "it": {
+                "type": "together with methods that are not scale-invariant (like SVMs).",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray of shape (n_samples, n_components)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        Because of scaling performed by this method, it is discouraged to use\n        it together with methods that are not scale-invariant (like SVMs).",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MDS",
+      "documentation": {
+        "description": "Multidimensional scaling.\n\n    Read more in the :ref:`User Guide <multidimensional_scaling>`.\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        Number of dimensions in which to immerse the dissimilarities.\n\n    metric : bool, default=True\n        If ``True``, perform metric MDS; otherwise, perform nonmetric MDS.\n        When ``False`` (i.e. non-metric MDS), dissimilarities with 0 are considered as\n        missing values.\n\n    n_init : int, default=4\n        Number of times the SMACOF algorithm will be run with different\n        initializations. The final results will be the best output of the runs,\n        determined by the run with the smallest final stress.\n\n    max_iter : int, default=300\n        Maximum number of iterations of the SMACOF algorithm for a single run.\n\n    verbose : int, default=0\n        Level of verbosity.\n\n    eps : float, default=1e-3\n        Relative tolerance with respect to stress at which to declare\n        convergence. The value of `eps` should be tuned separately depending\n        on whether or not `normalized_stress` is being used.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation. If multiple\n        initializations are used (``n_init``), each run of the algorithm is\n        computed in parallel.\n\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines the random number generator used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    dissimilarity : {'euclidean', 'precomputed'}, default='euclidean'\n        Dissimilarity measure to use:\n\n        - 'euclidean':\n            Pairwise Euclidean distances between points in the dataset.\n\n        - 'precomputed':\n            Pre-computed dissimilarities are passed directly to ``fit`` and\n            ``fit_transform``.\n\n    normalized_stress : bool or \"auto\" default=\"auto\"\n        Whether use and return normed stress value (Stress-1) instead of raw\n        stress calculated by default. Only supported in non-metric MDS.\n\n        .. versionadded:: 1.2\n\n        .. versionchanged:: 1.4\n           The default value changed from `False` to `\"auto\"` in version 1.4.\n\n    Attributes\n    ----------\n    embedding_ : ndarray of shape (n_samples, n_components)\n        Stores the position of the dataset in the embedding space.\n\n    stress_ : float\n        The final value of the stress (sum of squared distance of the\n        disparities and the distances for all constrained points).\n        If `normalized_stress=True`, and `metric=False` returns Stress-1.\n        A value of 0 indicates \"perfect\" fit, 0.025 excellent, 0.05 good,\n        0.1 fair, and 0.2 poor [1]_.\n\n    dissimilarity_matrix_ : ndarray of shape (n_samples, n_samples)\n        Pairwise dissimilarities between the points. Symmetric matrix that:\n\n        - either uses a custom dissimilarity matrix by setting `dissimilarity`\n          to 'precomputed';\n        - or constructs a dissimilarity matrix from data using\n          Euclidean distances.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    n_iter_ : int\n        The number of iterations corresponding to the best stress.\n\n    See Also\n    --------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    TSNE : T-distributed Stochastic Neighbor Embedding.\n    Isomap : Manifold learning based on Isometric Mapping.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    References\n    ----------\n    .. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\n       Psychometrika, 29 (1964)\n\n    .. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\n       hypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n\n    .. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;\n       Groenen P. Springer Series in Statistics (1997)",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "metric": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "`normalized_stress=True`, and `metric=False` returns Stress-1.",
+            "description": ""
+          },
+          "When": {
+            "type": "``False`` (i.e. non-metric MDS), dissimilarities with 0 are considered as",
+            "description": ""
+          },
+          "missing": {
+            "type": "values.",
+            "description": ""
+          },
+          "n_init": {
+            "type": "int, default=4",
+            "description": ""
+          },
+          "determined": {
+            "type": "by the run with the smallest final stress.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=300",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations of the SMACOF algorithm for a single run.",
+            "description": ""
+          },
+          "verbose": {
+            "type": "int, default=0",
+            "description": ""
+          },
+          "Level": {
+            "type": "of verbosity.",
+            "description": ""
+          },
+          "eps": {
+            "type": "float, default=1e",
+            "description": "3"
+          },
+          "Relative": {
+            "type": "tolerance with respect to stress at which to declare",
+            "description": "convergence. The value of `eps` should be tuned separately depending"
+          },
+          "on": {
+            "type": "whether or not `normalized_stress` is being used.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of iterations corresponding to the best stress.",
+            "description": ""
+          },
+          "initializations": {
+            "type": "are used (``n_init``), each run of the algorithm is",
+            "description": ""
+          },
+          "computed": {
+            "type": "in parallel.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "the random number generator used to initialize the centers.",
+            "description": ""
+          },
+          "Pass": {
+            "type": "an int for reproducible results across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------\nsklearn.decomposition.PCA : Principal component analysis that is a linear"
+          },
+          "dissimilarity": {
+            "type": "{'euclidean', 'precomputed'}, default='euclidean'",
+            "description": ""
+          },
+          "Dissimilarity": {
+            "type": "measure to use:",
+            "description": "- 'euclidean':"
+          },
+          "Pairwise": {
+            "type": "dissimilarities between the points. Symmetric matrix that:",
+            "description": "- either uses a custom dissimilarity matrix by setting `dissimilarity`"
+          },
+          "normalized_stress": {
+            "type": "bool or \"auto\" default=\"auto\"",
+            "description": ""
+          },
+          "Whether": {
+            "type": "use and return normed stress value (Stress-1) instead of raw",
+            "description": ""
+          },
+          "stress": {
+            "type": "calculated by default. Only supported in non-metric MDS.",
+            "description": ".. versionadded:: 1.2\n.. versionchanged:: 1.4"
+          },
+          "embedding_": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "Stores": {
+            "type": "the position of the dataset in the embedding space.",
+            "description": ""
+          },
+          "stress_": {
+            "type": "float",
+            "description": ""
+          },
+          "disparities": {
+            "type": "and the distances for all constrained points).",
+            "description": ""
+          },
+          "A": {
+            "type": "value of 0 indicates \"perfect\" fit, 0.025 excellent, 0.05 good,",
+            "description": "0.1 fair, and 0.2 poor [1]_."
+          },
+          "dissimilarity_matrix_": {
+            "type": "ndarray of shape (n_samples, n_samples)",
+            "description": ""
+          },
+          "to": {
+            "type": "'precomputed';",
+            "description": "- or constructs a dissimilarity matrix from data using"
+          },
+          "Euclidean": {
+            "type": "distances.",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "n_iter_": {
+            "type": "int",
+            "description": ""
+          },
+          "dimensionality": {
+            "type": "reduction method.",
+            "description": "sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using"
+          },
+          "kernels": {
+            "type": "and PCA.",
+            "description": ""
+          },
+          "TSNE": {
+            "type": "T",
+            "description": "distributed Stochastic Neighbor Embedding."
+          },
+          "Isomap": {
+            "type": "Manifold learning based on Isometric Mapping.",
+            "description": ""
+          },
+          "LocallyLinearEmbedding": {
+            "type": "Manifold learning using Locally Linear Embedding.",
+            "description": ""
+          },
+          "SpectralEmbedding": {
+            "type": "Spectral embedding for non",
+            "description": "linear dimensionality.\nReferences\n----------\n.. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\nPsychometrika, 29 (1964)\n.. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\nhypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n.. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;"
+          },
+          "Groenen": {
+            "type": "P. Springer Series in Statistics (1997)",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.manifold import MDS\n>>> X, _ = load_digits(return_X_y=True)\n>>> X.shape\n(1797, 64)\n>>> embedding = MDS(n_components=2, normalized_stress='auto')\n>>> X_transformed = embedding.fit_transform(X[:100])\n>>> X_transformed.shape\n(100, 2)"
+          },
+          "For": {
+            "type": "a comparison of manifold learning techniques, see",
+            "description": ":ref:`sphx_glr_auto_examples_manifold_plot_compare_methods.py`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    TSNE : T-distributed Stochastic Neighbor Embedding.\n    Isomap : Manifold learning based on Isometric Mapping.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    References\n    ----------\n    .. [1] \"Nonmetric multidimensional scaling: a numerical method\" Kruskal, J.\n       Psychometrika, 29 (1964)\n\n    .. [2] \"Multidimensional scaling by optimizing goodness of fit to a nonmetric\n       hypothesis\" Kruskal, J. Psychometrika, 29, (1964)\n\n    .. [3] \"Modern Multidimensional Scaling - Theory and Applications\" Borg, I.;\n       Groenen P. Springer Series in Statistics (1997)\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import MDS\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = MDS(n_components=2, normalized_stress='auto')\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)\n\n    For a more detailed example of usage, see\n    :ref:`sphx_glr_auto_examples_manifold_plot_mds.py`.\n\n    For a comparison of manifold learning techniques, see\n    :ref:`sphx_glr_auto_examples_manifold_plot_compare_methods.py`.",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import MDS\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = MDS(n_components=2, normalized_stress='auto')\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)\n\n    For a more detailed example of usage, see\n    :ref:`sphx_glr_auto_examples_manifold_plot_mds.py`.\n\n    For a comparison of manifold learning techniques, see\n    :ref:`sphx_glr_auto_examples_manifold_plot_compare_methods.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, init=None)",
+          "documentation": {
+            "description": "Compute the position of the points in the embedding space.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or                 (n_samples, n_samples)\n            Input data. If ``dissimilarity=='precomputed'``, the input should\n            be the dissimilarity matrix.\n\n        y : Ignored\n            Not used, present for API consistency by convention.\n\n        init : ndarray of shape (n_samples, n_components), default=None\n            Starting configuration of the embedding to initialize the SMACOF\n            algorithm. By default, the algorithm is initialized with a randomly\n            chosen array.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or                 (n_samples, n_samples)"
+              },
+              "Input": {
+                "type": "data. If ``dissimilarity=='precomputed'``, the input should",
+                "description": ""
+              },
+              "be": {
+                "type": "the dissimilarity matrix.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": ""
+              },
+              "init": {
+                "type": "ndarray of shape (n_samples, n_components), default=None",
+                "description": ""
+              },
+              "Starting": {
+                "type": "configuration of the embedding to initialize the SMACOF",
+                "description": "algorithm. By default, the algorithm is initialized with a randomly"
+              },
+              "chosen": {
+                "type": "array.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, init=None)",
+          "documentation": {
+            "description": "Fit the data from `X`, and returns the embedded coordinates.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or                 (n_samples, n_samples)\n            Input data. If ``dissimilarity=='precomputed'``, the input should\n            be the dissimilarity matrix.\n\n        y : Ignored\n            Not used, present for API consistency by convention.\n\n        init : ndarray of shape (n_samples, n_components), default=None\n            Starting configuration of the embedding to initialize the SMACOF\n            algorithm. By default, the algorithm is initialized with a randomly\n            chosen array.",
+            "parameters": {
+              "X": {
+                "type": "transformed in the new space.",
+                "description": ""
+              },
+              "Input": {
+                "type": "data. If ``dissimilarity=='precomputed'``, the input should",
+                "description": ""
+              },
+              "be": {
+                "type": "the dissimilarity matrix.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": ""
+              },
+              "init": {
+                "type": "ndarray of shape (n_samples, n_components), default=None",
+                "description": ""
+              },
+              "Starting": {
+                "type": "configuration of the embedding to initialize the SMACOF",
+                "description": "algorithm. By default, the algorithm is initialized with a randomly"
+              },
+              "chosen": {
+                "type": "array.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray of shape (n_samples, n_components)\n            X transformed in the new space.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_fit_request",
+          "signature": "set_fit_request(self: sklearn.manifold._mds.MDS, *, init: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.manifold._mds.MDS",
+          "documentation": {
+            "description": "Request metadata passed to the ``fit`` method.",
+            "parameters": {
+              "init": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``init`` parameter in ``fit``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``fit`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``fit``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        init : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``init`` parameter in ``fit``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SpectralEmbedding",
+      "documentation": {
+        "description": "Spectral embedding for non-linear dimensionality reduction.\n\n    Forms an affinity matrix given by the specified function and\n    applies spectral decomposition to the corresponding graph laplacian.\n    The resulting transformation is given by the value of the\n    eigenvectors for each data point.\n\n    Note : Laplacian Eigenmaps is the actual algorithm implemented here.\n\n    Read more in the :ref:`User Guide <spectral_embedding>`.\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        The dimension of the projected subspace.\n\n    affinity : {'nearest_neighbors', 'rbf', 'precomputed',                 'precomputed_nearest_neighbors'} or callable,                 default='nearest_neighbors'\n        How to construct the affinity matrix.\n         - 'nearest_neighbors' : construct the affinity matrix by computing a\n           graph of nearest neighbors.\n         - 'rbf' : construct the affinity matrix by computing a radial basis\n           function (RBF) kernel.\n         - 'precomputed' : interpret ``X`` as a precomputed affinity matrix.\n         - 'precomputed_nearest_neighbors' : interpret ``X`` as a sparse graph\n           of precomputed nearest neighbors, and constructs the affinity matrix\n           by selecting the ``n_neighbors`` nearest neighbors.\n         - callable : use passed in function as affinity\n           the function takes in data matrix (n_samples, n_features)\n           and return affinity matrix (n_samples, n_samples).\n\n    gamma : float, default=None\n        Kernel coefficient for rbf kernel. If None, gamma will be set to\n        1/n_features.\n\n    random_state : int, RandomState instance or None, default=None\n        A pseudo random number generator used for the initialization\n        of the lobpcg eigen vectors decomposition when `eigen_solver ==\n        'amg'`, and for the K-Means initialization. Use an int to make\n        the results deterministic across calls (See\n        :term:`Glossary <random_state>`).\n\n        .. note::\n            When using `eigen_solver == 'amg'`,\n            it is necessary to also fix the global numpy seed with\n            `np.random.seed(int)` to get deterministic results. See\n            https://github.com/pyamg/pyamg/issues/139 for further\n            information.\n\n    eigen_solver : {'arpack', 'lobpcg', 'amg'}, default=None\n        The eigenvalue decomposition strategy to use. AMG requires pyamg\n        to be installed. It can be faster on very large, sparse problems.\n        If None, then ``'arpack'`` is used.\n\n    eigen_tol : float, default=\"auto\"\n        Stopping criterion for eigendecomposition of the Laplacian matrix.\n        If `eigen_tol=\"auto\"` then the passed tolerance will depend on the\n        `eigen_solver`:\n\n        - If `eigen_solver=\"arpack\"`, then `eigen_tol=0.0`;\n        - If `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`, then\n          `eigen_tol=None` which configures the underlying `lobpcg` solver to\n          automatically resolve the value according to their heuristics. See,\n          :func:`scipy.sparse.linalg.lobpcg` for details.\n\n        Note that when using `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`\n        values of `tol<1e-5` may lead to convergence issues and should be\n        avoided.\n\n        .. versionadded:: 1.2\n\n    n_neighbors : int, default=None\n        Number of nearest neighbors for nearest_neighbors graph building.\n        If None, n_neighbors will be set to max(n_samples/10, 1).\n\n    n_jobs : int, default=None\n        The number of parallel jobs to run.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    embedding_ : ndarray of shape (n_samples, n_components)\n        Spectral embedding of the training matrix.\n\n    affinity_matrix_ : ndarray of shape (n_samples, n_samples)\n        Affinity_matrix constructed from samples or precomputed.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    n_neighbors_ : int\n        Number of nearest neighbors effectively used.\n\n    See Also\n    --------\n    Isomap : Non-linear dimensionality reduction through Isometric Mapping.\n\n    References\n    ----------\n\n    - :doi:`A Tutorial on Spectral Clustering, 2007\n      Ulrike von Luxburg\n      <10.1007/s11222-007-9033-z>`\n\n    - `On Spectral Clustering: Analysis and an algorithm, 2001\n      Andrew Y. Ng, Michael I. Jordan, Yair Weiss\n      <https://citeseerx.ist.psu.edu/doc_view/pid/796c5d6336fc52aa84db575fb821c78918b65f58>`_\n\n    - :doi:`Normalized cuts and image segmentation, 2000\n      Jianbo Shi, Jitendra Malik\n      <10.1109/34.868688>`",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "The": {
+            "type": "number of parallel jobs to run.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "affinity": {
+            "type": "{'nearest_neighbors', 'rbf', 'precomputed',                 'precomputed_nearest_neighbors'} or callable,                 default='nearest_neighbors'",
+            "description": ""
+          },
+          "How": {
+            "type": "to construct the affinity matrix.",
+            "description": "- 'nearest_neighbors' : construct the affinity matrix by computing a"
+          },
+          "graph": {
+            "type": "of nearest neighbors.",
+            "description": "- 'rbf' : construct the affinity matrix by computing a radial basis"
+          },
+          "function": {
+            "type": "RBF",
+            "description": "kernel.\n- 'precomputed' : interpret ``X`` as a precomputed affinity matrix.\n- 'precomputed_nearest_neighbors' : interpret ``X`` as a sparse graph"
+          },
+          "of": {
+            "type": "the lobpcg eigen vectors decomposition when `eigen_solver ==",
+            "description": "'amg'`, and for the K-Means initialization. Use an int to make"
+          },
+          "by": {
+            "type": "selecting the ``n_neighbors`` nearest neighbors.",
+            "description": "- callable : use passed in function as affinity"
+          },
+          "the": {
+            "type": "results deterministic across calls (See",
+            "description": ":term:`Glossary <random_state>`).\n.. note::"
+          },
+          "and": {
+            "type": "return affinity matrix (n_samples, n_samples).",
+            "description": ""
+          },
+          "gamma": {
+            "type": "float, default=None",
+            "description": ""
+          },
+          "Kernel": {
+            "type": "coefficient for rbf kernel. If None, gamma will be set to",
+            "description": "1/n_features."
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "A": {
+            "type": "pseudo random number generator used for the initialization",
+            "description": ""
+          },
+          "When": {
+            "type": "using `eigen_solver == 'amg'`,",
+            "description": ""
+          },
+          "it": {
+            "type": "is necessary to also fix the global numpy seed with",
+            "description": "`np.random.seed(int)` to get deterministic results. See"
+          },
+          "https": {
+            "type": "//github.com/pyamg/pyamg/issues/139 for further",
+            "description": "information."
+          },
+          "eigen_solver": {
+            "type": "{'arpack', 'lobpcg', 'amg'}, default=None",
+            "description": ""
+          },
+          "to": {
+            "type": "be installed. It can be faster on very large, sparse problems.",
+            "description": ""
+          },
+          "If": {
+            "type": "None, n_neighbors will be set to max(n_samples/10, 1).",
+            "description": ""
+          },
+          "eigen_tol": {
+            "type": "float, default=\"auto\"",
+            "description": ""
+          },
+          "Stopping": {
+            "type": "criterion for eigendecomposition of the Laplacian matrix.",
+            "description": ""
+          },
+          "automatically": {
+            "type": "resolve the value according to their heuristics. See,",
+            "description": ":func:`scipy.sparse.linalg.lobpcg` for details."
+          },
+          "Note": {
+            "type": "that when using `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`",
+            "description": ""
+          },
+          "values": {
+            "type": "of `tol<1e-5` may lead to convergence issues and should be",
+            "description": "avoided.\n.. versionadded:: 1.2"
+          },
+          "n_neighbors": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "Number": {
+            "type": "of nearest neighbors effectively used.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "for": {
+            "type": "more details.",
+            "description": "Attributes\n----------"
+          },
+          "embedding_": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "Spectral": {
+            "type": "embedding of the training matrix.",
+            "description": ""
+          },
+          "affinity_matrix_": {
+            "type": "ndarray of shape (n_samples, n_samples)",
+            "description": ""
+          },
+          "Affinity_matrix": {
+            "type": "constructed from samples or precomputed.",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "n_neighbors_": {
+            "type": "int",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "Isomap": {
+            "type": "Non",
+            "description": "linear dimensionality reduction through Isometric Mapping.\nReferences\n----------\n- :doi:`A Tutorial on Spectral Clustering, 2007"
+          },
+          "Ulrike": {
+            "type": "von Luxburg",
+            "description": "<10.1007/s11222-007-9033-z>`\n- `On Spectral Clustering: Analysis and an algorithm, 2001"
+          },
+          "Andrew": {
+            "type": "Y. Ng, Michael I. Jordan, Yair Weiss",
+            "description": "<https://citeseerx.ist.psu.edu/doc_view/pid/796c5d6336fc52aa84db575fb821c78918b65f58>`_\n- :doi:`Normalized cuts and image segmentation, 2000"
+          },
+          "Jianbo": {
+            "type": "Shi, Jitendra Malik",
+            "description": "<10.1109/34.868688>`\nExamples\n--------\n>>> from sklearn.datasets import load_digits\n>>> from sklearn.manifold import SpectralEmbedding\n>>> X, _ = load_digits(return_X_y=True)\n>>> X.shape\n(1797, 64)\n>>> embedding = SpectralEmbedding(n_components=2)\n>>> X_transformed = embedding.fit_transform(X[:100])\n>>> X_transformed.shape\n(100, 2)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    Isomap : Non-linear dimensionality reduction through Isometric Mapping.\n\n    References\n    ----------\n\n    - :doi:`A Tutorial on Spectral Clustering, 2007\n      Ulrike von Luxburg\n      <10.1007/s11222-007-9033-z>`\n\n    - `On Spectral Clustering: Analysis and an algorithm, 2001\n      Andrew Y. Ng, Michael I. Jordan, Yair Weiss\n      <https://citeseerx.ist.psu.edu/doc_view/pid/796c5d6336fc52aa84db575fb821c78918b65f58>`_\n\n    - :doi:`Normalized cuts and image segmentation, 2000\n      Jianbo Shi, Jitendra Malik\n      <10.1109/34.868688>`\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import SpectralEmbedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = SpectralEmbedding(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)",
+        "notes": ": Laplacian Eigenmaps is the actual algorithm implemented here.\n\n    Read more in the :ref:`User Guide <spectral_embedding>`.\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        The dimension of the projected subspace.\n\n    affinity : {'nearest_neighbors', 'rbf', 'precomputed',                 'precomputed_nearest_neighbors'} or callable,                 default='nearest_neighbors'\n        How to construct the affinity matrix.\n         - 'nearest_neighbors' : construct the affinity matrix by computing a\n           graph of nearest neighbors.\n         - 'rbf' : construct the affinity matrix by computing a radial basis\n           function (RBF) kernel.\n         - 'precomputed' : interpret ``X`` as a precomputed affinity matrix.\n         - 'precomputed_nearest_neighbors' : interpret ``X`` as a sparse graph\n           of precomputed nearest neighbors, and constructs the affinity matrix\n           by selecting the ``n_neighbors`` nearest neighbors.\n         - callable : use passed in function as affinity\n           the function takes in data matrix (n_samples, n_features)\n           and return affinity matrix (n_samples, n_samples).\n\n    gamma : float, default=None\n        Kernel coefficient for rbf kernel. If None, gamma will be set to\n        1/n_features.\n\n    random_state : int, RandomState instance or None, default=None\n        A pseudo random number generator used for the initialization\n        of the lobpcg eigen vectors decomposition when `eigen_solver ==\n        'amg'`, and for the K-Means initialization. Use an int to make\n        the results deterministic across calls (See\n        :term:`Glossary <random_state>`).\n\n        .. note::\n            When using `eigen_solver == 'amg'`,\n            it is necessary to also fix the global numpy seed with\n            `np.random.seed(int)` to get deterministic results. See\n            https://github.com/pyamg/pyamg/issues/139 for further\n            information.\n\n    eigen_solver : {'arpack', 'lobpcg', 'amg'}, default=None\n        The eigenvalue decomposition strategy to use. AMG requires pyamg\n        to be installed. It can be faster on very large, sparse problems.\n        If None, then ``'arpack'`` is used.\n\n    eigen_tol : float, default=\"auto\"\n        Stopping criterion for eigendecomposition of the Laplacian matrix.\n        If `eigen_tol=\"auto\"` then the passed tolerance will depend on the\n        `eigen_solver`:\n\n        - If `eigen_solver=\"arpack\"`, then `eigen_tol=0.0`;\n        - If `eigen_solver=\"lobpcg\"` or `eigen_solver=\"amg\"`, then\n          `eigen_tol=None` which configures the underlying `lobpcg` solver to\n          automatically resolve the value according to their heuristics. See,\n          :func:`scipy.sparse.linalg.lobpcg` for details.",
+        "examples": "--------\n    >>> from sklearn.datasets import load_digits\n    >>> from sklearn.manifold import SpectralEmbedding\n    >>> X, _ = load_digits(return_X_y=True)\n    >>> X.shape\n    (1797, 64)\n    >>> embedding = SpectralEmbedding(n_components=2)\n    >>> X_transformed = embedding.fit_transform(X[:100])\n    >>> X_transformed.shape\n    (100, 2)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the model from data in X.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Training vector, where `n_samples` is the number of samples\n            and `n_features` is the number of features.\n\n            If affinity is \"precomputed\"\n            X : {array-like, sparse matrix}, shape (n_samples, n_samples),\n            Interpret X as precomputed adjacency graph computed from\n            samples.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix}, shape (n_samples, n_samples),"
+              },
+              "Training": {
+                "type": "vector, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_features` is the number of features.",
+                "description": ""
+              },
+              "If": {
+                "type": "affinity is \"precomputed\"",
+                "description": ""
+              },
+              "Interpret": {
+                "type": "X as precomputed adjacency graph computed from",
+                "description": "samples."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Returns": {
+                "type": "the instance itself.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the model from data in X and transform X.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Training vector, where `n_samples` is the number of samples\n            and `n_features` is the number of features.\n\n            If affinity is \"precomputed\"\n            X : {array-like, sparse matrix} of shape (n_samples, n_samples),\n            Interpret X as precomputed adjacency graph computed from\n            samples.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_samples),"
+              },
+              "Training": {
+                "type": "vector, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_features` is the number of features.",
+                "description": ""
+              },
+              "If": {
+                "type": "affinity is \"precomputed\"",
+                "description": ""
+              },
+              "Interpret": {
+                "type": "X as precomputed adjacency graph computed from",
+                "description": "samples."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "Spectral": {
+                "type": "embedding of the training matrix.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : array-like of shape (n_samples, n_components)\n            Spectral embedding of the training matrix.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TSNE",
+      "documentation": {
+        "description": "T-distributed Stochastic Neighbor Embedding.\n\n    t-SNE [1] is a tool to visualize high-dimensional data. It converts\n    similarities between data points to joint probabilities and tries\n    to minimize the Kullback-Leibler divergence between the joint\n    probabilities of the low-dimensional embedding and the\n    high-dimensional data. t-SNE has a cost function that is not convex,\n    i.e. with different initializations we can get different results.\n\n    It is highly recommended to use another dimensionality reduction\n    method (e.g. PCA for dense data or TruncatedSVD for sparse data)\n    to reduce the number of dimensions to a reasonable amount (e.g. 50)\n    if the number of features is very high. This will suppress some\n    noise and speed up the computation of pairwise distances between\n    samples. For more tips see Laurens van der Maaten's FAQ [2].\n\n    Read more in the :ref:`User Guide <t_sne>`.\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        Dimension of the embedded space.\n\n    perplexity : float, default=30.0\n        The perplexity is related to the number of nearest neighbors that\n        is used in other manifold learning algorithms. Larger datasets\n        usually require a larger perplexity. Consider selecting a value\n        between 5 and 50. Different values can result in significantly\n        different results. The perplexity must be less than the number\n        of samples.\n\n    early_exaggeration : float, default=12.0\n        Controls how tight natural clusters in the original space are in\n        the embedded space and how much space will be between them. For\n        larger values, the space between natural clusters will be larger\n        in the embedded space. Again, the choice of this parameter is not\n        very critical. If the cost function increases during initial\n        optimization, the early exaggeration factor or the learning rate\n        might be too high.\n\n    learning_rate : float or \"auto\", default=\"auto\"\n        The learning rate for t-SNE is usually in the range [10.0, 1000.0]. If\n        the learning rate is too high, the data may look like a 'ball' with any\n        point approximately equidistant from its nearest neighbours. If the\n        learning rate is too low, most points may look compressed in a dense\n        cloud with few outliers. If the cost function gets stuck in a bad local\n        minimum increasing the learning rate may help.\n        Note that many other t-SNE implementations (bhtsne, FIt-SNE, openTSNE,\n        etc.) use a definition of learning_rate that is 4 times smaller than\n        ours. So our learning_rate=200 corresponds to learning_rate=800 in\n        those other implementations. The 'auto' option sets the learning_rate\n        to `max(N / early_exaggeration / 4, 50)` where N is the sample size,\n        following [4] and [5].\n\n        .. versionchanged:: 1.2\n           The default value changed to `\"auto\"`.\n\n    max_iter : int, default=1000\n        Maximum number of iterations for the optimization. Should be at\n        least 250.\n\n        .. versionchanged:: 1.5\n            Parameter name changed from `n_iter` to `max_iter`.\n\n    n_iter_without_progress : int, default=300\n        Maximum number of iterations without progress before we abort the\n        optimization, used after 250 initial iterations with early\n        exaggeration. Note that progress is only checked every 50 iterations so\n        this value is rounded to the next multiple of 50.\n\n        .. versionadded:: 0.17\n           parameter *n_iter_without_progress* to control stopping criteria.\n\n    min_grad_norm : float, default=1e-7\n        If the gradient norm is below this threshold, the optimization will\n        be stopped.\n\n    metric : str or callable, default='euclidean'\n        The metric to use when calculating distance between instances in a\n        feature array. If metric is a string, it must be one of the options\n        allowed by scipy.spatial.distance.pdist for its metric parameter, or\n        a metric listed in pairwise.PAIRWISE_DISTANCE_FUNCTIONS.\n        If metric is \"precomputed\", X is assumed to be a distance matrix.\n        Alternatively, if metric is a callable function, it is called on each\n        pair of instances (rows) and the resulting value recorded. The callable\n        should take two arrays from X as input and return a value indicating\n        the distance between them. The default is \"euclidean\" which is\n        interpreted as squared euclidean distance.\n\n    metric_params : dict, default=None\n        Additional keyword arguments for the metric function.\n\n        .. versionadded:: 1.1\n\n    init : {\"random\", \"pca\"} or ndarray of shape (n_samples, n_components),             default=\"pca\"\n        Initialization of embedding.\n        PCA initialization cannot be used with precomputed distances and is\n        usually more globally stable than random initialization.\n\n        .. versionchanged:: 1.2\n           The default value changed to `\"pca\"`.\n\n    verbose : int, default=0\n        Verbosity level.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines the random number generator. Pass an int for reproducible\n        results across multiple function calls. Note that different\n        initializations might result in different local minima of the cost\n        function. See :term:`Glossary <random_state>`.\n\n    method : {'barnes_hut', 'exact'}, default='barnes_hut'\n        By default the gradient calculation algorithm uses Barnes-Hut\n        approximation running in O(NlogN) time. method='exact'\n        will run on the slower, but exact, algorithm in O(N^2) time. The\n        exact algorithm should be used when nearest-neighbor errors need\n        to be better than 3%. However, the exact method cannot scale to\n        millions of examples.\n\n        .. versionadded:: 0.17\n           Approximate optimization *method* via the Barnes-Hut.\n\n    angle : float, default=0.5\n        Only used if method='barnes_hut'\n        This is the trade-off between speed and accuracy for Barnes-Hut T-SNE.\n        'angle' is the angular size (referred to as theta in [3]) of a distant\n        node as measured from a point. If this size is below 'angle' then it is\n        used as a summary node of all points contained within it.\n        This method is not very sensitive to changes in this parameter\n        in the range of 0.2 - 0.8. Angle less than 0.2 has quickly increasing\n        computation time and angle greater 0.8 has quickly increasing error.\n\n    n_jobs : int, default=None\n        The number of parallel jobs to run for neighbors search. This parameter\n        has no impact when ``metric=\"precomputed\"`` or\n        (``metric=\"euclidean\"`` and ``method=\"exact\"``).\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n        .. versionadded:: 0.22\n\n    n_iter : int\n        Maximum number of iterations for the optimization. Should be at\n        least 250.\n\n        .. deprecated:: 1.5\n            `n_iter` was deprecated in version 1.5 and will be removed in 1.7.\n            Please use `max_iter` instead.\n\n    Attributes\n    ----------\n    embedding_ : array-like of shape (n_samples, n_components)\n        Stores the embedding vectors.\n\n    kl_divergence_ : float\n        Kullback-Leibler divergence after optimization.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    learning_rate_ : float\n        Effective learning rate.\n\n        .. versionadded:: 1.2\n\n    n_iter_ : int\n        Number of iterations run.\n\n    See Also\n    --------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    MDS : Manifold learning using multidimensional scaling.\n    Isomap : Manifold learning based on Isometric Mapping.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    Notes\n    -----\n    For an example of using :class:`~sklearn.manifold.TSNE` in combination with\n    :class:`~sklearn.neighbors.KNeighborsTransformer` see\n    :ref:`sphx_glr_auto_examples_neighbors_approximate_nearest_neighbors.py`.\n\n    References\n    ----------\n\n    [1] van der Maaten, L.J.P.; Hinton, G.E. Visualizing High-Dimensional Data\n        Using t-SNE. Journal of Machine Learning Research 9:2579-2605, 2008.\n\n    [2] van der Maaten, L.J.P. t-Distributed Stochastic Neighbor Embedding\n        https://lvdmaaten.github.io/tsne/\n\n    [3] L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms.\n        Journal of Machine Learning Research 15(Oct):3221-3245, 2014.\n        https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf\n\n    [4] Belkina, A. C., Ciccolella, C. O., Anno, R., Halpert, R., Spidlen, J.,\n        & Snyder-Cappione, J. E. (2019). Automated optimized parameters for\n        T-distributed stochastic neighbor embedding improve visualization\n        and analysis of large datasets. Nature Communications, 10(1), 1-12.\n\n    [5] Kobak, D., & Berens, P. (2019). The art of using t-SNE for single-cell\n        transcriptomics. Nature Communications, 10(1), 1-14.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Dimension": {
+            "type": "of the embedded space.",
+            "description": ""
+          },
+          "perplexity": {
+            "type": "float, default=30.0",
+            "description": ""
+          },
+          "The": {
+            "type": "number of parallel jobs to run for neighbors search. This parameter",
+            "description": ""
+          },
+          "is": {
+            "type": "used in other manifold learning algorithms. Larger datasets",
+            "description": ""
+          },
+          "usually": {
+            "type": "more globally stable than random initialization.",
+            "description": ".. versionchanged:: 1.2"
+          },
+          "between": {
+            "type": "5 and 50. Different values can result in significantly",
+            "description": ""
+          },
+          "different": {
+            "type": "results. The perplexity must be less than the number",
+            "description": ""
+          },
+          "of": {
+            "type": "samples.",
+            "description": ""
+          },
+          "early_exaggeration": {
+            "type": "float, default=12.0",
+            "description": ""
+          },
+          "Controls": {
+            "type": "how tight natural clusters in the original space are in",
+            "description": ""
+          },
+          "the": {
+            "type": "distance between them. The default is \"euclidean\" which is",
+            "description": ""
+          },
+          "larger": {
+            "type": "values, the space between natural clusters will be larger",
+            "description": ""
+          },
+          "in": {
+            "type": "the range of 0.2 - 0.8. Angle less than 0.2 has quickly increasing",
+            "description": ""
+          },
+          "very": {
+            "type": "critical. If the cost function increases during initial",
+            "description": "optimization, the early exaggeration factor or the learning rate"
+          },
+          "might": {
+            "type": "be too high.",
+            "description": ""
+          },
+          "learning_rate": {
+            "type": "float or \"auto\", default=\"auto\"",
+            "description": ""
+          },
+          "point": {
+            "type": "approximately equidistant from its nearest neighbours. If the",
+            "description": ""
+          },
+          "learning": {
+            "type": "rate is too low, most points may look compressed in a dense",
+            "description": ""
+          },
+          "cloud": {
+            "type": "with few outliers. If the cost function gets stuck in a bad local",
+            "description": ""
+          },
+          "minimum": {
+            "type": "increasing the learning rate may help.",
+            "description": ""
+          },
+          "Note": {
+            "type": "that many other t-SNE implementations (bhtsne, FIt-SNE, openTSNE,",
+            "description": "etc.) use a definition of learning_rate that is 4 times smaller than\nours. So our learning_rate=200 corresponds to learning_rate=800 in"
+          },
+          "those": {
+            "type": "other implementations. The 'auto' option sets the learning_rate",
+            "description": ""
+          },
+          "to": {
+            "type": "be better than 3%. However, the exact method cannot scale to",
+            "description": ""
+          },
+          "following": {
+            "type": "[4] and [5].",
+            "description": ".. versionchanged:: 1.2"
+          },
+          "max_iter": {
+            "type": "int, default=1000",
+            "description": ""
+          },
+          "Maximum": {
+            "type": "number of iterations for the optimization. Should be at",
+            "description": ""
+          },
+          "least": {
+            "type": "250.",
+            "description": ".. deprecated:: 1.5\n`n_iter` was deprecated in version 1.5 and will be removed in 1.7."
+          },
+          "Parameter": {
+            "type": "name changed from `n_iter` to `max_iter`.",
+            "description": ""
+          },
+          "n_iter_without_progress": {
+            "type": "int, default=300",
+            "description": ""
+          },
+          "this": {
+            "type": "value is rounded to the next multiple of 50.",
+            "description": ".. versionadded:: 0.17"
+          },
+          "parameter": {
+            "type": "*n_iter_without_progress* to control stopping criteria.",
+            "description": ""
+          },
+          "min_grad_norm": {
+            "type": "float, default=1e",
+            "description": "7"
+          },
+          "If": {
+            "type": "metric is \"precomputed\", X is assumed to be a distance matrix.",
+            "description": "Alternatively, if metric is a callable function, it is called on each"
+          },
+          "be": {
+            "type": "stopped.",
+            "description": ""
+          },
+          "metric": {
+            "type": "str or callable, default='euclidean'",
+            "description": ""
+          },
+          "feature": {
+            "type": "array. If metric is a string, it must be one of the options",
+            "description": ""
+          },
+          "allowed": {
+            "type": "by scipy.spatial.distance.pdist for its metric parameter, or",
+            "description": ""
+          },
+          "a": {
+            "type": "metric listed in pairwise.PAIRWISE_DISTANCE_FUNCTIONS.",
+            "description": ""
+          },
+          "pair": {
+            "type": "of instances (rows) and the resulting value recorded. The callable",
+            "description": ""
+          },
+          "should": {
+            "type": "take two arrays from X as input and return a value indicating",
+            "description": ""
+          },
+          "interpreted": {
+            "type": "as squared euclidean distance.",
+            "description": ""
+          },
+          "metric_params": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "Additional": {
+            "type": "keyword arguments for the metric function.",
+            "description": ".. versionadded:: 1.1"
+          },
+          "init": {
+            "type": "{\"random\", \"pca\"} or ndarray of shape (n_samples, n_components),             default=\"pca\"",
+            "description": ""
+          },
+          "Initialization": {
+            "type": "of embedding.",
+            "description": ""
+          },
+          "PCA": {
+            "type": "initialization cannot be used with precomputed distances and is",
+            "description": ""
+          },
+          "verbose": {
+            "type": "int, default=0",
+            "description": ""
+          },
+          "Verbosity": {
+            "type": "level.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "the random number generator. Pass an int for reproducible",
+            "description": ""
+          },
+          "results": {
+            "type": "across multiple function calls. Note that different",
+            "description": ""
+          },
+          "initializations": {
+            "type": "might result in different local minima of the cost",
+            "description": "function. See :term:`Glossary <random_state>`."
+          },
+          "method": {
+            "type": "{'barnes_hut', 'exact'}, default='barnes_hut'",
+            "description": ""
+          },
+          "By": {
+            "type": "default the gradient calculation algorithm uses Barnes-Hut",
+            "description": ""
+          },
+          "approximation": {
+            "type": "running in O(NlogN) time. method='exact'",
+            "description": ""
+          },
+          "will": {
+            "type": "run on the slower, but exact, algorithm in O(N^2) time. The",
+            "description": ""
+          },
+          "exact": {
+            "type": "algorithm should be used when nearest-neighbor errors need",
+            "description": ""
+          },
+          "millions": {
+            "type": "of examples.",
+            "description": ".. versionadded:: 0.17"
+          },
+          "Approximate": {
+            "type": "optimization *method* via the Barnes-Hut.",
+            "description": ""
+          },
+          "angle": {
+            "type": "float, default=0.5",
+            "description": ""
+          },
+          "Only": {
+            "type": "used if method='barnes_hut'",
+            "description": ""
+          },
+          "This": {
+            "type": "method is not very sensitive to changes in this parameter",
+            "description": ""
+          },
+          "node": {
+            "type": "as measured from a point. If this size is below 'angle' then it is",
+            "description": ""
+          },
+          "used": {
+            "type": "as a summary node of all points contained within it.",
+            "description": ""
+          },
+          "computation": {
+            "type": "time and angle greater 0.8 has quickly increasing error.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "for": {
+            "type": "more details.",
+            "description": ".. versionadded:: 0.22"
+          },
+          "n_iter": {
+            "type": "int",
+            "description": ""
+          },
+          "Please": {
+            "type": "use `max_iter` instead.",
+            "description": "Attributes\n----------"
+          },
+          "embedding_": {
+            "type": "array",
+            "description": "like of shape (n_samples, n_components)"
+          },
+          "Stores": {
+            "type": "the embedding vectors.",
+            "description": ""
+          },
+          "kl_divergence_": {
+            "type": "float",
+            "description": "Kullback-Leibler divergence after optimization."
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of iterations run.",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "learning_rate_": {
+            "type": "float",
+            "description": ""
+          },
+          "Effective": {
+            "type": "learning rate.",
+            "description": ".. versionadded:: 1.2"
+          },
+          "n_iter_": {
+            "type": "int",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------\nsklearn.decomposition.PCA : Principal component analysis that is a linear"
+          },
+          "dimensionality": {
+            "type": "reduction method.",
+            "description": "sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using"
+          },
+          "kernels": {
+            "type": "and PCA.",
+            "description": ""
+          },
+          "MDS": {
+            "type": "Manifold learning using multidimensional scaling.",
+            "description": ""
+          },
+          "Isomap": {
+            "type": "Manifold learning based on Isometric Mapping.",
+            "description": ""
+          },
+          "LocallyLinearEmbedding": {
+            "type": "Manifold learning using Locally Linear Embedding.",
+            "description": ""
+          },
+          "SpectralEmbedding": {
+            "type": "Spectral embedding for non",
+            "description": "linear dimensionality.\nNotes\n-----"
+          },
+          "For": {
+            "type": "an example of using :class:`~sklearn.manifold.TSNE` in combination with",
+            "description": ":class:`~sklearn.neighbors.KNeighborsTransformer` see\n:ref:`sphx_glr_auto_examples_neighbors_approximate_nearest_neighbors.py`.\nReferences\n----------\n[1] van der Maaten, L.J.P.; Hinton, G.E. Visualizing High-Dimensional Data"
+          },
+          "Using": {
+            "type": "t-SNE. Journal of Machine Learning Research 9:2579-2605, 2008.",
+            "description": "[2] van der Maaten, L.J.P. t-Distributed Stochastic Neighbor Embedding"
+          },
+          "https": {
+            "type": "//lvdmaaten.github.io/publications/papers/JMLR_2014.pdf",
+            "description": "[4] Belkina, A. C., Ciccolella, C. O., Anno, R., Halpert, R., Spidlen, J.,\n& Snyder-Cappione, J. E. (2019). Automated optimized parameters for\nT-distributed stochastic neighbor embedding improve visualization"
+          },
+          "Journal": {
+            "type": "of Machine Learning Research 15(Oct):3221-3245, 2014.",
+            "description": ""
+          },
+          "and": {
+            "type": "analysis of large datasets. Nature Communications, 10(1), 1-12.",
+            "description": "[5] Kobak, D., & Berens, P. (2019). The art of using t-SNE for single-cell\ntranscriptomics. Nature Communications, 10(1), 1-14.\nExamples\n--------\n>>> import numpy as np\n>>> from sklearn.manifold import TSNE\n>>> X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])\n>>> X_embedded = TSNE(n_components=2, learning_rate='auto',\n...                   init='random', perplexity=3).fit_transform(X)\n>>> X_embedded.shape\n(4, 2)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    MDS : Manifold learning using multidimensional scaling.\n    Isomap : Manifold learning based on Isometric Mapping.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    Notes\n    -----\n    For an example of using :class:`~sklearn.manifold.TSNE` in combination with\n    :class:`~sklearn.neighbors.KNeighborsTransformer` see\n    :ref:`sphx_glr_auto_examples_neighbors_approximate_nearest_neighbors.py`.\n\n    References\n    ----------\n\n    [1] van der Maaten, L.J.P.; Hinton, G.E. Visualizing High-Dimensional Data\n        Using t-SNE. Journal of Machine Learning Research 9:2579-2605, 2008.\n\n    [2] van der Maaten, L.J.P. t-Distributed Stochastic Neighbor Embedding\n        https://lvdmaaten.github.io/tsne/\n\n    [3] L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms.\n        Journal of Machine Learning Research 15(Oct):3221-3245, 2014.\n        https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf\n\n    [4] Belkina, A. C., Ciccolella, C. O., Anno, R., Halpert, R., Spidlen, J.,\n        & Snyder-Cappione, J. E. (2019). Automated optimized parameters for\n        T-distributed stochastic neighbor embedding improve visualization\n        and analysis of large datasets. Nature Communications, 10(1), 1-12.\n\n    [5] Kobak, D., & Berens, P. (2019). The art of using t-SNE for single-cell\n        transcriptomics. Nature Communications, 10(1), 1-14.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.manifold import TSNE\n    >>> X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])\n    >>> X_embedded = TSNE(n_components=2, learning_rate='auto',\n    ...                   init='random', perplexity=3).fit_transform(X)\n    >>> X_embedded.shape\n    (4, 2)",
+        "notes": "that many other t-SNE implementations (bhtsne, FIt-SNE, openTSNE,\n        etc.) use a definition of learning_rate that is 4 times smaller than\n        ours. So our learning_rate=200 corresponds to learning_rate=800 in\n        those other implementations. The 'auto' option sets the learning_rate\n        to `max(N / early_exaggeration / 4, 50)` where N is the sample size,\n        following [4] and [5].\n\n        .. versionchanged:: 1.2\n           The default value changed to `\"auto\"`.\n\n    max_iter : int, default=1000\n        Maximum number of iterations for the optimization. Should be at\n        least 250.\n\n        .. versionchanged:: 1.5\n            Parameter name changed from `n_iter` to `max_iter`.\n\n    n_iter_without_progress : int, default=300\n        Maximum number of iterations without progress before we abort the\n        optimization, used after 250 initial iterations with early\n        exaggeration. Note that progress is only checked every 50 iterations so\n        this value is rounded to the next multiple of 50.\n\n        .. versionadded:: 0.17\n           parameter *n_iter_without_progress* to control stopping criteria.\n\n    min_grad_norm : float, default=1e-7\n        If the gradient norm is below this threshold, the optimization will\n        be stopped.\n\n    metric : str or callable, default='euclidean'\n        The metric to use when calculating distance between instances in a\n        feature array. If metric is a string, it must be one of the options\n        allowed by scipy.spatial.distance.pdist for its metric parameter, or\n        a metric listed in pairwise.PAIRWISE_DISTANCE_FUNCTIONS.\n        If metric is \"precomputed\", X is assumed to be a distance matrix.\n        Alternatively, if metric is a callable function, it is called on each\n        pair of instances (rows) and the resulting value recorded. The callable\n        should take two arrays from X as input and return a value indicating\n        the distance between them. The default is \"euclidean\" which is\n        interpreted as squared euclidean distance.\n\n    metric_params : dict, default=None\n        Additional keyword arguments for the metric function.\n\n        .. versionadded:: 1.1\n\n    init : {\"random\", \"pca\"} or ndarray of shape (n_samples, n_components),             default=\"pca\"\n        Initialization of embedding.\n        PCA initialization cannot be used with precomputed distances and is\n        usually more globally stable than random initialization.\n\n        .. versionchanged:: 1.2\n           The default value changed to `\"pca\"`.\n\n    verbose : int, default=0\n        Verbosity level.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines the random number generator. Pass an int for reproducible\n        results across multiple function calls. Note that different\n        initializations might result in different local minima of the cost\n        function. See :term:`Glossary <random_state>`.\n\n    method : {'barnes_hut', 'exact'}, default='barnes_hut'\n        By default the gradient calculation algorithm uses Barnes-Hut\n        approximation running in O(NlogN) time. method='exact'\n        will run on the slower, but exact, algorithm in O(N^2) time. The\n        exact algorithm should be used when nearest-neighbor errors need\n        to be better than 3%. However, the exact method cannot scale to\n        millions of examples.\n\n        .. versionadded:: 0.17\n           Approximate optimization *method* via the Barnes-Hut.\n\n    angle : float, default=0.5\n        Only used if method='barnes_hut'\n        This is the trade-off between speed and accuracy for Barnes-Hut T-SNE.\n        'angle' is the angular size (referred to as theta in [3]) of a distant\n        node as measured from a point. If this size is below 'angle' then it is\n        used as a summary node of all points contained within it.\n        This method is not very sensitive to changes in this parameter\n        in the range of 0.2 - 0.8. Angle less than 0.2 has quickly increasing\n        computation time and angle greater 0.8 has quickly increasing error.\n\n    n_jobs : int, default=None\n        The number of parallel jobs to run for neighbors search. This parameter\n        has no impact when ``metric=\"precomputed\"`` or\n        (``metric=\"euclidean\"`` and ``method=\"exact\"``).\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n        .. versionadded:: 0.22\n\n    n_iter : int\n        Maximum number of iterations for the optimization. Should be at\n        least 250.\n\n        .. deprecated:: 1.5\n            `n_iter` was deprecated in version 1.5 and will be removed in 1.7.\n            Please use `max_iter` instead.\n\n    Attributes\n    ----------\n    embedding_ : array-like of shape (n_samples, n_components)\n        Stores the embedding vectors.\n\n    kl_divergence_ : float\n        Kullback-Leibler divergence after optimization.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    learning_rate_ : float\n        Effective learning rate.\n\n        .. versionadded:: 1.2\n\n    n_iter_ : int\n        Number of iterations run.\n\n    See Also\n    --------\n    sklearn.decomposition.PCA : Principal component analysis that is a linear\n        dimensionality reduction method.\n    sklearn.decomposition.KernelPCA : Non-linear dimensionality reduction using\n        kernels and PCA.\n    MDS : Manifold learning using multidimensional scaling.\n    Isomap : Manifold learning based on Isometric Mapping.\n    LocallyLinearEmbedding : Manifold learning using Locally Linear Embedding.\n    SpectralEmbedding : Spectral embedding for non-linear dimensionality.\n\n    Notes\n    -----\n    For an example of using :class:`~sklearn.manifold.TSNE` in combination with\n    :class:`~sklearn.neighbors.KNeighborsTransformer` see\n    :ref:`sphx_glr_auto_examples_neighbors_approximate_nearest_neighbors.py`.\n\n    References\n    ----------\n\n    [1] van der Maaten, L.J.P.; Hinton, G.E. Visualizing High-Dimensional Data\n        Using t-SNE. Journal of Machine Learning Research 9:2579-2605, 2008.\n\n    [2] van der Maaten, L.J.P. t-Distributed Stochastic Neighbor Embedding\n        https://lvdmaaten.github.io/tsne/\n\n    [3] L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms.\n        Journal of Machine Learning Research 15(Oct):3221-3245, 2014.\n        https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf\n\n    [4] Belkina, A. C., Ciccolella, C. O., Anno, R., Halpert, R., Spidlen, J.,\n        & Snyder-Cappione, J. E. (2019). Automated optimized parameters for\n        T-distributed stochastic neighbor embedding improve visualization\n        and analysis of large datasets. Nature Communications, 10(1), 1-12.\n\n    [5] Kobak, D., & Berens, P. (2019). The art of using t-SNE for single-cell\n        transcriptomics. Nature Communications, 10(1), 1-14.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.manifold import TSNE\n    >>> X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])\n    >>> X_embedded = TSNE(n_components=2, learning_rate='auto',\n    ...                   init='random', perplexity=3).fit_transform(X)\n    >>> X_embedded.shape\n    (4, 2)",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.manifold import TSNE\n    >>> X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])\n    >>> X_embedded = TSNE(n_components=2, learning_rate='auto',\n    ...                   init='random', perplexity=3).fit_transform(X)\n    >>> X_embedded.shape\n    (4, 2)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit X into an embedded space.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features) or             (n_samples, n_samples)\n            If the metric is 'precomputed' X must be a square distance\n            matrix. Otherwise it contains a sample per row. If the method\n            is 'exact', X may be a sparse matrix of type 'csr', 'csc'\n            or 'coo'. If the method is 'barnes_hut' and the metric is\n            'precomputed', X may be a precomputed sparse graph.\n\n        y : None\n            Ignored.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features) or             (n_samples, n_samples)"
+              },
+              "If": {
+                "type": "the metric is 'precomputed' X must be a square distance",
+                "description": "matrix. Otherwise it contains a sample per row. If the method"
+              },
+              "is": {
+                "type": "'exact', X may be a sparse matrix of type 'csr', 'csc'",
+                "description": ""
+              },
+              "or": {
+                "type": "'coo'. If the method is 'barnes_hut' and the metric is",
+                "description": "'precomputed', X may be a precomputed sparse graph."
+              },
+              "y": {
+                "type": "None",
+                "description": "Ignored.\nReturns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Fit X into an embedded space and return that transformed output.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features) or             (n_samples, n_samples)\n            If the metric is 'precomputed' X must be a square distance\n            matrix. Otherwise it contains a sample per row. If the method\n            is 'exact', X may be a sparse matrix of type 'csr', 'csc'\n            or 'coo'. If the method is 'barnes_hut' and the metric is\n            'precomputed', X may be a precomputed sparse graph.\n\n        y : None\n            Ignored.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features) or             (n_samples, n_samples)"
+              },
+              "If": {
+                "type": "the metric is 'precomputed' X must be a square distance",
+                "description": "matrix. Otherwise it contains a sample per row. If the method"
+              },
+              "is": {
+                "type": "'exact', X may be a sparse matrix of type 'csr', 'csc'",
+                "description": ""
+              },
+              "or": {
+                "type": "'coo'. If the method is 'barnes_hut' and the metric is",
+                "description": "'precomputed', X may be a precomputed sparse graph."
+              },
+              "y": {
+                "type": "None",
+                "description": "Ignored.\nReturns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Embedding": {
+                "type": "of the training data in low-dimensional space.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray of shape (n_samples, n_components)\n            Embedding of the training data in low-dimensional space.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

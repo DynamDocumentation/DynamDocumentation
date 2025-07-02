@@ -1,0 +1,581 @@
+{
+  "description": "Custom warnings and errors used across scikit-learn.",
+  "functions": [],
+  "classes": [
+    {
+      "name": "ConvergenceWarning",
+      "documentation": {
+        "description": "Custom warning to capture convergence problems\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.utils.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "DataConversionWarning",
+      "documentation": {
+        "description": "Warning used to notify implicit data conversions happening in the code.\n\n    This warning occurs when some input data needs to be converted or\n    interpreted in a way that may not match the user's expectations.\n\n    For example, this warning may occur when the user\n        - passes an integer array to a function which expects float input and\n          will convert the input\n        - requests a non-copying operation, but a copy is required to meet the\n          implementation's data-type expectations;\n        - passes an input whose shape can be interpreted ambiguously.\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.utils.validation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "DataDimensionalityWarning",
+      "documentation": {
+        "description": "Custom warning to notify potential issues with data dimensionality.\n\n    For example, in random projection, this warning is raised when the\n    number of components, which quantifies the dimensionality of the target\n    projection space, is higher than the number of features, which quantifies\n    the dimensionality of the original source space, to imply that the\n    dimensionality of the problem will not be reduced.\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.utils.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "EfficiencyWarning",
+      "documentation": {
+        "description": "Warning used to notify the user of inefficient computation.\n\n    This warning notifies the user that the efficiency may not be optimal due\n    to some reason which may be included as a part of the warning message.\n    This may be subclassed into a more specific Warning class.\n\n    .. versionadded:: 0.18",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "EstimatorCheckFailedWarning",
+      "documentation": {
+        "description": "Warning raised when an estimator check from the common tests fails.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator object",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "instance for which the test failed.",
+            "description": ""
+          },
+          "check_name": {
+            "type": "str",
+            "description": ""
+          },
+          "Name": {
+            "type": "of the check that failed.",
+            "description": ""
+          },
+          "exception": {
+            "type": "Exception",
+            "description": ""
+          },
+          "Exception": {
+            "type": "raised by the failed check.",
+            "description": ""
+          },
+          "status": {
+            "type": "str",
+            "description": ""
+          },
+          "Status": {
+            "type": "of the check.",
+            "description": ""
+          },
+          "expected_to_fail": {
+            "type": "bool",
+            "description": ""
+          },
+          "Whether": {
+            "type": "the check was expected to fail.",
+            "description": ""
+          },
+          "expected_to_fail_reason": {
+            "type": "str",
+            "description": ""
+          },
+          "Reason": {
+            "type": "for the expected failure.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "FitFailedWarning",
+      "documentation": {
+        "description": "Warning class used if there is an error while fitting the estimator.\n\n    This Warning is used in meta estimators GridSearchCV and RandomizedSearchCV\n    and the cross-validation helper function cross_val_score to warn when there\n    is an error while fitting the estimator.\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.cross_validation.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "InconsistentVersionWarning",
+      "documentation": {
+        "description": "Warning raised when an estimator is unpickled with a inconsistent version.",
+        "parameters": {
+          "estimator_name": {
+            "type": "str",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "name.",
+            "description": ""
+          },
+          "current_sklearn_version": {
+            "type": "str",
+            "description": ""
+          },
+          "Current": {
+            "type": "scikit-learn version.",
+            "description": ""
+          },
+          "original_sklearn_version": {
+            "type": "str",
+            "description": ""
+          },
+          "Original": {
+            "type": "scikit-learn version.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "NotFittedError",
+      "documentation": {
+        "description": "Exception class to raise if estimator is used before fitting.\n\n    This class inherits from both ValueError and AttributeError to help with\n    exception handling and backward compatibility.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.svm import LinearSVC\n    >>> from sklearn.exceptions import NotFittedError\n    >>> try:\n    ...     LinearSVC().predict([[1, 2], [2, 3], [3, 4]])\n    ... except NotFittedError as e:\n    ...     print(repr(e))\n    NotFittedError(\"This LinearSVC instance is not fitted yet. Call 'fit' with\n    appropriate arguments before using this estimator.\"...)\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.utils.validation."
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "PositiveSpectrumWarning",
+      "documentation": {
+        "description": "Warning raised when the eigenvalues of a PSD matrix have issues\n\n    This warning is typically raised by ``_check_psd_eigenvalues`` when the\n    eigenvalues of a positive semidefinite (PSD) matrix such as a gram matrix\n    (kernel) present significant negative eigenvalues, or bad conditioning i.e.\n    very small non-zero eigenvalues compared to the largest eigenvalue.\n\n    .. versionadded:: 0.22",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SkipTestWarning",
+      "documentation": {
+        "description": "Warning class used to notify the user of a test that was skipped.\n\n    For example, one of the estimator checks requires a pandas import.\n    If the pandas package cannot be imported, the test will be skipped rather\n    than register as a failure.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UndefinedMetricWarning",
+      "documentation": {
+        "description": "Warning used when the metric is invalid\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.base.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "UnsetMetadataPassedError",
+      "documentation": {
+        "description": "Exception class to raise if a metadata is passed which is not explicitly         requested (metadata=True) or not requested (metadata=False).\n\n    .. versionadded:: 1.3",
+        "parameters": {
+          "message": {
+            "type": "str",
+            "description": ""
+          },
+          "The": {
+            "type": "message",
+            "description": ""
+          },
+          "unrequested_params": {
+            "type": "dict",
+            "description": ""
+          },
+          "A": {
+            "type": "dictionary of routed parameters.",
+            "description": ""
+          },
+          "routed_params": {
+            "type": "dict",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -21,12 +21,13 @@ fun Application.configureDatabases() {
     
     try {
         val db = Database.connect(provideDataSource(jdbcURL, driverClassName))
-        
+        println("Connecting to database with URL: $jdbcURL")
         // Create tables
         transaction(db) {
             // Adicione esta linha para apagar as tabelas antes de recriar
-            SchemaUtils.drop(Namespaces, Entities, Variables, Constants, ProcessedFiles)
-            SchemaUtils.create(Namespaces, Entities, Variables, Constants, ProcessedFiles)
+            SchemaUtils.drop(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles)
+            SchemaUtils.create(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles)
+            println("Database tables recreated successfully")
             logger.info("Database tables recreated successfully")
         }
         

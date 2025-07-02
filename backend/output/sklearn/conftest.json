@@ -1,0 +1,2401 @@
+{
+  "description": "No description available",
+  "functions": [
+    {
+      "name": "fetch_20newsgroups",
+      "signature": "fetch_20newsgroups(*, data_home=None, subset='train', categories=None, shuffle=True, random_state=42, remove=(), download_if_missing=True, return_X_y=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the filenames and data from the 20 newsgroups dataset (classification).\n\n    Download it if necessary.\n\n    =================   ==========\n    Classes                     20\n    Samples total            18846\n    Dimensionality               1\n    Features                  text\n    =================   ==========\n\n    Read more in the :ref:`User Guide <20newsgroups_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify a download and cache folder for the datasets. If None,\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    subset : {'train', 'test', 'all'}, default='train'\n        Select the dataset to load: 'train' for the training set, 'test'\n        for the test set, 'all' for both, with shuffled ordering.\n\n    categories : array-like, dtype=str, default=None\n        If None (default), load all the categories.\n        If not None, list of category names to load (other categories\n        ignored).\n\n    shuffle : bool, default=True\n        Whether or not to shuffle the data: might be important for models that\n        make the assumption that the samples are independent and identically\n        distributed (i.i.d.), such as stochastic gradient descent.\n\n    random_state : int, RandomState instance or None, default=42\n        Determines random number generation for dataset shuffling. Pass an int\n        for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    remove : tuple, default=()\n        May contain any subset of ('headers', 'footers', 'quotes'). Each of\n        these are kinds of text that will be detected and removed from the\n        newsgroup posts, preventing classifiers from overfitting on\n        metadata.\n\n        'headers' removes newsgroup headers, 'footers' removes blocks at the\n        ends of posts that look like signatures, and 'quotes' removes lines\n        that appear to be quoting another post.\n\n        'headers' follows an exact standard; the other filters are not always\n        correct.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns `(data.data, data.target)` instead of a Bunch\n        object.\n\n        .. versionadded:: 0.22\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    bunch : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : list of shape (n_samples,)\n            The data list to learn.\n        target: ndarray of shape (n_samples,)\n            The target labels.\n        filenames: list of shape (n_samples,)\n            The path to the location of the data.\n        DESCR: str\n            The full description of the dataset.\n        target_names: list of shape (n_classes,)\n            The names of target classes.\n\n    (data, target) : tuple if `return_X_y=True`\n        A tuple of two ndarrays. The first contains a 2D array of shape\n        (n_samples, n_classes) with each row representing one sample and each\n        column representing the features. The second array of shape\n        (n_samples,) contains the target samples.\n\n        .. versionadded:: 0.22",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "a download and cache folder for the datasets. If None,",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "subset": {
+            "type": "{'train', 'test', 'all'}, default='train'",
+            "description": ""
+          },
+          "Select": {
+            "type": "the dataset to load: 'train' for the training set, 'test'",
+            "description": ""
+          },
+          "for": {
+            "type": "reproducible output across multiple function calls.",
+            "description": ""
+          },
+          "categories": {
+            "type": "array",
+            "description": "like, dtype=str, default=None"
+          },
+          "If": {
+            "type": "True, returns `(data.data, data.target)` instead of a Bunch",
+            "description": "object.\n.. versionadded:: 0.22"
+          },
+          "shuffle": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "or not to shuffle the data: might be important for models that",
+            "description": ""
+          },
+          "make": {
+            "type": "the assumption that the samples are independent and identically",
+            "description": ""
+          },
+          "distributed": {
+            "type": "i.i.d.",
+            "description": ", such as stochastic gradient descent."
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=42",
+            "description": ""
+          },
+          "Determines": {
+            "type": "random number generation for dataset shuffling. Pass an int",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "remove": {
+            "type": "tuple, default=()",
+            "description": ""
+          },
+          "May": {
+            "type": "contain any subset of ('headers', 'footers', 'quotes'). Each of",
+            "description": ""
+          },
+          "these": {
+            "type": "are kinds of text that will be detected and removed from the",
+            "description": ""
+          },
+          "newsgroup": {
+            "type": "posts, preventing classifiers from overfitting on",
+            "description": "metadata.\n'headers' removes newsgroup headers, 'footers' removes blocks at the"
+          },
+          "ends": {
+            "type": "of posts that look like signatures, and 'quotes' removes lines",
+            "description": ""
+          },
+          "that": {
+            "type": "appear to be quoting another post.",
+            "description": "'headers' follows an exact standard; the other filters are not always\ncorrect."
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "bunch": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "data": {
+            "type": "list of shape (n_samples,)",
+            "description": ""
+          },
+          "The": {
+            "type": "names of target classes.",
+            "description": "(data, target) : tuple if `return_X_y=True`"
+          },
+          "target": {
+            "type": "ndarray of shape (n_samples,)",
+            "description": ""
+          },
+          "filenames": {
+            "type": "list of shape (n_samples,)",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "target_names": {
+            "type": "list of shape (n_classes,)",
+            "description": ""
+          },
+          "A": {
+            "type": "tuple of two ndarrays. The first contains a 2D array of shape",
+            "description": "(n_samples, n_classes) with each row representing one sample and each"
+          },
+          "column": {
+            "type": "representing the features. The second array of shape",
+            "description": "(n_samples,) contains the target samples.\n.. versionadded:: 0.22\nExamples\n--------\n>>> from sklearn.datasets import fetch_20newsgroups\n>>> cats = ['alt.atheism', 'sci.space']\n>>> newsgroups_train = fetch_20newsgroups(subset='train', categories=cats)\n>>> list(newsgroups_train.target_names)\n['alt.atheism', 'sci.space']\n>>> newsgroups_train.filenames.shape\n(1073,)\n>>> newsgroups_train.target.shape\n(1073,)\n>>> newsgroups_train.target[:10]"
+          },
+          "array": {
+            "type": "[0, 1, 1, 1, 0, 1, 1, 0, 0, 0]",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    bunch : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : list of shape (n_samples,)\n            The data list to learn.\n        target: ndarray of shape (n_samples,)\n            The target labels.\n        filenames: list of shape (n_samples,)\n            The path to the location of the data.\n        DESCR: str\n            The full description of the dataset.\n        target_names: list of shape (n_classes,)\n            The names of target classes.\n\n    (data, target) : tuple if `return_X_y=True`\n        A tuple of two ndarrays. The first contains a 2D array of shape\n        (n_samples, n_classes) with each row representing one sample and each\n        column representing the features. The second array of shape\n        (n_samples,) contains the target samples.\n\n        .. versionadded:: 0.22\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_20newsgroups\n    >>> cats = ['alt.atheism', 'sci.space']\n    >>> newsgroups_train = fetch_20newsgroups(subset='train', categories=cats)\n    >>> list(newsgroups_train.target_names)\n    ['alt.atheism', 'sci.space']\n    >>> newsgroups_train.filenames.shape\n    (1073,)\n    >>> newsgroups_train.target.shape\n    (1073,)\n    >>> newsgroups_train.target[:10]\n    array([0, 1, 1, 1, 0, 1, 1, 0, 0, 0])",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_20newsgroups\n    >>> cats = ['alt.atheism', 'sci.space']\n    >>> newsgroups_train = fetch_20newsgroups(subset='train', categories=cats)\n    >>> list(newsgroups_train.target_names)\n    ['alt.atheism', 'sci.space']\n    >>> newsgroups_train.filenames.shape\n    (1073,)\n    >>> newsgroups_train.target.shape\n    (1073,)\n    >>> newsgroups_train.target[:10]\n    array([0, 1, 1, 1, 0, 1, 1, 0, 0, 0])"
+      }
+    },
+    {
+      "name": "fetch_20newsgroups_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_20newsgroups_vectorized",
+      "signature": "fetch_20newsgroups_vectorized(*, subset='train', remove=(), data_home=None, download_if_missing=True, return_X_y=False, normalize=True, as_frame=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load and vectorize the 20 newsgroups dataset (classification).\n\n    Download it if necessary.\n\n    This is a convenience function; the transformation is done using the\n    default settings for\n    :class:`~sklearn.feature_extraction.text.CountVectorizer`. For more\n    advanced usage (stopword filtering, n-gram extraction, etc.), combine\n    fetch_20newsgroups with a custom\n    :class:`~sklearn.feature_extraction.text.CountVectorizer`,\n    :class:`~sklearn.feature_extraction.text.HashingVectorizer`,\n    :class:`~sklearn.feature_extraction.text.TfidfTransformer` or\n    :class:`~sklearn.feature_extraction.text.TfidfVectorizer`.\n\n    The resulting counts are normalized using\n    :func:`sklearn.preprocessing.normalize` unless normalize is set to False.\n\n    =================   ==========\n    Classes                     20\n    Samples total            18846\n    Dimensionality          130107\n    Features                  real\n    =================   ==========\n\n    Read more in the :ref:`User Guide <20newsgroups_dataset>`.\n\n    Parameters\n    ----------\n    subset : {'train', 'test', 'all'}, default='train'\n        Select the dataset to load: 'train' for the training set, 'test'\n        for the test set, 'all' for both, with shuffled ordering.\n\n    remove : tuple, default=()\n        May contain any subset of ('headers', 'footers', 'quotes'). Each of\n        these are kinds of text that will be detected and removed from the\n        newsgroup posts, preventing classifiers from overfitting on\n        metadata.\n\n        'headers' removes newsgroup headers, 'footers' removes blocks at the\n        ends of posts that look like signatures, and 'quotes' removes lines\n        that appear to be quoting another post.\n\n    data_home : str or path-like, default=None\n        Specify an download and cache folder for the datasets. If None,\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns ``(data.data, data.target)`` instead of a Bunch\n        object.\n\n        .. versionadded:: 0.20\n\n    normalize : bool, default=True\n        If True, normalizes each document's feature vector to unit norm using\n        :func:`sklearn.preprocessing.normalize`.\n\n        .. versionadded:: 0.22\n\n    as_frame : bool, default=False\n        If True, the data is a pandas DataFrame including columns with\n        appropriate dtypes (numeric, string, or categorical). The target is\n        a pandas DataFrame or Series depending on the number of\n        `target_columns`.\n\n        .. versionadded:: 0.24\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    bunch : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data: {sparse matrix, dataframe} of shape (n_samples, n_features)\n            The input data matrix. If ``as_frame`` is `True`, ``data`` is\n            a pandas DataFrame with sparse columns.\n        target: {ndarray, series} of shape (n_samples,)\n            The target labels. If ``as_frame`` is `True`, ``target`` is a\n            pandas Series.\n        target_names: list of shape (n_classes,)\n            The names of target classes.\n        DESCR: str\n            The full description of the dataset.\n        frame: dataframe of shape (n_samples, n_features + 1)\n            Only present when `as_frame=True`. Pandas DataFrame with ``data``\n            and ``target``.\n\n            .. versionadded:: 0.24\n\n    (data, target) : tuple if ``return_X_y`` is True\n        `data` and `target` would be of the format defined in the `Bunch`\n        description above.\n\n        .. versionadded:: 0.20",
+        "parameters": {
+          "subset": {
+            "type": "{'train', 'test', 'all'}, default='train'",
+            "description": ""
+          },
+          "Select": {
+            "type": "the dataset to load: 'train' for the training set, 'test'",
+            "description": ""
+          },
+          "for": {
+            "type": "the test set, 'all' for both, with shuffled ordering.",
+            "description": ""
+          },
+          "remove": {
+            "type": "tuple, default=()",
+            "description": ""
+          },
+          "May": {
+            "type": "contain any subset of ('headers', 'footers', 'quotes'). Each of",
+            "description": ""
+          },
+          "these": {
+            "type": "are kinds of text that will be detected and removed from the",
+            "description": ""
+          },
+          "newsgroup": {
+            "type": "posts, preventing classifiers from overfitting on",
+            "description": "metadata.\n'headers' removes newsgroup headers, 'footers' removes blocks at the"
+          },
+          "ends": {
+            "type": "of posts that look like signatures, and 'quotes' removes lines",
+            "description": ""
+          },
+          "that": {
+            "type": "appear to be quoting another post.",
+            "description": ""
+          },
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "an download and cache folder for the datasets. If None,",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "True, the data is a pandas DataFrame including columns with",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "normalize": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "as_frame": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "appropriate": {
+            "type": "dtypes (numeric, string, or categorical). The target is",
+            "description": ""
+          },
+          "a": {
+            "type": "pandas DataFrame with sparse columns.",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "bunch": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "data": {
+            "type": "{sparse matrix, dataframe} of shape (n_samples, n_features)",
+            "description": ""
+          },
+          "The": {
+            "type": "full description of the dataset.",
+            "description": ""
+          },
+          "target": {
+            "type": "{ndarray, series} of shape (n_samples,)",
+            "description": ""
+          },
+          "pandas": {
+            "type": "Series.",
+            "description": ""
+          },
+          "target_names": {
+            "type": "list of shape (n_classes,)",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "frame": {
+            "type": "dataframe of shape (n_samples, n_features + 1)",
+            "description": ""
+          },
+          "Only": {
+            "type": "present when `as_frame=True`. Pandas DataFrame with ``data``",
+            "description": ""
+          },
+          "and": {
+            "type": "``target``.",
+            "description": ".. versionadded:: 0.24\n(data, target) : tuple if ``return_X_y`` is True\n`data` and `target` would be of the format defined in the `Bunch`"
+          },
+          "description": {
+            "type": "above.",
+            "description": ".. versionadded:: 0.20\nExamples\n--------\n>>> from sklearn.datasets import fetch_20newsgroups_vectorized\n>>> newsgroups_vectorized = fetch_20newsgroups_vectorized(subset='test')\n>>> newsgroups_vectorized.data.shape\n(7532, 130107)\n>>> newsgroups_vectorized.target.shape\n(7532,)"
+          }
+        },
+        "returns": "-------\n    bunch : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data: {sparse matrix, dataframe} of shape (n_samples, n_features)\n            The input data matrix. If ``as_frame`` is `True`, ``data`` is\n            a pandas DataFrame with sparse columns.\n        target: {ndarray, series} of shape (n_samples,)\n            The target labels. If ``as_frame`` is `True`, ``target`` is a\n            pandas Series.\n        target_names: list of shape (n_classes,)\n            The names of target classes.\n        DESCR: str\n            The full description of the dataset.\n        frame: dataframe of shape (n_samples, n_features + 1)\n            Only present when `as_frame=True`. Pandas DataFrame with ``data``\n            and ``target``.\n\n            .. versionadded:: 0.24\n\n    (data, target) : tuple if ``return_X_y`` is True\n        `data` and `target` would be of the format defined in the `Bunch`\n        description above.\n\n        .. versionadded:: 0.20\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_20newsgroups_vectorized\n    >>> newsgroups_vectorized = fetch_20newsgroups_vectorized(subset='test')\n    >>> newsgroups_vectorized.data.shape\n    (7532, 130107)\n    >>> newsgroups_vectorized.target.shape\n    (7532,)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_20newsgroups_vectorized\n    >>> newsgroups_vectorized = fetch_20newsgroups_vectorized(subset='test')\n    >>> newsgroups_vectorized.data.shape\n    (7532, 130107)\n    >>> newsgroups_vectorized.target.shape\n    (7532,)"
+      }
+    },
+    {
+      "name": "fetch_20newsgroups_vectorized_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_california_housing",
+      "signature": "fetch_california_housing(*, data_home=None, download_if_missing=True, return_X_y=False, as_frame=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the California housing dataset (regression).\n\n    ==============   ==============\n    Samples total             20640\n    Dimensionality                8\n    Features                   real\n    Target           real 0.15 - 5.\n    ==============   ==============\n\n    Read more in the :ref:`User Guide <california_housing_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns ``(data.data, data.target)`` instead of a Bunch\n        object.\n\n        .. versionadded:: 0.20\n\n    as_frame : bool, default=False\n        If True, the data is a pandas DataFrame including columns with\n        appropriate dtypes (numeric, string or categorical). The target is\n        a pandas DataFrame or Series depending on the number of target_columns.\n\n        .. versionadded:: 0.23\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray, shape (20640, 8)\n            Each row corresponding to the 8 feature values in order.\n            If ``as_frame`` is True, ``data`` is a pandas object.\n        target : numpy array of shape (20640,)\n            Each value corresponds to the average\n            house value in units of 100,000.\n            If ``as_frame`` is True, ``target`` is a pandas object.\n        feature_names : list of length 8\n            Array of ordered feature names used in the dataset.\n        DESCR : str\n            Description of the California housing dataset.\n        frame : pandas DataFrame\n            Only present when `as_frame=True`. DataFrame with ``data`` and\n            ``target``.\n\n            .. versionadded:: 0.23\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20\n\n    Notes\n    -----\n\n    This dataset consists of 20,640 samples and 9 features.",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "``as_frame`` is True, ``target`` is a pandas object.",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "as_frame": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "appropriate": {
+            "type": "dtypes (numeric, string or categorical). The target is",
+            "description": ""
+          },
+          "a": {
+            "type": "pandas DataFrame or Series depending on the number of target_columns.",
+            "description": ".. versionadded:: 0.23"
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "dataset": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "data": {
+            "type": "ndarray, shape (20640, 8)",
+            "description": ""
+          },
+          "Each": {
+            "type": "value corresponds to the average",
+            "description": ""
+          },
+          "target": {
+            "type": "numpy array of shape (20640,)",
+            "description": ""
+          },
+          "house": {
+            "type": "value in units of 100,000.",
+            "description": ""
+          },
+          "feature_names": {
+            "type": "list of length 8",
+            "description": ""
+          },
+          "Array": {
+            "type": "of ordered feature names used in the dataset.",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "Description": {
+            "type": "of the California housing dataset.",
+            "description": ""
+          },
+          "frame": {
+            "type": "pandas DataFrame",
+            "description": ""
+          },
+          "Only": {
+            "type": "present when `as_frame=True`. DataFrame with ``data`` and",
+            "description": "``target``.\n.. versionadded:: 0.23\n(data, target) : tuple if ``return_X_y`` is True"
+          },
+          "A": {
+            "type": "tuple of two ndarray. The first containing a 2D array of",
+            "description": ""
+          },
+          "shape": {
+            "type": "n_samples, n_features",
+            "description": "with each row representing one"
+          },
+          "sample": {
+            "type": "and each column representing the features. The second",
+            "description": ""
+          },
+          "ndarray": {
+            "type": "of shape (n_samples,) containing the target samples.",
+            "description": ".. versionadded:: 0.20\nNotes\n-----"
+          },
+          "This": {
+            "type": "dataset consists of 20,640 samples and 9 features.",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import fetch_california_housing\n>>> housing = fetch_california_housing()\n>>> print(housing.data.shape, housing.target.shape)\n(20640, 8) (20640,)\n>>> print(housing.feature_names[0:6])\n['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup']"
+          }
+        },
+        "returns": "-------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray, shape (20640, 8)\n            Each row corresponding to the 8 feature values in order.\n            If ``as_frame`` is True, ``data`` is a pandas object.\n        target : numpy array of shape (20640,)\n            Each value corresponds to the average\n            house value in units of 100,000.\n            If ``as_frame`` is True, ``target`` is a pandas object.\n        feature_names : list of length 8\n            Array of ordered feature names used in the dataset.\n        DESCR : str\n            Description of the California housing dataset.\n        frame : pandas DataFrame\n            Only present when `as_frame=True`. DataFrame with ``data`` and\n            ``target``.\n\n            .. versionadded:: 0.23\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20\n\n    Notes\n    -----\n\n    This dataset consists of 20,640 samples and 9 features.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_california_housing\n    >>> housing = fetch_california_housing()\n    >>> print(housing.data.shape, housing.target.shape)\n    (20640, 8) (20640,)\n    >>> print(housing.feature_names[0:6])\n    ['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup']",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n\n    This dataset consists of 20,640 samples and 9 features.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_california_housing\n    >>> housing = fetch_california_housing()\n    >>> print(housing.data.shape, housing.target.shape)\n    (20640, 8) (20640,)\n    >>> print(housing.feature_names[0:6])\n    ['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup']",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_california_housing\n    >>> housing = fetch_california_housing()\n    >>> print(housing.data.shape, housing.target.shape)\n    (20640, 8) (20640,)\n    >>> print(housing.feature_names[0:6])\n    ['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup']"
+      }
+    },
+    {
+      "name": "fetch_california_housing_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_covtype",
+      "signature": "fetch_covtype(*, data_home=None, download_if_missing=True, random_state=None, shuffle=False, return_X_y=False, as_frame=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the covertype dataset (classification).\n\n    Download it if necessary.\n\n    =================   ============\n    Classes                        7\n    Samples total             581012\n    Dimensionality                54\n    Features                     int\n    =================   ============\n\n    Read more in the :ref:`User Guide <covtype_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation for dataset shuffling. Pass an int\n        for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    shuffle : bool, default=False\n        Whether to shuffle dataset.\n\n    return_X_y : bool, default=False\n        If True, returns ``(data.data, data.target)`` instead of a Bunch\n        object.\n\n        .. versionadded:: 0.20\n\n    as_frame : bool, default=False\n        If True, the data is a pandas DataFrame including columns with\n        appropriate dtypes (numeric). The target is a pandas DataFrame or\n        Series depending on the number of target columns. If `return_X_y` is\n        True, then (`data`, `target`) will be pandas DataFrames or Series as\n        described below.\n\n        .. versionadded:: 0.24\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray of shape (581012, 54)\n            Each row corresponds to the 54 features in the dataset.\n        target : ndarray of shape (581012,)\n            Each value corresponds to one of\n            the 7 forest covertypes with values\n            ranging between 1 to 7.\n        frame : dataframe of shape (581012, 55)\n            Only present when `as_frame=True`. Contains `data` and `target`.\n        DESCR : str\n            Description of the forest covertype dataset.\n        feature_names : list\n            The names of the dataset columns.\n        target_names: list\n            The names of the target columns.\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "True, the data is a pandas DataFrame including columns with",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "random number generation for dataset shuffling. Pass an int",
+            "description": ""
+          },
+          "for": {
+            "type": "reproducible output across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "shuffle": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to shuffle dataset.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "as_frame": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "appropriate": {
+            "type": "dtypes (numeric). The target is a pandas DataFrame or",
+            "description": ""
+          },
+          "Series": {
+            "type": "depending on the number of target columns. If `return_X_y` is",
+            "description": "True, then (`data`, `target`) will be pandas DataFrames or Series as"
+          },
+          "described": {
+            "type": "below.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "dataset": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "data": {
+            "type": "ndarray of shape (581012, 54)",
+            "description": ""
+          },
+          "Each": {
+            "type": "value corresponds to one of",
+            "description": ""
+          },
+          "target": {
+            "type": "ndarray of shape (581012,)",
+            "description": ""
+          },
+          "the": {
+            "type": "7 forest covertypes with values",
+            "description": ""
+          },
+          "ranging": {
+            "type": "between 1 to 7.",
+            "description": ""
+          },
+          "frame": {
+            "type": "dataframe of shape (581012, 55)",
+            "description": ""
+          },
+          "Only": {
+            "type": "present when `as_frame=True`. Contains `data` and `target`.",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "Description": {
+            "type": "of the forest covertype dataset.",
+            "description": ""
+          },
+          "feature_names": {
+            "type": "list",
+            "description": ""
+          },
+          "The": {
+            "type": "names of the target columns.",
+            "description": "(data, target) : tuple if ``return_X_y`` is True"
+          },
+          "target_names": {
+            "type": "list",
+            "description": ""
+          },
+          "A": {
+            "type": "tuple of two ndarray. The first containing a 2D array of",
+            "description": ""
+          },
+          "shape": {
+            "type": "n_samples, n_features",
+            "description": "with each row representing one"
+          },
+          "sample": {
+            "type": "and each column representing the features. The second",
+            "description": ""
+          },
+          "ndarray": {
+            "type": "of shape (n_samples,) containing the target samples.",
+            "description": ".. versionadded:: 0.20\nExamples\n--------\n>>> from sklearn.datasets import fetch_covtype\n>>> cov_type = fetch_covtype()\n>>> cov_type.data.shape\n(581012, 54)\n>>> cov_type.target.shape\n(581012,)\n>>> # Let's check the 4 first feature names\n>>> cov_type.feature_names[:4]\n['Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology']"
+          }
+        },
+        "returns": "-------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray of shape (581012, 54)\n            Each row corresponds to the 54 features in the dataset.\n        target : ndarray of shape (581012,)\n            Each value corresponds to one of\n            the 7 forest covertypes with values\n            ranging between 1 to 7.\n        frame : dataframe of shape (581012, 55)\n            Only present when `as_frame=True`. Contains `data` and `target`.\n        DESCR : str\n            Description of the forest covertype dataset.\n        feature_names : list\n            The names of the dataset columns.\n        target_names: list\n            The names of the target columns.\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_covtype\n    >>> cov_type = fetch_covtype()\n    >>> cov_type.data.shape\n    (581012, 54)\n    >>> cov_type.target.shape\n    (581012,)\n    >>> # Let's check the 4 first feature names\n    >>> cov_type.feature_names[:4]\n    ['Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology']",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_covtype\n    >>> cov_type = fetch_covtype()\n    >>> cov_type.data.shape\n    (581012, 54)\n    >>> cov_type.target.shape\n    (581012,)\n    >>> # Let's check the 4 first feature names\n    >>> cov_type.feature_names[:4]\n    ['Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology']"
+      }
+    },
+    {
+      "name": "fetch_covtype_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_kddcup99",
+      "signature": "fetch_kddcup99(*, subset=None, data_home=None, shuffle=False, random_state=None, percent10=True, download_if_missing=True, return_X_y=False, as_frame=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the kddcup99 dataset (classification).\n\n    Download it if necessary.\n\n    =================   ====================================\n    Classes                                               23\n    Samples total                                    4898431\n    Dimensionality                                        41\n    Features            discrete (int) or continuous (float)\n    =================   ====================================\n\n    Read more in the :ref:`User Guide <kddcup99_dataset>`.\n\n    .. versionadded:: 0.18\n\n    Parameters\n    ----------\n    subset : {'SA', 'SF', 'http', 'smtp'}, default=None\n        To return the corresponding classical subsets of kddcup 99.\n        If None, return the entire kddcup 99 dataset.\n\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n        .. versionadded:: 0.19\n\n    shuffle : bool, default=False\n        Whether to shuffle dataset.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation for dataset shuffling and for\n        selection of abnormal samples if `subset='SA'`. Pass an int for\n        reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    percent10 : bool, default=True\n        Whether to load only 10 percent of the data.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns ``(data, target)`` instead of a Bunch object. See\n        below for more information about the `data` and `target` object.\n\n        .. versionadded:: 0.20\n\n    as_frame : bool, default=False\n        If `True`, returns a pandas Dataframe for the ``data`` and ``target``\n        objects in the `Bunch` returned object; `Bunch` return object will also\n        have a ``frame`` member.\n\n        .. versionadded:: 0.24\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5",
+        "parameters": {
+          "subset": {
+            "type": "{'SA', 'SF', 'http', 'smtp'}, default=None",
+            "description": ""
+          },
+          "To": {
+            "type": "return the corresponding classical subsets of kddcup 99.",
+            "description": ""
+          },
+          "If": {
+            "type": "`True`, returns a pandas Dataframe for the ``data`` and ``target``",
+            "description": ""
+          },
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ".. versionadded:: 0.19"
+          },
+          "shuffle": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to load only 10 percent of the data.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "random number generation for dataset shuffling and for",
+            "description": ""
+          },
+          "selection": {
+            "type": "of abnormal samples if `subset='SA'`. Pass an int for",
+            "description": ""
+          },
+          "reproducible": {
+            "type": "output across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "percent10": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "below": {
+            "type": "for more information about the `data` and `target` object.",
+            "description": ".. versionadded:: 0.20"
+          },
+          "as_frame": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "objects": {
+            "type": "in the `Bunch` returned object; `Bunch` return object will also",
+            "description": ""
+          },
+          "have": {
+            "type": "a ``frame`` member.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "data": {
+            "type": "{ndarray, dataframe} of shape (494021, 41)",
+            "description": ""
+          },
+          "The": {
+            "type": "names of the target columns",
+            "description": "(data, target) : tuple if ``return_X_y`` is True"
+          },
+          "pandas": {
+            "type": "DataFrame.",
+            "description": ""
+          },
+          "target": {
+            "type": "{ndarray, series} of shape (494021,)",
+            "description": ""
+          },
+          "will": {
+            "type": "be a pandas Series.",
+            "description": ""
+          },
+          "frame": {
+            "type": "dataframe of shape (494021, 42)",
+            "description": ""
+          },
+          "Only": {
+            "type": "present when `as_frame=True`. Contains `data` and `target`.",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "feature_names": {
+            "type": "list",
+            "description": ""
+          },
+          "target_names": {
+            "type": "list",
+            "description": ""
+          },
+          "A": {
+            "type": "tuple of two ndarray. The first containing a 2D array of",
+            "description": ""
+          },
+          "shape": {
+            "type": "n_samples, n_features",
+            "description": "with each row representing one"
+          },
+          "sample": {
+            "type": "and each column representing the features. The second",
+            "description": ""
+          },
+          "ndarray": {
+            "type": "of shape (n_samples,) containing the target samples.",
+            "description": ".. versionadded:: 0.20"
+          }
+        },
+        "returns": "-------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : {ndarray, dataframe} of shape (494021, 41)\n            The data matrix to learn. If `as_frame=True`, `data` will be a\n            pandas DataFrame.\n        target : {ndarray, series} of shape (494021,)\n            The regression target for each sample. If `as_frame=True`, `target`\n            will be a pandas Series.\n        frame : dataframe of shape (494021, 42)\n            Only present when `as_frame=True`. Contains `data` and `target`.\n        DESCR : str\n            The full description of the dataset.\n        feature_names : list\n            The names of the dataset columns\n        target_names: list\n            The names of the target columns\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_kddcup99_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_lfw_pairs",
+      "signature": "fetch_lfw_pairs(*, subset='train', data_home=None, funneled=True, resize=0.5, color=False, slice_=(slice(70, 195, None), slice(78, 172, None)), download_if_missing=True, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the Labeled Faces in the Wild (LFW) pairs dataset (classification).\n\n    Download it if necessary.\n\n    =================   =======================\n    Classes                                   2\n    Samples total                         13233\n    Dimensionality                         5828\n    Features            real, between 0 and 255\n    =================   =======================\n\n    In the official `README.txt`_ this task is described as the\n    \"Restricted\" task.  As I am not sure as to implement the\n    \"Unrestricted\" variant correctly, I left it as unsupported for now.\n\n    .. _`README.txt`: http://vis-www.cs.umass.edu/lfw/README.txt\n\n    The original images are 250 x 250 pixels, but the default slice and resize\n    arguments reduce them to 62 x 47.\n\n    Read more in the :ref:`User Guide <labeled_faces_in_the_wild_dataset>`.\n\n    Parameters\n    ----------\n    subset : {'train', 'test', '10_folds'}, default='train'\n        Select the dataset to load: 'train' for the development training\n        set, 'test' for the development test set, and '10_folds' for the\n        official evaluation set that is meant to be used with a 10-folds\n        cross validation.\n\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By\n        default all scikit-learn data is stored in '~/scikit_learn_data'\n        subfolders.\n\n    funneled : bool, default=True\n        Download and use the funneled variant of the dataset.\n\n    resize : float, default=0.5\n        Ratio used to resize the each face picture.\n\n    color : bool, default=False\n        Keep the 3 RGB channels instead of averaging them to a single\n        gray level channel. If color is True the shape of the data has\n        one more dimension than the shape with color = False.\n\n    slice_ : tuple of slice, default=(slice(70, 195), slice(78, 172))\n        Provide a custom 2D slice (height, width) to extract the\n        'interesting' part of the jpeg files and avoid use statistical\n        correlation from the background.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray of shape (2200, 5828). Shape depends on ``subset``.\n            Each row corresponds to 2 ravel'd face images\n            of original size 62 x 47 pixels.\n            Changing the ``slice_``, ``resize`` or ``subset`` parameters\n            will change the shape of the output.\n        pairs : ndarray of shape (2200, 2, 62, 47). Shape depends on ``subset``\n            Each row has 2 face images corresponding\n            to same or different person from the dataset\n            containing 5749 people. Changing the ``slice_``,\n            ``resize`` or ``subset`` parameters will change the shape of the\n            output.\n        target : numpy array of shape (2200,). Shape depends on ``subset``.\n            Labels associated to each pair of images.\n            The two label values being different persons or the same person.\n        target_names : numpy array of shape (2,)\n            Explains the target values of the target array.\n            0 corresponds to \"Different person\", 1 corresponds to \"same person\".\n        DESCR : str\n            Description of the Labeled Faces in the Wild (LFW) dataset.",
+        "parameters": {
+          "subset": {
+            "type": "{'train', 'test', '10_folds'}, default='train'",
+            "description": ""
+          },
+          "Select": {
+            "type": "the dataset to load: 'train' for the development training",
+            "description": "set, 'test' for the development test set, and '10_folds' for the"
+          },
+          "official": {
+            "type": "evaluation set that is meant to be used with a 10-folds",
+            "description": ""
+          },
+          "cross": {
+            "type": "validation.",
+            "description": ""
+          },
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By",
+            "description": ""
+          },
+          "default": {
+            "type": "all scikit-learn data is stored in '~/scikit_learn_data'",
+            "description": "subfolders."
+          },
+          "funneled": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Download": {
+            "type": "and use the funneled variant of the dataset.",
+            "description": ""
+          },
+          "resize": {
+            "type": "float, default=0.5",
+            "description": ""
+          },
+          "Ratio": {
+            "type": "used to resize the each face picture.",
+            "description": ""
+          },
+          "color": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Keep": {
+            "type": "the 3 RGB channels instead of averaging them to a single",
+            "description": ""
+          },
+          "gray": {
+            "type": "level channel. If color is True the shape of the data has",
+            "description": ""
+          },
+          "one": {
+            "type": "more dimension than the shape with color = False.",
+            "description": ""
+          },
+          "slice_": {
+            "type": "tuple of slice, default=(slice(70, 195), slice(78, 172))",
+            "description": ""
+          },
+          "Provide": {
+            "type": "a custom 2D slice (height, width) to extract the",
+            "description": "'interesting' part of the jpeg files and avoid use statistical"
+          },
+          "correlation": {
+            "type": "from the background.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "False, raise an OSError if the data is not locally available",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "data": {
+            "type": "ndarray of shape (2200, 5828). Shape depends on ``subset``.",
+            "description": ""
+          },
+          "Each": {
+            "type": "row has 2 face images corresponding",
+            "description": ""
+          },
+          "of": {
+            "type": "original size 62 x 47 pixels.",
+            "description": ""
+          },
+          "Changing": {
+            "type": "the ``slice_``, ``resize`` or ``subset`` parameters",
+            "description": ""
+          },
+          "will": {
+            "type": "change the shape of the output.",
+            "description": ""
+          },
+          "pairs": {
+            "type": "ndarray of shape (2200, 2, 62, 47). Shape depends on ``subset``",
+            "description": ""
+          },
+          "to": {
+            "type": "same or different person from the dataset",
+            "description": ""
+          },
+          "containing": {
+            "type": "5749 people. Changing the ``slice_``,",
+            "description": "``resize`` or ``subset`` parameters will change the shape of the\noutput."
+          },
+          "target": {
+            "type": "numpy array of shape (2200,). Shape depends on ``subset``.",
+            "description": ""
+          },
+          "Labels": {
+            "type": "associated to each pair of images.",
+            "description": ""
+          },
+          "The": {
+            "type": "two label values being different persons or the same person.",
+            "description": ""
+          },
+          "target_names": {
+            "type": "numpy array of shape (2,)",
+            "description": ""
+          },
+          "Explains": {
+            "type": "the target values of the target array.",
+            "description": ""
+          },
+          "0": {
+            "type": "corresponds to \"Different person\", 1 corresponds to \"same person\".",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "Description": {
+            "type": "of the Labeled Faces in the Wild (LFW) dataset.",
+            "description": "Examples\n--------\n>>> from sklearn.datasets import fetch_lfw_pairs\n>>> lfw_pairs_train = fetch_lfw_pairs(subset='train')\n>>> list(lfw_pairs_train.target_names)\n[np.str_('Different persons'), np.str_('Same person')]\n>>> lfw_pairs_train.pairs.shape\n(2200, 2, 62, 47)\n>>> lfw_pairs_train.data.shape\n(2200, 5828)\n>>> lfw_pairs_train.target.shape\n(2200,)"
+          },
+          "reduce": {
+            "type": "them to 62 x 47.",
+            "description": ""
+          },
+          "Read": {
+            "type": "more in the :ref:`User Guide <labeled_faces_in_the_wild_dataset>`.",
+            "description": "Parameters\n----------"
+          }
+        },
+        "returns": "-------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : ndarray of shape (2200, 5828). Shape depends on ``subset``.\n            Each row corresponds to 2 ravel'd face images\n            of original size 62 x 47 pixels.\n            Changing the ``slice_``, ``resize`` or ``subset`` parameters\n            will change the shape of the output.\n        pairs : ndarray of shape (2200, 2, 62, 47). Shape depends on ``subset``\n            Each row has 2 face images corresponding\n            to same or different person from the dataset\n            containing 5749 people. Changing the ``slice_``,\n            ``resize`` or ``subset`` parameters will change the shape of the\n            output.\n        target : numpy array of shape (2200,). Shape depends on ``subset``.\n            Labels associated to each pair of images.\n            The two label values being different persons or the same person.\n        target_names : numpy array of shape (2,)\n            Explains the target values of the target array.\n            0 corresponds to \"Different person\", 1 corresponds to \"same person\".\n        DESCR : str\n            Description of the Labeled Faces in the Wild (LFW) dataset.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_lfw_pairs\n    >>> lfw_pairs_train = fetch_lfw_pairs(subset='train')\n    >>> list(lfw_pairs_train.target_names)\n    [np.str_('Different persons'), np.str_('Same person')]\n    >>> lfw_pairs_train.pairs.shape\n    (2200, 2, 62, 47)\n    >>> lfw_pairs_train.data.shape\n    (2200, 5828)\n    >>> lfw_pairs_train.target.shape\n    (2200,)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_lfw_pairs\n    >>> lfw_pairs_train = fetch_lfw_pairs(subset='train')\n    >>> list(lfw_pairs_train.target_names)\n    [np.str_('Different persons'), np.str_('Same person')]\n    >>> lfw_pairs_train.pairs.shape\n    (2200, 2, 62, 47)\n    >>> lfw_pairs_train.data.shape\n    (2200, 5828)\n    >>> lfw_pairs_train.target.shape\n    (2200,)"
+      }
+    },
+    {
+      "name": "fetch_lfw_pairs_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_lfw_people",
+      "signature": "fetch_lfw_people(*, data_home=None, funneled=True, resize=0.5, min_faces_per_person=0, color=False, slice_=(slice(70, 195, None), slice(78, 172, None)), download_if_missing=True, return_X_y=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the Labeled Faces in the Wild (LFW) people dataset (classification).\n\n    Download it if necessary.\n\n    =================   =======================\n    Classes                                5749\n    Samples total                         13233\n    Dimensionality                         5828\n    Features            real, between 0 and 255\n    =================   =======================\n\n    For a usage example of this dataset, see\n    :ref:`sphx_glr_auto_examples_applications_plot_face_recognition.py`.\n\n    Read more in the :ref:`User Guide <labeled_faces_in_the_wild_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    funneled : bool, default=True\n        Download and use the funneled variant of the dataset.\n\n    resize : float or None, default=0.5\n        Ratio used to resize the each face picture. If `None`, no resizing is\n        performed.\n\n    min_faces_per_person : int, default=None\n        The extracted dataset will only retain pictures of people that have at\n        least `min_faces_per_person` different pictures.\n\n    color : bool, default=False\n        Keep the 3 RGB channels instead of averaging them to a single\n        gray level channel. If color is True the shape of the data has\n        one more dimension than the shape with color = False.\n\n    slice_ : tuple of slice, default=(slice(70, 195), slice(78, 172))\n        Provide a custom 2D slice (height, width) to extract the\n        'interesting' part of the jpeg files and avoid use statistical\n        correlation from the background.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns ``(dataset.data, dataset.target)`` instead of a Bunch\n        object. See below for more information about the `dataset.data` and\n        `dataset.target` object.\n\n        .. versionadded:: 0.20\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : numpy array of shape (13233, 2914)\n            Each row corresponds to a ravelled face image\n            of original size 62 x 47 pixels.\n            Changing the ``slice_`` or resize parameters will change the\n            shape of the output.\n        images : numpy array of shape (13233, 62, 47)\n            Each row is a face image corresponding to one of the 5749 people in\n            the dataset. Changing the ``slice_``\n            or resize parameters will change the shape of the output.\n        target : numpy array of shape (13233,)\n            Labels associated to each face image.\n            Those labels range from 0-5748 and correspond to the person IDs.\n        target_names : numpy array of shape (5749,)\n            Names of all persons in the dataset.\n            Position in array corresponds to the person ID in the target array.\n        DESCR : str\n            Description of the Labeled Faces in the Wild (LFW) dataset.\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "funneled": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Download": {
+            "type": "and use the funneled variant of the dataset.",
+            "description": ""
+          },
+          "resize": {
+            "type": "float or None, default=0.5",
+            "description": ""
+          },
+          "Ratio": {
+            "type": "used to resize the each face picture. If `None`, no resizing is",
+            "description": "performed."
+          },
+          "min_faces_per_person": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "extracted dataset will only retain pictures of people that have at",
+            "description": ""
+          },
+          "least": {
+            "type": "`min_faces_per_person` different pictures.",
+            "description": ""
+          },
+          "color": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Keep": {
+            "type": "the 3 RGB channels instead of averaging them to a single",
+            "description": ""
+          },
+          "gray": {
+            "type": "level channel. If color is True the shape of the data has",
+            "description": ""
+          },
+          "one": {
+            "type": "more dimension than the shape with color = False.",
+            "description": ""
+          },
+          "slice_": {
+            "type": "tuple of slice, default=(slice(70, 195), slice(78, 172))",
+            "description": ""
+          },
+          "Provide": {
+            "type": "a custom 2D slice (height, width) to extract the",
+            "description": "'interesting' part of the jpeg files and avoid use statistical"
+          },
+          "correlation": {
+            "type": "from the background.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "True, returns ``(dataset.data, dataset.target)`` instead of a Bunch",
+            "description": "object. See below for more information about the `dataset.data` and\n`dataset.target` object.\n.. versionadded:: 0.20"
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "dataset": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "data": {
+            "type": "numpy array of shape (13233, 2914)",
+            "description": ""
+          },
+          "Each": {
+            "type": "row is a face image corresponding to one of the 5749 people in",
+            "description": ""
+          },
+          "of": {
+            "type": "original size 62 x 47 pixels.",
+            "description": ""
+          },
+          "Changing": {
+            "type": "the ``slice_`` or resize parameters will change the",
+            "description": ""
+          },
+          "shape": {
+            "type": "n_samples, n_features",
+            "description": "with each row representing one"
+          },
+          "images": {
+            "type": "numpy array of shape (13233, 62, 47)",
+            "description": ""
+          },
+          "the": {
+            "type": "dataset. Changing the ``slice_``",
+            "description": ""
+          },
+          "or": {
+            "type": "resize parameters will change the shape of the output.",
+            "description": ""
+          },
+          "target": {
+            "type": "numpy array of shape (13233,)",
+            "description": ""
+          },
+          "Labels": {
+            "type": "associated to each face image.",
+            "description": ""
+          },
+          "Those": {
+            "type": "labels range from 0-5748 and correspond to the person IDs.",
+            "description": ""
+          },
+          "target_names": {
+            "type": "numpy array of shape (5749,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of all persons in the dataset.",
+            "description": ""
+          },
+          "Position": {
+            "type": "in array corresponds to the person ID in the target array.",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "Description": {
+            "type": "of the Labeled Faces in the Wild (LFW) dataset.",
+            "description": "(data, target) : tuple if ``return_X_y`` is True"
+          },
+          "A": {
+            "type": "tuple of two ndarray. The first containing a 2D array of",
+            "description": ""
+          },
+          "sample": {
+            "type": "and each column representing the features. The second",
+            "description": ""
+          },
+          "ndarray": {
+            "type": "of shape (n_samples,) containing the target samples.",
+            "description": ".. versionadded:: 0.20\nExamples\n--------\n>>> from sklearn.datasets import fetch_lfw_people\n>>> lfw_people = fetch_lfw_people()\n>>> lfw_people.data.shape\n(13233, 2914)\n>>> lfw_people.target.shape\n(13233,)\n>>> for name in lfw_people.target_names[:5]:\n...    print(name)"
+          },
+          "AJ": {
+            "type": "Lamas",
+            "description": ""
+          },
+          "Aaron": {
+            "type": "Patterson",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data : numpy array of shape (13233, 2914)\n            Each row corresponds to a ravelled face image\n            of original size 62 x 47 pixels.\n            Changing the ``slice_`` or resize parameters will change the\n            shape of the output.\n        images : numpy array of shape (13233, 62, 47)\n            Each row is a face image corresponding to one of the 5749 people in\n            the dataset. Changing the ``slice_``\n            or resize parameters will change the shape of the output.\n        target : numpy array of shape (13233,)\n            Labels associated to each face image.\n            Those labels range from 0-5748 and correspond to the person IDs.\n        target_names : numpy array of shape (5749,)\n            Names of all persons in the dataset.\n            Position in array corresponds to the person ID in the target array.\n        DESCR : str\n            Description of the Labeled Faces in the Wild (LFW) dataset.\n\n    (data, target) : tuple if ``return_X_y`` is True\n        A tuple of two ndarray. The first containing a 2D array of\n        shape (n_samples, n_features) with each row representing one\n        sample and each column representing the features. The second\n        ndarray of shape (n_samples,) containing the target samples.\n\n        .. versionadded:: 0.20\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_lfw_people\n    >>> lfw_people = fetch_lfw_people()\n    >>> lfw_people.data.shape\n    (13233, 2914)\n    >>> lfw_people.target.shape\n    (13233,)\n    >>> for name in lfw_people.target_names[:5]:\n    ...    print(name)\n    AJ Cook\n    AJ Lamas\n    Aaron Eckhart\n    Aaron Guiel\n    Aaron Patterson",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_lfw_people\n    >>> lfw_people = fetch_lfw_people()\n    >>> lfw_people.data.shape\n    (13233, 2914)\n    >>> lfw_people.target.shape\n    (13233,)\n    >>> for name in lfw_people.target_names[:5]:\n    ...    print(name)\n    AJ Cook\n    AJ Lamas\n    Aaron Eckhart\n    Aaron Guiel\n    Aaron Patterson"
+      }
+    },
+    {
+      "name": "fetch_lfw_people_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_olivetti_faces",
+      "signature": "fetch_olivetti_faces(*, data_home=None, shuffle=False, random_state=0, download_if_missing=True, return_X_y=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the Olivetti faces data-set from AT&T (classification).\n\n    Download it if necessary.\n\n    =================   =====================\n    Classes                                40\n    Samples total                         400\n    Dimensionality                       4096\n    Features            real, between 0 and 1\n    =================   =====================\n\n    Read more in the :ref:`User Guide <olivetti_faces_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    shuffle : bool, default=False\n        If True the order of the dataset is shuffled to avoid having\n        images of the same person grouped.\n\n    random_state : int, RandomState instance or None, default=0\n        Determines random number generation for dataset shuffling. Pass an int\n        for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    return_X_y : bool, default=False\n        If True, returns `(data, target)` instead of a `Bunch` object. See\n        below for more information about the `data` and `target` object.\n\n        .. versionadded:: 0.22\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data: ndarray, shape (400, 4096)\n            Each row corresponds to a ravelled\n            face image of original size 64 x 64 pixels.\n        images : ndarray, shape (400, 64, 64)\n            Each row is a face image\n            corresponding to one of the 40 subjects of the dataset.\n        target : ndarray, shape (400,)\n            Labels associated to each face image.\n            Those labels are ranging from 0-39 and correspond to the\n            Subject IDs.\n        DESCR : str\n            Description of the modified Olivetti Faces Dataset.\n\n    (data, target) : tuple if `return_X_y=True`\n        Tuple with the `data` and `target` objects described above.\n\n        .. versionadded:: 0.22",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "shuffle": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "If": {
+            "type": "True, returns `(data, target)` instead of a `Bunch` object. See",
+            "description": ""
+          },
+          "images": {
+            "type": "ndarray, shape (400, 64, 64)",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=0",
+            "description": ""
+          },
+          "Determines": {
+            "type": "random number generation for dataset shuffling. Pass an int",
+            "description": ""
+          },
+          "for": {
+            "type": "reproducible output across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "below": {
+            "type": "for more information about the `data` and `target` object.",
+            "description": ".. versionadded:: 0.22"
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "data": {
+            "type": "ndarray, shape (400, 4096)",
+            "description": ""
+          },
+          "Each": {
+            "type": "row is a face image",
+            "description": ""
+          },
+          "face": {
+            "type": "image of original size 64 x 64 pixels.",
+            "description": ""
+          },
+          "corresponding": {
+            "type": "to one of the 40 subjects of the dataset.",
+            "description": ""
+          },
+          "target": {
+            "type": "ndarray, shape (400,)",
+            "description": ""
+          },
+          "Labels": {
+            "type": "associated to each face image.",
+            "description": ""
+          },
+          "Those": {
+            "type": "labels are ranging from 0-39 and correspond to the",
+            "description": ""
+          },
+          "Subject": {
+            "type": "IDs.",
+            "description": ""
+          },
+          "DESCR": {
+            "type": "str",
+            "description": ""
+          },
+          "Description": {
+            "type": "of the modified Olivetti Faces Dataset.",
+            "description": "(data, target) : tuple if `return_X_y=True`"
+          },
+          "Tuple": {
+            "type": "with the `data` and `target` objects described above.",
+            "description": ".. versionadded:: 0.22\nExamples\n--------\n>>> from sklearn.datasets import fetch_olivetti_faces\n>>> olivetti_faces = fetch_olivetti_faces()\n>>> olivetti_faces.data.shape\n(400, 4096)\n>>> olivetti_faces.target.shape\n(400,)\n>>> olivetti_faces.images.shape\n(400, 64, 64)"
+          }
+        },
+        "returns": "-------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        data: ndarray, shape (400, 4096)\n            Each row corresponds to a ravelled\n            face image of original size 64 x 64 pixels.\n        images : ndarray, shape (400, 64, 64)\n            Each row is a face image\n            corresponding to one of the 40 subjects of the dataset.\n        target : ndarray, shape (400,)\n            Labels associated to each face image.\n            Those labels are ranging from 0-39 and correspond to the\n            Subject IDs.\n        DESCR : str\n            Description of the modified Olivetti Faces Dataset.\n\n    (data, target) : tuple if `return_X_y=True`\n        Tuple with the `data` and `target` objects described above.\n\n        .. versionadded:: 0.22\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_olivetti_faces\n    >>> olivetti_faces = fetch_olivetti_faces()\n    >>> olivetti_faces.data.shape\n    (400, 4096)\n    >>> olivetti_faces.target.shape\n    (400,)\n    >>> olivetti_faces.images.shape\n    (400, 64, 64)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_olivetti_faces\n    >>> olivetti_faces = fetch_olivetti_faces()\n    >>> olivetti_faces.data.shape\n    (400, 4096)\n    >>> olivetti_faces.target.shape\n    (400,)\n    >>> olivetti_faces.images.shape\n    (400, 64, 64)"
+      }
+    },
+    {
+      "name": "fetch_olivetti_faces_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_rcv1",
+      "signature": "fetch_rcv1(*, data_home=None, subset='all', download_if_missing=True, random_state=None, shuffle=False, return_X_y=False, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Load the RCV1 multilabel dataset (classification).\n\n    Download it if necessary.\n\n    Version: RCV1-v2, vectors, full sets, topics multilabels.\n\n    =================   =====================\n    Classes                               103\n    Samples total                      804414\n    Dimensionality                      47236\n    Features            real, between 0 and 1\n    =================   =====================\n\n    Read more in the :ref:`User Guide <rcv1_dataset>`.\n\n    .. versionadded:: 0.17\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    subset : {'train', 'test', 'all'}, default='all'\n        Select the dataset to load: 'train' for the training set\n        (23149 samples), 'test' for the test set (781265 samples),\n        'all' for both, with the training samples first if shuffle is False.\n        This follows the official LYRL2004 chronological split.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation for dataset shuffling. Pass an int\n        for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    shuffle : bool, default=False\n        Whether to shuffle dataset.\n\n    return_X_y : bool, default=False\n        If True, returns ``(dataset.data, dataset.target)`` instead of a Bunch\n        object. See below for more information about the `dataset.data` and\n        `dataset.target` object.\n\n        .. versionadded:: 0.20\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object. Returned only if `return_X_y` is False.\n        `dataset` has the following attributes:\n\n        - data : sparse matrix of shape (804414, 47236), dtype=np.float64\n            The array has 0.16% of non zero values. Will be of CSR format.\n        - target : sparse matrix of shape (804414, 103), dtype=np.uint8\n            Each sample has a value of 1 in its categories, and 0 in others.\n            The array has 3.15% of non zero values. Will be of CSR format.\n        - sample_id : ndarray of shape (804414,), dtype=np.uint32,\n            Identification number of each sample, as ordered in dataset.data.\n        - target_names : ndarray of shape (103,), dtype=object\n            Names of each target (RCV1 topics), as ordered in dataset.target.\n        - DESCR : str\n            Description of the RCV1 dataset.\n\n    (data, target) : tuple\n        A tuple consisting of `dataset.data` and `dataset.target`, as\n        described above. Returned only if `return_X_y` is True.\n\n        .. versionadded:: 0.20",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "subset": {
+            "type": "{'train', 'test', 'all'}, default='all'",
+            "description": ""
+          },
+          "Select": {
+            "type": "the dataset to load: 'train' for the training set",
+            "description": "(23149 samples), 'test' for the test set (781265 samples),\n'all' for both, with the training samples first if shuffle is False."
+          },
+          "This": {
+            "type": "follows the official LYRL2004 chronological split.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "True, returns ``(dataset.data, dataset.target)`` instead of a Bunch",
+            "description": "object. See below for more information about the `dataset.data` and\n`dataset.target` object.\n.. versionadded:: 0.20"
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance or None, default=None",
+            "description": ""
+          },
+          "Determines": {
+            "type": "random number generation for dataset shuffling. Pass an int",
+            "description": ""
+          },
+          "for": {
+            "type": "reproducible output across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "term:`Glossary <random_state>`.",
+            "description": ""
+          },
+          "shuffle": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to shuffle dataset.",
+            "description": ""
+          },
+          "return_X_y": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "dataset": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object. Returned only if `return_X_y` is False.\n`dataset` has the following attributes:\n- data : sparse matrix of shape (804414, 47236), dtype=np.float64"
+          },
+          "The": {
+            "type": "array has 3.15% of non zero values. Will be of CSR format.",
+            "description": "- sample_id : ndarray of shape (804414,), dtype=np.uint32,"
+          },
+          "Each": {
+            "type": "sample has a value of 1 in its categories, and 0 in others.",
+            "description": ""
+          },
+          "Identification": {
+            "type": "number of each sample, as ordered in dataset.data.",
+            "description": "- target_names : ndarray of shape (103,), dtype=object"
+          },
+          "Names": {
+            "type": "of each target (RCV1 topics), as ordered in dataset.target.",
+            "description": "- DESCR : str"
+          },
+          "Description": {
+            "type": "of the RCV1 dataset.",
+            "description": "(data, target) : tuple"
+          },
+          "A": {
+            "type": "tuple consisting of `dataset.data` and `dataset.target`, as",
+            "description": ""
+          },
+          "described": {
+            "type": "above. Returned only if `return_X_y` is True.",
+            "description": ".. versionadded:: 0.20\nExamples\n--------\n>>> from sklearn.datasets import fetch_rcv1\n>>> rcv1 = fetch_rcv1()\n>>> rcv1.data.shape\n(804414, 47236)\n>>> rcv1.target.shape\n(804414, 103)"
+          }
+        },
+        "returns": "-------\n    dataset : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object. Returned only if `return_X_y` is False.\n        `dataset` has the following attributes:\n\n        - data : sparse matrix of shape (804414, 47236), dtype=np.float64\n            The array has 0.16% of non zero values. Will be of CSR format.\n        - target : sparse matrix of shape (804414, 103), dtype=np.uint8\n            Each sample has a value of 1 in its categories, and 0 in others.\n            The array has 3.15% of non zero values. Will be of CSR format.\n        - sample_id : ndarray of shape (804414,), dtype=np.uint32,\n            Identification number of each sample, as ordered in dataset.data.\n        - target_names : ndarray of shape (103,), dtype=object\n            Names of each target (RCV1 topics), as ordered in dataset.target.\n        - DESCR : str\n            Description of the RCV1 dataset.\n\n    (data, target) : tuple\n        A tuple consisting of `dataset.data` and `dataset.target`, as\n        described above. Returned only if `return_X_y` is True.\n\n        .. versionadded:: 0.20\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_rcv1\n    >>> rcv1 = fetch_rcv1()\n    >>> rcv1.data.shape\n    (804414, 47236)\n    >>> rcv1.target.shape\n    (804414, 103)",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_rcv1\n    >>> rcv1 = fetch_rcv1()\n    >>> rcv1.data.shape\n    (804414, 47236)\n    >>> rcv1.target.shape\n    (804414, 103)"
+      }
+    },
+    {
+      "name": "fetch_rcv1_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "fetch_species_distributions",
+      "signature": "fetch_species_distributions(*, data_home=None, download_if_missing=True, n_retries=3, delay=1.0)",
+      "documentation": {
+        "description": "Loader for species distribution dataset from Phillips et. al. (2006).\n\n    Read more in the :ref:`User Guide <species_distribution_dataset>`.\n\n    Parameters\n    ----------\n    data_home : str or path-like, default=None\n        Specify another download and cache folder for the datasets. By default\n        all scikit-learn data is stored in '~/scikit_learn_data' subfolders.\n\n    download_if_missing : bool, default=True\n        If False, raise an OSError if the data is not locally available\n        instead of trying to download the data from the source site.\n\n    n_retries : int, default=3\n        Number of retries when HTTP errors are encountered.\n\n        .. versionadded:: 1.5\n\n    delay : float, default=1.0\n        Number of seconds between retries.\n\n        .. versionadded:: 1.5\n\n    Returns\n    -------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        coverages : array, shape = [14, 1592, 1212]\n            These represent the 14 features measured\n            at each point of the map grid.\n            The latitude/longitude values for the grid are discussed below.\n            Missing data is represented by the value -9999.\n        train : record array, shape = (1624,)\n            The training points for the data.  Each point has three fields:\n\n            - train['species'] is the species name\n            - train['dd long'] is the longitude, in degrees\n            - train['dd lat'] is the latitude, in degrees\n        test : record array, shape = (620,)\n            The test points for the data.  Same format as the training data.\n        Nx, Ny : integers\n            The number of longitudes (x) and latitudes (y) in the grid\n        x_left_lower_corner, y_left_lower_corner : floats\n            The (x,y) position of the lower-left corner, in degrees\n        grid_size : float\n            The spacing between points of the grid, in degrees\n\n    Notes\n    -----\n\n    This dataset represents the geographic distribution of species.\n    The dataset is provided by Phillips et. al. (2006).\n\n    The two species are:\n\n    - `\"Bradypus variegatus\"\n      <http://www.iucnredlist.org/details/3038/0>`_ ,\n      the Brown-throated Sloth.\n\n    - `\"Microryzomys minutus\"\n      <http://www.iucnredlist.org/details/13408/0>`_ ,\n      also known as the Forest Small Rice Rat, a rodent that lives in Peru,\n      Colombia, Ecuador, Peru, and Venezuela.\n\n    References\n    ----------\n\n    * `\"Maximum entropy modeling of species geographic distributions\"\n      <http://rob.schapire.net/papers/ecolmod.pdf>`_\n      S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,\n      190:231-259, 2006.",
+        "parameters": {
+          "data_home": {
+            "type": "str or path",
+            "description": "like, default=None"
+          },
+          "Specify": {
+            "type": "another download and cache folder for the datasets. By default",
+            "description": ""
+          },
+          "all": {
+            "type": "scikit-learn data is stored in '~/scikit_learn_data' subfolders.",
+            "description": ""
+          },
+          "download_if_missing": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "False, raise an OSError if the data is not locally available",
+            "description": ""
+          },
+          "instead": {
+            "type": "of trying to download the data from the source site.",
+            "description": ""
+          },
+          "n_retries": {
+            "type": "int, default=3",
+            "description": ""
+          },
+          "Number": {
+            "type": "of seconds between retries.",
+            "description": ".. versionadded:: 1.5\nReturns\n-------"
+          },
+          "delay": {
+            "type": "float, default=1.0",
+            "description": ""
+          },
+          "data": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes."
+          },
+          "coverages": {
+            "type": "array, shape = [14, 1592, 1212]",
+            "description": ""
+          },
+          "These": {
+            "type": "represent the 14 features measured",
+            "description": ""
+          },
+          "at": {
+            "type": "each point of the map grid.",
+            "description": ""
+          },
+          "The": {
+            "type": "two species are:",
+            "description": "- `\"Bradypus variegatus\"\n<http://www.iucnredlist.org/details/3038/0>`_ ,"
+          },
+          "Missing": {
+            "type": "data is represented by the value -9999.",
+            "description": ""
+          },
+          "train": {
+            "type": "record array, shape = (1624,)",
+            "description": ""
+          },
+          "test": {
+            "type": "record array, shape = (620,)",
+            "description": ""
+          },
+          "grid_size": {
+            "type": "float",
+            "description": ""
+          },
+          "This": {
+            "type": "dataset represents the geographic distribution of species.",
+            "description": ""
+          },
+          "the": {
+            "type": "Brown-throated Sloth.",
+            "description": "- `\"Microryzomys minutus\"\n<http://www.iucnredlist.org/details/13408/0>`_ ,"
+          },
+          "also": {
+            "type": "known as the Forest Small Rice Rat, a rodent that lives in Peru,",
+            "description": "Colombia, Ecuador, Peru, and Venezuela.\nReferences\n----------\n* `\"Maximum entropy modeling of species geographic distributions\"\n<http://rob.schapire.net/papers/ecolmod.pdf>`_\nS. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,"
+          },
+          "190": {
+            "type": "231",
+            "description": "259, 2006.\nExamples\n--------\n>>> from sklearn.datasets import fetch_species_distributions\n>>> species = fetch_species_distributions()\n>>> species.train[:5]"
+          },
+          "array": {
+            "type": "[(b'microryzomys_minutus', -64.7   , -17.85",
+            "description": ",\n(b'microryzomys_minutus', -67.8333, -16.3333),\n(b'microryzomys_minutus', -67.8833, -16.3   ),\n(b'microryzomys_minutus', -67.8   , -16.2667),\n(b'microryzomys_minutus', -67.9833, -15.9   )],\ndtype=[('species', 'S22'), ('dd long', '<f4'), ('dd lat', '<f4')])"
+          },
+          "For": {
+            "type": "a more extended example,",
+            "description": ""
+          },
+          "see": {
+            "type": "ref:`sphx_glr_auto_examples_applications_plot_species_distribution_modeling.py`",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    data : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n\n        coverages : array, shape = [14, 1592, 1212]\n            These represent the 14 features measured\n            at each point of the map grid.\n            The latitude/longitude values for the grid are discussed below.\n            Missing data is represented by the value -9999.\n        train : record array, shape = (1624,)\n            The training points for the data.  Each point has three fields:\n\n            - train['species'] is the species name\n            - train['dd long'] is the longitude, in degrees\n            - train['dd lat'] is the latitude, in degrees\n        test : record array, shape = (620,)\n            The test points for the data.  Same format as the training data.\n        Nx, Ny : integers\n            The number of longitudes (x) and latitudes (y) in the grid\n        x_left_lower_corner, y_left_lower_corner : floats\n            The (x,y) position of the lower-left corner, in degrees\n        grid_size : float\n            The spacing between points of the grid, in degrees\n\n    Notes\n    -----\n\n    This dataset represents the geographic distribution of species.\n    The dataset is provided by Phillips et. al. (2006).\n\n    The two species are:\n\n    - `\"Bradypus variegatus\"\n      <http://www.iucnredlist.org/details/3038/0>`_ ,\n      the Brown-throated Sloth.\n\n    - `\"Microryzomys minutus\"\n      <http://www.iucnredlist.org/details/13408/0>`_ ,\n      also known as the Forest Small Rice Rat, a rodent that lives in Peru,\n      Colombia, Ecuador, Peru, and Venezuela.\n\n    References\n    ----------\n\n    * `\"Maximum entropy modeling of species geographic distributions\"\n      <http://rob.schapire.net/papers/ecolmod.pdf>`_\n      S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,\n      190:231-259, 2006.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_species_distributions\n    >>> species = fetch_species_distributions()\n    >>> species.train[:5]\n    array([(b'microryzomys_minutus', -64.7   , -17.85  ),\n           (b'microryzomys_minutus', -67.8333, -16.3333),\n           (b'microryzomys_minutus', -67.8833, -16.3   ),\n           (b'microryzomys_minutus', -67.8   , -16.2667),\n           (b'microryzomys_minutus', -67.9833, -15.9   )],\n          dtype=[('species', 'S22'), ('dd long', '<f4'), ('dd lat', '<f4')])\n\n    For a more extended example,\n    see :ref:`sphx_glr_auto_examples_applications_plot_species_distribution_modeling.py`",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n\n    This dataset represents the geographic distribution of species.\n    The dataset is provided by Phillips et. al. (2006).\n\n    The two species are:\n\n    - `\"Bradypus variegatus\"\n      <http://www.iucnredlist.org/details/3038/0>`_ ,\n      the Brown-throated Sloth.\n\n    - `\"Microryzomys minutus\"\n      <http://www.iucnredlist.org/details/13408/0>`_ ,\n      also known as the Forest Small Rice Rat, a rodent that lives in Peru,\n      Colombia, Ecuador, Peru, and Venezuela.\n\n    References\n    ----------\n\n    * `\"Maximum entropy modeling of species geographic distributions\"\n      <http://rob.schapire.net/papers/ecolmod.pdf>`_\n      S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,\n      190:231-259, 2006.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import fetch_species_distributions\n    >>> species = fetch_species_distributions()\n    >>> species.train[:5]\n    array([(b'microryzomys_minutus', -64.7   , -17.85  ),\n           (b'microryzomys_minutus', -67.8333, -16.3333),\n           (b'microryzomys_minutus', -67.8833, -16.3   ),\n           (b'microryzomys_minutus', -67.8   , -16.2667),\n           (b'microryzomys_minutus', -67.9833, -15.9   )],\n          dtype=[('species', 'S22'), ('dd long', '<f4'), ('dd lat', '<f4')])\n\n    For a more extended example,\n    see :ref:`sphx_glr_auto_examples_applications_plot_species_distribution_modeling.py`",
+        "examples": "--------\n    >>> from sklearn.datasets import fetch_species_distributions\n    >>> species = fetch_species_distributions()\n    >>> species.train[:5]\n    array([(b'microryzomys_minutus', -64.7   , -17.85  ),\n           (b'microryzomys_minutus', -67.8333, -16.3333),\n           (b'microryzomys_minutus', -67.8833, -16.3   ),\n           (b'microryzomys_minutus', -67.8   , -16.2667),\n           (b'microryzomys_minutus', -67.9833, -15.9   )],\n          dtype=[('species', 'S22'), ('dd long', '<f4'), ('dd lat', '<f4')])\n\n    For a more extended example,\n    see :ref:`sphx_glr_auto_examples_applications_plot_species_distribution_modeling.py`"
+      }
+    },
+    {
+      "name": "fetch_species_distributions_fxt",
+      "signature": "<lambda>()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_pytest_filterwarning_lines",
+      "signature": "get_pytest_filterwarning_lines()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "global_dtype",
+      "signature": "global_dtype(request)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "hide_available_pandas",
+      "signature": "hide_available_pandas(monkeypatch)",
+      "documentation": {
+        "description": "Pretend pandas was not installed.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "parse_version",
+      "signature": "parse(version: str) -> Union[ForwardRef('LegacyVersion'), ForwardRef('Version')]",
+      "documentation": {
+        "description": "Parse the given version from a string to an appropriate class.\n\n    Parameters\n    ----------\n    version : str\n        Version in a string format, eg. \"0.9.1\" or \"1.2.dev0\".",
+        "parameters": {
+          "version": {
+            "type": ":class:`Version` object or a :class:`LegacyVersion` object",
+            "description": ""
+          },
+          "Version": {
+            "type": "in a string format, eg. \"0.9.1\" or \"1.2.dev0\".",
+            "description": "Returns\n-------"
+          },
+          "Returned": {
+            "type": "class depends on the given version: if is a valid",
+            "description": ""
+          },
+          "PEP": {
+            "type": "440 version or a legacy version.",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    version : :class:`Version` object or a :class:`LegacyVersion` object\n        Returned class depends on the given version: if is a valid\n        PEP 440 version or a legacy version.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "print_changed_only_false",
+      "signature": "print_changed_only_false()",
+      "documentation": {
+        "description": "Set `print_changed_only` to False for the duration of the test.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pyplot",
+      "signature": "pyplot()",
+      "documentation": {
+        "description": "Setup and teardown fixture for matplotlib.\n\n    This fixture checks if we can import matplotlib. If not, the tests will be\n    skipped. Otherwise, we close the figures before and after running the\n    functions.",
+        "parameters": {},
+        "returns": "-------\n    pyplot : module\n        The ``matplotlib.pyplot`` module.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pytest_collection_modifyitems",
+      "signature": "pytest_collection_modifyitems(config, items)",
+      "documentation": {
+        "description": "Called after collect is completed.",
+        "parameters": {
+          "config": {
+            "type": "pytest config",
+            "description": ""
+          },
+          "items": {
+            "type": "list of collected items",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pytest_configure",
+      "signature": "pytest_configure(config)",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "pytest_generate_tests",
+      "signature": "pytest_generate_tests(metafunc)",
+      "documentation": {
+        "description": "Parametrization of global_random_seed fixture\n\n    based on the SKLEARN_TESTS_GLOBAL_RANDOM_SEED environment variable.\n\n    The goal of this fixture is to prevent tests that use it to be sensitive\n    to a specific seed value while still being deterministic by default.\n\n    See the documentation for the SKLEARN_TESTS_GLOBAL_RANDOM_SEED\n    variable for instructions on how to use this fixture.\n\n    https://scikit-learn.org/dev/computing/parallelism.html#sklearn-tests-global-random-seed",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "raccoon_face_fxt",
+      "signature": "raccoon_face_or_skip()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "raccoon_face_or_skip",
+      "signature": "raccoon_face_or_skip()",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "set_config",
+      "signature": "set_config(assume_finite=None, working_memory=None, print_changed_only=None, display=None, pairwise_dist_chunk_size=None, enable_cython_pairwise_dist=None, array_api_dispatch=None, transform_output=None, enable_metadata_routing=None, skip_parameter_validation=None)",
+      "documentation": {
+        "description": "Set global scikit-learn configuration.\n\n    .. versionadded:: 0.19\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error.  Global default: False.\n\n        .. versionadded:: 0.19\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. Global default: 1024.\n\n        .. versionadded:: 0.20\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()' while the default\n        behaviour would be to print 'SVC(C=1.0, cache_size=200, ...)' with\n        all the non-changed parameters.\n\n        .. versionadded:: 0.21\n\n    display : {'text', 'diagram'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook context. If 'text', estimators will be displayed as\n        text. Default is 'diagram'.\n\n        .. versionadded:: 0.23\n\n    pairwise_dist_chunk_size : int, default=None\n        The number of row vectors per chunk for the accelerated pairwise-\n        distances reduction backend. Default is 256 (suitable for most of\n        modern laptops' caches and architectures).\n\n        Intended for easier benchmarking and testing of scikit-learn internals.\n        End users are not expected to benefit from customizing this configuration\n        setting.\n\n        .. versionadded:: 1.1\n\n    enable_cython_pairwise_dist : bool, default=None\n        Use the accelerated pairwise-distances reduction backend when\n        possible. Global default: True.\n\n        Intended for easier benchmarking and testing of scikit-learn internals.\n        End users are not expected to benefit from customizing this configuration\n        setting.\n\n        .. versionadded:: 1.1\n\n    array_api_dispatch : bool, default=None\n        Use Array API dispatching when inputs follow the Array API standard.\n        Default is False.\n\n        See the :ref:`User Guide <array_api>` for more details.\n\n        .. versionadded:: 1.2\n\n    transform_output : str, default=None\n        Configure output of `transform` and `fit_transform`.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        - `\"default\"`: Default output format of a transformer\n        - `\"pandas\"`: DataFrame output\n        - `\"polars\"`: Polars output\n        - `None`: Transform configuration is unchanged\n\n        .. versionadded:: 1.2\n        .. versionadded:: 1.4\n            `\"polars\"` option was added.\n\n    enable_metadata_routing : bool, default=None\n        Enable metadata routing. By default this feature is disabled.\n\n        Refer to :ref:`metadata routing user guide <metadata_routing>` for more\n        details.\n\n        - `True`: Metadata routing is enabled\n        - `False`: Metadata routing is disabled, use the old syntax.\n        - `None`: Configuration is unchanged\n\n        .. versionadded:: 1.3\n\n    skip_parameter_validation : bool, default=None\n        If `True`, disable the validation of the hyper-parameters' types and values in\n        the fit method of estimators and for arguments passed to public helper\n        functions. It can save time in some situations but can lead to low level\n        crashes and exceptions with confusing error messages.\n\n        Note that for data parameters, such as `X` and `y`, only type validation is\n        skipped but validation with `check_array` will continue to run.\n\n        .. versionadded:: 1.3\n\n    See Also\n    --------\n    config_context : Context manager for global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.",
+        "parameters": {
+          "assume_finite": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "If": {
+            "type": "`True`, disable the validation of the hyper-parameters' types and values in",
+            "description": ""
+          },
+          "saving": {
+            "type": "time, but leading to potential crashes. If",
+            "description": "False, validation for finiteness will be performed,"
+          },
+          "avoiding": {
+            "type": "error.  Global default: False.",
+            "description": ".. versionadded:: 0.19"
+          },
+          "working_memory": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "to": {
+            "type": "this number of MiB (per job when parallelised), often saving both",
+            "description": ""
+          },
+          "computation": {
+            "type": "time and memory on expensive operations that can be",
+            "description": ""
+          },
+          "performed": {
+            "type": "in chunks. Global default: 1024.",
+            "description": ".. versionadded:: 0.20"
+          },
+          "print_changed_only": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "values": {
+            "type": "will be printed when printing an estimator. For example,",
+            "description": "``print(SVC())`` while True will only print 'SVC()' while the default"
+          },
+          "behaviour": {
+            "type": "would be to print 'SVC(C=1.0, cache_size=200, ...)' with",
+            "description": ""
+          },
+          "all": {
+            "type": "the non-changed parameters.",
+            "description": ".. versionadded:: 0.21"
+          },
+          "display": {
+            "type": "{'text', 'diagram'}, default=None",
+            "description": ""
+          },
+          "lab": {
+            "type": "or notebook context. If 'text', estimators will be displayed as",
+            "description": "text. Default is 'diagram'.\n.. versionadded:: 0.23"
+          },
+          "pairwise_dist_chunk_size": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of row vectors per chunk for the accelerated pairwise-",
+            "description": ""
+          },
+          "distances": {
+            "type": "reduction backend. Default is 256 (suitable for most of",
+            "description": ""
+          },
+          "modern": {
+            "type": "laptops' caches and architectures).",
+            "description": ""
+          },
+          "Intended": {
+            "type": "for easier benchmarking and testing of scikit-learn internals.",
+            "description": ""
+          },
+          "End": {
+            "type": "users are not expected to benefit from customizing this configuration",
+            "description": "setting.\n.. versionadded:: 1.1"
+          },
+          "enable_cython_pairwise_dist": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "Use": {
+            "type": "Array API dispatching when inputs follow the Array API standard.",
+            "description": ""
+          },
+          "array_api_dispatch": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "Default": {
+            "type": "is False.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "transform_output": {
+            "type": "str, default=None",
+            "description": ""
+          },
+          "Configure": {
+            "type": "output of `transform` and `fit_transform`.",
+            "description": ""
+          },
+          "for": {
+            "type": "an example on how to use the API.",
+            "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.2\n.. versionadded:: 1.4\n`\"polars\"` option was added."
+          },
+          "enable_metadata_routing": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "Enable": {
+            "type": "metadata routing. By default this feature is disabled.",
+            "description": ""
+          },
+          "Refer": {
+            "type": "to :ref:`metadata routing user guide <metadata_routing>` for more",
+            "description": "details.\n- `True`: Metadata routing is enabled\n- `False`: Metadata routing is disabled, use the old syntax.\n- `None`: Configuration is unchanged\n.. versionadded:: 1.3"
+          },
+          "skip_parameter_validation": {
+            "type": "bool, default=None",
+            "description": ""
+          },
+          "the": {
+            "type": "fit method of estimators and for arguments passed to public helper",
+            "description": "functions. It can save time in some situations but can lead to low level"
+          },
+          "crashes": {
+            "type": "and exceptions with confusing error messages.",
+            "description": ""
+          },
+          "Note": {
+            "type": "that for data parameters, such as `X` and `y`, only type validation is",
+            "description": ""
+          },
+          "skipped": {
+            "type": "but validation with `check_array` will continue to run.",
+            "description": ".. versionadded:: 1.3"
+          },
+          "config_context": {
+            "type": "Context manager for global scikit",
+            "description": "learn configuration."
+          },
+          "get_config": {
+            "type": "Retrieve current values of the global configuration.",
+            "description": "Examples\n--------\n>>> from sklearn import set_config\n>>> set_config(display='diagram')  # doctest: +SKIP"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    config_context : Context manager for global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Examples\n    --------\n    >>> from sklearn import set_config\n    >>> set_config(display='diagram')  # doctest: +SKIP",
+        "notes": "that for data parameters, such as `X` and `y`, only type validation is\n        skipped but validation with `check_array` will continue to run.\n\n        .. versionadded:: 1.3\n\n    See Also\n    --------\n    config_context : Context manager for global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Examples\n    --------\n    >>> from sklearn import set_config\n    >>> set_config(display='diagram')  # doctest: +SKIP",
+        "examples": "--------\n    >>> from sklearn import set_config\n    >>> set_config(display='diagram')  # doctest: +SKIP"
+      }
+    },
+    {
+      "name": "wraps",
+      "signature": "wraps(wrapped, assigned=('__module__', '__name__', '__qualname__', '__doc__', '__annotations__', '__type_params__'), updated=('__dict__',))",
+      "documentation": {
+        "description": "Decorator factory to apply update_wrapper() to a wrapper function",
+        "parameters": {},
+        "returns": "a decorator that invokes update_wrapper() with the decorated\n       function as the wrapper argument and the arguments to wraps() as the\n       remaining arguments. Default arguments are as for update_wrapper().\n       This is a convenience function to simplify applying partial() to\n       update_wrapper().",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "DoctestItem",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_marker",
+          "signature": "add_marker(self, marker: 'str | MarkDecorator', append: 'bool' = True) -> 'None'",
+          "documentation": {
+            "description": "Dynamically add a marker object to the node.\n\n        :param marker:\n            The marker.\n        :param append:\n            Whether to append the marker, or prepend it.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "add_report_section",
+          "signature": "add_report_section(self, when: 'str', key: 'str', content: 'str') -> 'None'",
+          "documentation": {
+            "description": "Add a new report section, similar to what's done internally to add\n        stdout and stderr captured output::\n\n            item.add_report_section(\"call\", \"stdout\", \"report section contents\")\n\n        :param str when:\n            One of the possible capture states, ``\"setup\"``, ``\"call\"``, ``\"teardown\"``.\n        :param str key:\n            Name of the section, can be customized at will. Pytest uses ``\"stdout\"`` and\n            ``\"stderr\"`` internally.\n        :param str content:\n            The full contents as a string.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "addfinalizer",
+          "signature": "addfinalizer(self, fin: 'Callable[[], object]') -> 'None'",
+          "documentation": {
+            "description": "Register a function to be called without arguments when this node is\n        finalized.\n\n        This method can only be called when this node is active\n        in a setup chain, for example during self.setup().",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "from_parent",
+          "signature": "from_parent(parent: 'DoctestTextfile | DoctestModule', *, name: 'str', runner: 'doctest.DocTestRunner', dtest: 'doctest.DocTest') -> 'Self'",
+          "documentation": {
+            "description": "The public named constructor.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_closest_marker",
+          "signature": "get_closest_marker(self, name: 'str', default: 'Mark | None' = None) -> 'Mark | None'",
+          "documentation": {
+            "description": "Return the first marker matching the name, from closest (for",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "function) to farther level (for example module level).\n\n        :param default: Fallback return value if no marker was found.\n        :param name: Name to filter by."
+          }
+        },
+        {
+          "name": "getparent",
+          "signature": "getparent(self, cls: 'type[_NodeType]') -> '_NodeType | None'",
+          "documentation": {
+            "description": "Get the closest parent node (including self) which is an instance of\n        the given class.\n\n        :param cls: The node class to search for.\n        :returns: The node, if found.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "iter_markers",
+          "signature": "iter_markers(self, name: 'str | None' = None) -> 'Iterator[Mark]'",
+          "documentation": {
+            "description": "Iterate over all markers of the node.\n\n        :param name: If given, filter the results by the name attribute.\n        :returns: An iterator of the markers of the node.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "iter_markers_with_node",
+          "signature": "iter_markers_with_node(self, name: 'str | None' = None) -> 'Iterator[tuple[Node, Mark]]'",
+          "documentation": {
+            "description": "Iterate over all markers of the node.\n\n        :param name: If given, filter the results by the name attribute.\n        :returns: An iterator of (node, mark) tuples.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "iter_parents",
+          "signature": "iter_parents(self) -> 'Iterator[Node]'",
+          "documentation": {
+            "description": "Iterate over all parent collectors starting from and including self\n        up to the root of the collection tree.\n\n        .. versionadded:: 8.1",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "listchain",
+          "signature": "listchain(self) -> 'list[Node]'",
+          "documentation": {
+            "description": "Return a list of all parent collectors starting from the root of the\n        collection tree down to and including self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "listextrakeywords",
+          "signature": "listextrakeywords(self) -> 'set[str]'",
+          "documentation": {
+            "description": "Return a set of all extra keywords in self and any parents.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "listnames",
+          "signature": "listnames(self) -> 'list[str]'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reportinfo",
+          "signature": "reportinfo(self) -> 'tuple[os.PathLike[str] | str, int | None, str]'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "repr_failure",
+          "signature": "repr_failure(self, excinfo: 'ExceptionInfo[BaseException]') -> 'str | TerminalRepr'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "runtest",
+          "signature": "runtest(self) -> 'None'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setup",
+          "signature": "setup(self) -> 'None'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "teardown",
+          "signature": "teardown(self) -> 'None'",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "warn",
+          "signature": "warn(self, warning: 'Warning') -> 'None'",
+          "documentation": {
+            "description": "Issue a warning for this Node.\n\n        Warnings will be displayed after the test session, unless explicitly suppressed.\n\n        :param Warning warning:\n            The warning instance to issue.\n\n        :raises ValueError: If ``warning`` instance is not a subclass of Warning.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": "usage:\n\n        .. code-block:: python\n\n            node.warn(PytestWarning(\"some message\"))\n            node.warn(UserWarning(\"some message\"))\n\n        .. versionchanged:: 6.2\n            Any subclass of :class:`Warning` is now accepted, rather than only\n            :class:`PytestWarning <pytest.PytestWarning>` subclasses."
+          }
+        }
+      ]
+    },
+    {
+      "name": "SkipTest",
+      "documentation": {
+        "description": "Raise this exception in a test to skip it.\n\n    Usually you can use TestCase.skipTest() or one of the skipping decorators\n    instead of raising this directly.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "suppress",
+      "documentation": {
+        "description": "Context manager to suppress specified exceptions\n\n    After the exception is suppressed, execution proceeds with the next\n    statement following the with statement.\n\n         with suppress(FileNotFoundError):\n             os.remove(somefile)\n         # Execution still resumes here if the file was already removed",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "threadpool_limits",
+      "documentation": {
+        "description": "Change the maximal number of threads that can be used in thread pools.\n\n    This object can be used either as a callable (the construction of this object\n    limits the number of threads), as a context manager in a `with` block to\n    automatically restore the original state of the controlled libraries when exiting\n    the block, or as a decorator through its `wrap` method.\n\n    Set the maximal number of threads that can be used in thread pools used in\n    the supported libraries to `limit`. This function works for libraries that\n    are already loaded in the interpreter and can be changed dynamically.\n\n    This effect is global and impacts the whole Python process. There is no thread level\n    isolation as these libraries do not offer thread-local APIs to configure the number\n    of threads to use in nested parallel calls.",
+        "parameters": {
+          "limits": {
+            "type": "int, dict, 'sequential_blas_under_openmp' or None (default=None)",
+            "description": ""
+          },
+          "The": {
+            "type": "maximal number of threads that can be used in thread pools",
+            "description": "- If int, sets the maximum number of threads to `limits` for each"
+          },
+          "library": {
+            "type": "selected by `user_api`.",
+            "description": "- If it is a dictionary `{key: max_threads}`, this function sets a"
+          },
+          "custom": {
+            "type": "maximum number of threads for each `key` which can be either a",
+            "description": "`user_api` or a `prefix` for a specific library.\n- If 'sequential_blas_under_openmp', it will chose the appropriate `limits`"
+          },
+          "and": {
+            "type": "`user_api` parameters for the specific use case of sequential BLAS",
+            "description": ""
+          },
+          "calls": {
+            "type": "within an OpenMP parallel region. The `user_api` parameter is",
+            "description": "ignored.\n- If None, this function does not do anything."
+          },
+          "user_api": {
+            "type": "\"blas\", \"openmp\" or None (default=None)",
+            "description": ""
+          },
+          "APIs": {
+            "type": "of libraries to limit. Used only if `limits` is an int.",
+            "description": "- If \"blas\", it will only limit BLAS supported libraries (openblas, blis, mkl, flexiblas).\n- If \"openmp\", it will only limit OpenMP supported libraries\n(libiomp, libgomp, libomp, vcomp). Note that it can affect the number of threads used"
+          },
+          "by": {
+            "type": "the BLAS libraries if they rely on OpenMP.",
+            "description": "- If None, this function will apply to all supported libraries."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "get_original_num_threads",
+          "signature": "get_original_num_threads(self)",
+          "documentation": {
+            "description": "Original num_threads from before calling threadpool_limits",
+            "parameters": {},
+            "returns": "a dict `{user_api: num_threads}`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "restore_original_limits",
+          "signature": "restore_original_limits(self)",
+          "documentation": {
+            "description": "Set the limits back to their original values",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "unregister",
+          "signature": "restore_original_limits(self)",
+          "documentation": {
+            "description": "Set the limits back to their original values",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "wrap",
+          "signature": "wrap(limits=None, user_api=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

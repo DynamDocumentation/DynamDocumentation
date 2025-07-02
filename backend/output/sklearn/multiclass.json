@@ -1,0 +1,2987 @@
+{
+  "description": "Multiclass learning algorithms.\n\n- one-vs-the-rest / one-vs-all\n- one-vs-one\n- error correcting output codes\n\nThe estimators provided in this module are meta-estimators: they require a base\nestimator to be provided in their constructor. For example, it is possible to\nuse these estimators to turn a binary classifier or a regressor into a\nmulticlass classifier. It is also possible to use these estimators with\nmulticlass estimators in the hope that their accuracy or runtime performance\nimproves.\n\nAll classifiers in scikit-learn implement multiclass classification; you\nonly need to use this module if you want to experiment with custom multiclass\nstrategies.\n\nThe one-vs-the-rest meta-classifier also implements a `predict_proba` method,\nso long as such a method is implemented by the base classifier. This method\nreturns probabilities of class membership in both the single label and\nmultilabel case.  Note that in the multilabel case, probabilities are the\nmarginal probability that a given sample falls in the given class. As such, in\nthe multilabel case the sum of these probabilities over all possible labels\nfor a given sample *will not* sum to unity, as they do in the single label\ncase.",
+  "functions": [
+    {
+      "name": "available_if",
+      "signature": "available_if(check)",
+      "documentation": {
+        "description": "An attribute that is available only if check returns a truthy value.\n\n    Parameters\n    ----------\n    check : callable\n        When passed the object with the decorated method, this should return\n        a truthy value if the attribute is available, and either return False\n        or raise an AttributeError if not available.\n\n    Returns\n    -------\n    callable\n        Callable makes the decorated method available if `check` returns\n        a truthy value, otherwise the decorated method is unavailable.",
+        "parameters": {
+          "check": {
+            "type": "callable",
+            "description": ""
+          },
+          "When": {
+            "type": "passed the object with the decorated method, this should return",
+            "description": ""
+          },
+          "a": {
+            "type": "truthy value, otherwise the decorated method is unavailable.",
+            "description": "Examples\n--------\n>>> from sklearn.utils.metaestimators import available_if\n>>> class HelloIfEven:\n...    def __init__(self, x):\n...        self.x = x\n...\n...    def _x_is_even(self):\n...        return self.x % 2 == 0\n...\n...    @available_if(_x_is_even)\n...    def say_hello(self):\n...        print(\"Hello\")\n...\n>>> obj = HelloIfEven(1)\n>>> hasattr(obj, \"say_hello\")\nFalse\n>>> obj.x = 2\n>>> hasattr(obj, \"say_hello\")\nTrue\n>>> obj.say_hello()\nHello"
+          },
+          "or": {
+            "type": "raise an AttributeError if not available.",
+            "description": "Returns\n-------\ncallable"
+          },
+          "Callable": {
+            "type": "makes the decorated method available if `check` returns",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    callable\n        Callable makes the decorated method available if `check` returns\n        a truthy value, otherwise the decorated method is unavailable.\n\n    Examples\n    --------\n    >>> from sklearn.utils.metaestimators import available_if\n    >>> class HelloIfEven:\n    ...    def __init__(self, x):\n    ...        self.x = x\n    ...\n    ...    def _x_is_even(self):\n    ...        return self.x % 2 == 0\n    ...\n    ...    @available_if(_x_is_even)\n    ...    def say_hello(self):\n    ...        print(\"Hello\")\n    ...\n    >>> obj = HelloIfEven(1)\n    >>> hasattr(obj, \"say_hello\")\n    False\n    >>> obj.x = 2\n    >>> hasattr(obj, \"say_hello\")\n    True\n    >>> obj.say_hello()\n    Hello",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.utils.metaestimators import available_if\n    >>> class HelloIfEven:\n    ...    def __init__(self, x):\n    ...        self.x = x\n    ...\n    ...    def _x_is_even(self):\n    ...        return self.x % 2 == 0\n    ...\n    ...    @available_if(_x_is_even)\n    ...    def say_hello(self):\n    ...        print(\"Hello\")\n    ...\n    >>> obj = HelloIfEven(1)\n    >>> hasattr(obj, \"say_hello\")\n    False\n    >>> obj.x = 2\n    >>> hasattr(obj, \"say_hello\")\n    True\n    >>> obj.say_hello()\n    Hello"
+      }
+    },
+    {
+      "name": "check_classification_targets",
+      "signature": "check_classification_targets(y)",
+      "documentation": {
+        "description": "Ensure that target y is of a non-regression type.\n\n    Only the following target types (as defined in type_of_target) are allowed:\n        'binary', 'multiclass', 'multiclass-multioutput',\n        'multilabel-indicator', 'multilabel-sequences'",
+        "parameters": {
+          "y": {
+            "type": "array",
+            "description": "like"
+          },
+          "Target": {
+            "type": "values.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "check_is_fitted",
+      "signature": "check_is_fitted(estimator, attributes=None, *, msg=None, all_or_any=<built-in function all>)",
+      "documentation": {
+        "description": "Perform is_fitted validation for estimator.\n\n    Checks if the estimator is fitted by verifying the presence of\n    fitted attributes (ending with a trailing underscore) and otherwise\n    raises a :class:`~sklearn.exceptions.NotFittedError` with the given message.\n\n    If an estimator does not set any attributes with a trailing underscore, it\n    can define a ``__sklearn_is_fitted__`` method returning a boolean to\n    specify if the estimator is fitted or not. See\n    :ref:`sphx_glr_auto_examples_developing_estimators_sklearn_is_fitted.py`\n    for an example on how to use the API.\n\n    If no `attributes` are passed, this fuction will pass if an estimator is stateless.\n    An estimator can indicate it's stateless by setting the `requires_fit` tag. See\n    :ref:`estimator_tags` for more information. Note that the `requires_fit` tag\n    is ignored if `attributes` are passed.\n\n    Parameters\n    ----------\n    estimator : estimator instance\n        Estimator instance for which the check is performed.\n\n    attributes : str, list or tuple of str, default=None\n        Attribute name(s) given as string or a list/tuple of strings\n        Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``\n\n        If `None`, `estimator` is considered fitted if there exist an\n        attribute that ends with a underscore and does not start with double\n        underscore.\n\n    msg : str, default=None\n        The default error message is, \"This %(name)s instance is not fitted\n        yet. Call 'fit' with appropriate arguments before using this\n        estimator.\"\n\n        For custom messages if \"%(name)s\" is present in the message string,\n        it is substituted for the estimator name.\n\n        Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\".\n\n    all_or_any : callable, {all, any}, default=all\n        Specify whether all or any of the given attributes must exist.\n\n    Raises\n    ------\n    TypeError\n        If the estimator is a class or not an estimator instance\n\n    NotFittedError\n        If the attributes are not found.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator instance",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "instance for which the check is performed.",
+            "description": ""
+          },
+          "attributes": {
+            "type": "str, list or tuple of str, default=None",
+            "description": ""
+          },
+          "Attribute": {
+            "type": "name(s) given as string or a list/tuple of strings",
+            "description": "Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``"
+          },
+          "If": {
+            "type": "the attributes are not found.",
+            "description": "Examples\n--------\n>>> from sklearn.linear_model import LogisticRegression\n>>> from sklearn.utils.validation import check_is_fitted\n>>> from sklearn.exceptions import NotFittedError\n>>> lr = LogisticRegression()\n>>> try:\n...     check_is_fitted(lr)\n... except NotFittedError as exc:\n...     print(f\"Model is not fitted yet.\")"
+          },
+          "attribute": {
+            "type": "that ends with a underscore and does not start with double",
+            "description": "underscore."
+          },
+          "msg": {
+            "type": "str, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "default error message is, \"This %(name)s instance is not fitted",
+            "description": "yet. Call 'fit' with appropriate arguments before using this\nestimator.\""
+          },
+          "For": {
+            "type": "custom messages if \"%(name)s\" is present in the message string,",
+            "description": ""
+          },
+          "it": {
+            "type": "is substituted for the estimator name.",
+            "description": "Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\"."
+          },
+          "all_or_any": {
+            "type": "callable, {all, any}, default=all",
+            "description": ""
+          },
+          "Specify": {
+            "type": "whether all or any of the given attributes must exist.",
+            "description": "Raises\n------\nTypeError"
+          },
+          "Model": {
+            "type": "is not fitted yet.",
+            "description": ">>> lr.fit([[1, 2], [1, 3]], [1, 0])"
+          },
+          "LogisticRegression": {
+            "type": "",
+            "description": ">>> check_is_fitted(lr)"
+          }
+        },
+        "returns": "",
+        "raises": "a :class:`~sklearn.exceptions.NotFittedError` with the given message.\n\n    If an estimator does not set any attributes with a trailing underscore, it\n    can define a ``__sklearn_is_fitted__`` method returning a boolean to\n    specify if the estimator is fitted or not. See\n    :ref:`sphx_glr_auto_examples_developing_estimators_sklearn_is_fitted.py`\n    for an example on how to use the API.\n\n    If no `attributes` are passed, this fuction will pass if an estimator is stateless.\n    An estimator can indicate it's stateless by setting the `requires_fit` tag. See\n    :ref:`estimator_tags` for more information. Note that the `requires_fit` tag\n    is ignored if `attributes` are passed.\n\n    Parameters\n    ----------\n    estimator : estimator instance\n        Estimator instance for which the check is performed.\n\n    attributes : str, list or tuple of str, default=None\n        Attribute name(s) given as string or a list/tuple of strings\n        Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``\n\n        If `None`, `estimator` is considered fitted if there exist an\n        attribute that ends with a underscore and does not start with double\n        underscore.\n\n    msg : str, default=None\n        The default error message is, \"This %(name)s instance is not fitted\n        yet. Call 'fit' with appropriate arguments before using this\n        estimator.\"\n\n        For custom messages if \"%(name)s\" is present in the message string,\n        it is substituted for the estimator name.\n\n        Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\".\n\n    all_or_any : callable, {all, any}, default=all\n        Specify whether all or any of the given attributes must exist.",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> from sklearn.utils.validation import check_is_fitted\n    >>> from sklearn.exceptions import NotFittedError\n    >>> lr = LogisticRegression()\n    >>> try:\n    ...     check_is_fitted(lr)\n    ... except NotFittedError as exc:\n    ...     print(f\"Model is not fitted yet.\")\n    Model is not fitted yet.\n    >>> lr.fit([[1, 2], [1, 3]], [1, 0])\n    LogisticRegression()\n    >>> check_is_fitted(lr)"
+      }
+    },
+    {
+      "name": "check_random_state",
+      "signature": "check_random_state(seed)",
+      "documentation": {
+        "description": "Turn seed into a np.random.RandomState instance.\n\n    Parameters\n    ----------\n    seed : None, int or instance of RandomState\n        If seed is None, return the RandomState singleton used by np.random.\n        If seed is an int, return a new RandomState instance seeded with seed.\n        If seed is already a RandomState instance, return it.\n        Otherwise raise ValueError.\n\n    Returns\n    -------\n    :class:`numpy:numpy.random.RandomState`\n        The random state object based on `seed` parameter.",
+        "parameters": {
+          "seed": {
+            "type": "None, int or instance of RandomState",
+            "description": ""
+          },
+          "If": {
+            "type": "seed is already a RandomState instance, return it.",
+            "description": ""
+          },
+          "Otherwise": {
+            "type": "raise ValueError.",
+            "description": "Returns\n-------\n:class:`numpy:numpy.random.RandomState`"
+          },
+          "The": {
+            "type": "random state object based on `seed` parameter.",
+            "description": "Examples\n--------\n>>> from sklearn.utils.validation import check_random_state\n>>> check_random_state(42)"
+          },
+          "RandomState": {
+            "type": "MT19937",
+            "description": "at 0x..."
+          }
+        },
+        "returns": "-------\n    :class:`numpy:numpy.random.RandomState`\n        The random state object based on `seed` parameter.\n\n    Examples\n    --------\n    >>> from sklearn.utils.validation import check_random_state\n    >>> check_random_state(42)\n    RandomState(MT19937) at 0x...",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.utils.validation import check_random_state\n    >>> check_random_state(42)\n    RandomState(MT19937) at 0x..."
+      }
+    },
+    {
+      "name": "clone",
+      "signature": "clone(estimator, *, safe=True)",
+      "documentation": {
+        "description": "Construct a new unfitted estimator with the same parameters.\n\n    Clone does a deep copy of the model in an estimator\n    without actually copying attached data. It returns a new estimator\n    with the same parameters that has not been fitted on any data.\n\n    .. versionchanged:: 1.3\n        Delegates to `estimator.__sklearn_clone__` if the method exists.\n\n    Parameters\n    ----------\n    estimator : {list, tuple, set} of estimator instance or a single             estimator instance\n        The estimator or group of estimators to be cloned.\n    safe : bool, default=True\n        If safe is False, clone will fall back to a deep copy on objects\n        that are not estimators. Ignored if `estimator.__sklearn_clone__`\n        exists.\n\n    Returns\n    -------\n    estimator : object\n        The deep copy of the input, an estimator if input is an estimator.\n\n    Notes\n    -----\n    If the estimator's `random_state` parameter is an integer (or if the\n    estimator doesn't have a `random_state` parameter), an *exact clone* is\n    returned: the clone and the original estimator will give the exact same\n    results. Otherwise, *statistical clone* is returned: the clone might\n    return different results from the original estimator. More details can be\n    found in :ref:`randomness`.",
+        "parameters": {
+          "estimator": {
+            "type": "doesn't have a `random_state` parameter), an *exact clone* is",
+            "description": ""
+          },
+          "The": {
+            "type": "deep copy of the input, an estimator if input is an estimator.",
+            "description": "Notes\n-----"
+          },
+          "safe": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "the estimator's `random_state` parameter is an integer (or if the",
+            "description": ""
+          },
+          "that": {
+            "type": "are not estimators. Ignored if `estimator.__sklearn_clone__`",
+            "description": "exists.\nReturns\n-------"
+          },
+          "returned": {
+            "type": "the clone and the original estimator will give the exact same",
+            "description": "results. Otherwise, *statistical clone* is returned: the clone might"
+          },
+          "return": {
+            "type": "different results from the original estimator. More details can be",
+            "description": ""
+          },
+          "found": {
+            "type": "in :ref:`randomness`.",
+            "description": "Examples\n--------\n>>> from sklearn.base import clone\n>>> from sklearn.linear_model import LogisticRegression\n>>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n>>> y = [0, 0, 1, 1]\n>>> classifier = LogisticRegression().fit(X, y)\n>>> cloned_classifier = clone(classifier)\n>>> hasattr(classifier, \"classes_\")\nTrue\n>>> hasattr(cloned_classifier, \"classes_\")\nFalse\n>>> classifier is cloned_classifier\nFalse"
+          }
+        },
+        "returns": "different results from the original estimator. More details can be\n    found in :ref:`randomness`.\n\n    Examples\n    --------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n    If the estimator's `random_state` parameter is an integer (or if the\n    estimator doesn't have a `random_state` parameter), an *exact clone* is\n    returned: the clone and the original estimator will give the exact same\n    results. Otherwise, *statistical clone* is returned: the clone might\n    return different results from the original estimator. More details can be\n    found in :ref:`randomness`.\n\n    Examples\n    --------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False",
+        "examples": "--------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False"
+      }
+    },
+    {
+      "name": "delayed",
+      "signature": "delayed(function)",
+      "documentation": {
+        "description": "Decorator used to capture the arguments of a function.\n\n    This alternative to `joblib.delayed` is meant to be used in conjunction\n    with `sklearn.utils.parallel.Parallel`. The latter captures the scikit-\n    learn configuration by calling `sklearn.get_config()` in the current\n    thread, prior to dispatching the first task. The captured configuration is\n    then propagated and enabled for the duration of the execution of the\n    delayed function in the joblib workers.\n\n    .. versionchanged:: 1.3\n       `delayed` was moved from `sklearn.utils.fixes` to `sklearn.utils.parallel`\n       in scikit-learn 1.3.\n\n    Parameters\n    ----------\n    function : callable\n        The function to be delayed.",
+        "parameters": {
+          "function": {
+            "type": "callable",
+            "description": ""
+          },
+          "The": {
+            "type": "function to be delayed.",
+            "description": "Returns\n-------"
+          },
+          "output": {
+            "type": "tuple",
+            "description": ""
+          },
+          "Tuple": {
+            "type": "containing the delayed function, the positional arguments, and the",
+            "description": ""
+          },
+          "keyword": {
+            "type": "arguments.",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    output: tuple\n        Tuple containing the delayed function, the positional arguments, and the\n        keyword arguments.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_tags",
+      "signature": "get_tags(estimator) -> 'Tags'",
+      "documentation": {
+        "description": "Get estimator tags.\n\n    :class:`~sklearn.BaseEstimator` provides the estimator tags machinery.\n    However, if an estimator does not inherit from this base class, we should\n    fall-back to the default tags.\n\n    For scikit-learn built-in estimators, we should still rely on\n    `self.__sklearn_tags__()`. `get_tags(est)` should be used when we\n    are not sure where `est` comes from: typically\n    `get_tags(self.estimator)` where `self` is a meta-estimator, or in\n    the common checks.\n\n    .. versionadded:: 1.6\n\n    Parameters\n    ----------\n    estimator : estimator object\n        The estimator from which to get the tag.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator object",
+            "description": ""
+          },
+          "The": {
+            "type": "estimator tags.",
+            "description": ""
+          },
+          "tags": {
+            "type": ":class:`~.sklearn.utils.Tags`",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    tags : :class:`~.sklearn.utils.Tags`\n        The estimator tags.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "is_classifier",
+      "signature": "is_classifier(estimator)",
+      "documentation": {
+        "description": "Return True if the given estimator is (probably) a classifier.\n\n    Parameters\n    ----------\n    estimator : object\n        Estimator object to test.\n\n    Returns\n    -------\n    out : bool\n        True if estimator is a classifier and False otherwise.",
+        "parameters": {
+          "estimator": {
+            "type": "object",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "object to test.",
+            "description": "Returns\n-------"
+          },
+          "out": {
+            "type": "bool",
+            "description": ""
+          },
+          "True": {
+            "type": "if estimator is a classifier and False otherwise.",
+            "description": "Examples\n--------\n>>> from sklearn.base import is_classifier\n>>> from sklearn.cluster import KMeans\n>>> from sklearn.svm import SVC, SVR\n>>> classifier = SVC()\n>>> regressor = SVR()\n>>> kmeans = KMeans()\n>>> is_classifier(classifier)\nTrue\n>>> is_classifier(regressor)\nFalse\n>>> is_classifier(kmeans)\nFalse"
+          }
+        },
+        "returns": "-------\n    out : bool\n        True if estimator is a classifier and False otherwise.\n\n    Examples\n    --------\n    >>> from sklearn.base import is_classifier\n    >>> from sklearn.cluster import KMeans\n    >>> from sklearn.svm import SVC, SVR\n    >>> classifier = SVC()\n    >>> regressor = SVR()\n    >>> kmeans = KMeans()\n    >>> is_classifier(classifier)\n    True\n    >>> is_classifier(regressor)\n    False\n    >>> is_classifier(kmeans)\n    False",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.base import is_classifier\n    >>> from sklearn.cluster import KMeans\n    >>> from sklearn.svm import SVC, SVR\n    >>> classifier = SVC()\n    >>> regressor = SVR()\n    >>> kmeans = KMeans()\n    >>> is_classifier(classifier)\n    True\n    >>> is_classifier(regressor)\n    False\n    >>> is_classifier(kmeans)\n    False"
+      }
+    },
+    {
+      "name": "is_regressor",
+      "signature": "is_regressor(estimator)",
+      "documentation": {
+        "description": "Return True if the given estimator is (probably) a regressor.\n\n    Parameters\n    ----------\n    estimator : estimator instance\n        Estimator object to test.\n\n    Returns\n    -------\n    out : bool\n        True if estimator is a regressor and False otherwise.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator instance",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "object to test.",
+            "description": "Returns\n-------"
+          },
+          "out": {
+            "type": "bool",
+            "description": ""
+          },
+          "True": {
+            "type": "if estimator is a regressor and False otherwise.",
+            "description": "Examples\n--------\n>>> from sklearn.base import is_regressor\n>>> from sklearn.cluster import KMeans\n>>> from sklearn.svm import SVC, SVR\n>>> classifier = SVC()\n>>> regressor = SVR()\n>>> kmeans = KMeans()\n>>> is_regressor(classifier)\nFalse\n>>> is_regressor(regressor)\nTrue\n>>> is_regressor(kmeans)\nFalse"
+          }
+        },
+        "returns": "-------\n    out : bool\n        True if estimator is a regressor and False otherwise.\n\n    Examples\n    --------\n    >>> from sklearn.base import is_regressor\n    >>> from sklearn.cluster import KMeans\n    >>> from sklearn.svm import SVC, SVR\n    >>> classifier = SVC()\n    >>> regressor = SVR()\n    >>> kmeans = KMeans()\n    >>> is_regressor(classifier)\n    False\n    >>> is_regressor(regressor)\n    True\n    >>> is_regressor(kmeans)\n    False",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.base import is_regressor\n    >>> from sklearn.cluster import KMeans\n    >>> from sklearn.svm import SVC, SVR\n    >>> classifier = SVC()\n    >>> regressor = SVR()\n    >>> kmeans = KMeans()\n    >>> is_regressor(classifier)\n    False\n    >>> is_regressor(regressor)\n    True\n    >>> is_regressor(kmeans)\n    False"
+      }
+    },
+    {
+      "name": "pairwise_distances_argmin",
+      "signature": "pairwise_distances_argmin(X, Y, *, axis=1, metric='euclidean', metric_kwargs=None)",
+      "documentation": {
+        "description": "Compute minimum distances between one point and a set of points.\n\n    This function computes for each row in X, the index of the row of Y which\n    is closest (according to the specified distance).\n\n    This is mostly equivalent to calling::\n\n        pairwise_distances(X, Y=Y, metric=metric).argmin(axis=axis)\n\n    but uses much less memory, and is faster for large arrays.\n\n    This function works with dense 2D arrays only.\n\n    Parameters\n    ----------\n    X : {array-like, sparse matrix} of shape (n_samples_X, n_features)\n        Array containing points.\n\n    Y : {array-like, sparse matrix} of shape (n_samples_Y, n_features)\n        Arrays containing points.\n\n    axis : int, default=1\n        Axis along which the argmin and distances are to be computed.\n\n    metric : str or callable, default=\"euclidean\"\n        Metric to use for distance computation. Any metric from scikit-learn\n        or scipy.spatial.distance can be used.\n\n        If metric is a callable function, it is called on each\n        pair of instances (rows) and the resulting value recorded. The callable\n        should take two arrays as input and return one value indicating the\n        distance between them. This works for Scipy's metrics, but is less\n        efficient than passing the metric name as a string.\n\n        Distance matrices are not supported.\n\n        Valid values for metric are:\n\n        - from scikit-learn: ['cityblock', 'cosine', 'euclidean', 'l1', 'l2',\n          'manhattan', 'nan_euclidean']\n\n        - from scipy.spatial.distance: ['braycurtis', 'canberra', 'chebyshev',\n          'correlation', 'dice', 'hamming', 'jaccard', 'kulsinski',\n          'mahalanobis', 'minkowski', 'rogerstanimoto', 'russellrao',\n          'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',\n          'yule']\n\n        See the documentation for scipy.spatial.distance for details on these\n        metrics.\n\n        .. note::\n           `'kulsinski'` is deprecated from SciPy 1.9 and will be removed in SciPy 1.11.\n\n        .. note::\n           `'matching'` has been removed in SciPy 1.9 (use `'hamming'` instead).\n\n    metric_kwargs : dict, default=None\n        Keyword arguments to pass to specified metric function.\n\n    Returns\n    -------\n    argmin : numpy.ndarray\n        Y[argmin[i], :] is the row in Y that is closest to X[i, :].\n\n    See Also\n    --------\n    pairwise_distances : Distances between every pair of samples of X and Y.\n    pairwise_distances_argmin_min : Same as `pairwise_distances_argmin` but also\n        returns the distances.",
+        "parameters": {
+          "X": {
+            "type": "{array",
+            "description": "like, sparse matrix} of shape (n_samples_X, n_features)"
+          },
+          "Array": {
+            "type": "containing points.",
+            "description": ""
+          },
+          "Y": {
+            "type": "{array",
+            "description": "like, sparse matrix} of shape (n_samples_Y, n_features)"
+          },
+          "Arrays": {
+            "type": "containing points.",
+            "description": ""
+          },
+          "axis": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "Axis": {
+            "type": "along which the argmin and distances are to be computed.",
+            "description": ""
+          },
+          "metric": {
+            "type": "str or callable, default=\"euclidean\"",
+            "description": ""
+          },
+          "Metric": {
+            "type": "to use for distance computation. Any metric from scikit-learn",
+            "description": ""
+          },
+          "or": {
+            "type": "scipy.spatial.distance can be used.",
+            "description": ""
+          },
+          "If": {
+            "type": "metric is a callable function, it is called on each",
+            "description": ""
+          },
+          "pair": {
+            "type": "of instances (rows) and the resulting value recorded. The callable",
+            "description": ""
+          },
+          "should": {
+            "type": "take two arrays as input and return one value indicating the",
+            "description": ""
+          },
+          "distance": {
+            "type": "between them. This works for Scipy's metrics, but is less",
+            "description": ""
+          },
+          "efficient": {
+            "type": "than passing the metric name as a string.",
+            "description": ""
+          },
+          "Distance": {
+            "type": "matrices are not supported.",
+            "description": ""
+          },
+          "Valid": {
+            "type": "values for metric are:",
+            "description": "- from scikit-learn: ['cityblock', 'cosine', 'euclidean', 'l1', 'l2',\n'manhattan', 'nan_euclidean']\n- from scipy.spatial.distance: ['braycurtis', 'canberra', 'chebyshev',\n'correlation', 'dice', 'hamming', 'jaccard', 'kulsinski',\n'mahalanobis', 'minkowski', 'rogerstanimoto', 'russellrao',\n'seuclidean', 'sokalmichener', 'sokalsneath', 'sqeuclidean',\n'yule']"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "metric_kwargs": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "Keyword": {
+            "type": "arguments to pass to specified metric function.",
+            "description": "Returns\n-------"
+          },
+          "argmin": {
+            "type": "numpy.ndarray",
+            "description": "Y[argmin[i], :] is the row in Y that is closest to X[i, :]."
+          },
+          "pairwise_distances": {
+            "type": "Distances between every pair of samples of X and Y.",
+            "description": ""
+          },
+          "pairwise_distances_argmin_min": {
+            "type": "Same as `pairwise_distances_argmin` but also",
+            "description": ""
+          },
+          "returns": {
+            "type": "the distances.",
+            "description": "Examples\n--------\n>>> from sklearn.metrics.pairwise import pairwise_distances_argmin\n>>> X = [[0, 0, 0], [1, 1, 1]]\n>>> Y = [[1, 0, 0], [1, 1, 0]]\n>>> pairwise_distances_argmin(X, Y)"
+          },
+          "array": {
+            "type": "[0, 1]",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    argmin : numpy.ndarray\n        Y[argmin[i], :] is the row in Y that is closest to X[i, :].\n\n    See Also\n    --------\n    pairwise_distances : Distances between every pair of samples of X and Y.\n    pairwise_distances_argmin_min : Same as `pairwise_distances_argmin` but also",
+        "raises": "",
+        "see_also": "--------\n    pairwise_distances : Distances between every pair of samples of X and Y.\n    pairwise_distances_argmin_min : Same as `pairwise_distances_argmin` but also\n        returns the distances.\n\n    Examples\n    --------\n    >>> from sklearn.metrics.pairwise import pairwise_distances_argmin\n    >>> X = [[0, 0, 0], [1, 1, 1]]\n    >>> Y = [[1, 0, 0], [1, 1, 0]]\n    >>> pairwise_distances_argmin(X, Y)\n    array([0, 1])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.metrics.pairwise import pairwise_distances_argmin\n    >>> X = [[0, 0, 0], [1, 1, 1]]\n    >>> Y = [[1, 0, 0], [1, 1, 0]]\n    >>> pairwise_distances_argmin(X, Y)\n    array([0, 1])"
+      }
+    },
+    {
+      "name": "process_routing",
+      "signature": "process_routing(_obj, _method, /, **kwargs)",
+      "documentation": {
+        "description": "Validate and route input parameters.\n\n    This function is used inside a router's method, e.g. :term:`fit`,\n    to validate the metadata and handle the routing.\n\n    Assuming this signature of a router's fit method:\n    ``fit(self, X, y, sample_weight=None, **fit_params)``,\n    a call to this function would be:\n    ``process_routing(self, \"fit\", sample_weight=sample_weight, **fit_params)``.",
+        "parameters": {
+          "_obj": {
+            "type": "object",
+            "description": ""
+          },
+          "An": {
+            "type": "object implementing ``get_metadata_routing``. Typically a",
+            "description": "meta-estimator."
+          },
+          "_method": {
+            "type": "str",
+            "description": ""
+          },
+          "The": {
+            "type": "name of the router's method in which this function is called.",
+            "description": "**kwargs : dict"
+          },
+          "Metadata": {
+            "type": "to be routed.",
+            "description": "Returns\n-------"
+          },
+          "routed_params": {
+            "type": "Bunch",
+            "description": ""
+          },
+          "A": {
+            "type": "class:`~sklearn.utils.Bunch` of the form ``{\"object_name\": {\"method_name\":",
+            "description": "{params: value}}}`` which can be used to pass the required metadata to"
+          },
+          "corresponding": {
+            "type": "methods or corresponding child objects. The object names",
+            "description": ""
+          },
+          "are": {
+            "type": "those defined in `obj.get_metadata_routing()`.",
+            "description": ""
+          }
+        },
+        "returns": "an empty routing where ``process_routing(...).ANYTHING.ANY_METHOD``\n    is always an empty dictionary.\n\n    .. versionadded:: 1.3\n\n    Parameters\n    ----------\n    _obj : object\n        An object implementing ``get_metadata_routing``. Typically a\n        meta-estimator.\n\n    _method : str\n        The name of the router's method in which this function is called.\n\n    **kwargs : dict\n        Metadata to be routed.",
+        "raises": "",
+        "see_also": "",
+        "notes": "that if routing is not enabled and ``kwargs`` is empty, then it\n    returns an empty routing where ``process_routing(...).ANYTHING.ANY_METHOD``\n    is always an empty dictionary.\n\n    .. versionadded:: 1.3\n\n    Parameters\n    ----------\n    _obj : object\n        An object implementing ``get_metadata_routing``. Typically a\n        meta-estimator.\n\n    _method : str\n        The name of the router's method in which this function is called.\n\n    **kwargs : dict\n        Metadata to be routed.\n\n    Returns\n    -------\n    routed_params : Bunch\n        A :class:`~utils.Bunch` of the form ``{\"object_name\": {\"method_name\":\n        {params: value}}}`` which can be used to pass the required metadata to\n        A :class:`~sklearn.utils.Bunch` of the form ``{\"object_name\": {\"method_name\":\n        {params: value}}}`` which can be used to pass the required metadata to\n        corresponding methods or corresponding child objects. The object names\n        are those defined in `obj.get_metadata_routing()`.",
+        "examples": ""
+      }
+    },
+    {
+      "name": "validate_data",
+      "signature": "validate_data(_estimator, /, X='no_validation', y='no_validation', reset=True, validate_separately=False, skip_check_array=False, **check_params)",
+      "documentation": {
+        "description": "Validate input data and set or check feature names and counts of the input.\n\n    This helper function should be used in an estimator that requires input\n    validation. This mutates the estimator and sets the `n_features_in_` and\n    `feature_names_in_` attributes if `reset=True`.\n\n    .. versionadded:: 1.6\n\n    Parameters\n    ----------\n    _estimator : estimator instance\n        The estimator to validate the input for.\n\n    X : {array-like, sparse matrix, dataframe} of shape             (n_samples, n_features), default='no validation'\n        The input samples.\n        If `'no_validation'`, no validation is performed on `X`. This is\n        useful for meta-estimator which can delegate input validation to\n        their underlying estimator(s). In that case `y` must be passed and\n        the only accepted `check_params` are `multi_output` and\n        `y_numeric`.\n\n    y : array-like of shape (n_samples,), default='no_validation'\n        The targets.\n\n        - If `None`, :func:`~sklearn.utils.check_array` is called on `X`. If\n          the estimator's `requires_y` tag is True, then an error will be raised.\n        - If `'no_validation'`, :func:`~sklearn.utils.check_array` is called\n          on `X` and the estimator's `requires_y` tag is ignored. This is a default\n          placeholder and is never meant to be explicitly set. In that case `X` must be\n          passed.\n        - Otherwise, only `y` with `_check_y` or both `X` and `y` are checked with\n          either :func:`~sklearn.utils.check_array` or\n          :func:`~sklearn.utils.check_X_y` depending on `validate_separately`.\n\n    reset : bool, default=True\n        Whether to reset the `n_features_in_` attribute.\n        If False, the input will be checked for consistency with data\n        provided when reset was last True.\n\n        .. note::\n\n           It is recommended to call `reset=True` in `fit` and in the first\n           call to `partial_fit`. All other methods that validate `X`\n           should set `reset=False`.\n\n    validate_separately : False or tuple of dicts, default=False\n        Only used if `y` is not `None`.\n        If `False`, call :func:`~sklearn.utils.check_X_y`. Else, it must be a tuple of\n        kwargs to be used for calling :func:`~sklearn.utils.check_array` on `X` and `y`\n        respectively.\n\n        `estimator=self` is automatically added to these dicts to generate\n        more informative error message in case of invalid input data.\n\n    skip_check_array : bool, default=False\n        If `True`, `X` and `y` are unchanged and only `feature_names_in_` and\n        `n_features_in_` are checked. Otherwise, :func:`~sklearn.utils.check_array`\n        is called on `X` and `y`.\n\n    **check_params : kwargs\n        Parameters passed to :func:`~sklearn.utils.check_array` or\n        :func:`~sklearn.utils.check_X_y`. Ignored if validate_separately\n        is not False.\n\n        `estimator=self` is automatically added to these params to generate\n        more informative error message in case of invalid input data.",
+        "parameters": {
+          "_estimator": {
+            "type": "estimator instance",
+            "description": ""
+          },
+          "The": {
+            "type": "targets.",
+            "description": "- If `None`, :func:`~sklearn.utils.check_array` is called on `X`. If"
+          },
+          "X": {
+            "type": "{array",
+            "description": "like, sparse matrix, dataframe} of shape             (n_samples, n_features), default='no validation'"
+          },
+          "If": {
+            "type": "`True`, `X` and `y` are unchanged and only `feature_names_in_` and",
+            "description": "`n_features_in_` are checked. Otherwise, :func:`~sklearn.utils.check_array`"
+          },
+          "useful": {
+            "type": "for meta-estimator which can delegate input validation to",
+            "description": ""
+          },
+          "their": {
+            "type": "underlying estimator(s). In that case `y` must be passed and",
+            "description": ""
+          },
+          "the": {
+            "type": "estimator's `requires_y` tag is True, then an error will be raised.",
+            "description": "- If `'no_validation'`, :func:`~sklearn.utils.check_array` is called"
+          },
+          "y": {
+            "type": "array",
+            "description": "like of shape (n_samples,), default='no_validation'"
+          },
+          "on": {
+            "type": "`X` and the estimator's `requires_y` tag is ignored. This is a default",
+            "description": ""
+          },
+          "placeholder": {
+            "type": "and is never meant to be explicitly set. In that case `X` must be",
+            "description": "passed.\n- Otherwise, only `y` with `_check_y` or both `X` and `y` are checked with"
+          },
+          "either": {
+            "type": "func:`~sklearn.utils.check_array` or",
+            "description": ":func:`~sklearn.utils.check_X_y` depending on `validate_separately`."
+          },
+          "reset": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to reset the `n_features_in_` attribute.",
+            "description": ""
+          },
+          "provided": {
+            "type": "when reset was last True.",
+            "description": ".. note::"
+          },
+          "It": {
+            "type": "is recommended to call `reset=True` in `fit` and in the first",
+            "description": ""
+          },
+          "call": {
+            "type": "to `partial_fit`. All other methods that validate `X`",
+            "description": ""
+          },
+          "should": {
+            "type": "set `reset=False`.",
+            "description": ""
+          },
+          "validate_separately": {
+            "type": "False or tuple of dicts, default=False",
+            "description": ""
+          },
+          "Only": {
+            "type": "used if `y` is not `None`.",
+            "description": ""
+          },
+          "kwargs": {
+            "type": "to be used for calling :func:`~sklearn.utils.check_array` on `X` and `y`",
+            "description": "respectively.\n`estimator=self` is automatically added to these dicts to generate"
+          },
+          "more": {
+            "type": "informative error message in case of invalid input data.",
+            "description": ""
+          },
+          "skip_check_array": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "is": {
+            "type": "called on `X` and `y`.",
+            "description": "**check_params : kwargs"
+          }
+        },
+        "returns": "-------\n    out : {ndarray, sparse matrix} or tuple of these\n        The validated input. A tuple is returned if both `X` and `y` are\n        validated.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "BaseEstimator",
+      "documentation": {
+        "description": "Base class for all estimators in scikit-learn.\n\n    Inheriting from this class provides default implementations of:\n\n    - setting and getting parameters used by `GridSearchCV` and friends;\n    - textual and HTML representation displayed in terminals and IDEs;\n    - estimator serialization;\n    - parameters validation;\n    - data validation;\n    - feature names validation.\n\n    Read more in the :ref:`User Guide <rolling_your_own_estimator>`.\n\n\n    Notes\n    -----\n    All estimators should specify all the parameters that can be set\n    at the class level in their ``__init__`` as explicit keyword\n    arguments (no ``*args`` or ``**kwargs``).",
+        "parameters": {
+          "array": {
+            "type": "[3, 3, 3]",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n    All estimators should specify all the parameters that can be set\n    at the class level in their ``__init__`` as explicit keyword\n    arguments (no ``*args`` or ``**kwargs``).\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.base import BaseEstimator\n    >>> class MyEstimator(BaseEstimator):\n    ...     def __init__(self, *, param=1):\n    ...         self.param = param\n    ...     def fit(self, X, y=None):\n    ...         self.is_fitted_ = True\n    ...         return self\n    ...     def predict(self, X):\n    ...         return np.full(shape=X.shape[0], fill_value=self.param)\n    >>> estimator = MyEstimator(param=2)\n    >>> estimator.get_params()\n    {'param': 2}\n    >>> X = np.array([[1, 2], [2, 3], [3, 4]])\n    >>> y = np.array([1, 0, 1])\n    >>> estimator.fit(X, y).predict(X)\n    array([2, 2, 2])\n    >>> estimator.set_params(param=3).fit(X, y).predict(X)\n    array([3, 3, 3])",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.base import BaseEstimator\n    >>> class MyEstimator(BaseEstimator):\n    ...     def __init__(self, *, param=1):\n    ...         self.param = param\n    ...     def fit(self, X, y=None):\n    ...         self.is_fitted_ = True\n    ...         return self\n    ...     def predict(self, X):\n    ...         return np.full(shape=X.shape[0], fill_value=self.param)\n    >>> estimator = MyEstimator(param=2)\n    >>> estimator.get_params()\n    {'param': 2}\n    >>> X = np.array([[1, 2], [2, 3], [3, 4]])\n    >>> y = np.array([1, 0, 1])\n    >>> estimator.fit(X, y).predict(X)\n    array([2, 2, 2])\n    >>> estimator.set_params(param=3).fit(X, y).predict(X)\n    array([3, 3, 3])"
+      },
+      "methods": [
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ClassifierMixin",
+      "documentation": {
+        "description": "Mixin class for all classifiers in scikit-learn.\n\n    This mixin defines the following functionality:\n\n    - set estimator type to `\"classifier\"` through the `estimator_type` tag;\n    - `score` method that default to :func:`~sklearn.metrics.accuracy_score`.\n    - enforce that `fit` requires `y` to be passed through the `requires_y` tag,\n      which is done by setting the classifier type tag.\n\n    Read more in the :ref:`User Guide <rolling_your_own_estimator>`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.base import BaseEstimator, ClassifierMixin\n    >>> # Mixin classes should always be on the left-hand side for a correct MRO\n    >>> class MyEstimator(ClassifierMixin, BaseEstimator):\n    ...     def __init__(self, *, param=1):\n    ...         self.param = param\n    ...     def fit(self, X, y=None):\n    ...         self.is_fitted_ = True\n    ...         return self\n    ...     def predict(self, X):\n    ...         return np.full(shape=X.shape[0], fill_value=self.param)\n    >>> estimator = MyEstimator(param=1)\n    >>> X = np.array([[1, 2], [2, 3], [3, 4]])\n    >>> y = np.array([1, 0, 1])\n    >>> estimator.fit(X, y).predict(X)\n    array([1, 1, 1])\n    >>> estimator.score(X, y)\n    0.66..."
+      },
+      "methods": [
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "labels for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ""
+              },
+              "Mean": {
+                "type": "accuracy of ``self.predict(X)`` w.r.t. `y`.",
+                "description": ""
+              }
+            },
+            "returns": "the mean accuracy on the given test data and labels.\n\n        In multi-label classification, this is the subset accuracy\n        which is a harsh metric since you require for each sample that\n        each label set be correctly predicted.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True labels for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            Mean accuracy of ``self.predict(X)`` w.r.t. `y`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "HasMethods",
+      "documentation": {
+        "description": "Constraint representing objects that expose specific methods.\n\n    It is useful for parameters following a protocol and where we don't want to impose\n    an affiliation to a specific module or class.",
+        "parameters": {
+          "methods": {
+            "type": "str or list of str",
+            "description": ""
+          },
+          "The": {
+            "type": "method(s) that the object is expected to expose.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "is_satisfied_by",
+          "signature": "is_satisfied_by(self, val)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Integral",
+      "documentation": {
+        "description": "Integral adds methods that work on integral numbers.\n\n    In short, these are conversion to int, pow with modulus, and the\n    bit-string operations.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "conjugate",
+          "signature": "conjugate(self)",
+          "documentation": {
+            "description": "Conjugate is a no-op for Reals.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Interval",
+      "documentation": {
+        "description": "Constraint representing a typed interval.\n\n    Parameters\n    ----------\n    type : {numbers.Integral, numbers.Real, RealNotInt}\n        The set of numbers in which to set the interval.\n\n        If RealNotInt, only reals that don't have the integer type\n        are allowed. For example 1.0 is allowed but 1 is not.\n\n    left : float or int or None\n        The left bound of the interval. None means left bound is -∞.\n\n    right : float, int or None\n        The right bound of the interval. None means right bound is +∞.\n\n    closed : {\"left\", \"right\", \"both\", \"neither\"}\n        Whether the interval is open or closed. Possible choices are:\n\n        - `\"left\"`: the interval is closed on the left and open on the right.\n          It is equivalent to the interval `[ left, right )`.\n        - `\"right\"`: the interval is closed on the right and open on the left.\n          It is equivalent to the interval `( left, right ]`.\n        - `\"both\"`: the interval is closed.\n          It is equivalent to the interval `[ left, right ]`.\n        - `\"neither\"`: the interval is open.\n          It is equivalent to the interval `( left, right )`.",
+        "parameters": {
+          "type": {
+            "type": "{numbers.Integral, numbers.Real, RealNotInt}",
+            "description": ""
+          },
+          "The": {
+            "type": "right bound of the interval. None means right bound is +∞.",
+            "description": ""
+          },
+          "If": {
+            "type": "RealNotInt, only reals that don't have the integer type",
+            "description": ""
+          },
+          "are": {
+            "type": "allowed. For example 1.0 is allowed but 1 is not.",
+            "description": ""
+          },
+          "left": {
+            "type": "float or int or None",
+            "description": ""
+          },
+          "right": {
+            "type": "float, int or None",
+            "description": ""
+          },
+          "closed": {
+            "type": "{\"left\", \"right\", \"both\", \"neither\"}",
+            "description": ""
+          },
+          "Whether": {
+            "type": "the interval is open or closed. Possible choices are:",
+            "description": "- `\"left\"`: the interval is closed on the left and open on the right."
+          },
+          "It": {
+            "type": "is equivalent to the interval `( left, right )`.",
+            "description": "Notes\n-----"
+          },
+          "Setting": {
+            "type": "a bound to `None` and setting the interval closed is valid. For instance,",
+            "description": ""
+          },
+          "strictly": {
+            "type": "speaking, `Interval(Real, 0, None, closed=\"both\")` corresponds to",
+            "description": "`[0, +∞) U {+∞}`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n    Setting a bound to `None` and setting the interval closed is valid. For instance,\n    strictly speaking, `Interval(Real, 0, None, closed=\"both\")` corresponds to\n    `[0, +∞) U {+∞}`.",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "is_satisfied_by",
+          "signature": "is_satisfied_by(self, val)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "LabelBinarizer",
+      "documentation": {
+        "description": "Binarize labels in a one-vs-all fashion.\n\n    Several regression and binary classification algorithms are\n    available in scikit-learn. A simple way to extend these algorithms\n    to the multi-class classification case is to use the so-called\n    one-vs-all scheme.\n\n    At learning time, this simply consists in learning one regressor\n    or binary classifier per class. In doing so, one needs to convert\n    multi-class labels to binary labels (belong or does not belong\n    to the class). `LabelBinarizer` makes this process easy with the\n    transform method.\n\n    At prediction time, one assigns the class for which the corresponding\n    model gave the greatest confidence. `LabelBinarizer` makes this easy\n    with the :meth:`inverse_transform` method.\n\n    Read more in the :ref:`User Guide <preprocessing_targets>`.\n\n    Parameters\n    ----------\n    neg_label : int, default=0\n        Value with which negative labels must be encoded.\n\n    pos_label : int, default=1\n        Value with which positive labels must be encoded.\n\n    sparse_output : bool, default=False\n        True if the returned array from transform is desired to be in sparse\n        CSR format.\n\n    Attributes\n    ----------\n    classes_ : ndarray of shape (n_classes,)\n        Holds the label for each class.\n\n    y_type_ : str\n        Represents the type of the target data as evaluated by\n        :func:`~sklearn.utils.multiclass.type_of_target`. Possible type are\n        'continuous', 'continuous-multioutput', 'binary', 'multiclass',\n        'multiclass-multioutput', 'multilabel-indicator', and 'unknown'.\n\n    sparse_input_ : bool\n        `True` if the input data to transform is given as a sparse matrix,\n         `False` otherwise.\n\n    See Also\n    --------\n    label_binarize : Function to perform the transform operation of\n        LabelBinarizer with fixed classes.\n    OneHotEncoder : Encode categorical features using a one-hot aka one-of-K\n        scheme.",
+        "parameters": {
+          "neg_label": {
+            "type": "int, default=0",
+            "description": ""
+          },
+          "Value": {
+            "type": "with which positive labels must be encoded.",
+            "description": ""
+          },
+          "pos_label": {
+            "type": "int, default=1",
+            "description": ""
+          },
+          "sparse_output": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "True": {
+            "type": "if the returned array from transform is desired to be in sparse",
+            "description": ""
+          },
+          "CSR": {
+            "type": "format.",
+            "description": "Attributes\n----------"
+          },
+          "classes_": {
+            "type": "ndarray of shape (n_classes,)",
+            "description": ""
+          },
+          "Holds": {
+            "type": "the label for each class.",
+            "description": ""
+          },
+          "y_type_": {
+            "type": "str",
+            "description": ""
+          },
+          "Represents": {
+            "type": "the type of the target data as evaluated by",
+            "description": ":func:`~sklearn.utils.multiclass.type_of_target`. Possible type are\n'continuous', 'continuous-multioutput', 'binary', 'multiclass',\n'multiclass-multioutput', 'multilabel-indicator', and 'unknown'."
+          },
+          "sparse_input_": {
+            "type": "bool",
+            "description": "`True` if the input data to transform is given as a sparse matrix,\n`False` otherwise."
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "label_binarize": {
+            "type": "Function to perform the transform operation of",
+            "description": ""
+          },
+          "LabelBinarizer": {
+            "type": "",
+            "description": ">>> lb.classes_"
+          },
+          "OneHotEncoder": {
+            "type": "Encode categorical features using a one",
+            "description": "hot aka one-of-K\nscheme.\nExamples\n--------\n>>> from sklearn.preprocessing import LabelBinarizer\n>>> lb = LabelBinarizer()\n>>> lb.fit([1, 2, 6, 4, 2])"
+          },
+          "array": {
+            "type": "[0, 1, 2]",
+            "description": ">>> lb.transform([0, 1, 2, 1])\narray([[1, 0, 0],\n[0, 1, 0],\n[0, 0, 1],\n[0, 1, 0]])"
+          },
+          "Binary": {
+            "type": "targets transform to a column vector",
+            "description": ">>> lb = LabelBinarizer()\n>>> lb.fit_transform(['yes', 'no', 'no', 'yes'])\narray([[1],\n[0],\n[0],\n[1]])"
+          },
+          "Passing": {
+            "type": "a 2D matrix for multilabel classification",
+            "description": ">>> import numpy as np\n>>> lb.fit(np.array([[0, 1, 1], [1, 0, 0]]))"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    label_binarize : Function to perform the transform operation of\n        LabelBinarizer with fixed classes.\n    OneHotEncoder : Encode categorical features using a one-hot aka one-of-K\n        scheme.\n\n    Examples\n    --------\n    >>> from sklearn.preprocessing import LabelBinarizer\n    >>> lb = LabelBinarizer()\n    >>> lb.fit([1, 2, 6, 4, 2])\n    LabelBinarizer()\n    >>> lb.classes_\n    array([1, 2, 4, 6])\n    >>> lb.transform([1, 6])\n    array([[1, 0, 0, 0],\n           [0, 0, 0, 1]])\n\n    Binary targets transform to a column vector\n\n    >>> lb = LabelBinarizer()\n    >>> lb.fit_transform(['yes', 'no', 'no', 'yes'])\n    array([[1],\n           [0],\n           [0],\n           [1]])\n\n    Passing a 2D matrix for multilabel classification\n\n    >>> import numpy as np\n    >>> lb.fit(np.array([[0, 1, 1], [1, 0, 0]]))\n    LabelBinarizer()\n    >>> lb.classes_\n    array([0, 1, 2])\n    >>> lb.transform([0, 1, 2, 1])\n    array([[1, 0, 0],\n           [0, 1, 0],\n           [0, 0, 1],\n           [0, 1, 0]])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.preprocessing import LabelBinarizer\n    >>> lb = LabelBinarizer()\n    >>> lb.fit([1, 2, 6, 4, 2])\n    LabelBinarizer()\n    >>> lb.classes_\n    array([1, 2, 4, 6])\n    >>> lb.transform([1, 6])\n    array([[1, 0, 0, 0],\n           [0, 0, 0, 1]])\n\n    Binary targets transform to a column vector\n\n    >>> lb = LabelBinarizer()\n    >>> lb.fit_transform(['yes', 'no', 'no', 'yes'])\n    array([[1],\n           [0],\n           [0],\n           [1]])\n\n    Passing a 2D matrix for multilabel classification\n\n    >>> import numpy as np\n    >>> lb.fit(np.array([[0, 1, 1], [1, 0, 0]]))\n    LabelBinarizer()\n    >>> lb.classes_\n    array([0, 1, 2])\n    >>> lb.transform([0, 1, 2, 1])\n    array([[1, 0, 0],\n           [0, 1, 0],\n           [0, 0, 1],\n           [0, 1, 0]])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, y)",
+          "documentation": {
+            "description": "Fit label binarizer.\n\n        Parameters\n        ----------\n        y : ndarray of shape (n_samples,) or (n_samples, n_classes)\n            Target values. The 2-d matrix should only contain 0 and 1,\n            represents multilabel classification.",
+            "parameters": {
+              "y": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_classes)",
+                "description": ""
+              },
+              "Target": {
+                "type": "values. The 2-d matrix should only contain 0 and 1,",
+                "description": ""
+              },
+              "represents": {
+                "type": "multilabel classification.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Returns": {
+                "type": "the instance itself.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, y)",
+          "documentation": {
+            "description": "Fit label binarizer/transform multi-class labels to binary labels.\n\n        The output of transform is sometimes referred to as\n        the 1-of-K coding scheme.\n\n        Parameters\n        ----------\n        y : {ndarray, sparse matrix} of shape (n_samples,) or                 (n_samples, n_classes)\n            Target values. The 2-d matrix should only contain 0 and 1,\n            represents multilabel classification. Sparse matrix can be\n            CSR, CSC, COO, DOK, or LIL.",
+            "parameters": {
+              "y": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples,) or                 (n_samples, n_classes)",
+                "description": ""
+              },
+              "Target": {
+                "type": "values. The 2-d matrix should only contain 0 and 1,",
+                "description": ""
+              },
+              "represents": {
+                "type": "multilabel classification. Sparse matrix can be",
+                "description": "CSR, CSC, COO, DOK, or LIL.\nReturns\n-------"
+              },
+              "Y": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples, n_classes)",
+                "description": ""
+              },
+              "Shape": {
+                "type": "will be (n_samples, 1) for binary problems. Sparse matrix",
+                "description": ""
+              },
+              "will": {
+                "type": "be of CSR format.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Y : {ndarray, sparse matrix} of shape (n_samples, n_classes)\n            Shape will be (n_samples, 1) for binary problems. Sparse matrix\n            will be of CSR format.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, Y, threshold=None)",
+          "documentation": {
+            "description": "Transform binary labels back to multi-class labels.\n\n        Parameters\n        ----------\n        Y : {ndarray, sparse matrix} of shape (n_samples, n_classes)\n            Target values. All sparse matrices are converted to CSR before\n            inverse transformation.\n\n        threshold : float, default=None\n            Threshold used in the binary and multi-label cases.\n\n            Use 0 when ``Y`` contains the output of :term:`decision_function`\n            (classifier).\n            Use 0.5 when ``Y`` contains the output of :term:`predict_proba`.\n\n            If None, the threshold is assumed to be half way between\n            neg_label and pos_label.\n\n        Returns\n        -------\n        y : {ndarray, sparse matrix} of shape (n_samples,)\n            Target values. Sparse matrix will be of CSR format.",
+            "parameters": {
+              "Y": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples, n_classes)",
+                "description": ""
+              },
+              "Target": {
+                "type": "values. Sparse matrix will be of CSR format.",
+                "description": "Notes\n-----"
+              },
+              "inverse": {
+                "type": "transformation.",
+                "description": ""
+              },
+              "threshold": {
+                "type": "float, default=None",
+                "description": ""
+              },
+              "Threshold": {
+                "type": "used in the binary and multi-label cases.",
+                "description": ""
+              },
+              "Use": {
+                "type": "0.5 when ``Y`` contains the output of :term:`predict_proba`.",
+                "description": ""
+              },
+              "If": {
+                "type": "None, the threshold is assumed to be half way between",
+                "description": ""
+              },
+              "neg_label": {
+                "type": "and pos_label.",
+                "description": "Returns\n-------"
+              },
+              "y": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples,)",
+                "description": ""
+              },
+              "In": {
+                "type": "the case when the binary labels are fractional",
+                "description": "(probabilistic), :meth:`inverse_transform` chooses the class with the"
+              },
+              "greatest": {
+                "type": "value. Typically, this allows to use the output of a",
+                "description": ""
+              },
+              "linear": {
+                "type": "model's :term:`decision_function` method directly as the input",
+                "description": ""
+              },
+              "of": {
+                "type": "meth:`inverse_transform`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y : {ndarray, sparse matrix} of shape (n_samples,)\n            Target values. Sparse matrix will be of CSR format.\n\n        Notes\n        -----\n        In the case when the binary labels are fractional\n        (probabilistic), :meth:`inverse_transform` chooses the class with the\n        greatest value. Typically, this allows to use the output of a\n        linear model's :term:`decision_function` method directly as the input\n        of :meth:`inverse_transform`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        In the case when the binary labels are fractional\n        (probabilistic), :meth:`inverse_transform` chooses the class with the\n        greatest value. Typically, this allows to use the output of a\n        linear model's :term:`decision_function` method directly as the input\n        of :meth:`inverse_transform`.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_inverse_transform_request",
+          "signature": "set_inverse_transform_request(self: sklearn.preprocessing._label.LabelBinarizer, *, threshold: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.preprocessing._label.LabelBinarizer",
+          "documentation": {
+            "description": "Request metadata passed to the ``inverse_transform`` method.",
+            "parameters": {
+              "threshold": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``threshold`` parameter in ``inverse_transform``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``inverse_transform`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``inverse_transform``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        threshold : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``threshold`` parameter in ``inverse_transform``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, y)",
+          "documentation": {
+            "description": "Transform multi-class labels to binary labels.\n\n        The output of transform is sometimes referred to by some authors as\n        the 1-of-K coding scheme.\n\n        Parameters\n        ----------\n        y : {array, sparse matrix} of shape (n_samples,) or                 (n_samples, n_classes)\n            Target values. The 2-d matrix should only contain 0 and 1,\n            represents multilabel classification. Sparse matrix can be\n            CSR, CSC, COO, DOK, or LIL.",
+            "parameters": {
+              "y": {
+                "type": "{array, sparse matrix} of shape (n_samples,) or                 (n_samples, n_classes)",
+                "description": ""
+              },
+              "Target": {
+                "type": "values. The 2-d matrix should only contain 0 and 1,",
+                "description": ""
+              },
+              "represents": {
+                "type": "multilabel classification. Sparse matrix can be",
+                "description": "CSR, CSC, COO, DOK, or LIL.\nReturns\n-------"
+              },
+              "Y": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples, n_classes)",
+                "description": ""
+              },
+              "Shape": {
+                "type": "will be (n_samples, 1) for binary problems. Sparse matrix",
+                "description": ""
+              },
+              "will": {
+                "type": "be of CSR format.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Y : {ndarray, sparse matrix} of shape (n_samples, n_classes)\n            Shape will be (n_samples, 1) for binary problems. Sparse matrix\n            will be of CSR format.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MetaEstimatorMixin",
+      "documentation": {
+        "description": "Mixin class for all meta estimators in scikit-learn.\n\n    This mixin is empty, and only exists to indicate that the estimator is a\n    meta-estimator.\n\n    .. versionchanged:: 1.6\n        The `_required_parameters` is now removed and is unnecessary since tests are\n        refactored and don't use this anymore.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.base import MetaEstimatorMixin\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> class MyEstimator(MetaEstimatorMixin):\n    ...     def __init__(self, *, estimator=None):\n    ...         self.estimator = estimator\n    ...     def fit(self, X, y=None):\n    ...         if self.estimator is None:\n    ...             self.estimator_ = LogisticRegression()\n    ...         else:\n    ...             self.estimator_ = self.estimator\n    ...         return self\n    >>> X, y = load_iris(return_X_y=True)\n    >>> estimator = MyEstimator().fit(X, y)\n    >>> estimator.estimator_\n    LogisticRegression()"
+      },
+      "methods": []
+    },
+    {
+      "name": "MetadataRouter",
+      "documentation": {
+        "description": "Stores and handles metadata routing for a router object.\n\n    This class is used by router objects to store and handle metadata routing.\n    Routing information is stored as a dictionary of the form ``{\"object_name\":\n    RouteMappingPair(method_mapping, routing_info)}``, where ``method_mapping``\n    is an instance of :class:`~sklearn.utils.metadata_routing.MethodMapping` and\n    ``routing_info`` is either a\n    :class:`~sklearn.utils.metadata_routing.MetadataRequest` or a\n    :class:`~sklearn.utils.metadata_routing.MetadataRouter` instance.\n\n    .. versionadded:: 1.3",
+        "parameters": {
+          "owner": {
+            "type": "str",
+            "description": ""
+          },
+          "The": {
+            "type": "name of the object to which these requests belong.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add",
+          "signature": "add(self, *, method_mapping, **objs)",
+          "documentation": {
+            "description": "Add named objects with their corresponding method mapping.\n\n        Parameters\n        ----------\n        method_mapping : MethodMapping\n            The mapping between the child and the parent's methods.\n\n        **objs : dict\n            A dictionary of objects from which metadata is extracted by calling\n            :func:`~sklearn.utils.metadata_routing.get_routing_for_object` on them.",
+            "parameters": {
+              "method_mapping": {
+                "type": "MethodMapping",
+                "description": ""
+              },
+              "The": {
+                "type": "mapping between the child and the parent's methods.",
+                "description": "**objs : dict"
+              },
+              "A": {
+                "type": "dictionary of objects from which metadata is extracted by calling",
+                "description": ":func:`~sklearn.utils.metadata_routing.get_routing_for_object` on them.\nReturns\n-------"
+              },
+              "self": {
+                "type": "MetadataRouter",
+                "description": ""
+              },
+              "Returns": {
+                "type": "`self`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MetadataRouter",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "add_self_request",
+          "signature": "add_self_request(self, obj)",
+          "documentation": {
+            "description": "Add `self` (as a consumer) to the routing.\n\n        This method is used if the router is also a consumer, and hence the\n        router itself needs to be included in the routing. The passed object\n        can be an estimator or a\n        :class:`~sklearn.utils.metadata_routing.MetadataRequest`.\n\n        A router should add itself using this method instead of `add` since it\n        should be treated differently than the other objects to which metadata\n        is routed by the router.\n\n        Parameters\n        ----------\n        obj : object\n            This is typically the router instance, i.e. `self` in a\n            ``get_metadata_routing()`` implementation. It can also be a\n            ``MetadataRequest`` instance.",
+            "parameters": {
+              "obj": {
+                "type": "object",
+                "description": ""
+              },
+              "This": {
+                "type": "is typically the router instance, i.e. `self` in a",
+                "description": "``get_metadata_routing()`` implementation. It can also be a\n``MetadataRequest`` instance.\nReturns\n-------"
+              },
+              "self": {
+                "type": "MetadataRouter",
+                "description": ""
+              },
+              "Returns": {
+                "type": "`self`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MetadataRouter",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "consumes",
+          "signature": "consumes(self, method, params)",
+          "documentation": {
+            "description": "Check whether the given parameters are consumed by the given method.\n\n        .. versionadded:: 1.4\n\n        Parameters\n        ----------\n        method : str\n            The name of the method to check.\n\n        params : iterable of str\n            An iterable of parameters to check.",
+            "parameters": {
+              "method": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method to check.",
+                "description": ""
+              },
+              "params": {
+                "type": "iterable of str",
+                "description": ""
+              },
+              "An": {
+                "type": "iterable of parameters to check.",
+                "description": "Returns\n-------"
+              },
+              "consumed": {
+                "type": "set of str",
+                "description": ""
+              },
+              "A": {
+                "type": "set of parameters which are consumed by the given method.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        consumed : set of str\n            A set of parameters which are consumed by the given method.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "route_params",
+          "signature": "route_params(self, *, caller, params)",
+          "documentation": {
+            "description": "Return the input parameters requested by child objects.\n\n        The output of this method is a :class:`~sklearn.utils.Bunch`, which includes the\n        metadata for all methods of each child object that is used in the router's\n        `caller` method.\n\n        If the router is also a consumer, it also checks for warnings of\n        `self`'s/consumer's requested metadata.\n\n        Parameters\n        ----------\n        caller : str\n            The name of the method for which the parameters are requested and\n            routed. If called inside the :term:`fit` method of a router, it\n            would be `\"fit\"`.\n\n        params : dict\n            A dictionary of provided metadata.",
+            "parameters": {
+              "caller": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method for which the parameters are requested and",
+                "description": "routed. If called inside the :term:`fit` method of a router, it"
+              },
+              "would": {
+                "type": "be `\"fit\"`.",
+                "description": ""
+              },
+              "params": {
+                "type": "Bunch",
+                "description": ""
+              },
+              "A": {
+                "type": "class:`~sklearn.utils.Bunch` of the form",
+                "description": "``{\"object_name\": {\"method_name\": {params: value}}}`` which can be"
+              },
+              "used": {
+                "type": "to pass the required metadata to corresponding methods or",
+                "description": ""
+              },
+              "corresponding": {
+                "type": "child objects.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : Bunch\n            A :class:`~sklearn.utils.Bunch` of the form\n            ``{\"object_name\": {\"method_name\": {params: value}}}`` which can be\n            used to pass the required metadata to corresponding methods or\n            corresponding child objects.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "validate_metadata",
+          "signature": "validate_metadata(self, *, method, params)",
+          "documentation": {
+            "description": "Validate given metadata for a method.\n\n        This raises a ``TypeError`` if some of the passed metadata are not\n        understood by child objects.",
+            "parameters": {
+              "method": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method for which the parameters are requested and",
+                "description": "routed. If called inside the :term:`fit` method of a router, it"
+              },
+              "would": {
+                "type": "be `\"fit\"`.",
+                "description": ""
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "A": {
+                "type": "dictionary of provided metadata.",
+                "description": ""
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MethodMapping",
+      "documentation": {
+        "description": "Stores the mapping between caller and callee methods for a router.\n\n    This class is primarily used in a ``get_metadata_routing()`` of a router\n    object when defining the mapping between the router's methods and a sub-object (a\n    sub-estimator or a scorer).\n\n    Iterating through an instance of this class yields\n    ``MethodPair(caller, callee)`` instances.\n\n    .. versionadded:: 1.3",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add",
+          "signature": "add(self, *, caller, callee)",
+          "documentation": {
+            "description": "Add a method mapping.\n\n        Parameters\n        ----------\n\n        caller : str\n            Parent estimator's method name in which the ``callee`` is called.\n\n        callee : str\n            Child object's method name. This method is called in ``caller``.",
+            "parameters": {
+              "caller": {
+                "type": "str",
+                "description": ""
+              },
+              "Parent": {
+                "type": "estimator's method name in which the ``callee`` is called.",
+                "description": ""
+              },
+              "callee": {
+                "type": "str",
+                "description": ""
+              },
+              "Child": {
+                "type": "object's method name. This method is called in ``caller``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "MethodMapping",
+                "description": ""
+              },
+              "Returns": {
+                "type": "self.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MethodMapping",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MultiOutputMixin",
+      "documentation": {
+        "description": "Mixin to mark estimators that support multioutput.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "OneVsOneClassifier",
+      "documentation": {
+        "description": "One-vs-one multiclass strategy.\n\n    This strategy consists in fitting one classifier per class pair.\n    At prediction time, the class which received the most votes is selected.\n    Since it requires to fit `n_classes * (n_classes - 1) / 2` classifiers,\n    this method is usually slower than one-vs-the-rest, due to its\n    O(n_classes^2) complexity. However, this method may be advantageous for\n    algorithms such as kernel algorithms which don't scale well with\n    `n_samples`. This is because each individual learning problem only involves\n    a small subset of the data whereas, with one-vs-the-rest, the complete\n    dataset is used `n_classes` times.\n\n    Read more in the :ref:`User Guide <ovo_classification>`.\n\n    Parameters\n    ----------\n    estimator : estimator object\n        A regressor or a classifier that implements :term:`fit`.\n        When a classifier is passed, :term:`decision_function` will be used\n        in priority and it will fallback to :term:`predict_proba` if it is not\n        available.\n        When a regressor is passed, :term:`predict` is used.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the `n_classes * (\n        n_classes - 1) / 2` OVO problems are computed in parallel.\n\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    estimators_ : list of ``n_classes * (n_classes - 1) / 2`` estimators\n        Estimators used for predictions.\n\n    classes_ : numpy array of shape [n_classes]\n        Array containing labels.\n\n    n_classes_ : int\n        Number of classes.\n\n    pairwise_indices_ : list, length = ``len(estimators_)``, or ``None``\n        Indices of samples used when training the estimators.\n        ``None`` when ``estimator``'s `pairwise` tag is False.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    OneVsRestClassifier : One-vs-all multiclass strategy.\n    OutputCodeClassifier : (Error-Correcting) Output-Code multiclass strategy.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator object",
+            "description": ""
+          },
+          "A": {
+            "type": "regressor or a classifier that implements :term:`fit`.",
+            "description": ""
+          },
+          "When": {
+            "type": "a regressor is passed, :term:`predict` is used.",
+            "description": ""
+          },
+          "in": {
+            "type": "priority and it will fallback to :term:`predict_proba` if it is not",
+            "description": "available."
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of jobs to use for the computation: the `n_classes * (",
+            "description": ""
+          },
+          "n_classes": {
+            "type": "- 1) / 2` OVO problems are computed in parallel.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": "Attributes\n----------"
+          },
+          "estimators_": {
+            "type": "list of ``n_classes * (n_classes",
+            "description": "1) / 2`` estimators"
+          },
+          "Estimators": {
+            "type": "used for predictions.",
+            "description": ""
+          },
+          "classes_": {
+            "type": "numpy array of shape [n_classes]",
+            "description": ""
+          },
+          "Array": {
+            "type": "containing labels.",
+            "description": ""
+          },
+          "n_classes_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "pairwise_indices_": {
+            "type": "list, length = ``len(estimators_)``, or ``None``",
+            "description": ""
+          },
+          "Indices": {
+            "type": "of samples used when training the estimators.",
+            "description": "``None`` when ``estimator``'s `pairwise` tag is False."
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "OneVsRestClassifier": {
+            "type": "One",
+            "description": "vs-all multiclass strategy."
+          },
+          "OutputCodeClassifier": {
+            "type": "(Error",
+            "description": "Correcting) Output-Code multiclass strategy.\nExamples\n--------\n>>> from sklearn.datasets import load_iris\n>>> from sklearn.model_selection import train_test_split\n>>> from sklearn.multiclass import OneVsOneClassifier\n>>> from sklearn.svm import LinearSVC\n>>> X, y = load_iris(return_X_y=True)\n>>> X_train, X_test, y_train, y_test = train_test_split(\n...     X, y, test_size=0.33, shuffle=True, random_state=0)\n>>> clf = OneVsOneClassifier(\n...     LinearSVC(random_state=0)).fit(X_train, y_train)\n>>> clf.predict(X_test[:10])"
+          },
+          "array": {
+            "type": "[2, 1, 0, 2, 0, 2, 0, 1, 1, 1]",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    OneVsRestClassifier : One-vs-all multiclass strategy.\n    OutputCodeClassifier : (Error-Correcting) Output-Code multiclass strategy.\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.model_selection import train_test_split\n    >>> from sklearn.multiclass import OneVsOneClassifier\n    >>> from sklearn.svm import LinearSVC\n    >>> X, y = load_iris(return_X_y=True)\n    >>> X_train, X_test, y_train, y_test = train_test_split(\n    ...     X, y, test_size=0.33, shuffle=True, random_state=0)\n    >>> clf = OneVsOneClassifier(\n    ...     LinearSVC(random_state=0)).fit(X_train, y_train)\n    >>> clf.predict(X_test[:10])\n    array([2, 1, 0, 2, 0, 2, 0, 1, 1, 1])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.model_selection import train_test_split\n    >>> from sklearn.multiclass import OneVsOneClassifier\n    >>> from sklearn.svm import LinearSVC\n    >>> X, y = load_iris(return_X_y=True)\n    >>> X_train, X_test, y_train, y_test = train_test_split(\n    ...     X, y, test_size=0.33, shuffle=True, random_state=0)\n    >>> clf = OneVsOneClassifier(\n    ...     LinearSVC(random_state=0)).fit(X_train, y_train)\n    >>> clf.predict(X_test[:10])\n    array([2, 1, 0, 2, 0, 2, 0, 1, 1, 1])"
+      },
+      "methods": [
+        {
+          "name": "decision_function",
+          "signature": "decision_function(self, X)",
+          "documentation": {
+            "description": "Decision function for the OneVsOneClassifier.\n\n        The decision values for the samples are computed by adding the\n        normalized sum of pair-wise classification confidence levels to the\n        votes in order to disambiguate between the decision values when the\n        votes for all the classes are equal leading to a tie.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input data.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data.",
+                "description": "Returns\n-------"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_classes) or (n_samples,)"
+              },
+              "Result": {
+                "type": "of calling `decision_function` on the final estimator.",
+                "description": ".. versionchanged:: 0.19"
+              },
+              "output": {
+                "type": "shape changed to ``(n_samples,)`` to conform to",
+                "description": "scikit-learn conventions for binary classification."
+              }
+            },
+            "returns": "-------\n        Y : array-like of shape (n_samples, n_classes) or (n_samples,)\n            Result of calling `decision_function` on the final estimator.\n\n            .. versionchanged:: 0.19\n                output shape changed to ``(n_samples,)`` to conform to\n                scikit-learn conventions for binary classification.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y, **fit_params)",
+          "documentation": {
+            "description": "Fit underlying estimators.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.\n\n        y : array-like of shape (n_samples,)\n            Multi-class targets.\n\n        **fit_params : dict\n            Parameters passed to the ``estimator.fit`` method of each\n            sub-estimator.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,)\nMulti-class targets.\n**fit_params : dict"
+              }
+            },
+            "returns": "-------\n        self : object\n            The fitted underlying estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        .. versionadded:: 1.4",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRouter\n            A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "partial_fit",
+          "signature": "partial_fit(self, X, y, classes=None, **partial_fit_params)",
+          "documentation": {
+            "description": "Partially fit underlying estimators.\n\n        Should be used when memory is inefficient to train all data. Chunks\n        of data can be passed in several iteration, where the first call\n        should have an array of all target variables.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix) of shape (n_samples, n_features)\n            Data.\n\n        y : array-like of shape (n_samples,)\n            Multi-class targets.\n\n        classes : array, shape (n_classes, )\n            Classes across all calls to partial_fit.\n            Can be obtained via `np.unique(y_all)`, where y_all is the\n            target vector of the entire dataset.\n            This argument is only required in the first call of partial_fit\n            and can be omitted in the subsequent calls.\n\n        **partial_fit_params : dict\n            Parameters passed to the ``estimator.partial_fit`` method of each\n            sub-estimator.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix) of shape (n_samples, n_features)\nData."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,)\nMulti-class targets."
+              },
+              "classes": {
+                "type": "array, shape (n_classes, )",
+                "description": ""
+              },
+              "Classes": {
+                "type": "across all calls to partial_fit.",
+                "description": ""
+              },
+              "Can": {
+                "type": "be obtained via `np.unique(y_all)`, where y_all is the",
+                "description": ""
+              },
+              "target": {
+                "type": "vector of the entire dataset.",
+                "description": ""
+              },
+              "This": {
+                "type": "argument is only required in the first call of partial_fit",
+                "description": ""
+              },
+              "and": {
+                "type": "can be omitted in the subsequent calls.",
+                "description": "**partial_fit_params : dict"
+              }
+            },
+            "returns": "-------\n        self : object\n            The partially fitted underlying estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Estimate the best class label for each sample in X.\n\n        This is implemented as ``argmax(decision_function(X), axis=1)`` which\n        will return the label of the class with most votes by estimators\n        predicting the outcome of a decision for each possible class pair.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData.\nReturns\n-------"
+              },
+              "y": {
+                "type": "numpy array of shape [n_samples]",
+                "description": ""
+              },
+              "Predicted": {
+                "type": "multi-class targets.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y : numpy array of shape [n_samples]\n            Predicted multi-class targets.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "labels for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ""
+              },
+              "Mean": {
+                "type": "accuracy of ``self.predict(X)`` w.r.t. `y`.",
+                "description": ""
+              }
+            },
+            "returns": "the mean accuracy on the given test data and labels.\n\n        In multi-label classification, this is the subset accuracy\n        which is a harsh metric since you require for each sample that\n        each label set be correctly predicted.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True labels for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            Mean accuracy of ``self.predict(X)`` w.r.t. `y`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_partial_fit_request",
+          "signature": "set_partial_fit_request(self: sklearn.multiclass.OneVsOneClassifier, *, classes: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.multiclass.OneVsOneClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``partial_fit`` method.",
+            "parameters": {
+              "classes": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``classes`` parameter in ``partial_fit``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``partial_fit`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``partial_fit``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        classes : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``classes`` parameter in ``partial_fit``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.multiclass.OneVsOneClassifier, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.multiclass.OneVsOneClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "OneVsRestClassifier",
+      "documentation": {
+        "description": "One-vs-the-rest (OvR) multiclass strategy.\n\n    Also known as one-vs-all, this strategy consists in fitting one classifier\n    per class. For each classifier, the class is fitted against all the other\n    classes. In addition to its computational efficiency (only `n_classes`\n    classifiers are needed), one advantage of this approach is its\n    interpretability. Since each class is represented by one and one classifier\n    only, it is possible to gain knowledge about the class by inspecting its\n    corresponding classifier. This is the most commonly used strategy for\n    multiclass classification and is a fair default choice.\n\n    OneVsRestClassifier can also be used for multilabel classification. To use\n    this feature, provide an indicator matrix for the target `y` when calling\n    `.fit`. In other words, the target labels should be formatted as a 2D\n    binary (0/1) matrix, where [i, j] == 1 indicates the presence of label j\n    in sample i. This estimator uses the binary relevance method to perform\n    multilabel classification, which involves training one binary classifier\n    independently for each label.\n\n    Read more in the :ref:`User Guide <ovr_classification>`.\n\n    Parameters\n    ----------\n    estimator : estimator object\n        A regressor or a classifier that implements :term:`fit`.\n        When a classifier is passed, :term:`decision_function` will be used\n        in priority and it will fallback to :term:`predict_proba` if it is not\n        available.\n        When a regressor is passed, :term:`predict` is used.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the `n_classes`\n        one-vs-rest problems are computed in parallel.\n\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n        .. versionchanged:: 0.20\n           `n_jobs` default changed from 1 to None\n\n    verbose : int, default=0\n        The verbosity level, if non zero, progress messages are printed.\n        Below 50, the output is sent to stderr. Otherwise, the output is sent\n        to stdout. The frequency of the messages increases with the verbosity\n        level, reporting all iterations at 10. See :class:`joblib.Parallel` for\n        more details.\n\n        .. versionadded:: 1.1\n\n    Attributes\n    ----------\n    estimators_ : list of `n_classes` estimators\n        Estimators used for predictions.\n\n    classes_ : array, shape = [`n_classes`]\n        Class labels.\n\n    n_classes_ : int\n        Number of classes.\n\n    label_binarizer_ : LabelBinarizer object\n        Object used to transform multiclass labels to binary labels and\n        vice-versa.\n\n    multilabel_ : boolean\n        Whether a OneVsRestClassifier is a multilabel classifier.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`. Only defined if the\n        underlying estimator exposes such an attribute when fit.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Only defined if the\n        underlying estimator exposes such an attribute when fit.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    OneVsOneClassifier : One-vs-one multiclass strategy.\n    OutputCodeClassifier : (Error-Correcting) Output-Code multiclass strategy.\n    sklearn.multioutput.MultiOutputClassifier : Alternate way of extending an\n        estimator for multilabel classification.\n    sklearn.preprocessing.MultiLabelBinarizer : Transform iterable of iterables\n        to binary indicator matrix.",
+        "parameters": {
+          "estimator": {
+            "type": "for multilabel classification.",
+            "description": "sklearn.preprocessing.MultiLabelBinarizer : Transform iterable of iterables"
+          },
+          "A": {
+            "type": "regressor or a classifier that implements :term:`fit`.",
+            "description": ""
+          },
+          "When": {
+            "type": "a regressor is passed, :term:`predict` is used.",
+            "description": ""
+          },
+          "in": {
+            "type": "priority and it will fallback to :term:`predict_proba` if it is not",
+            "description": "available."
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "verbosity level, if non zero, progress messages are printed.",
+            "description": ""
+          },
+          "for": {
+            "type": "more details.",
+            "description": ".. versionchanged:: 0.20\n`n_jobs` default changed from 1 to None"
+          },
+          "verbose": {
+            "type": "int, default=0",
+            "description": ""
+          },
+          "Below": {
+            "type": "50, the output is sent to stderr. Otherwise, the output is sent",
+            "description": ""
+          },
+          "to": {
+            "type": "binary indicator matrix.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.multiclass import OneVsRestClassifier\n>>> from sklearn.svm import SVC\n>>> X = np.array([\n...     [10, 10],\n...     [8, 10],\n...     [-5, 5.5],\n...     [-5.4, 5.5],\n...     [-20, -20],\n...     [-15, -20]\n... ])\n>>> y = np.array([0, 0, 1, 1, 2, 2])\n>>> clf = OneVsRestClassifier(SVC()).fit(X, y)\n>>> clf.predict([[-19, -20], [9, 9], [-5, 5]])"
+          },
+          "more": {
+            "type": "details.",
+            "description": ".. versionadded:: 1.1\nAttributes\n----------"
+          },
+          "estimators_": {
+            "type": "list of `n_classes` estimators",
+            "description": ""
+          },
+          "Estimators": {
+            "type": "used for predictions.",
+            "description": ""
+          },
+          "classes_": {
+            "type": "array, shape = [`n_classes`]",
+            "description": ""
+          },
+          "Class": {
+            "type": "labels.",
+            "description": ""
+          },
+          "n_classes_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "label_binarizer_": {
+            "type": "LabelBinarizer object",
+            "description": ""
+          },
+          "Object": {
+            "type": "used to transform multiclass labels to binary labels and",
+            "description": "vice-versa."
+          },
+          "multilabel_": {
+            "type": "boolean",
+            "description": ""
+          },
+          "Whether": {
+            "type": "a OneVsRestClassifier is a multilabel classifier.",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "underlying": {
+            "type": "estimator exposes such an attribute when fit.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "OneVsOneClassifier": {
+            "type": "One",
+            "description": "vs-one multiclass strategy."
+          },
+          "OutputCodeClassifier": {
+            "type": "(Error",
+            "description": "Correcting) Output-Code multiclass strategy.\nsklearn.multioutput.MultiOutputClassifier : Alternate way of extending an"
+          },
+          "array": {
+            "type": "[2, 0, 1]",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    OneVsOneClassifier : One-vs-one multiclass strategy.\n    OutputCodeClassifier : (Error-Correcting) Output-Code multiclass strategy.\n    sklearn.multioutput.MultiOutputClassifier : Alternate way of extending an\n        estimator for multilabel classification.\n    sklearn.preprocessing.MultiLabelBinarizer : Transform iterable of iterables\n        to binary indicator matrix.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.multiclass import OneVsRestClassifier\n    >>> from sklearn.svm import SVC\n    >>> X = np.array([\n    ...     [10, 10],\n    ...     [8, 10],\n    ...     [-5, 5.5],\n    ...     [-5.4, 5.5],\n    ...     [-20, -20],\n    ...     [-15, -20]\n    ... ])\n    >>> y = np.array([0, 0, 1, 1, 2, 2])\n    >>> clf = OneVsRestClassifier(SVC()).fit(X, y)\n    >>> clf.predict([[-19, -20], [9, 9], [-5, 5]])\n    array([2, 0, 1])",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.multiclass import OneVsRestClassifier\n    >>> from sklearn.svm import SVC\n    >>> X = np.array([\n    ...     [10, 10],\n    ...     [8, 10],\n    ...     [-5, 5.5],\n    ...     [-5.4, 5.5],\n    ...     [-20, -20],\n    ...     [-15, -20]\n    ... ])\n    >>> y = np.array([0, 0, 1, 1, 2, 2])\n    >>> clf = OneVsRestClassifier(SVC()).fit(X, y)\n    >>> clf.predict([[-19, -20], [9, 9], [-5, 5]])\n    array([2, 0, 1])"
+      },
+      "methods": [
+        {
+          "name": "decision_function",
+          "signature": "decision_function(self, X)",
+          "documentation": {
+            "description": "Decision function for the OneVsRestClassifier.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data.",
+                "description": "Returns\n-------"
+              },
+              "T": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_classes) or (n_samples,) for             binary classification."
+              },
+              "Result": {
+                "type": "of calling `decision_function` on the final estimator.",
+                "description": ".. versionchanged:: 0.19"
+              },
+              "output": {
+                "type": "shape changed to ``(n_samples,)`` to conform to",
+                "description": "scikit-learn conventions for binary classification."
+              }
+            },
+            "returns": "the distance of each sample from the decision boundary for each\n        class. This can only be used with estimators which implement the\n        `decision_function` method.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input data.\n\n        Returns\n        -------\n        T : array-like of shape (n_samples, n_classes) or (n_samples,) for             binary classification.\n            Result of calling `decision_function` on the final estimator.\n\n            .. versionchanged:: 0.19\n                output shape changed to ``(n_samples,)`` to conform to\n                scikit-learn conventions for binary classification.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y, **fit_params)",
+          "documentation": {
+            "description": "Fit underlying estimators.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.\n\n        y : {array-like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)\n            Multi-class targets. An indicator matrix turns on multilabel\n            classification.\n\n        **fit_params : dict\n            Parameters passed to the ``estimator.fit`` method of each\n            sub-estimator.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData."
+              },
+              "y": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)\nMulti-class targets. An indicator matrix turns on multilabel\nclassification.\n**fit_params : dict"
+              }
+            },
+            "returns": "-------\n        self : object\n            Instance of fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        .. versionadded:: 1.4",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRouter\n            A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "partial_fit",
+          "signature": "partial_fit(self, X, y, classes=None, **partial_fit_params)",
+          "documentation": {
+            "description": "Partially fit underlying estimators.\n\n        Should be used when memory is inefficient to train all data.\n        Chunks of data can be passed in several iterations.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.\n\n        y : {array-like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)\n            Multi-class targets. An indicator matrix turns on multilabel\n            classification.\n\n        classes : array, shape (n_classes, )\n            Classes across all calls to partial_fit.\n            Can be obtained via `np.unique(y_all)`, where y_all is the\n            target vector of the entire dataset.\n            This argument is only required in the first call of partial_fit\n            and can be omitted in the subsequent calls.\n\n        **partial_fit_params : dict\n            Parameters passed to the ``estimator.partial_fit`` method of each\n            sub-estimator.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData."
+              },
+              "y": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)\nMulti-class targets. An indicator matrix turns on multilabel\nclassification."
+              },
+              "classes": {
+                "type": "array, shape (n_classes, )",
+                "description": ""
+              },
+              "Classes": {
+                "type": "across all calls to partial_fit.",
+                "description": ""
+              },
+              "Can": {
+                "type": "be obtained via `np.unique(y_all)`, where y_all is the",
+                "description": ""
+              },
+              "target": {
+                "type": "vector of the entire dataset.",
+                "description": ""
+              },
+              "This": {
+                "type": "argument is only required in the first call of partial_fit",
+                "description": ""
+              },
+              "and": {
+                "type": "can be omitted in the subsequent calls.",
+                "description": "**partial_fit_params : dict"
+              }
+            },
+            "returns": "-------\n        self : object\n            Instance of partially fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Predict multi-class targets using underlying estimators.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData.\nReturns\n-------"
+              },
+              "y": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)"
+              },
+              "Predicted": {
+                "type": "multi-class targets.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y : {array-like, sparse matrix} of shape (n_samples,) or (n_samples, n_classes)\n            Predicted multi-class targets.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_proba",
+          "signature": "predict_proba(self, X)",
+          "documentation": {
+            "description": "Probability estimates.\n\n        The returned estimates for all classes are ordered by label of classes.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data.",
+                "description": "Returns\n-------"
+              },
+              "T": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_classes)"
+              },
+              "Returns": {
+                "type": "the probability of the sample for each class in the model,",
+                "description": ""
+              },
+              "where": {
+                "type": "classes are ordered as they are in `self.classes_`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        T : array-like of shape (n_samples, n_classes)",
+            "raises": "",
+            "see_also": "",
+            "notes": "that in the multilabel case, each sample can have any number of\n        labels. This returns the marginal probability that the given sample has\n        the label in question. For example, it is entirely consistent that two\n        labels both have a 90% probability of applying to a given sample.\n\n        In the single label multiclass case, the rows of the returned matrix\n        sum to 1.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Input data.\n\n        Returns\n        -------\n        T : array-like of shape (n_samples, n_classes)\n            Returns the probability of the sample for each class in the model,\n            where classes are ordered as they are in `self.classes_`.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "labels for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ""
+              },
+              "Mean": {
+                "type": "accuracy of ``self.predict(X)`` w.r.t. `y`.",
+                "description": ""
+              }
+            },
+            "returns": "the mean accuracy on the given test data and labels.\n\n        In multi-label classification, this is the subset accuracy\n        which is a harsh metric since you require for each sample that\n        each label set be correctly predicted.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True labels for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            Mean accuracy of ``self.predict(X)`` w.r.t. `y`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_partial_fit_request",
+          "signature": "set_partial_fit_request(self: sklearn.multiclass.OneVsRestClassifier, *, classes: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.multiclass.OneVsRestClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``partial_fit`` method.",
+            "parameters": {
+              "classes": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``classes`` parameter in ``partial_fit``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``partial_fit`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``partial_fit``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        classes : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``classes`` parameter in ``partial_fit``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.multiclass.OneVsRestClassifier, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.multiclass.OneVsRestClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "OutputCodeClassifier",
+      "documentation": {
+        "description": "(Error-Correcting) Output-Code multiclass strategy.\n\n    Output-code based strategies consist in representing each class with a\n    binary code (an array of 0s and 1s). At fitting time, one binary\n    classifier per bit in the code book is fitted.  At prediction time, the\n    classifiers are used to project new points in the class space and the class\n    closest to the points is chosen. The main advantage of these strategies is\n    that the number of classifiers used can be controlled by the user, either\n    for compressing the model (0 < `code_size` < 1) or for making the model more\n    robust to errors (`code_size` > 1). See the documentation for more details.\n\n    Read more in the :ref:`User Guide <ecoc>`.\n\n    Parameters\n    ----------\n    estimator : estimator object\n        An estimator object implementing :term:`fit` and one of\n        :term:`decision_function` or :term:`predict_proba`.\n\n    code_size : float, default=1.5\n        Percentage of the number of classes to be used to create the code book.\n        A number between 0 and 1 will require fewer classifiers than\n        one-vs-the-rest. A number greater than 1 will require more classifiers\n        than one-vs-the-rest.\n\n    random_state : int, RandomState instance, default=None\n        The generator used to initialize the codebook.\n        Pass an int for reproducible output across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the multiclass problems\n        are computed in parallel.\n\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    estimators_ : list of `int(n_classes * code_size)` estimators\n        Estimators used for predictions.\n\n    classes_ : ndarray of shape (n_classes,)\n        Array containing labels.\n\n    code_book_ : ndarray of shape (n_classes, `len(estimators_)`)\n        Binary array containing the code of each class.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`. Only defined if the\n        underlying estimator exposes such an attribute when fit.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Only defined if the\n        underlying estimator exposes such an attribute when fit.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    OneVsRestClassifier : One-vs-all multiclass strategy.\n    OneVsOneClassifier : One-vs-one multiclass strategy.\n\n    References\n    ----------\n\n    .. [1] \"Solving multiclass learning problems via error-correcting output\n       codes\",\n       Dietterich T., Bakiri G.,\n       Journal of Artificial Intelligence Research 2,\n       1995.\n\n    .. [2] \"The error coding method and PICTs\",\n       James G., Hastie T.,\n       Journal of Computational and Graphical statistics 7,\n       1998.\n\n    .. [3] \"The Elements of Statistical Learning\",\n       Hastie T., Tibshirani R., Friedman J., page 606 (second-edition)\n       2008.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator object",
+            "description": ""
+          },
+          "An": {
+            "type": "estimator object implementing :term:`fit` and one of",
+            "description": ":term:`decision_function` or :term:`predict_proba`."
+          },
+          "code_size": {
+            "type": "float, default=1.5",
+            "description": ""
+          },
+          "Percentage": {
+            "type": "of the number of classes to be used to create the code book.",
+            "description": ""
+          },
+          "A": {
+            "type": "number between 0 and 1 will require fewer classifiers than",
+            "description": "one-vs-the-rest. A number greater than 1 will require more classifiers"
+          },
+          "than": {
+            "type": "one-vs-the-rest.",
+            "description": ""
+          },
+          "random_state": {
+            "type": "int, RandomState instance, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of jobs to use for the computation: the multiclass problems",
+            "description": ""
+          },
+          "Pass": {
+            "type": "an int for reproducible output across multiple function calls.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "are": {
+            "type": "computed in parallel.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": "Attributes\n----------"
+          },
+          "estimators_": {
+            "type": "list of `int(n_classes * code_size)` estimators",
+            "description": ""
+          },
+          "Estimators": {
+            "type": "used for predictions.",
+            "description": ""
+          },
+          "classes_": {
+            "type": "ndarray of shape (n_classes,)",
+            "description": ""
+          },
+          "Array": {
+            "type": "containing labels.",
+            "description": ""
+          },
+          "code_book_": {
+            "type": "ndarray of shape (n_classes, `len(estimators_)`)",
+            "description": ""
+          },
+          "Binary": {
+            "type": "array containing the code of each class.",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "underlying": {
+            "type": "estimator exposes such an attribute when fit.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "OneVsRestClassifier": {
+            "type": "One",
+            "description": "vs-all multiclass strategy."
+          },
+          "OneVsOneClassifier": {
+            "type": "One",
+            "description": "vs-one multiclass strategy.\nReferences\n----------\n.. [1] \"Solving multiclass learning problems via error-correcting output\ncodes\","
+          },
+          "Dietterich": {
+            "type": "T., Bakiri G.,",
+            "description": ""
+          },
+          "Journal": {
+            "type": "of Computational and Graphical statistics 7,",
+            "description": "1998.\n.. [3] \"The Elements of Statistical Learning\","
+          },
+          "James": {
+            "type": "G., Hastie T.,",
+            "description": ""
+          },
+          "Hastie": {
+            "type": "T., Tibshirani R., Friedman J., page 606 (second-edition)",
+            "description": "2008.\nExamples\n--------\n>>> from sklearn.multiclass import OutputCodeClassifier\n>>> from sklearn.ensemble import RandomForestClassifier\n>>> from sklearn.datasets import make_classification\n>>> X, y = make_classification(n_samples=100, n_features=4,\n...                            n_informative=2, n_redundant=0,\n...                            random_state=0, shuffle=False)\n>>> clf = OutputCodeClassifier(\n...     estimator=RandomForestClassifier(random_state=0),\n...     random_state=0).fit(X, y)\n>>> clf.predict([[0, 0, 0, 0]])"
+          },
+          "array": {
+            "type": "[1]",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    OneVsRestClassifier : One-vs-all multiclass strategy.\n    OneVsOneClassifier : One-vs-one multiclass strategy.\n\n    References\n    ----------\n\n    .. [1] \"Solving multiclass learning problems via error-correcting output\n       codes\",\n       Dietterich T., Bakiri G.,\n       Journal of Artificial Intelligence Research 2,\n       1995.\n\n    .. [2] \"The error coding method and PICTs\",\n       James G., Hastie T.,\n       Journal of Computational and Graphical statistics 7,\n       1998.\n\n    .. [3] \"The Elements of Statistical Learning\",\n       Hastie T., Tibshirani R., Friedman J., page 606 (second-edition)\n       2008.\n\n    Examples\n    --------\n    >>> from sklearn.multiclass import OutputCodeClassifier\n    >>> from sklearn.ensemble import RandomForestClassifier\n    >>> from sklearn.datasets import make_classification\n    >>> X, y = make_classification(n_samples=100, n_features=4,\n    ...                            n_informative=2, n_redundant=0,\n    ...                            random_state=0, shuffle=False)\n    >>> clf = OutputCodeClassifier(\n    ...     estimator=RandomForestClassifier(random_state=0),\n    ...     random_state=0).fit(X, y)\n    >>> clf.predict([[0, 0, 0, 0]])\n    array([1])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.multiclass import OutputCodeClassifier\n    >>> from sklearn.ensemble import RandomForestClassifier\n    >>> from sklearn.datasets import make_classification\n    >>> X, y = make_classification(n_samples=100, n_features=4,\n    ...                            n_informative=2, n_redundant=0,\n    ...                            random_state=0, shuffle=False)\n    >>> clf = OutputCodeClassifier(\n    ...     estimator=RandomForestClassifier(random_state=0),\n    ...     random_state=0).fit(X, y)\n    >>> clf.predict([[0, 0, 0, 0]])\n    array([1])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y, **fit_params)",
+          "documentation": {
+            "description": "Fit underlying estimators.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.\n\n        y : array-like of shape (n_samples,)\n            Multi-class targets.\n\n        **fit_params : dict\n            Parameters passed to the ``estimator.fit`` method of each\n            sub-estimator.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,)\nMulti-class targets.\n**fit_params : dict"
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        .. versionadded:: 1.4",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRouter\n            A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Predict multi-class targets using underlying estimators.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Data.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)\nData.\nReturns\n-------"
+              },
+              "y": {
+                "type": "ndarray of shape (n_samples,)",
+                "description": ""
+              },
+              "Predicted": {
+                "type": "multi-class targets.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y : ndarray of shape (n_samples,)\n            Predicted multi-class targets.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "labels for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ""
+              },
+              "Mean": {
+                "type": "accuracy of ``self.predict(X)`` w.r.t. `y`.",
+                "description": ""
+              }
+            },
+            "returns": "the mean accuracy on the given test data and labels.\n\n        In multi-label classification, this is the subset accuracy\n        which is a harsh metric since you require for each sample that\n        each label set be correctly predicted.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True labels for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            Mean accuracy of ``self.predict(X)`` w.r.t. `y`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.multiclass.OutputCodeClassifier, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.multiclass.OutputCodeClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Parallel",
+      "documentation": {
+        "description": "Tweak of :class:`joblib.Parallel` that propagates the scikit-learn configuration.\n\n    This subclass of :class:`joblib.Parallel` ensures that the active configuration\n    (thread-local) of scikit-learn is propagated to the parallel workers for the\n    duration of the execution of the parallel tasks.\n\n    The API does not change and you can refer to :class:`joblib.Parallel`\n    documentation for more details.\n\n    .. versionadded:: 1.3",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "debug",
+          "signature": "debug(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dispatch_next",
+          "signature": "dispatch_next(self)",
+          "documentation": {
+            "description": "Dispatch more data for parallel processing\n\n        This method is meant to be called concurrently by the multiprocessing\n        callback. We rely on the thread-safety of dispatch_one_batch to protect\n        against concurrent consumption of the unprotected iterator.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dispatch_one_batch",
+          "signature": "dispatch_one_batch(self, iterator)",
+          "documentation": {
+            "description": "Prefetch the tasks for the next batch and dispatch them.\n\n        The effective size of the batch is computed here.\n        If there are no more jobs to dispatch, return False, else return True.\n\n        The iterator consumption and dispatching is protected by the same\n        lock so calling this function should be thread safe.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "format",
+          "signature": "format(self, obj, indent=0)",
+          "documentation": {
+            "description": "Return the formatted representation of the object.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "info",
+          "signature": "info(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "print_progress",
+          "signature": "print_progress(self)",
+          "documentation": {
+            "description": "Display the process of the parallel execution only a fraction\n           of time, controlled by self.verbose.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "warn",
+          "signature": "warn(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Real",
+      "documentation": {
+        "description": "To Complex, Real adds the operations that work on real numbers.\n\n    In short, those are: a conversion to float, trunc(), divmod,\n    %, <, <=, >, and >=.\n\n    Real also provides defaults for the derived operations.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "conjugate",
+          "signature": "conjugate(self)",
+          "documentation": {
+            "description": "Conjugate is a no-op for Reals.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

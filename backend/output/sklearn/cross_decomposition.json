@@ -1,0 +1,2338 @@
+{
+  "description": "Algorithms for cross decomposition.",
+  "functions": [],
+  "classes": [
+    {
+      "name": "CCA",
+      "documentation": {
+        "description": "Canonical Correlation Analysis, also known as \"Mode B\" PLS.\n\n    For a comparison between other cross decomposition algorithms, see\n    :ref:`sphx_glr_auto_examples_cross_decomposition_plot_compare_cross_decomposition.py`.\n\n    Read more in the :ref:`User Guide <cross_decomposition>`.\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        Number of components to keep. Should be in `[1, min(n_samples,\n        n_features, n_targets)]`.\n\n    scale : bool, default=True\n        Whether to scale `X` and `Y`.\n\n    max_iter : int, default=500\n        The maximum number of iterations of the power method.\n\n    tol : float, default=1e-06\n        The tolerance used as convergence criteria in the power method: the\n        algorithm stops whenever the squared norm of `u_i - u_{i-1}` is less\n        than `tol`, where `u` corresponds to the left singular vector.\n\n    copy : bool, default=True\n        Whether to copy `X` and `Y` in fit before applying centering, and\n        potentially scaling. If False, these operations will be done inplace,\n        modifying both arrays.\n\n    Attributes\n    ----------\n    x_weights_ : ndarray of shape (n_features, n_components)\n        The left singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    y_weights_ : ndarray of shape (n_targets, n_components)\n        The right singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    x_loadings_ : ndarray of shape (n_features, n_components)\n        The loadings of `X`.\n\n    y_loadings_ : ndarray of shape (n_targets, n_components)\n        The loadings of `Y`.\n\n    x_rotations_ : ndarray of shape (n_features, n_components)\n        The projection matrix used to transform `X`.\n\n    y_rotations_ : ndarray of shape (n_targets, n_components)\n        The projection matrix used to transform `Y`.\n\n    coef_ : ndarray of shape (n_targets, n_features)\n        The coefficients of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n    intercept_ : ndarray of shape (n_targets,)\n        The intercepts of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n        .. versionadded:: 1.1\n\n    n_iter_ : list of shape (n_components,)\n        Number of iterations of the power method, for each\n        component.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    PLSCanonical : Partial Least Squares transformer and regressor.\n    PLSSVD : Partial Least Square SVD.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ""
+          },
+          "scale": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to copy `X` and `Y` in fit before applying centering, and",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=500",
+            "description": ""
+          },
+          "The": {
+            "type": "intercepts of the linear model such that `Y` is approximated as",
+            "description": "`Y = X @ coef_.T + intercept_`.\n.. versionadded:: 1.1"
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "06"
+          },
+          "algorithm": {
+            "type": "stops whenever the squared norm of `u_i - u_{i-1}` is less",
+            "description": ""
+          },
+          "than": {
+            "type": "`tol`, where `u` corresponds to the left singular vector.",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "potentially": {
+            "type": "scaling. If False, these operations will be done inplace,",
+            "description": ""
+          },
+          "modifying": {
+            "type": "both arrays.",
+            "description": "Attributes\n----------"
+          },
+          "x_weights_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_weights_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_loadings_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_loadings_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_rotations_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_rotations_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "coef_": {
+            "type": "ndarray of shape (n_targets, n_features)",
+            "description": ""
+          },
+          "intercept_": {
+            "type": "ndarray of shape (n_targets,)",
+            "description": ""
+          },
+          "n_iter_": {
+            "type": "list of shape (n_components,)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "PLSCanonical": {
+            "type": "Partial Least Squares transformer and regressor.",
+            "description": ""
+          },
+          "PLSSVD": {
+            "type": "Partial Least Square SVD.",
+            "description": "Examples\n--------\n>>> from sklearn.cross_decomposition import CCA\n>>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [3.,5.,4.]]\n>>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n>>> cca = CCA(n_components=1)\n>>> cca.fit(X, y)"
+          },
+          "CCA": {
+            "type": "n_components=1",
+            "description": ">>> X_c, Y_c = cca.transform(X, y)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    PLSCanonical : Partial Least Squares transformer and regressor.\n    PLSSVD : Partial Least Square SVD.\n\n    Examples\n    --------\n    >>> from sklearn.cross_decomposition import CCA\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [3.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> cca = CCA(n_components=1)\n    >>> cca.fit(X, y)\n    CCA(n_components=1)\n    >>> X_c, Y_c = cca.transform(X, y)",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.cross_decomposition import CCA\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [3.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> cca = CCA(n_components=1)\n    >>> cca.fit(X, y)\n    CCA(n_components=1)\n    >>> X_c, Y_c = cca.transform(X, y)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Fit model to data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\n.. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "model.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Learn and apply the dimension reduction on the train data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Returns\n        -------\n        self : ndarray of shape (n_samples, n_components)",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\nReturns\n-------"
+              },
+              "self": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Transform data back to its original space.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_components)\n            New data, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        Y : array-like of shape (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        Returns\n        -------\n        X_reconstructed : ndarray of shape (n_samples, n_features)\n            Return the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)\n            Return the reconstructed `X` target. Only returned when `y` is given.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "New": {
+                "type": "target, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_components` is the number of pls components.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_components)"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "X_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Return": {
+                "type": "the reconstructed `X` target. Only returned when `y` is given.",
+                "description": "Notes\n-----"
+              },
+              "y_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_targets)",
+                "description": ""
+              },
+              "This": {
+                "type": "transformation will only be exact if `n_components=n_features`.",
+                "description": ""
+              }
+            },
+            "returns": "the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This transformation will only be exact if `n_components=n_features`.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X, copy=True)",
+          "documentation": {
+            "description": "Predict targets of given samples.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)\n            Returns predicted values.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)\nSamples."
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------"
+              },
+              "y_pred": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_targets)",
+                "description": ""
+              },
+              "Returns": {
+                "type": "predicted values.",
+                "description": "Notes\n-----"
+              },
+              "This": {
+                "type": "call requires the estimation of a matrix of shape",
+                "description": "`(n_features, n_targets)`, which may be an issue in high dimensional\nspace."
+              }
+            },
+            "returns": "-------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This call requires the estimation of a matrix of shape\n        `(n_features, n_targets)`, which may be an issue in high dimensional\n        space.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "Return the coefficient of determination of the prediction.\n\n        The coefficient of determination :math:`R^2` is defined as\n        :math:`(1 - \\frac{u}{v})`, where :math:`u` is the residual\n        sum of squares ``((y_true - y_pred)** 2).sum()`` and :math:`v`\n        is the total sum of squares ``((y_true - y_true.mean()) ** 2).sum()``.\n        The best possible score is 1.0 and it can be negative (because the\n        model can be arbitrarily worse). A constant model that always predicts\n        the expected value of `y`, disregarding the input features, would get\n        a :math:`R^2` score of 0.0.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples. For some estimators this may be a precomputed\n            kernel matrix or a list of generic objects instead with shape\n            ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``\n            is the number of samples used in the fitting for the estimator.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True values for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples. For some estimators this may be a precomputed",
+                "description": ""
+              },
+              "kernel": {
+                "type": "matrix or a list of generic objects instead with shape",
+                "description": "``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``"
+              },
+              "is": {
+                "type": "the number of samples used in the fitting for the estimator.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "values for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ":math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\nNotes\n-----"
+              },
+              "The": {
+                "type": "math:`R^2` score used when calling ``score`` on a regressor uses",
+                "description": "``multioutput='uniform_average'`` from version 0.23 to keep consistent"
+              },
+              "with": {
+                "type": "default value of :func:`~sklearn.metrics.r2_score`.",
+                "description": ""
+              },
+              "This": {
+                "type": "influences the ``score`` method of all the multioutput",
+                "description": ""
+              },
+              "regressors": {
+                "type": "(except for",
+                "description": ":class:`~sklearn.multioutput.MultiOutputRegressor`)."
+              }
+            },
+            "returns": "-------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\n\n        Notes\n        -----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_predict_request",
+          "signature": "set_predict_request(self: sklearn.cross_decomposition._pls.CCA, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.CCA",
+          "documentation": {
+            "description": "Request metadata passed to the ``predict`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``predict``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``predict`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``predict``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``predict``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.cross_decomposition._pls.CCA, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.CCA",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_transform_request",
+          "signature": "set_transform_request(self: sklearn.cross_decomposition._pls.CCA, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.CCA",
+          "documentation": {
+            "description": "Request metadata passed to the ``transform`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``transform``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``transform`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``transform``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``transform``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, y=None, Y=None, copy=True)",
+          "documentation": {
+            "description": "Apply the dimension reduction.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples to transform.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n        Y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        x_scores, y_scores : array-like or tuple of array-like",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Samples": {
+                "type": "to transform.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead."
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------\nx_scores, y_scores : array-like or tuple of array-like"
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "PLSCanonical",
+      "documentation": {
+        "description": "Partial Least Squares transformer and regressor.\n\n    For a comparison between other cross decomposition algorithms, see\n    :ref:`sphx_glr_auto_examples_cross_decomposition_plot_compare_cross_decomposition.py`.\n\n    Read more in the :ref:`User Guide <cross_decomposition>`.\n\n    .. versionadded:: 0.8\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        Number of components to keep. Should be in `[1, min(n_samples,\n        n_features, n_targets)]`.\n\n    scale : bool, default=True\n        Whether to scale `X` and `Y`.\n\n    algorithm : {'nipals', 'svd'}, default='nipals'\n        The algorithm used to estimate the first singular vectors of the\n        cross-covariance matrix. 'nipals' uses the power method while 'svd'\n        will compute the whole SVD.\n\n    max_iter : int, default=500\n        The maximum number of iterations of the power method when\n        `algorithm='nipals'`. Ignored otherwise.\n\n    tol : float, default=1e-06\n        The tolerance used as convergence criteria in the power method: the\n        algorithm stops whenever the squared norm of `u_i - u_{i-1}` is less\n        than `tol`, where `u` corresponds to the left singular vector.\n\n    copy : bool, default=True\n        Whether to copy `X` and `Y` in fit before applying centering, and\n        potentially scaling. If False, these operations will be done inplace,\n        modifying both arrays.\n\n    Attributes\n    ----------\n    x_weights_ : ndarray of shape (n_features, n_components)\n        The left singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    y_weights_ : ndarray of shape (n_targets, n_components)\n        The right singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    x_loadings_ : ndarray of shape (n_features, n_components)\n        The loadings of `X`.\n\n    y_loadings_ : ndarray of shape (n_targets, n_components)\n        The loadings of `Y`.\n\n    x_rotations_ : ndarray of shape (n_features, n_components)\n        The projection matrix used to transform `X`.\n\n    y_rotations_ : ndarray of shape (n_targets, n_components)\n        The projection matrix used to transform `Y`.\n\n    coef_ : ndarray of shape (n_targets, n_features)\n        The coefficients of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n    intercept_ : ndarray of shape (n_targets,)\n        The intercepts of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n        .. versionadded:: 1.1\n\n    n_iter_ : list of shape (n_components,)\n        Number of iterations of the power method, for each\n        component. Empty if `algorithm='svd'`.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    CCA : Canonical Correlation Analysis.\n    PLSSVD : Partial Least Square SVD.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ""
+          },
+          "scale": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to copy `X` and `Y` in fit before applying centering, and",
+            "description": ""
+          },
+          "algorithm": {
+            "type": "stops whenever the squared norm of `u_i - u_{i-1}` is less",
+            "description": ""
+          },
+          "The": {
+            "type": "intercepts of the linear model such that `Y` is approximated as",
+            "description": "`Y = X @ coef_.T + intercept_`.\n.. versionadded:: 1.1"
+          },
+          "will": {
+            "type": "compute the whole SVD.",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=500",
+            "description": ""
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "06"
+          },
+          "than": {
+            "type": "`tol`, where `u` corresponds to the left singular vector.",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "potentially": {
+            "type": "scaling. If False, these operations will be done inplace,",
+            "description": ""
+          },
+          "modifying": {
+            "type": "both arrays.",
+            "description": "Attributes\n----------"
+          },
+          "x_weights_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_weights_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_loadings_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_loadings_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_rotations_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_rotations_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "coef_": {
+            "type": "ndarray of shape (n_targets, n_features)",
+            "description": ""
+          },
+          "intercept_": {
+            "type": "ndarray of shape (n_targets,)",
+            "description": ""
+          },
+          "n_iter_": {
+            "type": "list of shape (n_components,)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "CCA": {
+            "type": "Canonical Correlation Analysis.",
+            "description": ""
+          },
+          "PLSSVD": {
+            "type": "Partial Least Square SVD.",
+            "description": "Examples\n--------\n>>> from sklearn.cross_decomposition import PLSCanonical\n>>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n>>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n>>> plsca = PLSCanonical(n_components=2)\n>>> plsca.fit(X, y)"
+          },
+          "PLSCanonical": {
+            "type": "",
+            "description": ">>> X_c, y_c = plsca.transform(X, y)"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    CCA : Canonical Correlation Analysis.\n    PLSSVD : Partial Least Square SVD.\n\n    Examples\n    --------\n    >>> from sklearn.cross_decomposition import PLSCanonical\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> plsca = PLSCanonical(n_components=2)\n    >>> plsca.fit(X, y)\n    PLSCanonical()\n    >>> X_c, y_c = plsca.transform(X, y)",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.cross_decomposition import PLSCanonical\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> plsca = PLSCanonical(n_components=2)\n    >>> plsca.fit(X, y)\n    PLSCanonical()\n    >>> X_c, y_c = plsca.transform(X, y)"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Fit model to data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\n.. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "model.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Learn and apply the dimension reduction on the train data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Returns\n        -------\n        self : ndarray of shape (n_samples, n_components)",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\nReturns\n-------"
+              },
+              "self": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Transform data back to its original space.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_components)\n            New data, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        Y : array-like of shape (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        Returns\n        -------\n        X_reconstructed : ndarray of shape (n_samples, n_features)\n            Return the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)\n            Return the reconstructed `X` target. Only returned when `y` is given.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "New": {
+                "type": "target, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_components` is the number of pls components.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_components)"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "X_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Return": {
+                "type": "the reconstructed `X` target. Only returned when `y` is given.",
+                "description": "Notes\n-----"
+              },
+              "y_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_targets)",
+                "description": ""
+              },
+              "This": {
+                "type": "transformation will only be exact if `n_components=n_features`.",
+                "description": ""
+              }
+            },
+            "returns": "the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This transformation will only be exact if `n_components=n_features`.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X, copy=True)",
+          "documentation": {
+            "description": "Predict targets of given samples.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)\n            Returns predicted values.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)\nSamples."
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------"
+              },
+              "y_pred": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_targets)",
+                "description": ""
+              },
+              "Returns": {
+                "type": "predicted values.",
+                "description": "Notes\n-----"
+              },
+              "This": {
+                "type": "call requires the estimation of a matrix of shape",
+                "description": "`(n_features, n_targets)`, which may be an issue in high dimensional\nspace."
+              }
+            },
+            "returns": "-------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This call requires the estimation of a matrix of shape\n        `(n_features, n_targets)`, which may be an issue in high dimensional\n        space.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "Return the coefficient of determination of the prediction.\n\n        The coefficient of determination :math:`R^2` is defined as\n        :math:`(1 - \\frac{u}{v})`, where :math:`u` is the residual\n        sum of squares ``((y_true - y_pred)** 2).sum()`` and :math:`v`\n        is the total sum of squares ``((y_true - y_true.mean()) ** 2).sum()``.\n        The best possible score is 1.0 and it can be negative (because the\n        model can be arbitrarily worse). A constant model that always predicts\n        the expected value of `y`, disregarding the input features, would get\n        a :math:`R^2` score of 0.0.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples. For some estimators this may be a precomputed\n            kernel matrix or a list of generic objects instead with shape\n            ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``\n            is the number of samples used in the fitting for the estimator.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True values for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples. For some estimators this may be a precomputed",
+                "description": ""
+              },
+              "kernel": {
+                "type": "matrix or a list of generic objects instead with shape",
+                "description": "``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``"
+              },
+              "is": {
+                "type": "the number of samples used in the fitting for the estimator.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "values for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ":math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\nNotes\n-----"
+              },
+              "The": {
+                "type": "math:`R^2` score used when calling ``score`` on a regressor uses",
+                "description": "``multioutput='uniform_average'`` from version 0.23 to keep consistent"
+              },
+              "with": {
+                "type": "default value of :func:`~sklearn.metrics.r2_score`.",
+                "description": ""
+              },
+              "This": {
+                "type": "influences the ``score`` method of all the multioutput",
+                "description": ""
+              },
+              "regressors": {
+                "type": "(except for",
+                "description": ":class:`~sklearn.multioutput.MultiOutputRegressor`)."
+              }
+            },
+            "returns": "-------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\n\n        Notes\n        -----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_predict_request",
+          "signature": "set_predict_request(self: sklearn.cross_decomposition._pls.PLSCanonical, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSCanonical",
+          "documentation": {
+            "description": "Request metadata passed to the ``predict`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``predict``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``predict`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``predict``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``predict``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.cross_decomposition._pls.PLSCanonical, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSCanonical",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_transform_request",
+          "signature": "set_transform_request(self: sklearn.cross_decomposition._pls.PLSCanonical, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSCanonical",
+          "documentation": {
+            "description": "Request metadata passed to the ``transform`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``transform``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``transform`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``transform``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``transform``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, y=None, Y=None, copy=True)",
+          "documentation": {
+            "description": "Apply the dimension reduction.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples to transform.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n        Y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        x_scores, y_scores : array-like or tuple of array-like",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Samples": {
+                "type": "to transform.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead."
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------\nx_scores, y_scores : array-like or tuple of array-like"
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "PLSRegression",
+      "documentation": {
+        "description": "PLS regression.\n\n    PLSRegression is also known as PLS2 or PLS1, depending on the number of\n    targets.\n\n    For a comparison between other cross decomposition algorithms, see\n    :ref:`sphx_glr_auto_examples_cross_decomposition_plot_compare_cross_decomposition.py`.\n\n    Read more in the :ref:`User Guide <cross_decomposition>`.\n\n    .. versionadded:: 0.8\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        Number of components to keep. Should be in `[1, n_features]`.\n\n    scale : bool, default=True\n        Whether to scale `X` and `Y`.\n\n    max_iter : int, default=500\n        The maximum number of iterations of the power method when\n        `algorithm='nipals'`. Ignored otherwise.\n\n    tol : float, default=1e-06\n        The tolerance used as convergence criteria in the power method: the\n        algorithm stops whenever the squared norm of `u_i - u_{i-1}` is less\n        than `tol`, where `u` corresponds to the left singular vector.\n\n    copy : bool, default=True\n        Whether to copy `X` and `Y` in :term:`fit` before applying centering,\n        and potentially scaling. If `False`, these operations will be done\n        inplace, modifying both arrays.\n\n    Attributes\n    ----------\n    x_weights_ : ndarray of shape (n_features, n_components)\n        The left singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    y_weights_ : ndarray of shape (n_targets, n_components)\n        The right singular vectors of the cross-covariance matrices of each\n        iteration.\n\n    x_loadings_ : ndarray of shape (n_features, n_components)\n        The loadings of `X`.\n\n    y_loadings_ : ndarray of shape (n_targets, n_components)\n        The loadings of `Y`.\n\n    x_scores_ : ndarray of shape (n_samples, n_components)\n        The transformed training samples.\n\n    y_scores_ : ndarray of shape (n_samples, n_components)\n        The transformed training targets.\n\n    x_rotations_ : ndarray of shape (n_features, n_components)\n        The projection matrix used to transform `X`.\n\n    y_rotations_ : ndarray of shape (n_targets, n_components)\n        The projection matrix used to transform `Y`.\n\n    coef_ : ndarray of shape (n_target, n_features)\n        The coefficients of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n    intercept_ : ndarray of shape (n_targets,)\n        The intercepts of the linear model such that `Y` is approximated as\n        `Y = X @ coef_.T + intercept_`.\n\n        .. versionadded:: 1.1\n\n    n_iter_ : list of shape (n_components,)\n        Number of iterations of the power method, for each\n        component.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    PLSCanonical : Partial Least Squares transformer and regressor.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ""
+          },
+          "scale": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to copy `X` and `Y` in :term:`fit` before applying centering,",
+            "description": ""
+          },
+          "max_iter": {
+            "type": "int, default=500",
+            "description": ""
+          },
+          "The": {
+            "type": "intercepts of the linear model such that `Y` is approximated as",
+            "description": "`Y = X @ coef_.T + intercept_`.\n.. versionadded:: 1.1"
+          },
+          "tol": {
+            "type": "float, default=1e",
+            "description": "06"
+          },
+          "algorithm": {
+            "type": "stops whenever the squared norm of `u_i - u_{i-1}` is less",
+            "description": ""
+          },
+          "than": {
+            "type": "`tol`, where `u` corresponds to the left singular vector.",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "and": {
+            "type": "potentially scaling. If `False`, these operations will be done",
+            "description": "inplace, modifying both arrays.\nAttributes\n----------"
+          },
+          "x_weights_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_weights_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_loadings_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_loadings_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "x_scores_": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "y_scores_": {
+            "type": "ndarray of shape (n_samples, n_components)",
+            "description": ""
+          },
+          "x_rotations_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "y_rotations_": {
+            "type": "ndarray of shape (n_targets, n_components)",
+            "description": ""
+          },
+          "coef_": {
+            "type": "ndarray of shape (n_target, n_features)",
+            "description": ""
+          },
+          "intercept_": {
+            "type": "ndarray of shape (n_targets,)",
+            "description": ""
+          },
+          "n_iter_": {
+            "type": "list of shape (n_components,)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "PLSCanonical": {
+            "type": "Partial Least Squares transformer and regressor.",
+            "description": "Examples\n--------\n>>> from sklearn.cross_decomposition import PLSRegression\n>>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n>>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n>>> pls2 = PLSRegression(n_components=2)\n>>> pls2.fit(X, y)"
+          },
+          "PLSRegression": {
+            "type": "",
+            "description": ">>> Y_pred = pls2.predict(X)"
+          },
+          "For": {
+            "type": "a comparison between PLS Regression and :class:`~sklearn.decomposition.PCA`, see",
+            "description": ":ref:`sphx_glr_auto_examples_cross_decomposition_plot_pcr_vs_pls.py`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    PLSCanonical : Partial Least Squares transformer and regressor.\n\n    Examples\n    --------\n    >>> from sklearn.cross_decomposition import PLSRegression\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> pls2 = PLSRegression(n_components=2)\n    >>> pls2.fit(X, y)\n    PLSRegression()\n    >>> Y_pred = pls2.predict(X)\n\n    For a comparison between PLS Regression and :class:`~sklearn.decomposition.PCA`, see\n    :ref:`sphx_glr_auto_examples_cross_decomposition_plot_pcr_vs_pls.py`.",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.cross_decomposition import PLSRegression\n    >>> X = [[0., 0., 1.], [1.,0.,0.], [2.,2.,2.], [2.,5.,4.]]\n    >>> y = [[0.1, -0.2], [0.9, 1.1], [6.2, 5.9], [11.9, 12.3]]\n    >>> pls2 = PLSRegression(n_components=2)\n    >>> pls2.fit(X, y)\n    PLSRegression()\n    >>> Y_pred = pls2.predict(X)\n\n    For a comparison between PLS Regression and :class:`~sklearn.decomposition.PCA`, see\n    :ref:`sphx_glr_auto_examples_cross_decomposition_plot_pcr_vs_pls.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Fit model to data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\n.. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "model.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted model.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Learn and apply the dimension reduction on the train data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training vectors, where `n_samples` is the number of samples and\n            `n_features` is the number of predictors.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors, where `n_samples` is the number of samples and\n            `n_targets` is the number of response variables.\n\n        Returns\n        -------\n        self : ndarray of shape (n_samples, n_components)",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of predictors."
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors, where `n_samples` is the number of samples and",
+                "description": "`n_targets` is the number of response variables.\nReturns\n-------"
+              },
+              "self": {
+                "type": "ndarray of shape (n_samples, n_components)",
+                "description": ""
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Transform data back to its original space.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_components)\n            New data, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n        Y : array-like of shape (n_samples, n_components)\n            New target, where `n_samples` is the number of samples\n            and `n_components` is the number of pls components.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        Returns\n        -------\n        X_reconstructed : ndarray of shape (n_samples, n_features)\n            Return the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)\n            Return the reconstructed `X` target. Only returned when `y` is given.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "New": {
+                "type": "target, where `n_samples` is the number of samples",
+                "description": ""
+              },
+              "and": {
+                "type": "`n_components` is the number of pls components.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_components)"
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_components)"
+              },
+              "X_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_features)",
+                "description": ""
+              },
+              "Return": {
+                "type": "the reconstructed `X` target. Only returned when `y` is given.",
+                "description": "Notes\n-----"
+              },
+              "y_reconstructed": {
+                "type": "ndarray of shape (n_samples, n_targets)",
+                "description": ""
+              },
+              "This": {
+                "type": "transformation will only be exact if `n_components=n_features`.",
+                "description": ""
+              }
+            },
+            "returns": "the reconstructed `X` data.\n\n        y_reconstructed : ndarray of shape (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This transformation will only be exact if `n_components=n_features`.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X, copy=True)",
+          "documentation": {
+            "description": "Predict targets of given samples.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)\n            Returns predicted values.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)\nSamples."
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------"
+              },
+              "y_pred": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_targets)",
+                "description": ""
+              },
+              "Returns": {
+                "type": "predicted values.",
+                "description": "Notes\n-----"
+              },
+              "This": {
+                "type": "call requires the estimation of a matrix of shape",
+                "description": "`(n_features, n_targets)`, which may be an issue in high dimensional\nspace."
+              }
+            },
+            "returns": "-------\n        y_pred : ndarray of shape (n_samples,) or (n_samples, n_targets)",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        This call requires the estimation of a matrix of shape\n        `(n_features, n_targets)`, which may be an issue in high dimensional\n        space.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "Return the coefficient of determination of the prediction.\n\n        The coefficient of determination :math:`R^2` is defined as\n        :math:`(1 - \\frac{u}{v})`, where :math:`u` is the residual\n        sum of squares ``((y_true - y_pred)** 2).sum()`` and :math:`v`\n        is the total sum of squares ``((y_true - y_true.mean()) ** 2).sum()``.\n        The best possible score is 1.0 and it can be negative (because the\n        model can be arbitrarily worse). A constant model that always predicts\n        the expected value of `y`, disregarding the input features, would get\n        a :math:`R^2` score of 0.0.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples. For some estimators this may be a precomputed\n            kernel matrix or a list of generic objects instead with shape\n            ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``\n            is the number of samples used in the fitting for the estimator.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True values for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples. For some estimators this may be a precomputed",
+                "description": ""
+              },
+              "kernel": {
+                "type": "matrix or a list of generic objects instead with shape",
+                "description": "``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``"
+              },
+              "is": {
+                "type": "the number of samples used in the fitting for the estimator.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "values for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ":math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\nNotes\n-----"
+              },
+              "The": {
+                "type": "math:`R^2` score used when calling ``score`` on a regressor uses",
+                "description": "``multioutput='uniform_average'`` from version 0.23 to keep consistent"
+              },
+              "with": {
+                "type": "default value of :func:`~sklearn.metrics.r2_score`.",
+                "description": ""
+              },
+              "This": {
+                "type": "influences the ``score`` method of all the multioutput",
+                "description": ""
+              },
+              "regressors": {
+                "type": "(except for",
+                "description": ":class:`~sklearn.multioutput.MultiOutputRegressor`)."
+              }
+            },
+            "returns": "-------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\n\n        Notes\n        -----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_predict_request",
+          "signature": "set_predict_request(self: sklearn.cross_decomposition._pls.PLSRegression, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSRegression",
+          "documentation": {
+            "description": "Request metadata passed to the ``predict`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``predict``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``predict`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``predict``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``predict``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.cross_decomposition._pls.PLSRegression, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSRegression",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_transform_request",
+          "signature": "set_transform_request(self: sklearn.cross_decomposition._pls.PLSRegression, *, copy: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.cross_decomposition._pls.PLSRegression",
+          "documentation": {
+            "description": "Request metadata passed to the ``transform`` method.",
+            "parameters": {
+              "copy": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``copy`` parameter in ``transform``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``transform`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``transform``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        copy : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``copy`` parameter in ``transform``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, y=None, Y=None, copy=True)",
+          "documentation": {
+            "description": "Apply the dimension reduction.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples to transform.\n\n        y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n        Y : array-like of shape (n_samples, n_targets), default=None\n            Target vectors.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\n\n        copy : bool, default=True\n            Whether to copy `X` and `Y`, or perform in-place normalization.\n\n        Returns\n        -------\n        x_scores, y_scores : array-like or tuple of array-like",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Samples": {
+                "type": "to transform.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "Target": {
+                "type": "vectors.",
+                "description": ".. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead."
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_targets), default=None"
+              },
+              "copy": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "Whether": {
+                "type": "to copy `X` and `Y`, or perform in-place normalization.",
+                "description": "Returns\n-------\nx_scores, y_scores : array-like or tuple of array-like"
+              },
+              "Return": {
+                "type": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+                "description": ""
+              }
+            },
+            "returns": "`x_scores` if `Y` is not given, `(x_scores, y_scores)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "PLSSVD",
+      "documentation": {
+        "description": "Partial Least Square SVD.\n\n    This transformer simply performs a SVD on the cross-covariance matrix\n    `X'Y`. It is able to project both the training data `X` and the targets\n    `Y`. The training data `X` is projected on the left singular vectors, while\n    the targets are projected on the right singular vectors.\n\n    Read more in the :ref:`User Guide <cross_decomposition>`.\n\n    .. versionadded:: 0.8\n\n    Parameters\n    ----------\n    n_components : int, default=2\n        The number of components to keep. Should be in `[1,\n        min(n_samples, n_features, n_targets)]`.\n\n    scale : bool, default=True\n        Whether to scale `X` and `Y`.\n\n    copy : bool, default=True\n        Whether to copy `X` and `Y` in fit before applying centering, and\n        potentially scaling. If `False`, these operations will be done inplace,\n        modifying both arrays.\n\n    Attributes\n    ----------\n    x_weights_ : ndarray of shape (n_features, n_components)\n        The left singular vectors of the SVD of the cross-covariance matrix.\n        Used to project `X` in :meth:`transform`.\n\n    y_weights_ : ndarray of (n_targets, n_components)\n        The right singular vectors of the SVD of the cross-covariance matrix.\n        Used to project `X` in :meth:`transform`.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    PLSCanonical : Partial Least Squares transformer and regressor.\n    CCA : Canonical Correlation Analysis.",
+        "parameters": {
+          "n_components": {
+            "type": "int, default=2",
+            "description": ""
+          },
+          "The": {
+            "type": "right singular vectors of the SVD of the cross-covariance matrix.",
+            "description": ""
+          },
+          "min": {
+            "type": "n_samples, n_features, n_targets",
+            "description": "]`."
+          },
+          "scale": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to copy `X` and `Y` in fit before applying centering, and",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "potentially": {
+            "type": "scaling. If `False`, these operations will be done inplace,",
+            "description": ""
+          },
+          "modifying": {
+            "type": "both arrays.",
+            "description": "Attributes\n----------"
+          },
+          "x_weights_": {
+            "type": "ndarray of shape (n_features, n_components)",
+            "description": ""
+          },
+          "Used": {
+            "type": "to project `X` in :meth:`transform`.",
+            "description": ""
+          },
+          "y_weights_": {
+            "type": "ndarray of (n_targets, n_components)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "PLSCanonical": {
+            "type": "Partial Least Squares transformer and regressor.",
+            "description": ""
+          },
+          "CCA": {
+            "type": "Canonical Correlation Analysis.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.cross_decomposition import PLSSVD\n>>> X = np.array([[0., 0., 1.],\n...               [1., 0., 0.],\n...               [2., 2., 2.],\n...               [2., 5., 4.]])\n>>> y = np.array([[0.1, -0.2],\n...               [0.9, 1.1],\n...               [6.2, 5.9],\n...               [11.9, 12.3]])\n>>> pls = PLSSVD(n_components=2).fit(X, y)\n>>> X_c, y_c = pls.transform(X, y)\n>>> X_c.shape, y_c.shape\n((4, 2), (4, 2))"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    PLSCanonical : Partial Least Squares transformer and regressor.\n    CCA : Canonical Correlation Analysis.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.cross_decomposition import PLSSVD\n    >>> X = np.array([[0., 0., 1.],\n    ...               [1., 0., 0.],\n    ...               [2., 2., 2.],\n    ...               [2., 5., 4.]])\n    >>> y = np.array([[0.1, -0.2],\n    ...               [0.9, 1.1],\n    ...               [6.2, 5.9],\n    ...               [11.9, 12.3]])\n    >>> pls = PLSSVD(n_components=2).fit(X, y)\n    >>> X_c, y_c = pls.transform(X, y)\n    >>> X_c.shape, y_c.shape\n    ((4, 2), (4, 2))",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.cross_decomposition import PLSSVD\n    >>> X = np.array([[0., 0., 1.],\n    ...               [1., 0., 0.],\n    ...               [2., 2., 2.],\n    ...               [2., 5., 4.]])\n    >>> y = np.array([[0.1, -0.2],\n    ...               [0.9, 1.1],\n    ...               [6.2, 5.9],\n    ...               [11.9, 12.3]])\n    >>> pls = PLSSVD(n_components=2).fit(X, y)\n    >>> X_c, y_c = pls.transform(X, y)\n    >>> X_c.shape, y_c.shape\n    ((4, 2), (4, 2))"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Fit model to data.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Targets.\n\n        Y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Targets.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)\nTargets."
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)\nTargets.\n.. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Learn and apply the dimensionality reduction.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Training samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets),                 default=None\n            Targets.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Training": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets),                 default=None\nTargets.\nReturns\n-------"
+              },
+              "out": {
+                "type": "array",
+                "description": "like or tuple of array-like"
+              },
+              "The": {
+                "type": "transformed data `X_transformed` if `Y is not None`,",
+                "description": "`(X_transformed, Y_transformed)` otherwise."
+              }
+            },
+            "returns": "-------\n        out : array-like or tuple of array-like\n            The transformed data `X_transformed` if `Y is not None`,\n            `(X_transformed, Y_transformed)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        The feature names out will prefixed by the lowercased class name. For\n        example, if the transformer outputs 3 features, then the feature names\n        out are: `[\"class_name0\", \"class_name1\", \"class_name2\"]`.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Only used to validate feature names with the names seen in `fit`.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Only": {
+                "type": "used to validate feature names with the names seen in `fit`.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, y=None, Y=None)",
+          "documentation": {
+            "description": "Apply the dimensionality reduction.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Samples to be transformed.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets),                 default=None\n            Targets.\n\n        Y : array-like of shape (n_samples,) or (n_samples, n_targets),                 default=None\n            Targets.\n\n            .. deprecated:: 1.5\n               `Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Samples": {
+                "type": "to be transformed.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets),                 default=None\nTargets."
+              },
+              "Y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets),                 default=None\nTargets.\n.. deprecated:: 1.5\n`Y` is deprecated in 1.5 and will be removed in 1.7. Use `y` instead.\nReturns\n-------"
+              },
+              "x_scores": {
+                "type": "array",
+                "description": "like or tuple of array-like"
+              },
+              "The": {
+                "type": "transformed data `X_transformed` if `Y is not None`,",
+                "description": "`(X_transformed, Y_transformed)` otherwise."
+              }
+            },
+            "returns": "-------\n        x_scores : array-like or tuple of array-like\n            The transformed data `X_transformed` if `Y is not None`,\n            `(X_transformed, Y_transformed)` otherwise.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

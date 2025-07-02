@@ -1,0 +1,984 @@
+{
+  "description": "Gaussian process based regression and classification.",
+  "functions": [],
+  "classes": [
+    {
+      "name": "GaussianProcessClassifier",
+      "documentation": {
+        "description": "Gaussian process classification (GPC) based on Laplace approximation.\n\n    The implementation is based on Algorithm 3.1, 3.2, and 5.1 from [RW2006]_.\n\n    Internally, the Laplace approximation is used for approximating the\n    non-Gaussian posterior by a Gaussian.\n\n    Currently, the implementation is restricted to using the logistic link\n    function. For multi-class classification, several binary one-versus rest\n    classifiers are fitted. Note that this class thus does not implement\n    a true multi-class Laplace approximation.\n\n    Read more in the :ref:`User Guide <gaussian_process>`.\n\n    .. versionadded:: 0.18\n\n    Parameters\n    ----------\n    kernel : kernel instance, default=None\n        The kernel specifying the covariance function of the GP. If None is\n        passed, the kernel \"1.0 * RBF(1.0)\" is used as default. Note that\n        the kernel's hyperparameters are optimized during fitting. Also kernel\n        cannot be a `CompoundKernel`.\n\n    optimizer : 'fmin_l_bfgs_b', callable or None, default='fmin_l_bfgs_b'\n        Can either be one of the internally supported optimizers for optimizing\n        the kernel's parameters, specified by a string, or an externally\n        defined optimizer passed as a callable. If a callable is passed, it\n        must have the  signature::\n\n            def optimizer(obj_func, initial_theta, bounds):\n                # * 'obj_func' is the objective function to be maximized, which\n                #   takes the hyperparameters theta as parameter and an\n                #   optional flag eval_gradient, which determines if the\n                #   gradient is returned additionally to the function value\n                # * 'initial_theta': the initial value for theta, which can be\n                #   used by local optimizers\n                # * 'bounds': the bounds on the values of theta\n                ....\n                # Returned are the best found hyperparameters theta and\n                # the corresponding value of the target function.\n                return theta_opt, func_min\n\n        Per default, the 'L-BFGS-B' algorithm from scipy.optimize.minimize\n        is used. If None is passed, the kernel's parameters are kept fixed.\n        Available internal optimizers are::\n\n            'fmin_l_bfgs_b'\n\n    n_restarts_optimizer : int, default=0\n        The number of restarts of the optimizer for finding the kernel's\n        parameters which maximize the log-marginal likelihood. The first run\n        of the optimizer is performed from the kernel's initial parameters,\n        the remaining ones (if any) from thetas sampled log-uniform randomly\n        from the space of allowed theta-values. If greater than 0, all bounds\n        must be finite. Note that n_restarts_optimizer=0 implies that one\n        run is performed.\n\n    max_iter_predict : int, default=100\n        The maximum number of iterations in Newton's method for approximating\n        the posterior during predict. Smaller values will reduce computation\n        time at the cost of worse results.\n\n    warm_start : bool, default=False\n        If warm-starts are enabled, the solution of the last Newton iteration\n        on the Laplace approximation of the posterior mode is used as\n        initialization for the next call of _posterior_mode(). This can speed\n        up convergence when _posterior_mode is called several times on similar\n        problems as in hyperparameter optimization. See :term:`the Glossary\n        <warm_start>`.\n\n    copy_X_train : bool, default=True\n        If True, a persistent copy of the training data is stored in the\n        object. Otherwise, just a reference to the training data is stored,\n        which might cause predictions to change if the data is modified\n        externally.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    multi_class : {'one_vs_rest', 'one_vs_one'}, default='one_vs_rest'\n        Specifies how multi-class classification problems are handled.\n        Supported are 'one_vs_rest' and 'one_vs_one'. In 'one_vs_rest',\n        one binary Gaussian process classifier is fitted for each class, which\n        is trained to separate this class from the rest. In 'one_vs_one', one\n        binary Gaussian process classifier is fitted for each pair of classes,\n        which is trained to separate these two classes. The predictions of\n        these binary predictors are combined into multi-class predictions.\n        Note that 'one_vs_one' does not support predicting probability\n        estimates.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the specified\n        multiclass problems are computed in parallel.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    base_estimator_ : ``Estimator`` instance\n        The estimator instance that defines the likelihood function\n        using the observed data.\n\n    kernel_ : kernel instance\n        The kernel used for prediction. In case of binary classification,\n        the structure of the kernel is the same as the one passed as parameter\n        but with optimized hyperparameters. In case of multi-class\n        classification, a CompoundKernel is returned which consists of the\n        different kernels used in the one-versus-rest classifiers.\n\n    log_marginal_likelihood_value_ : float\n        The log-marginal-likelihood of ``self.kernel_.theta``\n\n    classes_ : array-like of shape (n_classes,)\n        Unique class labels.\n\n    n_classes_ : int\n        The number of classes in the training data\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianProcessRegressor : Gaussian process regression (GPR).\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_",
+        "parameters": {
+          "kernel": {
+            "type": "kernel instance, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of restarts of the optimizer for finding the kernel's",
+            "description": ""
+          },
+          "the": {
+            "type": "kernel's parameters, specified by a string, or an externally",
+            "description": ""
+          },
+          "cannot": {
+            "type": "be a `CompoundKernel`.",
+            "description": ""
+          },
+          "optimizer": {
+            "type": "'fmin_l_bfgs_b', callable or None, default='fmin_l_bfgs_b'",
+            "description": ""
+          },
+          "Can": {
+            "type": "either be one of the internally supported optimizers for optimizing",
+            "description": ""
+          },
+          "defined": {
+            "type": "optimizer passed as a callable. If a callable is passed, it",
+            "description": ""
+          },
+          "must": {
+            "type": "have the  signature::",
+            "description": ""
+          },
+          "def": {
+            "type": "optimizer(obj_func, initial_theta, bounds):",
+            "description": "# * 'obj_func' is the objective function to be maximized, which\n#   takes the hyperparameters theta as parameter and an\n#   optional flag eval_gradient, which determines if the\n#   gradient is returned additionally to the function value\n# * 'initial_theta': the initial value for theta, which can be\n#   used by local optimizers\n# * 'bounds': the bounds on the values of theta\n....\n# Returned are the best found hyperparameters theta and\n# the corresponding value of the target function."
+          },
+          "return": {
+            "type": "theta_opt, func_min",
+            "description": ""
+          },
+          "Per": {
+            "type": "default, the 'L-BFGS-B' algorithm from scipy.optimize.minimize",
+            "description": ""
+          },
+          "is": {
+            "type": "used. If None is passed, the kernel's parameters are kept fixed.",
+            "description": ""
+          },
+          "Available": {
+            "type": "internal optimizers are::",
+            "description": "'fmin_l_bfgs_b'"
+          },
+          "n_restarts_optimizer": {
+            "type": "int, default=0",
+            "description": ""
+          }
+        },
+        "returns": "theta_opt, func_min\n\n        Per default, the 'L-BFGS-B' algorithm from scipy.optimize.minimize\n        is used. If None is passed, the kernel's parameters are kept fixed.\n        Available internal optimizers are::\n\n            'fmin_l_bfgs_b'\n\n    n_restarts_optimizer : int, default=0\n        The number of restarts of the optimizer for finding the kernel's\n        parameters which maximize the log-marginal likelihood. The first run\n        of the optimizer is performed from the kernel's initial parameters,\n        the remaining ones (if any) from thetas sampled log-uniform randomly\n        from the space of allowed theta-values. If greater than 0, all bounds\n        must be finite. Note that n_restarts_optimizer=0 implies that one\n        run is performed.\n\n    max_iter_predict : int, default=100\n        The maximum number of iterations in Newton's method for approximating\n        the posterior during predict. Smaller values will reduce computation\n        time at the cost of worse results.\n\n    warm_start : bool, default=False\n        If warm-starts are enabled, the solution of the last Newton iteration\n        on the Laplace approximation of the posterior mode is used as\n        initialization for the next call of _posterior_mode(). This can speed\n        up convergence when _posterior_mode is called several times on similar\n        problems as in hyperparameter optimization. See :term:`the Glossary\n        <warm_start>`.\n\n    copy_X_train : bool, default=True\n        If True, a persistent copy of the training data is stored in the\n        object. Otherwise, just a reference to the training data is stored,\n        which might cause predictions to change if the data is modified\n        externally.\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    multi_class : {'one_vs_rest', 'one_vs_one'}, default='one_vs_rest'\n        Specifies how multi-class classification problems are handled.\n        Supported are 'one_vs_rest' and 'one_vs_one'. In 'one_vs_rest',\n        one binary Gaussian process classifier is fitted for each class, which\n        is trained to separate this class from the rest. In 'one_vs_one', one\n        binary Gaussian process classifier is fitted for each pair of classes,\n        which is trained to separate these two classes. The predictions of\n        these binary predictors are combined into multi-class predictions.\n        Note that 'one_vs_one' does not support predicting probability\n        estimates.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the specified\n        multiclass problems are computed in parallel.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    base_estimator_ : ``Estimator`` instance\n        The estimator instance that defines the likelihood function\n        using the observed data.\n\n    kernel_ : kernel instance\n        The kernel used for prediction. In case of binary classification,\n        the structure of the kernel is the same as the one passed as parameter\n        but with optimized hyperparameters. In case of multi-class\n        classification, a CompoundKernel is returned which consists of the\n        different kernels used in the one-versus-rest classifiers.\n\n    log_marginal_likelihood_value_ : float\n        The log-marginal-likelihood of ``self.kernel_.theta``\n\n    classes_ : array-like of shape (n_classes,)\n        Unique class labels.\n\n    n_classes_ : int\n        The number of classes in the training data\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianProcessRegressor : Gaussian process regression (GPR).\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.gaussian_process import GaussianProcessClassifier\n    >>> from sklearn.gaussian_process.kernels import RBF\n    >>> X, y = load_iris(return_X_y=True)\n    >>> kernel = 1.0 * RBF(1.0)\n    >>> gpc = GaussianProcessClassifier(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpc.score(X, y)\n    0.9866...\n    >>> gpc.predict_proba(X[:2,:])\n    array([[0.83548752, 0.03228706, 0.13222543],\n           [0.79064206, 0.06525643, 0.14410151]])\n\n    For a comaprison of the GaussianProcessClassifier with other classifiers see:\n    :ref:`sphx_glr_auto_examples_classification_plot_classification_probability.py`.",
+        "raises": "",
+        "see_also": "--------\n    GaussianProcessRegressor : Gaussian process regression (GPR).\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.gaussian_process import GaussianProcessClassifier\n    >>> from sklearn.gaussian_process.kernels import RBF\n    >>> X, y = load_iris(return_X_y=True)\n    >>> kernel = 1.0 * RBF(1.0)\n    >>> gpc = GaussianProcessClassifier(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpc.score(X, y)\n    0.9866...\n    >>> gpc.predict_proba(X[:2,:])\n    array([[0.83548752, 0.03228706, 0.13222543],\n           [0.79064206, 0.06525643, 0.14410151]])\n\n    For a comaprison of the GaussianProcessClassifier with other classifiers see:\n    :ref:`sphx_glr_auto_examples_classification_plot_classification_probability.py`.",
+        "notes": "that 'one_vs_one' does not support predicting probability\n        estimates.\n\n    n_jobs : int, default=None\n        The number of jobs to use for the computation: the specified\n        multiclass problems are computed in parallel.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n    Attributes\n    ----------\n    base_estimator_ : ``Estimator`` instance\n        The estimator instance that defines the likelihood function\n        using the observed data.\n\n    kernel_ : kernel instance\n        The kernel used for prediction. In case of binary classification,\n        the structure of the kernel is the same as the one passed as parameter\n        but with optimized hyperparameters. In case of multi-class\n        classification, a CompoundKernel is returned which consists of the\n        different kernels used in the one-versus-rest classifiers.\n\n    log_marginal_likelihood_value_ : float\n        The log-marginal-likelihood of ``self.kernel_.theta``\n\n    classes_ : array-like of shape (n_classes,)\n        Unique class labels.\n\n    n_classes_ : int\n        The number of classes in the training data\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianProcessRegressor : Gaussian process regression (GPR).\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_\n\n    Examples\n    --------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.gaussian_process import GaussianProcessClassifier\n    >>> from sklearn.gaussian_process.kernels import RBF\n    >>> X, y = load_iris(return_X_y=True)\n    >>> kernel = 1.0 * RBF(1.0)\n    >>> gpc = GaussianProcessClassifier(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpc.score(X, y)\n    0.9866...\n    >>> gpc.predict_proba(X[:2,:])\n    array([[0.83548752, 0.03228706, 0.13222543],\n           [0.79064206, 0.06525643, 0.14410151]])\n\n    For a comaprison of the GaussianProcessClassifier with other classifiers see:\n    :ref:`sphx_glr_auto_examples_classification_plot_classification_probability.py`.",
+        "examples": "--------\n    >>> from sklearn.datasets import load_iris\n    >>> from sklearn.gaussian_process import GaussianProcessClassifier\n    >>> from sklearn.gaussian_process.kernels import RBF\n    >>> X, y = load_iris(return_X_y=True)\n    >>> kernel = 1.0 * RBF(1.0)\n    >>> gpc = GaussianProcessClassifier(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpc.score(X, y)\n    0.9866...\n    >>> gpc.predict_proba(X[:2,:])\n    array([[0.83548752, 0.03228706, 0.13222543],\n           [0.79064206, 0.06525643, 0.14410151]])\n\n    For a comaprison of the GaussianProcessClassifier with other classifiers see:\n    :ref:`sphx_glr_auto_examples_classification_plot_classification_probability.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y)",
+          "documentation": {
+            "description": "Fit Gaussian process classification model.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or list of object\n            Feature vectors or other representations of training data.\n\n        y : array-like of shape (n_samples,)\n            Target values, must be binary.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or list of object"
+              },
+              "Feature": {
+                "type": "vectors or other representations of training data.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,)"
+              },
+              "Target": {
+                "type": "values, must be binary.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Returns": {
+                "type": "an instance of self.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "log_marginal_likelihood",
+          "signature": "log_marginal_likelihood(self, theta=None, eval_gradient=False, clone_kernel=True)",
+          "documentation": {
+            "description": "Return log-marginal likelihood of theta for training data.\n\n        In the case of multi-class classification, the mean log-marginal\n        likelihood of the one-versus-rest classifiers are returned.\n\n        Parameters\n        ----------\n        theta : array-like of shape (n_kernel_params,), default=None\n            Kernel hyperparameters for which the log-marginal likelihood is\n            evaluated. In the case of multi-class classification, theta may\n            be the  hyperparameters of the compound kernel or of an individual\n            kernel. In the latter case, all individual kernel get assigned the\n            same theta values. If None, the precomputed log_marginal_likelihood\n            of ``self.kernel_.theta`` is returned.\n\n        eval_gradient : bool, default=False\n            If True, the gradient of the log-marginal likelihood with respect\n            to the kernel hyperparameters at position theta is returned\n            additionally. Note that gradient computation is not supported\n            for non-binary classification. If True, theta must not be None.\n\n        clone_kernel : bool, default=True\n            If True, the kernel attribute is copied. If False, the kernel\n            attribute is modified, but may result in a performance improvement.",
+            "parameters": {
+              "theta": {
+                "type": "array",
+                "description": "like of shape (n_kernel_params,), default=None"
+              },
+              "Kernel": {
+                "type": "hyperparameters for which the log-marginal likelihood is",
+                "description": "evaluated. In the case of multi-class classification, theta may"
+              },
+              "be": {
+                "type": "the  hyperparameters of the compound kernel or of an individual",
+                "description": "kernel. In the latter case, all individual kernel get assigned the"
+              },
+              "same": {
+                "type": "theta values. If None, the precomputed log_marginal_likelihood",
+                "description": ""
+              },
+              "of": {
+                "type": "``self.kernel_.theta`` is returned.",
+                "description": ""
+              },
+              "eval_gradient": {
+                "type": "bool, default=False",
+                "description": ""
+              },
+              "If": {
+                "type": "True, the kernel attribute is copied. If False, the kernel",
+                "description": ""
+              },
+              "to": {
+                "type": "the kernel hyperparameters at position theta is returned",
+                "description": "additionally. Note that gradient computation is not supported"
+              },
+              "for": {
+                "type": "non-binary classification. If True, theta must not be None.",
+                "description": ""
+              },
+              "clone_kernel": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "attribute": {
+                "type": "is modified, but may result in a performance improvement.",
+                "description": "Returns\n-------"
+              },
+              "log_likelihood": {
+                "type": "float",
+                "description": "Log-marginal likelihood of theta for training data."
+              },
+              "log_likelihood_gradient": {
+                "type": "ndarray of shape (n_kernel_params,), optional",
+                "description": ""
+              },
+              "Gradient": {
+                "type": "of the log-marginal likelihood with respect to the kernel",
+                "description": ""
+              },
+              "hyperparameters": {
+                "type": "at position theta.",
+                "description": ""
+              },
+              "Only": {
+                "type": "returned when `eval_gradient` is True.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        log_likelihood : float\n            Log-marginal likelihood of theta for training data.\n\n        log_likelihood_gradient : ndarray of shape (n_kernel_params,), optional\n            Gradient of the log-marginal likelihood with respect to the kernel\n            hyperparameters at position theta.\n            Only returned when `eval_gradient` is True.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X)",
+          "documentation": {
+            "description": "Perform classification on an array of test vectors X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or list of object\n            Query points where the GP is evaluated for classification.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or list of object"
+              },
+              "Query": {
+                "type": "points where the GP is evaluated for classification.",
+                "description": "Returns\n-------"
+              },
+              "C": {
+                "type": "ndarray of shape (n_samples,)",
+                "description": ""
+              },
+              "Predicted": {
+                "type": "target values for X, values are from ``classes_``.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        C : ndarray of shape (n_samples,)\n            Predicted target values for X, values are from ``classes_``.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_proba",
+          "signature": "predict_proba(self, X)",
+          "documentation": {
+            "description": "Return probability estimates for the test vector X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or list of object\n            Query points where the GP is evaluated for classification.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or list of object"
+              },
+              "Query": {
+                "type": "points where the GP is evaluated for classification.",
+                "description": "Returns\n-------"
+              },
+              "C": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_classes)"
+              },
+              "Returns": {
+                "type": "the probability of the samples for each class in",
+                "description": ""
+              },
+              "the": {
+                "type": "model. The columns correspond to the classes in sorted",
+                "description": "order, as they appear in the attribute :term:`classes_`."
+              }
+            },
+            "returns": "-------\n        C : array-like of shape (n_samples, n_classes)",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "labels for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ""
+              },
+              "Mean": {
+                "type": "accuracy of ``self.predict(X)`` w.r.t. `y`.",
+                "description": ""
+              }
+            },
+            "returns": "the mean accuracy on the given test data and labels.\n\n        In multi-label classification, this is the subset accuracy\n        which is a harsh metric since you require for each sample that\n        each label set be correctly predicted.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True labels for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            Mean accuracy of ``self.predict(X)`` w.r.t. `y`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.gaussian_process._gpc.GaussianProcessClassifier, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.gaussian_process._gpc.GaussianProcessClassifier",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "GaussianProcessRegressor",
+      "documentation": {
+        "description": "Gaussian process regression (GPR).\n\n    The implementation is based on Algorithm 2.1 of [RW2006]_.\n\n    In addition to standard scikit-learn estimator API,\n    :class:`GaussianProcessRegressor`:\n\n    * allows prediction without prior fitting (based on the GP prior)\n    * provides an additional method `sample_y(X)`, which evaluates samples\n      drawn from the GPR (prior or posterior) at given inputs\n    * exposes a method `log_marginal_likelihood(theta)`, which can be used\n      externally for other ways of selecting hyperparameters, e.g., via\n      Markov chain Monte Carlo.\n\n    To learn the difference between a point-estimate approach vs. a more\n    Bayesian modelling approach, refer to the example entitled\n    :ref:`sphx_glr_auto_examples_gaussian_process_plot_compare_gpr_krr.py`.\n\n    Read more in the :ref:`User Guide <gaussian_process>`.\n\n    .. versionadded:: 0.18\n\n    Parameters\n    ----------\n    kernel : kernel instance, default=None\n        The kernel specifying the covariance function of the GP. If None is\n        passed, the kernel ``ConstantKernel(1.0, constant_value_bounds=\"fixed\")\n        * RBF(1.0, length_scale_bounds=\"fixed\")`` is used as default. Note that\n        the kernel hyperparameters are optimized during fitting unless the\n        bounds are marked as \"fixed\".\n\n    alpha : float or ndarray of shape (n_samples,), default=1e-10\n        Value added to the diagonal of the kernel matrix during fitting.\n        This can prevent a potential numerical issue during fitting, by\n        ensuring that the calculated values form a positive definite matrix.\n        It can also be interpreted as the variance of additional Gaussian\n        measurement noise on the training observations. Note that this is\n        different from using a `WhiteKernel`. If an array is passed, it must\n        have the same number of entries as the data used for fitting and is\n        used as datapoint-dependent noise level. Allowing to specify the\n        noise level directly as a parameter is mainly for convenience and\n        for consistency with :class:`~sklearn.linear_model.Ridge`.\n\n    optimizer : \"fmin_l_bfgs_b\", callable or None, default=\"fmin_l_bfgs_b\"\n        Can either be one of the internally supported optimizers for optimizing\n        the kernel's parameters, specified by a string, or an externally\n        defined optimizer passed as a callable. If a callable is passed, it\n        must have the signature::\n\n            def optimizer(obj_func, initial_theta, bounds):\n                # * 'obj_func': the objective function to be minimized, which\n                #   takes the hyperparameters theta as a parameter and an\n                #   optional flag eval_gradient, which determines if the\n                #   gradient is returned additionally to the function value\n                # * 'initial_theta': the initial value for theta, which can be\n                #   used by local optimizers\n                # * 'bounds': the bounds on the values of theta\n                ....\n                # Returned are the best found hyperparameters theta and\n                # the corresponding value of the target function.\n                return theta_opt, func_min\n\n        Per default, the L-BFGS-B algorithm from `scipy.optimize.minimize`\n        is used. If None is passed, the kernel's parameters are kept fixed.\n        Available internal optimizers are: `{'fmin_l_bfgs_b'}`.\n\n    n_restarts_optimizer : int, default=0\n        The number of restarts of the optimizer for finding the kernel's\n        parameters which maximize the log-marginal likelihood. The first run\n        of the optimizer is performed from the kernel's initial parameters,\n        the remaining ones (if any) from thetas sampled log-uniform randomly\n        from the space of allowed theta-values. If greater than 0, all bounds\n        must be finite. Note that `n_restarts_optimizer == 0` implies that one\n        run is performed.\n\n    normalize_y : bool, default=False\n        Whether or not to normalize the target values `y` by removing the mean\n        and scaling to unit-variance. This is recommended for cases where\n        zero-mean, unit-variance priors are used. Note that, in this\n        implementation, the normalisation is reversed before the GP predictions\n        are reported.\n\n        .. versionchanged:: 0.23\n\n    copy_X_train : bool, default=True\n        If True, a persistent copy of the training data is stored in the\n        object. Otherwise, just a reference to the training data is stored,\n        which might cause predictions to change if the data is modified\n        externally.\n\n    n_targets : int, default=None\n        The number of dimensions of the target values. Used to decide the number\n        of outputs when sampling from the prior distributions (i.e. calling\n        :meth:`sample_y` before :meth:`fit`). This parameter is ignored once\n        :meth:`fit` has been called.\n\n        .. versionadded:: 1.3\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    Attributes\n    ----------\n    X_train_ : array-like of shape (n_samples, n_features) or list of object\n        Feature vectors or other representations of training data (also\n        required for prediction).\n\n    y_train_ : array-like of shape (n_samples,) or (n_samples, n_targets)\n        Target values in training data (also required for prediction).\n\n    kernel_ : kernel instance\n        The kernel used for prediction. The structure of the kernel is the\n        same as the one passed as parameter but with optimized hyperparameters.\n\n    L_ : array-like of shape (n_samples, n_samples)\n        Lower-triangular Cholesky decomposition of the kernel in ``X_train_``.\n\n    alpha_ : array-like of shape (n_samples,)\n        Dual coefficients of training data points in kernel space.\n\n    log_marginal_likelihood_value_ : float\n        The log-marginal-likelihood of ``self.kernel_.theta``.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianProcessClassifier : Gaussian process classification (GPC)\n        based on Laplace approximation.\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_",
+        "parameters": {
+          "kernel": {
+            "type": "kernel instance, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "number of restarts of the optimizer for finding the kernel's",
+            "description": ""
+          },
+          "the": {
+            "type": "kernel's parameters, specified by a string, or an externally",
+            "description": ""
+          },
+          "bounds": {
+            "type": "are marked as \"fixed\".",
+            "description": ""
+          },
+          "alpha": {
+            "type": "float or ndarray of shape (n_samples,), default=1e",
+            "description": "10"
+          },
+          "Value": {
+            "type": "added to the diagonal of the kernel matrix during fitting.",
+            "description": ""
+          },
+          "This": {
+            "type": "can prevent a potential numerical issue during fitting, by",
+            "description": ""
+          },
+          "ensuring": {
+            "type": "that the calculated values form a positive definite matrix.",
+            "description": ""
+          },
+          "It": {
+            "type": "can also be interpreted as the variance of additional Gaussian",
+            "description": ""
+          },
+          "measurement": {
+            "type": "noise on the training observations. Note that this is",
+            "description": ""
+          },
+          "different": {
+            "type": "from using a `WhiteKernel`. If an array is passed, it must",
+            "description": ""
+          },
+          "have": {
+            "type": "the same number of entries as the data used for fitting and is",
+            "description": ""
+          },
+          "used": {
+            "type": "as datapoint-dependent noise level. Allowing to specify the",
+            "description": ""
+          },
+          "noise": {
+            "type": "level directly as a parameter is mainly for convenience and",
+            "description": ""
+          },
+          "for": {
+            "type": "consistency with :class:`~sklearn.linear_model.Ridge`.",
+            "description": ""
+          },
+          "optimizer": {
+            "type": "\"fmin_l_bfgs_b\", callable or None, default=\"fmin_l_bfgs_b\"",
+            "description": ""
+          },
+          "Can": {
+            "type": "either be one of the internally supported optimizers for optimizing",
+            "description": ""
+          },
+          "defined": {
+            "type": "optimizer passed as a callable. If a callable is passed, it",
+            "description": ""
+          },
+          "must": {
+            "type": "have the signature::",
+            "description": ""
+          },
+          "def": {
+            "type": "optimizer(obj_func, initial_theta, bounds):",
+            "description": "# * 'obj_func': the objective function to be minimized, which\n#   takes the hyperparameters theta as a parameter and an\n#   optional flag eval_gradient, which determines if the\n#   gradient is returned additionally to the function value\n# * 'initial_theta': the initial value for theta, which can be\n#   used by local optimizers\n# * 'bounds': the bounds on the values of theta\n....\n# Returned are the best found hyperparameters theta and\n# the corresponding value of the target function."
+          },
+          "return": {
+            "type": "theta_opt, func_min",
+            "description": ""
+          },
+          "Per": {
+            "type": "default, the L-BFGS-B algorithm from `scipy.optimize.minimize`",
+            "description": ""
+          },
+          "is": {
+            "type": "used. If None is passed, the kernel's parameters are kept fixed.",
+            "description": ""
+          },
+          "Available": {
+            "type": "internal optimizers are: `{'fmin_l_bfgs_b'}`.",
+            "description": ""
+          },
+          "n_restarts_optimizer": {
+            "type": "int, default=0",
+            "description": ""
+          }
+        },
+        "returns": "theta_opt, func_min\n\n        Per default, the L-BFGS-B algorithm from `scipy.optimize.minimize`\n        is used. If None is passed, the kernel's parameters are kept fixed.\n        Available internal optimizers are: `{'fmin_l_bfgs_b'}`.\n\n    n_restarts_optimizer : int, default=0\n        The number of restarts of the optimizer for finding the kernel's\n        parameters which maximize the log-marginal likelihood. The first run\n        of the optimizer is performed from the kernel's initial parameters,\n        the remaining ones (if any) from thetas sampled log-uniform randomly\n        from the space of allowed theta-values. If greater than 0, all bounds\n        must be finite. Note that `n_restarts_optimizer == 0` implies that one\n        run is performed.\n\n    normalize_y : bool, default=False\n        Whether or not to normalize the target values `y` by removing the mean\n        and scaling to unit-variance. This is recommended for cases where\n        zero-mean, unit-variance priors are used. Note that, in this\n        implementation, the normalisation is reversed before the GP predictions\n        are reported.\n\n        .. versionchanged:: 0.23\n\n    copy_X_train : bool, default=True\n        If True, a persistent copy of the training data is stored in the\n        object. Otherwise, just a reference to the training data is stored,\n        which might cause predictions to change if the data is modified\n        externally.\n\n    n_targets : int, default=None\n        The number of dimensions of the target values. Used to decide the number\n        of outputs when sampling from the prior distributions (i.e. calling\n        :meth:`sample_y` before :meth:`fit`). This parameter is ignored once\n        :meth:`fit` has been called.\n\n        .. versionadded:: 1.3\n\n    random_state : int, RandomState instance or None, default=None\n        Determines random number generation used to initialize the centers.\n        Pass an int for reproducible results across multiple function calls.\n        See :term:`Glossary <random_state>`.\n\n    Attributes\n    ----------\n    X_train_ : array-like of shape (n_samples, n_features) or list of object\n        Feature vectors or other representations of training data (also\n        required for prediction).\n\n    y_train_ : array-like of shape (n_samples,) or (n_samples, n_targets)\n        Target values in training data (also required for prediction).\n\n    kernel_ : kernel instance\n        The kernel used for prediction. The structure of the kernel is the\n        same as the one passed as parameter but with optimized hyperparameters.\n\n    L_ : array-like of shape (n_samples, n_samples)\n        Lower-triangular Cholesky decomposition of the kernel in ``X_train_``.\n\n    alpha_ : array-like of shape (n_samples,)\n        Dual coefficients of training data points in kernel space.\n\n    log_marginal_likelihood_value_ : float\n        The log-marginal-likelihood of ``self.kernel_.theta``.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    GaussianProcessClassifier : Gaussian process classification (GPC)\n        based on Laplace approximation.\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_\n\n    Examples\n    --------\n    >>> from sklearn.datasets import make_friedman2\n    >>> from sklearn.gaussian_process import GaussianProcessRegressor\n    >>> from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel\n    >>> X, y = make_friedman2(n_samples=500, noise=0, random_state=0)\n    >>> kernel = DotProduct() + WhiteKernel()\n    >>> gpr = GaussianProcessRegressor(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpr.score(X, y)\n    0.3680...\n    >>> gpr.predict(X[:2,:], return_std=True)\n    (array([653.0..., 592.1...]), array([316.6..., 316.6...]))",
+        "raises": "",
+        "see_also": "--------\n    GaussianProcessClassifier : Gaussian process classification (GPC)\n        based on Laplace approximation.\n\n    References\n    ----------\n    .. [RW2006] `Carl E. Rasmussen and Christopher K.I. Williams,\n       \"Gaussian Processes for Machine Learning\",\n       MIT Press 2006 <https://www.gaussianprocess.org/gpml/chapters/RW.pdf>`_\n\n    Examples\n    --------\n    >>> from sklearn.datasets import make_friedman2\n    >>> from sklearn.gaussian_process import GaussianProcessRegressor\n    >>> from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel\n    >>> X, y = make_friedman2(n_samples=500, noise=0, random_state=0)\n    >>> kernel = DotProduct() + WhiteKernel()\n    >>> gpr = GaussianProcessRegressor(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpr.score(X, y)\n    0.3680...\n    >>> gpr.predict(X[:2,:], return_std=True)\n    (array([653.0..., 592.1...]), array([316.6..., 316.6...]))",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.datasets import make_friedman2\n    >>> from sklearn.gaussian_process import GaussianProcessRegressor\n    >>> from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel\n    >>> X, y = make_friedman2(n_samples=500, noise=0, random_state=0)\n    >>> kernel = DotProduct() + WhiteKernel()\n    >>> gpr = GaussianProcessRegressor(kernel=kernel,\n    ...         random_state=0).fit(X, y)\n    >>> gpr.score(X, y)\n    0.3680...\n    >>> gpr.predict(X[:2,:], return_std=True)\n    (array([653.0..., 592.1...]), array([316.6..., 316.6...]))"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y)",
+          "documentation": {
+            "description": "Fit Gaussian process regression model.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or list of object\n            Feature vectors or other representations of training data.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_targets)\n            Target values.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or list of object"
+              },
+              "Feature": {
+                "type": "vectors or other representations of training data.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_targets)"
+              },
+              "Target": {
+                "type": "values.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "GaussianProcessRegressor": {
+                "type": "class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            GaussianProcessRegressor class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "log_marginal_likelihood",
+          "signature": "log_marginal_likelihood(self, theta=None, eval_gradient=False, clone_kernel=True)",
+          "documentation": {
+            "description": "Return log-marginal likelihood of theta for training data.\n\n        Parameters\n        ----------\n        theta : array-like of shape (n_kernel_params,) default=None\n            Kernel hyperparameters for which the log-marginal likelihood is\n            evaluated. If None, the precomputed log_marginal_likelihood\n            of ``self.kernel_.theta`` is returned.\n\n        eval_gradient : bool, default=False\n            If True, the gradient of the log-marginal likelihood with respect\n            to the kernel hyperparameters at position theta is returned\n            additionally. If True, theta must not be None.\n\n        clone_kernel : bool, default=True\n            If True, the kernel attribute is copied. If False, the kernel\n            attribute is modified, but may result in a performance improvement.",
+            "parameters": {
+              "theta": {
+                "type": "array",
+                "description": "like of shape (n_kernel_params,) default=None"
+              },
+              "Kernel": {
+                "type": "hyperparameters for which the log-marginal likelihood is",
+                "description": "evaluated. If None, the precomputed log_marginal_likelihood"
+              },
+              "of": {
+                "type": "``self.kernel_.theta`` is returned.",
+                "description": ""
+              },
+              "eval_gradient": {
+                "type": "bool, default=False",
+                "description": ""
+              },
+              "If": {
+                "type": "True, the kernel attribute is copied. If False, the kernel",
+                "description": ""
+              },
+              "to": {
+                "type": "the kernel hyperparameters at position theta is returned",
+                "description": "additionally. If True, theta must not be None."
+              },
+              "clone_kernel": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "attribute": {
+                "type": "is modified, but may result in a performance improvement.",
+                "description": "Returns\n-------"
+              },
+              "log_likelihood": {
+                "type": "float",
+                "description": "Log-marginal likelihood of theta for training data."
+              },
+              "log_likelihood_gradient": {
+                "type": "ndarray of shape (n_kernel_params,), optional",
+                "description": ""
+              },
+              "Gradient": {
+                "type": "of the log-marginal likelihood with respect to the kernel",
+                "description": ""
+              },
+              "hyperparameters": {
+                "type": "at position theta.",
+                "description": ""
+              },
+              "Only": {
+                "type": "returned when eval_gradient is True.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        log_likelihood : float\n            Log-marginal likelihood of theta for training data.\n\n        log_likelihood_gradient : ndarray of shape (n_kernel_params,), optional\n            Gradient of the log-marginal likelihood with respect to the kernel\n            hyperparameters at position theta.\n            Only returned when eval_gradient is True.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X, return_std=False, return_cov=False)",
+          "documentation": {
+            "description": "Predict using the Gaussian process regression model.\n\n        We can also predict based on an unfitted model by using the GP prior.\n        In addition to the mean of the predictive distribution, optionally also",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features) or list of object"
+              },
+              "Query": {
+                "type": "points where the GP is evaluated.",
+                "description": ""
+              },
+              "return_std": {
+                "type": "bool, default=False",
+                "description": ""
+              },
+              "If": {
+                "type": "True, the covariance of the joint predictive distribution at",
+                "description": ""
+              },
+              "the": {
+                "type": "query points is returned along with the mean.",
+                "description": "Returns\n-------"
+              },
+              "return_cov": {
+                "type": "bool, default=False",
+                "description": ""
+              },
+              "y_mean": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_targets)",
+                "description": ""
+              },
+              "Mean": {
+                "type": "of predictive distribution at query points.",
+                "description": ""
+              },
+              "y_std": {
+                "type": "ndarray of shape (n_samples,) or (n_samples, n_targets), optional",
+                "description": ""
+              },
+              "Standard": {
+                "type": "deviation of predictive distribution at query points.",
+                "description": ""
+              },
+              "Only": {
+                "type": "returned when `return_cov` is True.",
+                "description": ""
+              },
+              "y_cov": {
+                "type": "ndarray of shape (n_samples, n_samples) or                 (n_samples, n_samples, n_targets), optional",
+                "description": ""
+              },
+              "Covariance": {
+                "type": "of joint predictive distribution at query points.",
+                "description": ""
+              }
+            },
+            "returns": "its standard deviation (`return_std=True`) or covariance\n        (`return_cov=True`). Note that at most one of the two can be requested.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features) or list of object\n            Query points where the GP is evaluated.\n\n        return_std : bool, default=False\n            If True, the standard-deviation of the predictive distribution at\n            the query points is returned along with the mean.\n\n        return_cov : bool, default=False\n            If True, the covariance of the joint predictive distribution at\n            the query points is returned along with the mean.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sample_y",
+          "signature": "sample_y(self, X, n_samples=1, random_state=0)",
+          "documentation": {
+            "description": "Draw samples from Gaussian process and evaluate at X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples_X, n_features) or list of object\n            Query points where the GP is evaluated.\n\n        n_samples : int, default=1\n            Number of samples drawn from the Gaussian process per query point.\n\n        random_state : int, RandomState instance or None, default=0\n            Determines random number generation to randomly draw samples.\n            Pass an int for reproducible results across multiple function\n            calls.\n            See :term:`Glossary <random_state>`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples_X, n_features) or list of object"
+              },
+              "Query": {
+                "type": "points where the GP is evaluated.",
+                "description": ""
+              },
+              "n_samples": {
+                "type": "int, default=1",
+                "description": ""
+              },
+              "Number": {
+                "type": "of samples drawn from the Gaussian process per query point.",
+                "description": ""
+              },
+              "random_state": {
+                "type": "int, RandomState instance or None, default=0",
+                "description": ""
+              },
+              "Determines": {
+                "type": "random number generation to randomly draw samples.",
+                "description": ""
+              },
+              "Pass": {
+                "type": "an int for reproducible results across multiple function",
+                "description": "calls."
+              },
+              "See": {
+                "type": "term:`Glossary <random_state>`.",
+                "description": "Returns\n-------"
+              },
+              "y_samples": {
+                "type": "ndarray of shape (n_samples_X, n_samples), or             (n_samples_X, n_targets, n_samples)",
+                "description": ""
+              },
+              "Values": {
+                "type": "of n_samples samples drawn from Gaussian process and",
+                "description": ""
+              },
+              "evaluated": {
+                "type": "at query points.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y_samples : ndarray of shape (n_samples_X, n_samples), or             (n_samples_X, n_targets, n_samples)\n            Values of n_samples samples drawn from Gaussian process and\n            evaluated at query points.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y, sample_weight=None)",
+          "documentation": {
+            "description": "Return the coefficient of determination of the prediction.\n\n        The coefficient of determination :math:`R^2` is defined as\n        :math:`(1 - \\frac{u}{v})`, where :math:`u` is the residual\n        sum of squares ``((y_true - y_pred)** 2).sum()`` and :math:`v`\n        is the total sum of squares ``((y_true - y_true.mean()) ** 2).sum()``.\n        The best possible score is 1.0 and it can be negative (because the\n        model can be arbitrarily worse). A constant model that always predicts\n        the expected value of `y`, disregarding the input features, would get\n        a :math:`R^2` score of 0.0.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Test samples. For some estimators this may be a precomputed\n            kernel matrix or a list of generic objects instead with shape\n            ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``\n            is the number of samples used in the fitting for the estimator.\n\n        y : array-like of shape (n_samples,) or (n_samples, n_outputs)\n            True values for `X`.\n\n        sample_weight : array-like of shape (n_samples,), default=None\n            Sample weights.\n\n        Returns\n        -------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Test": {
+                "type": "samples. For some estimators this may be a precomputed",
+                "description": ""
+              },
+              "kernel": {
+                "type": "matrix or a list of generic objects instead with shape",
+                "description": "``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``"
+              },
+              "is": {
+                "type": "the number of samples used in the fitting for the estimator.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs)"
+              },
+              "True": {
+                "type": "values for `X`.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like of shape (n_samples,), default=None"
+              },
+              "Sample": {
+                "type": "weights.",
+                "description": "Returns\n-------"
+              },
+              "score": {
+                "type": "float",
+                "description": ":math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\nNotes\n-----"
+              },
+              "The": {
+                "type": "math:`R^2` score used when calling ``score`` on a regressor uses",
+                "description": "``multioutput='uniform_average'`` from version 0.23 to keep consistent"
+              },
+              "with": {
+                "type": "default value of :func:`~sklearn.metrics.r2_score`.",
+                "description": ""
+              },
+              "This": {
+                "type": "influences the ``score`` method of all the multioutput",
+                "description": ""
+              },
+              "regressors": {
+                "type": "(except for",
+                "description": ":class:`~sklearn.multioutput.MultiOutputRegressor`)."
+              }
+            },
+            "returns": "-------\n        score : float\n            :math:`R^2` of ``self.predict(X)`` w.r.t. `y`.\n\n        Notes\n        -----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "raises": "",
+            "see_also": "",
+            "notes": "-----\n        The :math:`R^2` score used when calling ``score`` on a regressor uses\n        ``multioutput='uniform_average'`` from version 0.23 to keep consistent\n        with default value of :func:`~sklearn.metrics.r2_score`.\n        This influences the ``score`` method of all the multioutput\n        regressors (except for\n        :class:`~sklearn.multioutput.MultiOutputRegressor`).",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_predict_request",
+          "signature": "set_predict_request(self: sklearn.gaussian_process._gpr.GaussianProcessRegressor, *, return_cov: Union[bool, NoneType, str] = '$UNCHANGED$', return_std: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.gaussian_process._gpr.GaussianProcessRegressor",
+          "documentation": {
+            "description": "Request metadata passed to the ``predict`` method.",
+            "parameters": {
+              "return_cov": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``return_std`` parameter in ``predict``.",
+                "description": "Returns\n-------"
+              },
+              "return_std": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``predict`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``predict``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        return_cov : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``return_cov`` parameter in ``predict``.\n\n        return_std : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``return_std`` parameter in ``predict``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.gaussian_process._gpr.GaussianProcessRegressor, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.gaussian_process._gpr.GaussianProcessRegressor",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}
