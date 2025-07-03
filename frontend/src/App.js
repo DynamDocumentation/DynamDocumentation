@@ -9,6 +9,7 @@ import Layout from './components/layout/Layout';
 // Page Components
 import Welcome from "./pages/Welcome";
 import Admin from "./pages/Admin";
+import Register from "./pages/Register";
 
 const theme = createTheme({
   palette: {
@@ -35,6 +36,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Welcome />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
       </Router>

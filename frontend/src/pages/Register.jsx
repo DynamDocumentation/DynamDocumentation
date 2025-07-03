@@ -7,17 +7,18 @@ import {
   TextField,
   Button,
   Avatar,
+  Stack,
   Link as MuiLink
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-export default function Admin() {
+export default function Register() {
   // This is just a structure with no functionality as requested
   const handleSubmit = (event) => {
     event.preventDefault();
     // No functionality implemented as per requirements
-    console.log("Botão de login clicado - sem funcionalidade implementada");
+    console.log("Botão de registro clicado - sem funcionalidade implementada");
   };
 
   return (
@@ -35,13 +36,35 @@ export default function Admin() {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          <LockOutlinedIcon />
+          <PersonAddIcon />
         </Avatar>
         <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-          Login de Administrador
+          Criar Conta
         </Typography>
         
         <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
+          <Stack direction="row" spacing={2} sx={{ width: '100%', mb: 2 }}>
+            <TextField
+              name="firstName"
+              required
+              fullWidth
+              id="firstName"
+              label="Nome"
+              autoFocus
+              variant="outlined"
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              required
+              fullWidth
+              id="lastName"
+              label="Sobrenome"
+              name="lastName"
+              variant="outlined"
+              sx={{ flex: 1 }}
+            />
+          </Stack>
+          
           <TextField
             required
             fullWidth
@@ -49,10 +72,10 @@ export default function Admin() {
             label="Endereço de Email"
             name="email"
             autoComplete="email"
-            autoFocus
             variant="outlined"
             sx={{ mb: 2, width: '100%' }}
           />
+          
           <TextField
             required
             fullWidth
@@ -60,10 +83,23 @@ export default function Admin() {
             label="Senha"
             type="password"
             id="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
             variant="outlined"
             sx={{ mb: 2, width: '100%' }}
           />
+          
+          <TextField
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirmar Senha"
+            type="password"
+            id="confirmPassword"
+            autoComplete="new-password"
+            variant="outlined"
+            sx={{ mb: 2, width: '100%' }}
+          />
+          
           <Button
             type="submit"
             fullWidth
@@ -71,11 +107,12 @@ export default function Admin() {
             color="primary"
             sx={{ mt: 2, mb: 2, py: 1.5 }}
           >
-            Entrar
+            Registrar
           </Button>
+          
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-            <MuiLink component={RouterLink} to="/register" variant="body2">
-              Não tem uma conta? Cadastre-se
+            <MuiLink component={RouterLink} to="/admin" variant="body2">
+              Já possui uma conta? Entre aqui
             </MuiLink>
           </Box>
         </Box>
