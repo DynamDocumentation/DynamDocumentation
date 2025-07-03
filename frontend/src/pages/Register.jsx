@@ -12,13 +12,55 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import axios from 'axios';
 
 export default function Register() {
-  // This is just a structure with no functionality as requested
-  const handleSubmit = (event) => {
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // No functionality implemented as per requirements
-    console.log("Botão de registro clicado - sem funcionalidade implementada");
+    
+    // Basic validation
+    if (formData.password !== formData.confirmPassword) {
+      alert("As senhas não correspondem!");
+      return;
+    }
+    
+    try {
+      // Prepare the data according to the backend User model
+      const userData = {
+        username: `${formData.firstName} ${formData.lastName}`, // Combining first and last name for username
+        email: formData.email,
+        password: formData.password
+      };
+      
+      // Make the API call to the register endpoint using axios
+      // Note: Using the proxy from package.json, we don't need to include the full URL
+      await axios.post('/api/users/register', userData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log('Registration request sent');
+      // No handling of response as requested
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
   };
 
   return (
@@ -52,6 +94,8 @@ export default function Register() {
               label="Nome"
               autoFocus
               variant="outlined"
+              value={formData.firstName}
+              onChange={handleChange}
               sx={{ flex: 1 }}
             />
             <TextField
@@ -61,6 +105,8 @@ export default function Register() {
               label="Sobrenome"
               name="lastName"
               variant="outlined"
+              value={formData.lastName}
+              onChange={handleChange}
               sx={{ flex: 1 }}
             />
           </Stack>
@@ -73,6 +119,8 @@ export default function Register() {
             name="email"
             autoComplete="email"
             variant="outlined"
+            value={formData.email}
+            onChange={handleChange}
             sx={{ mb: 2, width: '100%' }}
           />
           
@@ -85,6 +133,8 @@ export default function Register() {
             id="password"
             autoComplete="new-password"
             variant="outlined"
+            value={formData.password}
+            onChange={handleChange}
             sx={{ mb: 2, width: '100%' }}
           />
           
@@ -97,6 +147,8 @@ export default function Register() {
             id="confirmPassword"
             autoComplete="new-password"
             variant="outlined"
+            value={formData.confirmPassword}
+            onChange={handleChange}
             sx={{ mb: 2, width: '100%' }}
           />
           

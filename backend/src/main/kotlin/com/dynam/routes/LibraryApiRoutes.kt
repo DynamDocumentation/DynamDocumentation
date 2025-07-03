@@ -5,9 +5,9 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import com.dynam.models.*
+import com.dynam.dtos.*
 import com.dynam.enums.*
-import com.dynam.models.dto.*
+import com.dynam.dtos.*
 import com.dynam.repositories.NamespaceRepository
 import com.dynam.repositories.EntityRepository
 

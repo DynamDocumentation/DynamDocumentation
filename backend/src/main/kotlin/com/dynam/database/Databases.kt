@@ -1,6 +1,6 @@
 package com.dynam.database;
 
-import com.dynam.models.*
+import com.dynam.dtos.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -13,13 +13,14 @@ import com.dynam.database.tables.Namespaces
 import com.dynam.database.tables.Variables
 import com.dynam.database.tables.Entities
 import com.dynam.database.tables.Constants
+import com.dynam.database.tables.Users
 
 fun Application.configureDatabases() {
     val driverClass = environment.config.property("ktor.storage.driverClassName").getString()
     val jdbcUrl = environment.config.property("ktor.storage.jdbcURL").getString()
     val db = Database.connect(provideDataSource(jdbcUrl, driverClass))
     transaction(db) {
-        SchemaUtils.create(Namespaces, Variables, Entities, Constants)
+        SchemaUtils.create(Namespaces, Variables, Entities, Constants, Users)
     }
 }
 

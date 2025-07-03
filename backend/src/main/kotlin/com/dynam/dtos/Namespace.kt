@@ -1,4 +1,4 @@
-package com.dynam.models
+package com.dynam.dtos
 
 import kotlinx.serialization.Serializable
 

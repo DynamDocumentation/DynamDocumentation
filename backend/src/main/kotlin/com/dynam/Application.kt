@@ -14,6 +14,7 @@ import com.dynam.routes.LibraryRoutes
 import com.dynam.routes.LibraryApiRoutes
 import com.dynam.routes.EntityRoutes
 import com.dynam.routes.StaticRoutes
+import com.dynam.routes.UserRoutes
 import com.dynam.database.*
 
 fun main(args: Array<String>): Unit =
@@ -66,5 +67,6 @@ fun Application.module() {
         LibraryRoutes().registerRoutes(this)
         LibraryApiRoutes().registerRoutes(this)
         EntityRoutes().registerRoutes(this)
+        UserRoutes().registerRoutes(this)
     }
 }

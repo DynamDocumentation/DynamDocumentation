@@ -5,8 +5,8 @@ import com.dynam.database.tables.Entities
 import com.dynam.database.tables.Variables
 import com.dynam.enums.EntityType
 import com.dynam.enums.VariableType
-import com.dynam.models.Entity
-import com.dynam.models.Variable
+import com.dynam.dtos.Entity
+import com.dynam.dtos.Variable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

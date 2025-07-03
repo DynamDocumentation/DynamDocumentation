@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import com.dynam.models.*
+import com.dynam.dtos.*
 import com.dynam.enums.*
 import com.dynam.repositories.EntityRepository
 import com.dynam.repositories.VariableRepository

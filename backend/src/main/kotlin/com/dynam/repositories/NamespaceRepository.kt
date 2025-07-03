@@ -2,7 +2,7 @@ package com.dynam.repositories
 
 import com.dynam.database.dbQuery
 import com.dynam.database.tables.Namespaces
-import com.dynam.models.Namespace
+import com.dynam.dtos.Namespace
 import org.jetbrains.exposed.sql.*
 
 /**

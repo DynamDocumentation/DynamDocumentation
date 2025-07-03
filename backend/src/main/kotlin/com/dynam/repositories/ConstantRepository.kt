@@ -2,7 +2,7 @@ package com.dynam.repositories
 
 import com.dynam.database.dbQuery
 import com.dynam.database.tables.Constants
-import com.dynam.models.Constant
+import com.dynam.dtos.Constant
 import org.jetbrains.exposed.sql.*
 
 /**
