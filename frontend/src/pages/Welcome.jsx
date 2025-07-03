@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
-import Header from "../components/documentation/Header";
 import DocumentationPanel from "../components/documentation/DocumentationPanel";
 
 export default function Welcome() {
@@ -8,7 +7,7 @@ export default function Welcome() {
     const [panels, setPanels] = useState([
         { id: 1, content: null }
     ]);
-
+    
     let nextId = 2;
 
     // Function to add a new panel next to the current panel
@@ -50,22 +49,17 @@ export default function Welcome() {
     return (
         <Box 
             sx={{ 
-                px: 3, /* Horizontal padding */
-                py: 2, /* Vertical padding */
-                height: '100vh', /* Fixed viewport height */
                 width: '100%',
-                backgroundColor: 'white',
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                overflow: 'hidden' /* Contain scrolling to children */
+                overflow: 'auto' /* Allow scrolling */
             }}
         >
-            <Header />
-            
             <Box 
                 sx={{ 
-                    height: 'calc(100vh - 120px)', /* Fixed height based on viewport minus header */
                     width: '100%', 
+                    height: '100%',
                     overflow: 'auto',
                     display: 'flex',
                     // Use Material UI breakpoints for responsive layout

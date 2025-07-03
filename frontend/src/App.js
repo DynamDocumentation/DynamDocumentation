@@ -2,7 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+
+// Layout Component
+import Layout from './components/layout/Layout';
+
+// Page Components
 import Welcome from "./pages/Welcome";
+import Admin from "./pages/Admin";
 
 const theme = createTheme({
   palette: {
@@ -25,7 +31,11 @@ function App() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path="/" element={<Welcome />} />
+          {/* Layout Route with Nested Routes */}
+          <Route element={<Layout />}>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/admin" element={<Admin />} />
+          </Route>
         </Routes>
       </Router>
     </ThemeProvider>
