@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Box, 
   Typography, 
@@ -8,9 +8,10 @@ import {
   Button,
   Avatar,
   Stack,
-  Link as MuiLink
+  Link as MuiLink,
+  Alert
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import axios from 'axios';
 
@@ -22,6 +23,9 @@ export default function Register() {
     password: '',
     confirmPassword: ''
   });
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +40,6 @@ export default function Register() {
     
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      alert("As senhas não correspondem!");
       return;
     }
     
@@ -57,11 +60,40 @@ export default function Register() {
       });
       
       console.log('Registration request sent');
+      setSuccess(true);
+      setError('');
       // No handling of response as requested
     } catch (error) {
       console.error('Error during registration:', error);
+      if (error.response && error.response.status === 409) {
+        // Check if the error message contains information about what's conflicting
+        const errorMessage = error.response.data?.message || '';
+        if (errorMessage.toLowerCase().includes('username')) {
+          setError('Nome de usuário já existe. Por favor, tente um nome diferente.');
+        } else if (errorMessage.toLowerCase().includes('email')) {
+          setError('Este e-mail já está registrado. Por favor, use outro e-mail.');
+        } else {
+          // Generic conflict message
+          setError('Usuário já existe! Por favor, tente com informações diferentes.');
+        }
+      } else {
+        setError('Ocorreu um erro durante o registro. Por favor, tente novamente.');
+      }
+      setSuccess(false);
     }
   };
+
+  // Redirect to login page on successful registration
+  React.useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        navigate('/admin'); // Redirecting to the login page
+      }, 3000); // Redirect after 3 seconds
+
+      // Cleanup the timer on component unmount
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -79,10 +111,21 @@ export default function Register() {
       >
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <PersonAddIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+        </Avatar>          <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
           Criar Conta
         </Typography>
+        
+        {error && (
+          <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        
+        {success && (
+          <Alert severity="success" sx={{ width: '100%', mb: 2 }}>
+            Registro realizado com sucesso! Redirecionando para a página de login...
+          </Alert>
+        )}
         
         <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
           <Stack direction="row" spacing={2} sx={{ width: '100%', mb: 2 }}>
