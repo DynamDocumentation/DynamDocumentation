@@ -2,6 +2,9 @@ package com.dynam.routes
 
 import com.dynam.dtos.ApiResponse
 import com.dynam.dtos.ApiResponses
+import com.dynam.dtos.AuthToken
+import com.dynam.dtos.LoginRequest
+import com.dynam.dtos.LoginResponse
 import com.dynam.dtos.User
 import com.dynam.repositories.UserRepository
 import io.ktor.http.*
@@ -178,6 +181,139 @@ class UserRoutes {
                     call.respond(
                         HttpStatusCode.NotFound,
                         ApiResponses.error("User not found")
+                    )
+                }
+            }
+            
+            /**
+             * POST /api/users/login
+             * 
+             * Authenticate a user and return their details.
+             * Requires username and password in the request body.
+             * Returns the user object (without password) on successful login.
+             */
+            post("/login") {
+                try {
+                    val loginRequest = call.receive<LoginRequest>()
+                    
+                    // Validate input
+                    if (loginRequest.email.isBlank() || loginRequest.password.isBlank()) {
+                        call.application.log.warn("Login rejected: Missing required fields")
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            ApiResponses.error("Email and password are required")
+                        )
+                        return@post
+                    }
+                    
+                    // Hash the password for comparison
+                    val passwordHash = hashPassword(loginRequest.password)
+                    
+                    // Verify credentials
+                    val user = userRepository.verifyCredentials(loginRequest.email, passwordHash)
+                    
+                    if (user == null) {
+                        call.respond(
+                            HttpStatusCode.Unauthorized,
+                            ApiResponses.error("Invalid username or password")
+                        )
+                        return@post
+                    }
+                    
+                    // Update last login timestamp
+                    user.id?.let { userRepository.updateLastLogin(it) }
+                    
+                    // Generate a simple auth token (userId:timestamp:email)
+                    val timestamp = System.currentTimeMillis()
+                    val authToken = Base64.getEncoder().encodeToString(
+                        "${user.id}:$timestamp:${user.email}".toByteArray()
+                    )
+                    
+                    // Create a response with user and auth token
+                    val responseData = LoginResponse(
+                        user = user,
+                        authToken = authToken
+                    )
+                    
+                    call.respond(
+                        HttpStatusCode.OK,
+                        ApiResponses.success(
+                            data = responseData,
+                            message = "Login successful"
+                        )
+                    )
+                } catch (e: Exception) {
+                    call.application.log.error("Error during user login: ${e.message}")
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ApiResponses.error(e.localizedMessage)
+                    )
+                }
+            }
+            
+            /**
+             * POST /api/users/validate-auth
+             * 
+             * Validates an auth token.
+             * Requires authToken in the request body.
+             */
+            post("/validate-auth") {
+                val request = call.receive<AuthToken>()
+                val authToken = request.token
+                
+                if (authToken.isBlank()) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ApiResponses.error("Auth token is required")
+                    )
+                    return@post
+                }
+                
+                try {
+                    // Decode and validate the token
+                    val tokenData = String(Base64.getDecoder().decode(authToken)).split(":")
+                    if (tokenData.size != 3) {
+                        throw IllegalArgumentException("Invalid token format")
+                    }
+                    
+                    val userId = tokenData[0].toInt()
+                    val timestamp = tokenData[1].toLong()
+                    val email = tokenData[2]
+                    
+                    // Check if token is expired (24 hours validity)
+                    val currentTime = System.currentTimeMillis()
+                    val tokenAge = currentTime - timestamp
+                    val tokenValid = tokenAge < 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+                    
+                    if (!tokenValid) {
+                        call.respond(
+                            HttpStatusCode.Unauthorized,
+                            ApiResponses.error("Auth token expired")
+                        )
+                        return@post
+                    }
+                    
+                    // Verify the user exists
+                    val user = userRepository.getById(userId)
+                    if (user == null || user.email != email) {
+                        call.respond(
+                            HttpStatusCode.Unauthorized,
+                            ApiResponses.error("Invalid auth token")
+                        )
+                        return@post
+                    }
+                    
+                    call.respond(
+                        HttpStatusCode.OK,
+                        ApiResponses.success(
+                            data = user,
+                            message = "Auth token is valid"
+                        )
+                    )
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.Unauthorized,
+                        ApiResponses.error("Invalid auth token format")
                     )
                 }
             }

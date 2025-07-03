@@ -80,7 +80,8 @@ class UserRepository {
             println("Successfully created user with ID: ${id}")
             
             // Query for the user directly within this transaction instead of calling getById
-            val newUser = Users.select { Users.id eq id }
+            val newUser = Users.selectAll()
+                .where { Users.id eq id }
                 .map { fromRow(it) }
                 .singleOrNull()
                 
@@ -108,5 +109,25 @@ class UserRepository {
      */
     suspend fun delete(id: Int): Boolean = dbQuery {
         Users.deleteWhere { Users.id eq id } > 0
+    }
+    
+    /**
+     * Verify user credentials and return the user if valid
+     */
+    suspend fun verifyCredentials(email: String, password: String): User? = dbQuery {
+        val user = Users.selectAll()
+            .where { Users.email eq email }
+            .singleOrNull()
+        
+        if (user != null) {
+            val storedHash = user[Users.passwordHash]
+            return@dbQuery if (storedHash == password) { // This assumes password is already hashed by caller
+                fromRow(user)
+            } else {
+                null
+            }
+        } else {
+            null
+        }
     }
 }
