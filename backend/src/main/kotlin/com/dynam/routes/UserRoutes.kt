@@ -98,12 +98,23 @@ class UserRoutes {
                     }
                     
                     // Check if username exists
-                    val existingUser = userRepository.getByUsername(user.username)
-                    if (existingUser != null) {
+                    val existingUsername = userRepository.getByUsername(user.username)
+                    if (existingUsername != null) {
                         call.application.log.warn("Registration rejected: Username ${user.username} already exists")
                         call.respond(
                             HttpStatusCode.Conflict,
                             ApiResponses.error("Username already exists")
+                        )
+                        return@post
+                    }
+                    
+                    // Check if email exists
+                    val existingEmail = userRepository.getByEmail(user.email)
+                    if (existingEmail != null) {
+                        call.application.log.warn("Registration rejected: Email ${user.email} already exists")
+                        call.respond(
+                            HttpStatusCode.Conflict,
+                            ApiResponses.error("Email already exists")
                         )
                         return@post
                     }

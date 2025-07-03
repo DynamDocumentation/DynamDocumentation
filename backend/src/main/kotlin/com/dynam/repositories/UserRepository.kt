@@ -54,6 +54,16 @@ class UserRepository {
     }
     
     /**
+     * Get a user by their email
+     */
+    suspend fun getByEmail(email: String): User? = dbQuery {
+        Users.selectAll()
+            .where { Users.email eq email }
+            .map { fromRow(it) }
+            .singleOrNull()
+    }
+    
+    /**
      * Create a new user in the database
      */
     suspend fun create(user: User, passwordHash: String): User? = dbQuery {
@@ -67,11 +77,19 @@ class UserRepository {
                 it[lastLogin] = currentTime  // Set lastLogin to creation time for new users
             } get Users.id
             
-            getById(id)
+            println("Successfully created user with ID: ${id}")
+            
+            // Query for the user directly within this transaction instead of calling getById
+            val newUser = Users.select { Users.id eq id }
+                .map { fromRow(it) }
+                .singleOrNull()
+                
+            println("Successfully: ${newUser}")
+            return@dbQuery newUser
         } catch (e: Exception) {
             println("Error creating user: ${e.message}")
             e.printStackTrace()
-            null
+            return@dbQuery null
         }
     }
     
