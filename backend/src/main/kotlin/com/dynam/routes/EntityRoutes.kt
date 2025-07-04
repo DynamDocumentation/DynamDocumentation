@@ -6,6 +6,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import com.dynam.dtos.*
+import com.dynam.dtos.table.Entity
+import com.dynam.dtos.table.Variable
 import com.dynam.enums.*
 import com.dynam.repositories.EntityRepository
 import com.dynam.repositories.VariableRepository

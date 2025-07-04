@@ -1,8 +1,8 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.LibraryRequests
-import com.dynam.dtos.LibraryRequest
+import com.dynam.dtos.table.LibraryRequest
 import org.jetbrains.exposed.sql.*
 
 /**

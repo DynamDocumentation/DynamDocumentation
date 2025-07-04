@@ -5,7 +5,7 @@ import com.dynam.dtos.ApiResponses
 import com.dynam.dtos.AuthToken
 import com.dynam.dtos.LoginRequest
 import com.dynam.dtos.LoginResponse
-import com.dynam.dtos.User
+import com.dynam.dtos.table.User
 import com.dynam.repositories.UserRepository
 import io.ktor.http.*
 import io.ktor.server.application.*

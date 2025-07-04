@@ -1,9 +1,9 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.Variables
 import com.dynam.enums.VariableType
-import com.dynam.dtos.Variable
+import com.dynam.dtos.table.Variable
 import org.jetbrains.exposed.sql.*
 
 /**

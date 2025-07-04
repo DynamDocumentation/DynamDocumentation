@@ -1,4 +1,4 @@
-package com.dynam.dtos
+package com.dynam.dtos.table
 
 import com.dynam.enums.VariableType
 import kotlinx.serialization.Serializable

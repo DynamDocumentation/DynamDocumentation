@@ -1,8 +1,8 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.Namespaces
-import com.dynam.dtos.Namespace
+import com.dynam.dtos.table.Namespace
 import org.jetbrains.exposed.sql.*
 
 /**

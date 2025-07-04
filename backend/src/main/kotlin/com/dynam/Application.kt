@@ -16,25 +16,11 @@ import com.dynam.routes.EntityRoutes
 import com.dynam.routes.StaticRoutes
 import com.dynam.routes.UserRoutes
 import com.dynam.database.*
+import com.dynam.config.configureCORS
+import com.dynam.config.configureDatabases
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
-
-fun Application.configureCORS() {
-    install(CORS) {
-        allowMethod(HttpMethod.Options)
-        allowMethod(HttpMethod.Post)
-        allowMethod(HttpMethod.Get)
-        allowMethod(HttpMethod.Put)
-        allowMethod(HttpMethod.Delete)
-        allowMethod(HttpMethod.Patch)
-        allowHeader(HttpHeaders.Authorization)
-        allowHeader(HttpHeaders.ContentType)
-        allowHeader(HttpHeaders.AccessControlAllowOrigin)
-        allowCredentials = true
-        anyHost()
-    }
-}
 
 fun Application.module() {
     // 0) Logs

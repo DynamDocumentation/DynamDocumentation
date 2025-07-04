@@ -1,12 +1,12 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.Entities
 import com.dynam.database.tables.Variables
 import com.dynam.enums.EntityType
 import com.dynam.enums.VariableType
-import com.dynam.dtos.Entity
-import com.dynam.dtos.Variable
+import com.dynam.dtos.table.Entity
+import com.dynam.dtos.table.Variable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

@@ -1,8 +1,8 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.Users
-import com.dynam.dtos.User
+import com.dynam.dtos.table.User
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.Instant

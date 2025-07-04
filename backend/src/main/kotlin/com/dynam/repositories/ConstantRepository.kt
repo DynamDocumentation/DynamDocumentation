@@ -1,8 +1,8 @@
 package com.dynam.repositories
 
-import com.dynam.database.dbQuery
+import com.dynam.config.dbQuery
 import com.dynam.database.tables.Constants
-import com.dynam.dtos.Constant
+import com.dynam.dtos.table.Constant
 import org.jetbrains.exposed.sql.*
 
 /**

@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import com.dynam.dtos.*
 import com.dynam.enums.*
-import com.dynam.dtos.*
+import com.dynam.dtos.table.Entity
 import com.dynam.repositories.NamespaceRepository
 import com.dynam.repositories.EntityRepository
 
