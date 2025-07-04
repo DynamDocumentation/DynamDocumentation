@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import WelcomePopup from "../WelcomePopup";
+import { isAuthenticated } from "../../utils/auth";
 
 export default function Layout() {
   const [showWelcomePopup, setShowWelcomePopup] = useState(false);
@@ -14,9 +15,15 @@ export default function Layout() {
     localStorage.setItem('hasVisitedBefore', 'true');
   };
 
-  // Function for admin login button click - redirects to admin page
+  // Function for admin login button - checks authentication and redirects accordingly
   const handleAdminLogin = () => {
-    navigate('/admin');
+    if (isAuthenticated()) {
+      // User is authenticated, redirect to library requests page
+      navigate('/library-requests');
+    } else {
+      // User is not authenticated, redirect to login page
+      navigate('/admin');
+    }
   };
 
   return (

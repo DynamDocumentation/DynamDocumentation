@@ -9,17 +9,66 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlinx.serialization.Serializable
 import com.dynam.repositories.LibraryRequestRepository
+import com.dynam.repositories.UserRepository
 import com.dynam.dtos.ApiResponses
+import com.dynam.dtos.AuthToken
+import java.util.Base64
 
 // Data classes for requests
 @Serializable
-data class LibraryInstallRequest(val libraryName: String)
+data class LibraryInstallRequest(val requestId: Int, val authToken: String)
 
 @Serializable
 data class CreateLibraryRequestDto(val name: String)
 
 class LibraryRoutes {
     private val libraryRequestRepository = LibraryRequestRepository()
+    private val userRepository = UserRepository()
+    
+    /**
+     * Validates an authentication token.
+     * Returns a Pair of (isValid, errorMessage)
+     * If isValid is true, the token is valid and errorMessage is null.
+     * If isValid is false, the token is invalid and errorMessage contains the reason.
+     */
+    private suspend fun validateAuthToken(authToken: String): Pair<Boolean, String?> {
+        if (authToken.isBlank()) {
+            return Pair(false, "Auth token is required")
+        }
+        
+        return try {
+            // Decode and validate the token
+            val tokenData = String(Base64.getDecoder().decode(authToken)).split(":")
+            if (tokenData.size != 3) {
+                return Pair(false, "Invalid token format")
+            }
+            
+            val userId = tokenData[0].toInt()
+            val timestamp = tokenData[1].toLong()
+            val email = tokenData[2]
+            
+            // Check if token is expired (24 hours validity)
+            val currentTime = System.currentTimeMillis()
+            val tokenAge = currentTime - timestamp
+            val tokenValid = tokenAge < 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+            
+            if (!tokenValid) {
+                return Pair(false, "Auth token expired")
+            }
+            
+            // Verify the user exists
+            val user = userRepository.getById(userId)
+            if (user == null || user.email != email) {
+                return Pair(false, "Invalid auth token")
+            }
+            
+            // Token is valid
+            Pair(true, null)
+        } catch (e: Exception) {
+            Pair(false, "Invalid auth token format")
+        }
+    }
+    
     fun registerRoutes(route: Route) {
         // Endpoint to get all library requests
         route.get("/api/library/requests") {
@@ -83,11 +132,38 @@ class LibraryRoutes {
         
         route.post("/api/library/install") {
             try {
+                call.application.log.info("Received library install request")
                 val request = call.receive<LibraryInstallRequest>()
-                val libraryName = request.libraryName
+                val requestId = request.requestId
+                
+                // Validate the authentication token
+                call.application.log.info("Validating auth token")
+                val (isValid, errorMessage) = validateAuthToken(request.authToken)
+                if (!isValid) {
+                    call.application.log.warn("Auth token validation failed: $errorMessage")
+                    call.respond(
+                        HttpStatusCode.Forbidden,
+                        ApiResponses.error(errorMessage ?: "Authentication failed")
+                    )
+                    return@post
+                }
+                
+                // Get the library request by ID
+                call.application.log.info("Getting library request with ID: $requestId")
+                val libraryRequest = libraryRequestRepository.getById(requestId)
+                if (libraryRequest == null) {
+                    call.application.log.warn("Library request not found with ID: $requestId")
+                    call.respond(
+                        HttpStatusCode.NotFound,
+                        ApiResponses.error("Library request not found")
+                    )
+                    return@post
+                }
+                
+                val libraryName = libraryRequest.name
+                call.application.log.info("Installing library: $libraryName")
                 
                 // Install the library using pip directly
-                println("Installing library: $libraryName")
                 val installProcess = ProcessBuilder("pip", "install", libraryName)
                     .redirectErrorStream(true)
                     .start()
@@ -102,13 +178,16 @@ class LibraryRoutes {
                 
                 val installExitCode = installProcess.waitFor()
                 if (installExitCode != 0) {
-                    call.respond(HttpStatusCode.InternalServerError, 
-                        mapOf("status" to "error", 
-                             "message" to "Failed to install library: $output"))
+                    call.application.log.error("Failed to install library: $libraryName")
+                    call.respond(
+                        HttpStatusCode.InternalServerError, 
+                        ApiResponses.error("Failed to install library: $output")
+                    )
                     return@post
                 }
                 
                 // Execute the Python script directly
+                call.application.log.info("Generating documentation for $libraryName")
                 val docProcess = ProcessBuilder("python3", "python/pop_general.py", libraryName)
                     .redirectErrorStream(true)
                     .start()
@@ -122,17 +201,30 @@ class LibraryRoutes {
                 
                 val docExitCode = docProcess.waitFor()
                 if (docExitCode == 0) {
-                    call.respond(mapOf("status" to "success", 
-                                      "message" to "Library documented successfully"))
+                    // Update the library request to mark it as accepted/installed
+                    libraryRequestRepository.updateAcceptanceStatus(requestId, true)
+                    
+                    call.application.log.info("Library $libraryName documented successfully")
+                    call.respond(
+                        HttpStatusCode.OK,
+                        ApiResponses.success(
+                            data = libraryRequest,
+                            message = "Library documented successfully"
+                        )
+                    )
                 } else {
-                    call.respond(HttpStatusCode.InternalServerError, 
-                                mapOf("status" to "error", 
-                                     "message" to "Failed to document library: $docOutput"))
+                    call.application.log.error("Failed to document library: $libraryName")
+                    call.respond(
+                        HttpStatusCode.InternalServerError, 
+                        ApiResponses.error("Failed to document library: $docOutput")
+                    )
                 }
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, 
-                            mapOf("status" to "error", 
-                                 "message" to "Server error: ${e.message}"))
+                call.application.log.error("Error during library installation: ${e.message}")
+                call.respond(
+                    HttpStatusCode.InternalServerError, 
+                    ApiResponses.error("Server error: ${e.message}")
+                )
             }
         }
     }
