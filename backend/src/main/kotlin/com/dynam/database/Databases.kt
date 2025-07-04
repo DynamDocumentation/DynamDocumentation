@@ -14,13 +14,14 @@ import com.dynam.database.tables.Variables
 import com.dynam.database.tables.Entities
 import com.dynam.database.tables.Constants
 import com.dynam.database.tables.Users
+import com.dynam.database.tables.LibraryRequests
 
 fun Application.configureDatabases() {
     val driverClass = environment.config.property("ktor.storage.driverClassName").getString()
     val jdbcUrl = environment.config.property("ktor.storage.jdbcURL").getString()
     val db = Database.connect(provideDataSource(jdbcUrl, driverClass))
     transaction(db) {
-        SchemaUtils.create(Namespaces, Variables, Entities, Constants, Users)
+        SchemaUtils.create(Namespaces, Variables, Entities, Constants, Users, LibraryRequests)
     }
 }
 

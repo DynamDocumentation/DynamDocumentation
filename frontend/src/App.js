@@ -10,6 +10,7 @@ import Layout from './components/layout/Layout';
 import Welcome from "./pages/Welcome";
 import Admin from "./pages/Admin";
 import Register from "./pages/Register";
+import LibraryRequest from "./pages/LibraryRequest";
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/" element={<Welcome />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/library-requests" element={<LibraryRequest />} />
           </Route>
         </Routes>
       </Router>
