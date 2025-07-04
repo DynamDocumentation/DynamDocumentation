@@ -34,6 +34,8 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.50.1")
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
     implementation("ch.qos.logback:logback-classic:1.4.5")
     implementation("org.jetbrains.exposed:exposed-core:0.50.1")
     implementation("org.jetbrains.exposed:exposed-dao:0.50.1")

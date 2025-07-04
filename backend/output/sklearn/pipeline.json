@@ -1,0 +1,3106 @@
+{
+  "description": "Utilities to build a composite estimator as a chain of transforms and estimators.",
+  "functions": [
+    {
+      "name": "available_if",
+      "signature": "available_if(check)",
+      "documentation": {
+        "description": "An attribute that is available only if check returns a truthy value.\n\n    Parameters\n    ----------\n    check : callable\n        When passed the object with the decorated method, this should return\n        a truthy value if the attribute is available, and either return False\n        or raise an AttributeError if not available.\n\n    Returns\n    -------\n    callable\n        Callable makes the decorated method available if `check` returns\n        a truthy value, otherwise the decorated method is unavailable.",
+        "parameters": {
+          "check": {
+            "type": "callable",
+            "description": ""
+          },
+          "When": {
+            "type": "passed the object with the decorated method, this should return",
+            "description": ""
+          },
+          "a": {
+            "type": "truthy value, otherwise the decorated method is unavailable.",
+            "description": "Examples\n--------\n>>> from sklearn.utils.metaestimators import available_if\n>>> class HelloIfEven:\n...    def __init__(self, x):\n...        self.x = x\n...\n...    def _x_is_even(self):\n...        return self.x % 2 == 0\n...\n...    @available_if(_x_is_even)\n...    def say_hello(self):\n...        print(\"Hello\")\n...\n>>> obj = HelloIfEven(1)\n>>> hasattr(obj, \"say_hello\")\nFalse\n>>> obj.x = 2\n>>> hasattr(obj, \"say_hello\")\nTrue\n>>> obj.say_hello()\nHello"
+          },
+          "or": {
+            "type": "raise an AttributeError if not available.",
+            "description": "Returns\n-------\ncallable"
+          },
+          "Callable": {
+            "type": "makes the decorated method available if `check` returns",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    callable\n        Callable makes the decorated method available if `check` returns\n        a truthy value, otherwise the decorated method is unavailable.\n\n    Examples\n    --------\n    >>> from sklearn.utils.metaestimators import available_if\n    >>> class HelloIfEven:\n    ...    def __init__(self, x):\n    ...        self.x = x\n    ...\n    ...    def _x_is_even(self):\n    ...        return self.x % 2 == 0\n    ...\n    ...    @available_if(_x_is_even)\n    ...    def say_hello(self):\n    ...        print(\"Hello\")\n    ...\n    >>> obj = HelloIfEven(1)\n    >>> hasattr(obj, \"say_hello\")\n    False\n    >>> obj.x = 2\n    >>> hasattr(obj, \"say_hello\")\n    True\n    >>> obj.say_hello()\n    Hello",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.utils.metaestimators import available_if\n    >>> class HelloIfEven:\n    ...    def __init__(self, x):\n    ...        self.x = x\n    ...\n    ...    def _x_is_even(self):\n    ...        return self.x % 2 == 0\n    ...\n    ...    @available_if(_x_is_even)\n    ...    def say_hello(self):\n    ...        print(\"Hello\")\n    ...\n    >>> obj = HelloIfEven(1)\n    >>> hasattr(obj, \"say_hello\")\n    False\n    >>> obj.x = 2\n    >>> hasattr(obj, \"say_hello\")\n    True\n    >>> obj.say_hello()\n    Hello"
+      }
+    },
+    {
+      "name": "check_is_fitted",
+      "signature": "check_is_fitted(estimator, attributes=None, *, msg=None, all_or_any=<built-in function all>)",
+      "documentation": {
+        "description": "Perform is_fitted validation for estimator.\n\n    Checks if the estimator is fitted by verifying the presence of\n    fitted attributes (ending with a trailing underscore) and otherwise\n    raises a :class:`~sklearn.exceptions.NotFittedError` with the given message.\n\n    If an estimator does not set any attributes with a trailing underscore, it\n    can define a ``__sklearn_is_fitted__`` method returning a boolean to\n    specify if the estimator is fitted or not. See\n    :ref:`sphx_glr_auto_examples_developing_estimators_sklearn_is_fitted.py`\n    for an example on how to use the API.\n\n    If no `attributes` are passed, this fuction will pass if an estimator is stateless.\n    An estimator can indicate it's stateless by setting the `requires_fit` tag. See\n    :ref:`estimator_tags` for more information. Note that the `requires_fit` tag\n    is ignored if `attributes` are passed.\n\n    Parameters\n    ----------\n    estimator : estimator instance\n        Estimator instance for which the check is performed.\n\n    attributes : str, list or tuple of str, default=None\n        Attribute name(s) given as string or a list/tuple of strings\n        Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``\n\n        If `None`, `estimator` is considered fitted if there exist an\n        attribute that ends with a underscore and does not start with double\n        underscore.\n\n    msg : str, default=None\n        The default error message is, \"This %(name)s instance is not fitted\n        yet. Call 'fit' with appropriate arguments before using this\n        estimator.\"\n\n        For custom messages if \"%(name)s\" is present in the message string,\n        it is substituted for the estimator name.\n\n        Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\".\n\n    all_or_any : callable, {all, any}, default=all\n        Specify whether all or any of the given attributes must exist.\n\n    Raises\n    ------\n    TypeError\n        If the estimator is a class or not an estimator instance\n\n    NotFittedError\n        If the attributes are not found.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator instance",
+            "description": ""
+          },
+          "Estimator": {
+            "type": "instance for which the check is performed.",
+            "description": ""
+          },
+          "attributes": {
+            "type": "str, list or tuple of str, default=None",
+            "description": ""
+          },
+          "Attribute": {
+            "type": "name(s) given as string or a list/tuple of strings",
+            "description": "Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``"
+          },
+          "If": {
+            "type": "the attributes are not found.",
+            "description": "Examples\n--------\n>>> from sklearn.linear_model import LogisticRegression\n>>> from sklearn.utils.validation import check_is_fitted\n>>> from sklearn.exceptions import NotFittedError\n>>> lr = LogisticRegression()\n>>> try:\n...     check_is_fitted(lr)\n... except NotFittedError as exc:\n...     print(f\"Model is not fitted yet.\")"
+          },
+          "attribute": {
+            "type": "that ends with a underscore and does not start with double",
+            "description": "underscore."
+          },
+          "msg": {
+            "type": "str, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "default error message is, \"This %(name)s instance is not fitted",
+            "description": "yet. Call 'fit' with appropriate arguments before using this\nestimator.\""
+          },
+          "For": {
+            "type": "custom messages if \"%(name)s\" is present in the message string,",
+            "description": ""
+          },
+          "it": {
+            "type": "is substituted for the estimator name.",
+            "description": "Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\"."
+          },
+          "all_or_any": {
+            "type": "callable, {all, any}, default=all",
+            "description": ""
+          },
+          "Specify": {
+            "type": "whether all or any of the given attributes must exist.",
+            "description": "Raises\n------\nTypeError"
+          },
+          "Model": {
+            "type": "is not fitted yet.",
+            "description": ">>> lr.fit([[1, 2], [1, 3]], [1, 0])"
+          },
+          "LogisticRegression": {
+            "type": "",
+            "description": ">>> check_is_fitted(lr)"
+          }
+        },
+        "returns": "",
+        "raises": "a :class:`~sklearn.exceptions.NotFittedError` with the given message.\n\n    If an estimator does not set any attributes with a trailing underscore, it\n    can define a ``__sklearn_is_fitted__`` method returning a boolean to\n    specify if the estimator is fitted or not. See\n    :ref:`sphx_glr_auto_examples_developing_estimators_sklearn_is_fitted.py`\n    for an example on how to use the API.\n\n    If no `attributes` are passed, this fuction will pass if an estimator is stateless.\n    An estimator can indicate it's stateless by setting the `requires_fit` tag. See\n    :ref:`estimator_tags` for more information. Note that the `requires_fit` tag\n    is ignored if `attributes` are passed.\n\n    Parameters\n    ----------\n    estimator : estimator instance\n        Estimator instance for which the check is performed.\n\n    attributes : str, list or tuple of str, default=None\n        Attribute name(s) given as string or a list/tuple of strings\n        Eg.: ``[\"coef_\", \"estimator_\", ...], \"coef_\"``\n\n        If `None`, `estimator` is considered fitted if there exist an\n        attribute that ends with a underscore and does not start with double\n        underscore.\n\n    msg : str, default=None\n        The default error message is, \"This %(name)s instance is not fitted\n        yet. Call 'fit' with appropriate arguments before using this\n        estimator.\"\n\n        For custom messages if \"%(name)s\" is present in the message string,\n        it is substituted for the estimator name.\n\n        Eg. : \"Estimator, %(name)s, must be fitted before sparsifying\".\n\n    all_or_any : callable, {all, any}, default=all\n        Specify whether all or any of the given attributes must exist.",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> from sklearn.utils.validation import check_is_fitted\n    >>> from sklearn.exceptions import NotFittedError\n    >>> lr = LogisticRegression()\n    >>> try:\n    ...     check_is_fitted(lr)\n    ... except NotFittedError as exc:\n    ...     print(f\"Model is not fitted yet.\")\n    Model is not fitted yet.\n    >>> lr.fit([[1, 2], [1, 3]], [1, 0])\n    LogisticRegression()\n    >>> check_is_fitted(lr)"
+      }
+    },
+    {
+      "name": "check_memory",
+      "signature": "check_memory(memory)",
+      "documentation": {
+        "description": "Check that ``memory`` is joblib.Memory-like.\n\n    joblib.Memory-like means that ``memory`` can be converted into a\n    joblib.Memory instance (typically a str denoting the ``location``)\n    or has the same interface (has a ``cache`` method).\n\n    Parameters\n    ----------\n    memory : None, str or object with the joblib.Memory interface\n        - If string, the location where to create the `joblib.Memory` interface.\n        - If None, no caching is done and the Memory object is completely transparent.\n\n    Returns\n    -------\n    memory : object with the joblib.Memory interface\n        A correct joblib.Memory object.\n\n    Raises\n    ------\n    ValueError\n        If ``memory`` is not joblib.Memory-like.",
+        "parameters": {
+          "memory": {
+            "type": "object with the joblib.Memory interface",
+            "description": ""
+          },
+          "A": {
+            "type": "correct joblib.Memory object.",
+            "description": "Raises\n------\nValueError"
+          },
+          "If": {
+            "type": "``memory`` is not joblib.Memory-like.",
+            "description": "Examples\n--------\n>>> from sklearn.utils.validation import check_memory\n>>> check_memory(\"caching_dir\")"
+          },
+          "Memory": {
+            "type": "location=caching_dir/joblib",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    memory : object with the joblib.Memory interface\n        A correct joblib.Memory object.\n\n    Raises\n    ------\n    ValueError\n        If ``memory`` is not joblib.Memory-like.\n\n    Examples\n    --------\n    >>> from sklearn.utils.validation import check_memory\n    >>> check_memory(\"caching_dir\")\n    Memory(location=caching_dir/joblib)",
+        "raises": "------\n    ValueError\n        If ``memory`` is not joblib.Memory-like.\n\n    Examples\n    --------\n    >>> from sklearn.utils.validation import check_memory\n    >>> check_memory(\"caching_dir\")\n    Memory(location=caching_dir/joblib)",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.utils.validation import check_memory\n    >>> check_memory(\"caching_dir\")\n    Memory(location=caching_dir/joblib)"
+      }
+    },
+    {
+      "name": "clone",
+      "signature": "clone(estimator, *, safe=True)",
+      "documentation": {
+        "description": "Construct a new unfitted estimator with the same parameters.\n\n    Clone does a deep copy of the model in an estimator\n    without actually copying attached data. It returns a new estimator\n    with the same parameters that has not been fitted on any data.\n\n    .. versionchanged:: 1.3\n        Delegates to `estimator.__sklearn_clone__` if the method exists.\n\n    Parameters\n    ----------\n    estimator : {list, tuple, set} of estimator instance or a single             estimator instance\n        The estimator or group of estimators to be cloned.\n    safe : bool, default=True\n        If safe is False, clone will fall back to a deep copy on objects\n        that are not estimators. Ignored if `estimator.__sklearn_clone__`\n        exists.\n\n    Returns\n    -------\n    estimator : object\n        The deep copy of the input, an estimator if input is an estimator.\n\n    Notes\n    -----\n    If the estimator's `random_state` parameter is an integer (or if the\n    estimator doesn't have a `random_state` parameter), an *exact clone* is\n    returned: the clone and the original estimator will give the exact same\n    results. Otherwise, *statistical clone* is returned: the clone might\n    return different results from the original estimator. More details can be\n    found in :ref:`randomness`.",
+        "parameters": {
+          "estimator": {
+            "type": "doesn't have a `random_state` parameter), an *exact clone* is",
+            "description": ""
+          },
+          "The": {
+            "type": "deep copy of the input, an estimator if input is an estimator.",
+            "description": "Notes\n-----"
+          },
+          "safe": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "the estimator's `random_state` parameter is an integer (or if the",
+            "description": ""
+          },
+          "that": {
+            "type": "are not estimators. Ignored if `estimator.__sklearn_clone__`",
+            "description": "exists.\nReturns\n-------"
+          },
+          "returned": {
+            "type": "the clone and the original estimator will give the exact same",
+            "description": "results. Otherwise, *statistical clone* is returned: the clone might"
+          },
+          "return": {
+            "type": "different results from the original estimator. More details can be",
+            "description": ""
+          },
+          "found": {
+            "type": "in :ref:`randomness`.",
+            "description": "Examples\n--------\n>>> from sklearn.base import clone\n>>> from sklearn.linear_model import LogisticRegression\n>>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n>>> y = [0, 0, 1, 1]\n>>> classifier = LogisticRegression().fit(X, y)\n>>> cloned_classifier = clone(classifier)\n>>> hasattr(classifier, \"classes_\")\nTrue\n>>> hasattr(cloned_classifier, \"classes_\")\nFalse\n>>> classifier is cloned_classifier\nFalse"
+          }
+        },
+        "returns": "different results from the original estimator. More details can be\n    found in :ref:`randomness`.\n\n    Examples\n    --------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False",
+        "raises": "",
+        "see_also": "",
+        "notes": "-----\n    If the estimator's `random_state` parameter is an integer (or if the\n    estimator doesn't have a `random_state` parameter), an *exact clone* is\n    returned: the clone and the original estimator will give the exact same\n    results. Otherwise, *statistical clone* is returned: the clone might\n    return different results from the original estimator. More details can be\n    found in :ref:`randomness`.\n\n    Examples\n    --------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False",
+        "examples": "--------\n    >>> from sklearn.base import clone\n    >>> from sklearn.linear_model import LogisticRegression\n    >>> X = [[-1, 0], [0, 1], [0, -1], [1, 0]]\n    >>> y = [0, 0, 1, 1]\n    >>> classifier = LogisticRegression().fit(X, y)\n    >>> cloned_classifier = clone(classifier)\n    >>> hasattr(classifier, \"classes_\")\n    True\n    >>> hasattr(cloned_classifier, \"classes_\")\n    False\n    >>> classifier is cloned_classifier\n    False"
+      }
+    },
+    {
+      "name": "contextmanager",
+      "signature": "contextmanager(func)",
+      "documentation": {
+        "description": "@contextmanager decorator.\n\n    Typical usage:\n\n        @contextmanager\n        def some_generator(<arguments>):\n            <setup>\n            try:\n                yield <value>\n            finally:\n                <cleanup>\n\n    This makes this:\n\n        with some_generator(<arguments>) as <variable>:\n            <body>\n\n    equivalent to this:\n\n        <setup>\n        try:\n            <variable> = <value>\n            <body>\n        finally:\n            <cleanup>",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "deepcopy",
+      "signature": "deepcopy(x, memo=None, _nil=[])",
+      "documentation": {
+        "description": "Deep copy operation on arbitrary Python objects.\n\n    See the module's __doc__ string for more info.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "delayed",
+      "signature": "delayed(function)",
+      "documentation": {
+        "description": "Decorator used to capture the arguments of a function.\n\n    This alternative to `joblib.delayed` is meant to be used in conjunction\n    with `sklearn.utils.parallel.Parallel`. The latter captures the scikit-\n    learn configuration by calling `sklearn.get_config()` in the current\n    thread, prior to dispatching the first task. The captured configuration is\n    then propagated and enabled for the duration of the execution of the\n    delayed function in the joblib workers.\n\n    .. versionchanged:: 1.3\n       `delayed` was moved from `sklearn.utils.fixes` to `sklearn.utils.parallel`\n       in scikit-learn 1.3.\n\n    Parameters\n    ----------\n    function : callable\n        The function to be delayed.",
+        "parameters": {
+          "function": {
+            "type": "callable",
+            "description": ""
+          },
+          "The": {
+            "type": "function to be delayed.",
+            "description": "Returns\n-------"
+          },
+          "output": {
+            "type": "tuple",
+            "description": ""
+          },
+          "Tuple": {
+            "type": "containing the delayed function, the positional arguments, and the",
+            "description": ""
+          },
+          "keyword": {
+            "type": "arguments.",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    output: tuple\n        Tuple containing the delayed function, the positional arguments, and the\n        keyword arguments.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_routing_for_object",
+      "signature": "get_routing_for_object(obj=None)",
+      "documentation": {
+        "description": "Get a ``Metadata{Router, Request}`` instance from the given object.\n\n    This function returns a\n    :class:`~sklearn.utils.metadata_routing.MetadataRouter` or a\n    :class:`~sklearn.utils.metadata_routing.MetadataRequest` from the given input.\n\n    This function always returns a copy or an instance constructed from the\n    input, such that changing the output of this function will not change the\n    original object.\n\n    .. versionadded:: 1.3\n\n    Parameters\n    ----------\n    obj : object\n        - If the object provides a `get_metadata_routing` method, return a copy\n            of the output of that method.\n        - If the object is already a\n            :class:`~sklearn.utils.metadata_routing.MetadataRequest` or a\n            :class:`~sklearn.utils.metadata_routing.MetadataRouter`, return a copy\n            of that.\n        - Returns an empty :class:`~sklearn.utils.metadata_routing.MetadataRequest`\n            otherwise.",
+        "parameters": {
+          "obj": {
+            "type": "MetadataRequest or MetadataRouting",
+            "description": ""
+          },
+          "of": {
+            "type": "that.",
+            "description": "- Returns an empty :class:`~sklearn.utils.metadata_routing.MetadataRequest`\notherwise.\nReturns\n-------"
+          },
+          "A": {
+            "type": "``MetadataRequest`` or a ``MetadataRouting`` taken or created from",
+            "description": ""
+          },
+          "the": {
+            "type": "given object.",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    obj : MetadataRequest or MetadataRouting\n        A ``MetadataRequest`` or a ``MetadataRouting`` taken or created from\n        the given object.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "get_tags",
+      "signature": "get_tags(estimator) -> 'Tags'",
+      "documentation": {
+        "description": "Get estimator tags.\n\n    :class:`~sklearn.BaseEstimator` provides the estimator tags machinery.\n    However, if an estimator does not inherit from this base class, we should\n    fall-back to the default tags.\n\n    For scikit-learn built-in estimators, we should still rely on\n    `self.__sklearn_tags__()`. `get_tags(est)` should be used when we\n    are not sure where `est` comes from: typically\n    `get_tags(self.estimator)` where `self` is a meta-estimator, or in\n    the common checks.\n\n    .. versionadded:: 1.6\n\n    Parameters\n    ----------\n    estimator : estimator object\n        The estimator from which to get the tag.",
+        "parameters": {
+          "estimator": {
+            "type": "estimator object",
+            "description": ""
+          },
+          "The": {
+            "type": "estimator tags.",
+            "description": ""
+          },
+          "tags": {
+            "type": ":class:`~.sklearn.utils.Tags`",
+            "description": ""
+          }
+        },
+        "returns": "-------\n    tags : :class:`~.sklearn.utils.Tags`\n        The estimator tags.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "make_pipeline",
+      "signature": "make_pipeline(*steps, memory=None, transform_input=None, verbose=False)",
+      "documentation": {
+        "description": "Construct a :class:`Pipeline` from the given estimators.\n\n    This is a shorthand for the :class:`Pipeline` constructor; it does not\n    require, and does not permit, naming the estimators. Instead, their names\n    will be set to the lowercase of their types automatically.\n\n    Parameters\n    ----------\n    *steps : list of Estimator objects\n        List of the scikit-learn estimators that are chained together.\n\n    memory : str or object with the joblib.Memory interface, default=None\n        Used to cache the fitted transformers of the pipeline. The last step\n        will never be cached, even if it is a transformer. By default, no\n        caching is performed. If a string is given, it is the path to the\n        caching directory. Enabling caching triggers a clone of the transformers\n        before fitting. Therefore, the transformer instance given to the\n        pipeline cannot be inspected directly. Use the attribute ``named_steps``\n        or ``steps`` to inspect estimators within the pipeline. Caching the\n        transformers is advantageous when fitting is time consuming.\n\n    transform_input : list of str, default=None\n        This enables transforming some input arguments to ``fit`` (other than ``X``)\n        to be transformed by the steps of the pipeline up to the step which requires\n        them. Requirement is defined via :ref:`metadata routing <metadata_routing>`.\n        This can be used to pass a validation set through the pipeline for instance.\n\n        You can only set this if metadata routing is enabled, which you\n        can enable using ``sklearn.set_config(enable_metadata_routing=True)``.\n\n        .. versionadded:: 1.6\n\n    verbose : bool, default=False\n        If True, the time elapsed while fitting each step will be printed as it\n        is completed.\n\n    Returns\n    -------\n    p : Pipeline\n        Returns a scikit-learn :class:`Pipeline` object.\n\n    See Also\n    --------\n    Pipeline : Class for creating a pipeline of transforms with a final\n        estimator.",
+        "parameters": {
+          "List": {
+            "type": "of the scikit-learn estimators that are chained together.",
+            "description": ""
+          },
+          "memory": {
+            "type": "str or object with the joblib.Memory interface, default=None",
+            "description": ""
+          },
+          "Used": {
+            "type": "to cache the fitted transformers of the pipeline. The last step",
+            "description": ""
+          },
+          "will": {
+            "type": "never be cached, even if it is a transformer. By default, no",
+            "description": ""
+          },
+          "caching": {
+            "type": "directory. Enabling caching triggers a clone of the transformers",
+            "description": ""
+          },
+          "before": {
+            "type": "fitting. Therefore, the transformer instance given to the",
+            "description": ""
+          },
+          "pipeline": {
+            "type": "cannot be inspected directly. Use the attribute ``named_steps``",
+            "description": ""
+          },
+          "or": {
+            "type": "``steps`` to inspect estimators within the pipeline. Caching the",
+            "description": ""
+          },
+          "transformers": {
+            "type": "is advantageous when fitting is time consuming.",
+            "description": ""
+          },
+          "transform_input": {
+            "type": "list of str, default=None",
+            "description": ""
+          },
+          "This": {
+            "type": "can be used to pass a validation set through the pipeline for instance.",
+            "description": ""
+          },
+          "to": {
+            "type": "be transformed by the steps of the pipeline up to the step which requires",
+            "description": "them. Requirement is defined via :ref:`metadata routing <metadata_routing>`."
+          },
+          "You": {
+            "type": "can only set this if metadata routing is enabled, which you",
+            "description": ""
+          },
+          "can": {
+            "type": "enable using ``sklearn.set_config(enable_metadata_routing=True)``.",
+            "description": ".. versionadded:: 1.6"
+          },
+          "verbose": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "If": {
+            "type": "True, the time elapsed while fitting each step will be printed as it",
+            "description": ""
+          },
+          "is": {
+            "type": "completed.",
+            "description": "Returns\n-------"
+          },
+          "p": {
+            "type": "Pipeline",
+            "description": ""
+          },
+          "Returns": {
+            "type": "a scikit-learn :class:`Pipeline` object.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "Pipeline": {
+            "type": "steps=[('standardscaler', StandardScaler(",
+            "description": "),\n('gaussiannb', GaussianNB())])"
+          }
+        },
+        "returns": "-------\n    p : Pipeline",
+        "raises": "",
+        "see_also": "--------\n    Pipeline : Class for creating a pipeline of transforms with a final\n        estimator.\n\n    Examples\n    --------\n    >>> from sklearn.naive_bayes import GaussianNB\n    >>> from sklearn.preprocessing import StandardScaler\n    >>> from sklearn.pipeline import make_pipeline\n    >>> make_pipeline(StandardScaler(), GaussianNB(priors=None))\n    Pipeline(steps=[('standardscaler', StandardScaler()),\n                    ('gaussiannb', GaussianNB())])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.naive_bayes import GaussianNB\n    >>> from sklearn.preprocessing import StandardScaler\n    >>> from sklearn.pipeline import make_pipeline\n    >>> make_pipeline(StandardScaler(), GaussianNB(priors=None))\n    Pipeline(steps=[('standardscaler', StandardScaler()),\n                    ('gaussiannb', GaussianNB())])"
+      }
+    },
+    {
+      "name": "make_union",
+      "signature": "make_union(*transformers, n_jobs=None, verbose=False)",
+      "documentation": {
+        "description": "Construct a :class:`FeatureUnion` from the given transformers.\n\n    This is a shorthand for the :class:`FeatureUnion` constructor; it does not\n    require, and does not permit, naming the transformers. Instead, they will\n    be given names automatically based on their types. It also does not allow\n    weighting.\n\n    Parameters\n    ----------\n    *transformers : list of estimators\n        One or more estimators.\n\n    n_jobs : int, default=None\n        Number of jobs to run in parallel.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n        .. versionchanged:: v0.20\n           `n_jobs` default changed from 1 to None.\n\n    verbose : bool, default=False\n        If True, the time elapsed while fitting each transformer will be\n        printed as it is completed.\n\n    Returns\n    -------\n    f : FeatureUnion\n        A :class:`FeatureUnion` object for concatenating the results of multiple\n        transformer objects.\n\n    See Also\n    --------\n    FeatureUnion : Class for concatenating the results of multiple transformer\n        objects.",
+        "parameters": {
+          "One": {
+            "type": "or more estimators.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "Number": {
+            "type": "of jobs to run in parallel.",
+            "description": "``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n``-1`` means using all processors. See :term:`Glossary <n_jobs>`"
+          },
+          "for": {
+            "type": "more details.",
+            "description": ".. versionchanged:: v0.20\n`n_jobs` default changed from 1 to None."
+          },
+          "verbose": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "If": {
+            "type": "True, the time elapsed while fitting each transformer will be",
+            "description": ""
+          },
+          "printed": {
+            "type": "as it is completed.",
+            "description": "Returns\n-------"
+          },
+          "f": {
+            "type": "FeatureUnion",
+            "description": ""
+          },
+          "A": {
+            "type": "class:`FeatureUnion` object for concatenating the results of multiple",
+            "description": ""
+          },
+          "transformer": {
+            "type": "objects.",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "FeatureUnion": {
+            "type": "transformer_list=[('pca', PCA(",
+            "description": "),\n('truncatedsvd', TruncatedSVD())])"
+          }
+        },
+        "returns": "-------\n    f : FeatureUnion\n        A :class:`FeatureUnion` object for concatenating the results of multiple\n        transformer objects.\n\n    See Also\n    --------\n    FeatureUnion : Class for concatenating the results of multiple transformer\n        objects.\n\n    Examples\n    --------\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> from sklearn.pipeline import make_union\n    >>> make_union(PCA(), TruncatedSVD())\n     FeatureUnion(transformer_list=[('pca', PCA()),\n                                   ('truncatedsvd', TruncatedSVD())])",
+        "raises": "",
+        "see_also": "--------\n    FeatureUnion : Class for concatenating the results of multiple transformer\n        objects.\n\n    Examples\n    --------\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> from sklearn.pipeline import make_union\n    >>> make_union(PCA(), TruncatedSVD())\n     FeatureUnion(transformer_list=[('pca', PCA()),\n                                   ('truncatedsvd', TruncatedSVD())])",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> from sklearn.pipeline import make_union\n    >>> make_union(PCA(), TruncatedSVD())\n     FeatureUnion(transformer_list=[('pca', PCA()),\n                                   ('truncatedsvd', TruncatedSVD())])"
+      }
+    },
+    {
+      "name": "process_routing",
+      "signature": "process_routing(_obj, _method, /, **kwargs)",
+      "documentation": {
+        "description": "Validate and route input parameters.\n\n    This function is used inside a router's method, e.g. :term:`fit`,\n    to validate the metadata and handle the routing.\n\n    Assuming this signature of a router's fit method:\n    ``fit(self, X, y, sample_weight=None, **fit_params)``,\n    a call to this function would be:\n    ``process_routing(self, \"fit\", sample_weight=sample_weight, **fit_params)``.",
+        "parameters": {
+          "_obj": {
+            "type": "object",
+            "description": ""
+          },
+          "An": {
+            "type": "object implementing ``get_metadata_routing``. Typically a",
+            "description": "meta-estimator."
+          },
+          "_method": {
+            "type": "str",
+            "description": ""
+          },
+          "The": {
+            "type": "name of the router's method in which this function is called.",
+            "description": "**kwargs : dict"
+          },
+          "Metadata": {
+            "type": "to be routed.",
+            "description": "Returns\n-------"
+          },
+          "routed_params": {
+            "type": "Bunch",
+            "description": ""
+          },
+          "A": {
+            "type": "class:`~sklearn.utils.Bunch` of the form ``{\"object_name\": {\"method_name\":",
+            "description": "{params: value}}}`` which can be used to pass the required metadata to"
+          },
+          "corresponding": {
+            "type": "methods or corresponding child objects. The object names",
+            "description": ""
+          },
+          "are": {
+            "type": "those defined in `obj.get_metadata_routing()`.",
+            "description": ""
+          }
+        },
+        "returns": "an empty routing where ``process_routing(...).ANYTHING.ANY_METHOD``\n    is always an empty dictionary.\n\n    .. versionadded:: 1.3\n\n    Parameters\n    ----------\n    _obj : object\n        An object implementing ``get_metadata_routing``. Typically a\n        meta-estimator.\n\n    _method : str\n        The name of the router's method in which this function is called.\n\n    **kwargs : dict\n        Metadata to be routed.",
+        "raises": "",
+        "see_also": "",
+        "notes": "that if routing is not enabled and ``kwargs`` is empty, then it\n    returns an empty routing where ``process_routing(...).ANYTHING.ANY_METHOD``\n    is always an empty dictionary.\n\n    .. versionadded:: 1.3\n\n    Parameters\n    ----------\n    _obj : object\n        An object implementing ``get_metadata_routing``. Typically a\n        meta-estimator.\n\n    _method : str\n        The name of the router's method in which this function is called.\n\n    **kwargs : dict\n        Metadata to be routed.\n\n    Returns\n    -------\n    routed_params : Bunch\n        A :class:`~utils.Bunch` of the form ``{\"object_name\": {\"method_name\":\n        {params: value}}}`` which can be used to pass the required metadata to\n        A :class:`~sklearn.utils.Bunch` of the form ``{\"object_name\": {\"method_name\":\n        {params: value}}}`` which can be used to pass the required metadata to\n        corresponding methods or corresponding child objects. The object names\n        are those defined in `obj.get_metadata_routing()`.",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "Bunch",
+      "documentation": {
+        "description": "Container object exposing keys as attributes.\n\n    Bunch objects are sometimes used as an output for functions and methods.\n    They extend dictionaries by enabling values to be accessed by key,\n    `bunch[\"value_key\"]`, or by an attribute, `bunch.value_key`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.utils import Bunch\n    >>> b = Bunch(a=1, b=2)\n    >>> b['b']\n    2\n    >>> b.b\n    2\n    >>> b.a = 3\n    >>> b['a']\n    3\n    >>> b.c = 6\n    >>> b['c']\n    6"
+      },
+      "methods": [
+        {
+          "name": "clear",
+          "signature": "clear()",
+          "documentation": {
+            "description": "D.clear() -> None.  Remove all items from D.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy()",
+          "documentation": {
+            "description": "D.copy() -> a shallow copy of D",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fromkeys",
+          "signature": "fromkeys(iterable, value=None, /)",
+          "documentation": {
+            "description": "Create a new dictionary with keys from iterable and values set to value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get",
+          "signature": "get(self, key, default=None, /)",
+          "documentation": {
+            "description": "Return the value for key if key is in the dictionary, else default.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "items",
+          "signature": "items()",
+          "documentation": {
+            "description": "D.items() -> a set-like object providing a view on D's items",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "keys",
+          "signature": "keys()",
+          "documentation": {
+            "description": "D.keys() -> a set-like object providing a view on D's keys",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pop",
+          "signature": "pop(k[,d])",
+          "documentation": {
+            "description": "D.pop(k[,d]) -> v, remove specified key and return the corresponding value.\n\nIf the key is not found, return the default if given; otherwise,\nraise a KeyError.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "popitem",
+          "signature": "popitem(self, /)",
+          "documentation": {
+            "description": "Remove and return a (key, value) pair as a 2-tuple.\n\nPairs are returned in LIFO (last-in, first-out) order.",
+            "parameters": {},
+            "returns": "",
+            "raises": "KeyError if the dict is empty.",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setdefault",
+          "signature": "setdefault(self, key, default=None, /)",
+          "documentation": {
+            "description": "Insert key with a value of default if key is not in the dictionary.",
+            "parameters": {},
+            "returns": "the value for key if key is in the dictionary, else default.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "update",
+          "signature": "update([E, ]**F)",
+          "documentation": {
+            "description": "D.update([E, ]**F) -> None.  Update D from dict/iterable E and F.\nIf E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]\nIf E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v\nIn either case, this is followed by: for k in F:  D[k] = F[k]",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "values",
+          "signature": "values()",
+          "documentation": {
+            "description": "D.values() -> an object providing a view on D's values",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Counter",
+      "documentation": {
+        "description": "Dict subclass for counting hashable items.  Sometimes called a bag\n    or multiset.  Elements are stored as dictionary keys and their counts\n    are stored as dictionary values.\n\n    >>> c = Counter('abcdeabcdabcaba')  # count elements from a string\n\n    >>> c.most_common(3)                # three most common elements\n    [('a', 5), ('b', 4), ('c', 3)]\n    >>> sorted(c)                       # list all unique elements\n    ['a', 'b', 'c', 'd', 'e']\n    >>> ''.join(sorted(c.elements()))   # list elements with repetitions\n    'aaaaabbbbcccdde'\n    >>> sum(c.values())                 # total of all counts\n    15\n\n    >>> c['a']                          # count of letter 'a'\n    5\n    >>> for elem in 'shazam':           # update counts from an iterable\n    ...     c[elem] += 1                # by adding 1 to each element's count\n    >>> c['a']                          # now there are seven 'a'\n    7\n    >>> del c['b']                      # remove all 'b'\n    >>> c['b']                          # now there are zero 'b'\n    0\n\n    >>> d = Counter('simsalabim')       # make another counter\n    >>> c.update(d)                     # add in the second counter\n    >>> c['a']                          # now there are nine 'a'\n    9\n\n    >>> c.clear()                       # empty the counter\n    >>> c\n    Counter()",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "If a count is set to zero or reduced to zero, it will remain\n    in the counter until the entry is deleted or the counter is cleared:\n\n    >>> c = Counter('aaabbc')\n    >>> c['b'] -= 2                     # reduce the count of 'b' by two\n    >>> c.most_common()                 # 'b' is still in, but its count is zero\n    [('a', 3), ('c', 1), ('b', 0)]",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "clear",
+          "signature": "clear()",
+          "documentation": {
+            "description": "D.clear() -> None.  Remove all items from D.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy(self)",
+          "documentation": {
+            "description": "Return a shallow copy.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "elements",
+          "signature": "elements(self)",
+          "documentation": {
+            "description": "Iterator over elements repeating each as many times as its count.\n\n        >>> c = Counter('ABCABC')\n        >>> sorted(c.elements())\n        ['A', 'A', 'B', 'B', 'C', 'C']\n\n        Knuth's example for prime factors of 1836:  2**2 * 3**3 * 17**1\n\n        >>> import math\n        >>> prime_factors = Counter({2: 2, 3: 3, 17: 1})\n        >>> math.prod(prime_factors.elements())\n        1836\n\n        Note, if an element's count has been set to zero or is a negative\n        number, elements() will ignore it.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fromkeys",
+          "signature": "fromkeys(iterable, v=None)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get",
+          "signature": "get(self, key, default=None, /)",
+          "documentation": {
+            "description": "Return the value for key if key is in the dictionary, else default.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "items",
+          "signature": "items()",
+          "documentation": {
+            "description": "D.items() -> a set-like object providing a view on D's items",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "keys",
+          "signature": "keys()",
+          "documentation": {
+            "description": "D.keys() -> a set-like object providing a view on D's keys",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "most_common",
+          "signature": "most_common(self, n=None)",
+          "documentation": {
+            "description": "List the n most common elements and their counts from the most\n        common to the least.  If n is None, then list all element counts.\n\n        >>> Counter('abracadabra').most_common(3)\n        [('a', 5), ('b', 2), ('r', 2)]",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pop",
+          "signature": "pop(k[,d])",
+          "documentation": {
+            "description": "D.pop(k[,d]) -> v, remove specified key and return the corresponding value.\n\nIf the key is not found, return the default if given; otherwise,\nraise a KeyError.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "popitem",
+          "signature": "popitem(self, /)",
+          "documentation": {
+            "description": "Remove and return a (key, value) pair as a 2-tuple.\n\nPairs are returned in LIFO (last-in, first-out) order.",
+            "parameters": {},
+            "returns": "",
+            "raises": "KeyError if the dict is empty.",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setdefault",
+          "signature": "setdefault(self, key, default=None, /)",
+          "documentation": {
+            "description": "Insert key with a value of default if key is not in the dictionary.",
+            "parameters": {},
+            "returns": "the value for key if key is in the dictionary, else default.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "subtract",
+          "signature": "subtract(self, iterable=None, /, **kwds)",
+          "documentation": {
+            "description": "Like dict.update() but subtracts counts instead of replacing them.\n        Counts can be reduced below zero.  Both the inputs and outputs are\n        allowed to contain zero and negative counts.\n\n        Source can be an iterable, a dictionary, or another Counter instance.\n\n        >>> c = Counter('which')\n        >>> c.subtract('witch')             # subtract elements from another iterable\n        >>> c.subtract(Counter('watch'))    # subtract elements from another counter\n        >>> c['h']                          # 2 in which, minus 1 in witch, minus 1 in watch\n        0\n        >>> c['w']                          # 1 in which, minus 1 in witch, minus 1 in watch\n        -1",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "total",
+          "signature": "total(self)",
+          "documentation": {
+            "description": "Sum of the counts",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "update",
+          "signature": "update(self, iterable=None, /, **kwds)",
+          "documentation": {
+            "description": "Like dict.update() but add counts instead of replacing them.\n\n        Source can be an iterable, a dictionary, or another Counter instance.\n\n        >>> c = Counter('which')\n        >>> c.update('witch')           # add elements from another iterable\n        >>> d = Counter('watch')\n        >>> c.update(d)                 # add elements from another counter\n        >>> c['h']                      # four 'h' in which, witch, and watch\n        4",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "values",
+          "signature": "values()",
+          "documentation": {
+            "description": "D.values() -> an object providing a view on D's values",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "FeatureUnion",
+      "documentation": {
+        "description": "Concatenates results of multiple transformer objects.\n\n    This estimator applies a list of transformer objects in parallel to the\n    input data, then concatenates the results. This is useful to combine\n    several feature extraction mechanisms into a single transformer.\n\n    Parameters of the transformers may be set using its name and the parameter\n    name separated by a '__'. A transformer may be replaced entirely by\n    setting the parameter with its name to another transformer, removed by\n    setting to 'drop' or disabled by setting to 'passthrough' (features are\n    passed without transformation).\n\n    Read more in the :ref:`User Guide <feature_union>`.\n\n    .. versionadded:: 0.13\n\n    Parameters\n    ----------\n    transformer_list : list of (str, transformer) tuples\n        List of transformer objects to be applied to the data. The first\n        half of each tuple is the name of the transformer. The transformer can\n        be 'drop' for it to be ignored or can be 'passthrough' for features to\n        be passed unchanged.\n\n        .. versionadded:: 1.1\n           Added the option `\"passthrough\"`.\n\n        .. versionchanged:: 0.22\n           Deprecated `None` as a transformer in favor of 'drop'.\n\n    n_jobs : int, default=None\n        Number of jobs to run in parallel.\n        ``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.\n        ``-1`` means using all processors. See :term:`Glossary <n_jobs>`\n        for more details.\n\n        .. versionchanged:: v0.20\n           `n_jobs` default changed from 1 to None\n\n    transformer_weights : dict, default=None\n        Multiplicative weights for features per transformer.\n        Keys are transformer names, values the weights.\n        Raises ValueError if key not present in ``transformer_list``.\n\n    verbose : bool, default=False\n        If True, the time elapsed while fitting each transformer will be\n        printed as it is completed.\n\n    verbose_feature_names_out : bool, default=True\n        If True, :meth:`get_feature_names_out` will prefix all feature names\n        with the name of the transformer that generated that feature.\n        If False, :meth:`get_feature_names_out` will not prefix any feature\n        names and will error if feature names are not unique.\n\n        .. versionadded:: 1.5\n\n    Attributes\n    ----------\n    named_transformers : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n        Read-only attribute to access any transformer parameter by user\n        given name. Keys are transformer names and values are\n        transformer parameters.\n\n        .. versionadded:: 1.2\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`. Only defined if the\n        underlying first transformer in `transformer_list` exposes such an\n        attribute when fit.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when\n        `X` has feature names that are all strings.\n\n        .. versionadded:: 1.3\n\n    See Also\n    --------\n    make_union : Convenience function for simplified feature union\n        construction.",
+        "parameters": {
+          "transformer_list": {
+            "type": "list of (str, transformer) tuples",
+            "description": ""
+          },
+          "List": {
+            "type": "of transformer objects to be applied to the data. The first",
+            "description": ""
+          },
+          "half": {
+            "type": "of each tuple is the name of the transformer. The transformer can",
+            "description": ""
+          },
+          "be": {
+            "type": "passed unchanged.",
+            "description": ".. versionadded:: 1.1"
+          },
+          "Added": {
+            "type": "the option `\"passthrough\"`.",
+            "description": ".. versionchanged:: 0.22"
+          },
+          "Deprecated": {
+            "type": "`None` as a transformer in favor of 'drop'.",
+            "description": ""
+          },
+          "n_jobs": {
+            "type": "int, default=None",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "for": {
+            "type": "more details.",
+            "description": ".. versionchanged:: v0.20\n`n_jobs` default changed from 1 to None"
+          },
+          "transformer_weights": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "Multiplicative": {
+            "type": "weights for features per transformer.",
+            "description": ""
+          },
+          "Keys": {
+            "type": "are transformer names, values the weights.",
+            "description": ""
+          },
+          "Raises": {
+            "type": "ValueError if key not present in ``transformer_list``.",
+            "description": ""
+          },
+          "verbose": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "If": {
+            "type": "False, :meth:`get_feature_names_out` will not prefix any feature",
+            "description": ""
+          },
+          "printed": {
+            "type": "as it is completed.",
+            "description": ""
+          },
+          "verbose_feature_names_out": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "with": {
+            "type": "the name of the transformer that generated that feature.",
+            "description": ""
+          },
+          "names": {
+            "type": "and will error if feature names are not unique.",
+            "description": ".. versionadded:: 1.5\nAttributes\n----------"
+          },
+          "named_transformers": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes.\nRead-only attribute to access any transformer parameter by user"
+          },
+          "given": {
+            "type": "name. Keys are transformer names and values are",
+            "description": ""
+          },
+          "transformer": {
+            "type": "parameters.",
+            "description": ".. versionadded:: 1.2"
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "underlying": {
+            "type": "first transformer in `transformer_list` exposes such an",
+            "description": ""
+          },
+          "attribute": {
+            "type": "when fit.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when",
+            "description": "`X` has feature names that are all strings.\n.. versionadded:: 1.3"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "make_union": {
+            "type": "Convenience function for simplified feature union",
+            "description": "construction.\nExamples\n--------\n>>> from sklearn.pipeline import FeatureUnion\n>>> from sklearn.decomposition import PCA, TruncatedSVD\n>>> union = FeatureUnion([(\"pca\", PCA(n_components=1)),\n...                       (\"svd\", TruncatedSVD(n_components=2))])\n>>> X = [[0., 1., 3], [2., 2., 5]]\n>>> union.fit_transform(X)\narray([[-1.5       ,  3.0..., -0.8...],\n[ 1.5       ,  5.7...,  0.4...]])\n>>> # An estimator's parameter can be set using '__' syntax\n>>> union.set_params(svd__n_components=1).fit_transform(X)\narray([[-1.5       ,  3.0...],\n[ 1.5       ,  5.7...]])"
+          },
+          "For": {
+            "type": "a more detailed example of usage, see",
+            "description": ":ref:`sphx_glr_auto_examples_compose_plot_feature_union.py`."
+          },
+          "of": {
+            "type": "the transformers may be set using its name and the parameter",
+            "description": ""
+          },
+          "name": {
+            "type": "separated by a '__'. A transformer may be replaced entirely by",
+            "description": ""
+          },
+          "setting": {
+            "type": "to 'drop' or disabled by setting to 'passthrough' (features are",
+            "description": ""
+          },
+          "passed": {
+            "type": "without transformation).",
+            "description": ""
+          },
+          "Read": {
+            "type": "more in the :ref:`User Guide <feature_union>`.",
+            "description": ".. versionadded:: 0.13"
+          }
+        },
+        "returns": "",
+        "raises": "ValueError if key not present in ``transformer_list``.\n\n    verbose : bool, default=False\n        If True, the time elapsed while fitting each transformer will be\n        printed as it is completed.\n\n    verbose_feature_names_out : bool, default=True\n        If True, :meth:`get_feature_names_out` will prefix all feature names\n        with the name of the transformer that generated that feature.\n        If False, :meth:`get_feature_names_out` will not prefix any feature\n        names and will error if feature names are not unique.\n\n        .. versionadded:: 1.5\n\n    Attributes\n    ----------\n    named_transformers : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n        Read-only attribute to access any transformer parameter by user\n        given name. Keys are transformer names and values are\n        transformer parameters.\n\n        .. versionadded:: 1.2\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`. Only defined if the\n        underlying first transformer in `transformer_list` exposes such an\n        attribute when fit.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when\n        `X` has feature names that are all strings.\n\n        .. versionadded:: 1.3\n\n    See Also\n    --------\n    make_union : Convenience function for simplified feature union\n        construction.\n\n    Examples\n    --------\n    >>> from sklearn.pipeline import FeatureUnion\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> union = FeatureUnion([(\"pca\", PCA(n_components=1)),\n    ...                       (\"svd\", TruncatedSVD(n_components=2))])\n    >>> X = [[0., 1., 3], [2., 2., 5]]\n    >>> union.fit_transform(X)\n    array([[-1.5       ,  3.0..., -0.8...],\n           [ 1.5       ,  5.7...,  0.4...]])\n    >>> # An estimator's parameter can be set using '__' syntax\n    >>> union.set_params(svd__n_components=1).fit_transform(X)\n    array([[-1.5       ,  3.0...],\n           [ 1.5       ,  5.7...]])\n\n    For a more detailed example of usage, see\n    :ref:`sphx_glr_auto_examples_compose_plot_feature_union.py`.",
+        "see_also": "--------\n    make_union : Convenience function for simplified feature union\n        construction.\n\n    Examples\n    --------\n    >>> from sklearn.pipeline import FeatureUnion\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> union = FeatureUnion([(\"pca\", PCA(n_components=1)),\n    ...                       (\"svd\", TruncatedSVD(n_components=2))])\n    >>> X = [[0., 1., 3], [2., 2., 5]]\n    >>> union.fit_transform(X)\n    array([[-1.5       ,  3.0..., -0.8...],\n           [ 1.5       ,  5.7...,  0.4...]])\n    >>> # An estimator's parameter can be set using '__' syntax\n    >>> union.set_params(svd__n_components=1).fit_transform(X)\n    array([[-1.5       ,  3.0...],\n           [ 1.5       ,  5.7...]])\n\n    For a more detailed example of usage, see\n    :ref:`sphx_glr_auto_examples_compose_plot_feature_union.py`.",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.pipeline import FeatureUnion\n    >>> from sklearn.decomposition import PCA, TruncatedSVD\n    >>> union = FeatureUnion([(\"pca\", PCA(n_components=1)),\n    ...                       (\"svd\", TruncatedSVD(n_components=2))])\n    >>> X = [[0., 1., 3], [2., 2., 5]]\n    >>> union.fit_transform(X)\n    array([[-1.5       ,  3.0..., -0.8...],\n           [ 1.5       ,  5.7...,  0.4...]])\n    >>> # An estimator's parameter can be set using '__' syntax\n    >>> union.set_params(svd__n_components=1).fit_transform(X)\n    array([[-1.5       ,  3.0...],\n           [ 1.5       ,  5.7...]])\n\n    For a more detailed example of usage, see\n    :ref:`sphx_glr_auto_examples_compose_plot_feature_union.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit all transformers using X.\n\n        Parameters\n        ----------\n        X : iterable or array-like, depending on transformers\n            Input data, used to fit transformers.\n\n        y : array-like of shape (n_samples, n_outputs), default=None\n            Targets for supervised learning.\n\n        **fit_params : dict, default=None\n            - If `enable_metadata_routing=False` (default):\n              Parameters directly passed to the `fit` methods of the\n              sub-transformers.\n\n            - If `enable_metadata_routing=True`:\n              Parameters safely routed to the `fit` methods of the\n              sub-transformers. See :ref:`Metadata Routing User Guide\n              <metadata_routing>` for more details.\n\n            .. versionchanged:: 1.5\n                `**fit_params` can be routed via metadata routing API.",
+            "parameters": {
+              "X": {
+                "type": "iterable or array",
+                "description": "like, depending on transformers"
+              },
+              "Input": {
+                "type": "data, used to fit transformers.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_outputs), default=None"
+              },
+              "Targets": {
+                "type": "for supervised learning.",
+                "description": "**fit_params : dict, default=None\n- If `enable_metadata_routing=False` (default):"
+              }
+            },
+            "returns": "-------\n        self : object\n            FeatureUnion class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **params)",
+          "documentation": {
+            "description": "Fit all transformers, transform the data and concatenate results.\n\n        Parameters\n        ----------\n        X : iterable or array-like, depending on transformers\n            Input data to be transformed.\n\n        y : array-like of shape (n_samples, n_outputs), default=None\n            Targets for supervised learning.\n\n        **params : dict, default=None\n            - If `enable_metadata_routing=False` (default):\n              Parameters directly passed to the `fit` methods of the\n              sub-transformers.\n\n            - If `enable_metadata_routing=True`:\n              Parameters safely routed to the `fit` methods of the\n              sub-transformers. See :ref:`Metadata Routing User Guide\n              <metadata_routing>` for more details.\n\n            .. versionchanged:: 1.5\n                `**params` can now be routed via metadata routing API.",
+            "parameters": {
+              "X": {
+                "type": "iterable or array",
+                "description": "like, depending on transformers"
+              },
+              "Input": {
+                "type": "data to be transformed.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_outputs), default=None"
+              },
+              "Targets": {
+                "type": "for supervised learning.",
+                "description": "**params : dict, default=None\n- If `enable_metadata_routing=False` (default):"
+              }
+            },
+            "returns": "-------\n        X_t : array-like or sparse matrix of                 shape (n_samples, sum_n_components)\n            The `hstack` of results of transformers. `sum_n_components` is the\n            sum of `n_components` (output dimension) over transformers.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input features.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "features.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        .. versionadded:: 1.5",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRouter\n            A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "mapping of string to any",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "the parameters given in the constructor as well as the\n        estimators contained within the `transformer_list` of the\n        `FeatureUnion`.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set the output container when `\"transform\"` and `\"fit_transform\"` are called.\n\n        `set_output` will set the output of all estimators in `transformer_list`.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **kwargs)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        Valid parameter keys can be listed with ``get_params()``. Note that\n        you can directly set the parameters of the estimators contained in\n        `transformer_list`.\n\n        Parameters\n        ----------\n        **kwargs : dict\n            Parameters of this estimator or parameters of estimators contained\n            in `transform_list`. Parameters of the transformers may be set\n            using its name and the parameter name separated by a '__'.",
+            "parameters": {},
+            "returns": "-------\n        self : object\n            FeatureUnion class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, **params)",
+          "documentation": {
+            "description": "Transform X separately by each transformer, concatenate results.\n\n        Parameters\n        ----------\n        X : iterable or array-like, depending on transformers\n            Input data to be transformed.\n\n        **params : dict, default=None\n\n            Parameters routed to the `transform` method of the sub-transformers via the\n            metadata routing API. See :ref:`Metadata Routing User Guide\n            <metadata_routing>` for more details.\n\n            .. versionadded:: 1.5",
+            "parameters": {
+              "X": {
+                "type": "iterable or array",
+                "description": "like, depending on transformers"
+              },
+              "Input": {
+                "type": "data to be transformed.",
+                "description": "**params : dict, default=None"
+              }
+            },
+            "returns": "-------\n        X_t : array-like or sparse matrix of shape (n_samples, sum_n_components)\n            The `hstack` of results of transformers. `sum_n_components` is the\n            sum of `n_components` (output dimension) over transformers.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "FunctionTransformer",
+      "documentation": {
+        "description": "Constructs a transformer from an arbitrary callable.\n\n    A FunctionTransformer forwards its X (and optionally y) arguments to a\n    user-defined function or function object and returns the result of this\n    function. This is useful for stateless transformations such as taking the\n    log of frequencies, doing custom scaling, etc.\n\n    Note: If a lambda is used as the function, then the resulting\n    transformer will not be pickleable.\n\n    .. versionadded:: 0.17\n\n    Read more in the :ref:`User Guide <function_transformer>`.\n\n    Parameters\n    ----------\n    func : callable, default=None\n        The callable to use for the transformation. This will be passed\n        the same arguments as transform, with args and kwargs forwarded.\n        If func is None, then func will be the identity function.\n\n    inverse_func : callable, default=None\n        The callable to use for the inverse transformation. This will be\n        passed the same arguments as inverse transform, with args and\n        kwargs forwarded. If inverse_func is None, then inverse_func\n        will be the identity function.\n\n    validate : bool, default=False\n        Indicate that the input X array should be checked before calling\n        ``func``. The possibilities are:\n\n        - If False, there is no input validation.\n        - If True, then X will be converted to a 2-dimensional NumPy array or\n          sparse matrix. If the conversion is not possible an exception is\n          raised.\n\n        .. versionchanged:: 0.22\n           The default of ``validate`` changed from True to False.\n\n    accept_sparse : bool, default=False\n        Indicate that func accepts a sparse matrix as input. If validate is\n        False, this has no effect. Otherwise, if accept_sparse is false,\n        sparse matrix inputs will cause an exception to be raised.\n\n    check_inverse : bool, default=True\n       Whether to check that or ``func`` followed by ``inverse_func`` leads to\n       the original inputs. It can be used for a sanity check, raising a\n       warning when the condition is not fulfilled.\n\n       .. versionadded:: 0.20\n\n    feature_names_out : callable, 'one-to-one' or None, default=None\n        Determines the list of feature names that will be returned by the\n        `get_feature_names_out` method. If it is 'one-to-one', then the output\n        feature names will be equal to the input feature names. If it is a\n        callable, then it must take two positional arguments: this\n        `FunctionTransformer` (`self`) and an array-like of input feature names\n        (`input_features`). It must return an array-like of output feature\n        names. The `get_feature_names_out` method is only defined if\n        `feature_names_out` is not None.\n\n        See ``get_feature_names_out`` for more details.\n\n        .. versionadded:: 1.1\n\n    kw_args : dict, default=None\n        Dictionary of additional keyword arguments to pass to func.\n\n        .. versionadded:: 0.18\n\n    inv_kw_args : dict, default=None\n        Dictionary of additional keyword arguments to pass to inverse_func.\n\n        .. versionadded:: 0.18\n\n    Attributes\n    ----------\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X` has feature\n        names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    MaxAbsScaler : Scale each feature by its maximum absolute value.\n    StandardScaler : Standardize features by removing the mean and\n        scaling to unit variance.\n    LabelBinarizer : Binarize labels in a one-vs-all fashion.\n    MultiLabelBinarizer : Transform between iterable of iterables\n        and a multilabel format.\n\n    Notes\n    -----\n    If `func` returns an output with a `columns` attribute, then the columns is enforced\n    to be consistent with the output of `get_feature_names_out`.",
+        "parameters": {
+          "func": {
+            "type": "callable, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "default of ``validate`` changed from True to False.",
+            "description": ""
+          },
+          "the": {
+            "type": "original inputs. It can be used for a sanity check, raising a",
+            "description": ""
+          },
+          "If": {
+            "type": "`func` returns an output with a `columns` attribute, then the columns is enforced",
+            "description": ""
+          },
+          "inverse_func": {
+            "type": "callable, default=None",
+            "description": ""
+          },
+          "passed": {
+            "type": "the same arguments as inverse transform, with args and",
+            "description": ""
+          },
+          "kwargs": {
+            "type": "forwarded. If inverse_func is None, then inverse_func",
+            "description": ""
+          },
+          "will": {
+            "type": "be the identity function.",
+            "description": ""
+          },
+          "validate": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "Indicate": {
+            "type": "that func accepts a sparse matrix as input. If validate is",
+            "description": "False, this has no effect. Otherwise, if accept_sparse is false,"
+          },
+          "sparse": {
+            "type": "matrix inputs will cause an exception to be raised.",
+            "description": ""
+          },
+          "accept_sparse": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "check_inverse": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "Whether": {
+            "type": "to check that or ``func`` followed by ``inverse_func`` leads to",
+            "description": ""
+          },
+          "warning": {
+            "type": "when the condition is not fulfilled.",
+            "description": ".. versionadded:: 0.20"
+          },
+          "feature_names_out": {
+            "type": "callable, 'one",
+            "description": "to-one' or None, default=None"
+          },
+          "Determines": {
+            "type": "the list of feature names that will be returned by the",
+            "description": "`get_feature_names_out` method. If it is 'one-to-one', then the output"
+          },
+          "feature": {
+            "type": "names will be equal to the input feature names. If it is a",
+            "description": "callable, then it must take two positional arguments: this\n`FunctionTransformer` (`self`) and an array-like of input feature names\n(`input_features`). It must return an array-like of output feature\nnames. The `get_feature_names_out` method is only defined if\n`feature_names_out` is not None."
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "kw_args": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "Dictionary": {
+            "type": "of additional keyword arguments to pass to inverse_func.",
+            "description": ".. versionadded:: 0.18\nAttributes\n----------"
+          },
+          "inv_kw_args": {
+            "type": "dict, default=None",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X` has feature",
+            "description": ""
+          },
+          "names": {
+            "type": "that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "MaxAbsScaler": {
+            "type": "Scale each feature by its maximum absolute value.",
+            "description": ""
+          },
+          "StandardScaler": {
+            "type": "Standardize features by removing the mean and",
+            "description": ""
+          },
+          "scaling": {
+            "type": "to unit variance.",
+            "description": ""
+          },
+          "LabelBinarizer": {
+            "type": "Binarize labels in a one",
+            "description": "vs-all fashion."
+          },
+          "MultiLabelBinarizer": {
+            "type": "Transform between iterable of iterables",
+            "description": ""
+          },
+          "and": {
+            "type": "a multilabel format.",
+            "description": "Notes\n-----"
+          },
+          "to": {
+            "type": "be consistent with the output of `get_feature_names_out`.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.preprocessing import FunctionTransformer\n>>> transformer = FunctionTransformer(np.log1p)\n>>> X = np.array([[0, 1], [2, 3]])\n>>> transformer.transform(X)\narray([[0.       , 0.6931...],\n[1.0986..., 1.3862...]])"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    MaxAbsScaler : Scale each feature by its maximum absolute value.\n    StandardScaler : Standardize features by removing the mean and\n        scaling to unit variance.\n    LabelBinarizer : Binarize labels in a one-vs-all fashion.\n    MultiLabelBinarizer : Transform between iterable of iterables\n        and a multilabel format.\n\n    Notes\n    -----\n    If `func` returns an output with a `columns` attribute, then the columns is enforced\n    to be consistent with the output of `get_feature_names_out`.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.preprocessing import FunctionTransformer\n    >>> transformer = FunctionTransformer(np.log1p)\n    >>> X = np.array([[0, 1], [2, 3]])\n    >>> transformer.transform(X)\n    array([[0.       , 0.6931...],\n           [1.0986..., 1.3862...]])",
+        "notes": "If a lambda is used as the function, then the resulting\n    transformer will not be pickleable.\n\n    .. versionadded:: 0.17\n\n    Read more in the :ref:`User Guide <function_transformer>`.\n\n    Parameters\n    ----------\n    func : callable, default=None\n        The callable to use for the transformation. This will be passed\n        the same arguments as transform, with args and kwargs forwarded.\n        If func is None, then func will be the identity function.\n\n    inverse_func : callable, default=None\n        The callable to use for the inverse transformation. This will be\n        passed the same arguments as inverse transform, with args and\n        kwargs forwarded. If inverse_func is None, then inverse_func\n        will be the identity function.\n\n    validate : bool, default=False\n        Indicate that the input X array should be checked before calling\n        ``func``. The possibilities are:\n\n        - If False, there is no input validation.\n        - If True, then X will be converted to a 2-dimensional NumPy array or\n          sparse matrix. If the conversion is not possible an exception is\n          raised.\n\n        .. versionchanged:: 0.22\n           The default of ``validate`` changed from True to False.\n\n    accept_sparse : bool, default=False\n        Indicate that func accepts a sparse matrix as input. If validate is\n        False, this has no effect. Otherwise, if accept_sparse is false,\n        sparse matrix inputs will cause an exception to be raised.\n\n    check_inverse : bool, default=True\n       Whether to check that or ``func`` followed by ``inverse_func`` leads to\n       the original inputs. It can be used for a sanity check, raising a\n       warning when the condition is not fulfilled.\n\n       .. versionadded:: 0.20\n\n    feature_names_out : callable, 'one-to-one' or None, default=None\n        Determines the list of feature names that will be returned by the\n        `get_feature_names_out` method. If it is 'one-to-one', then the output\n        feature names will be equal to the input feature names. If it is a\n        callable, then it must take two positional arguments: this\n        `FunctionTransformer` (`self`) and an array-like of input feature names\n        (`input_features`). It must return an array-like of output feature\n        names. The `get_feature_names_out` method is only defined if\n        `feature_names_out` is not None.\n\n        See ``get_feature_names_out`` for more details.\n\n        .. versionadded:: 1.1\n\n    kw_args : dict, default=None\n        Dictionary of additional keyword arguments to pass to func.\n\n        .. versionadded:: 0.18\n\n    inv_kw_args : dict, default=None\n        Dictionary of additional keyword arguments to pass to inverse_func.\n\n        .. versionadded:: 0.18\n\n    Attributes\n    ----------\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X` has feature\n        names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    MaxAbsScaler : Scale each feature by its maximum absolute value.\n    StandardScaler : Standardize features by removing the mean and\n        scaling to unit variance.\n    LabelBinarizer : Binarize labels in a one-vs-all fashion.\n    MultiLabelBinarizer : Transform between iterable of iterables\n        and a multilabel format.\n\n    Notes\n    -----\n    If `func` returns an output with a `columns` attribute, then the columns is enforced\n    to be consistent with the output of `get_feature_names_out`.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.preprocessing import FunctionTransformer\n    >>> transformer = FunctionTransformer(np.log1p)\n    >>> X = np.array([[0, 1], [2, 3]])\n    >>> transformer.transform(X)\n    array([[0.       , 0.6931...],\n           [1.0986..., 1.3862...]])",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.preprocessing import FunctionTransformer\n    >>> transformer = FunctionTransformer(np.log1p)\n    >>> X = np.array([[0, 1], [2, 3]])\n    >>> transformer.transform(X)\n    array([[0.       , 0.6931...],\n           [1.0986..., 1.3862...]])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit transformer by checking X.\n\n        If ``validate`` is ``True``, ``X`` will be checked.\n\n        Parameters\n        ----------\n        X : {array-like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `func` can handle\n            Input array.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `func` can handle"
+              },
+              "Input": {
+                "type": "array.",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "FunctionTransformer": {
+                "type": "class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            FunctionTransformer class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit to data, then transform it.\n\n        Fits transformer to `X` and `y` with optional parameters `fit_params`\n        and returns a transformed version of `X`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input samples.\n\n        y :  array-like of shape (n_samples,) or (n_samples, n_outputs),                 default=None\n            Target values (None for unsupervised transformations).\n\n        **fit_params : dict\n            Additional fit parameters.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs),                 default=None"
+              },
+              "Target": {
+                "type": "values (None for unsupervised transformations).",
+                "description": "**fit_params : dict"
+              },
+              "Additional": {
+                "type": "fit parameters.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray array of shape (n_samples, n_features_new)",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "array.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray array of shape (n_samples, n_features_new)\n            Transformed array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        This method is only defined if `feature_names_out` is not None.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input feature names.\n\n            - If `input_features` is None, then `feature_names_in_` is\n              used as the input feature names. If `feature_names_in_` is not\n              defined, then names are generated:\n              `[x0, x1, ..., x(n_features_in_ - 1)]`.\n            - If `input_features` is array-like, then `input_features` must\n              match `feature_names_in_` if `feature_names_in_` is defined.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "feature names.",
+                "description": "- If `input_features` is None, then `feature_names_in_` is"
+              },
+              "used": {
+                "type": "as the input feature names. If `feature_names_in_` is not",
+                "description": "defined, then names are generated:\n`[x0, x1, ..., x(n_features_in_ - 1)]`.\n- If `input_features` is array-like, then `input_features` must"
+              },
+              "match": {
+                "type": "`feature_names_in_` if `feature_names_in_` is defined.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": "- If `feature_names_out` is 'one-to-one', the input feature names"
+              },
+              "are": {
+                "type": "returned (see `input_features` above). This requires",
+                "description": "`feature_names_in_` and/or `n_features_in_` to be defined, which"
+              },
+              "is": {
+                "type": "done automatically if `validate=True`. Alternatively, you can",
+                "description": ""
+              },
+              "set": {
+                "type": "them in `func`.",
+                "description": "- If `feature_names_out` is a callable, then it is called with two\narguments, `self` and `input_features`, and its return value is"
+              },
+              "returned": {
+                "type": "by this method.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.\n\n            - If `feature_names_out` is 'one-to-one', the input feature names\n              are returned (see `input_features` above). This requires\n              `feature_names_in_` and/or `n_features_in_` to be defined, which\n              is done automatically if `validate=True`. Alternatively, you can\n              set them in `func`.\n            - If `feature_names_out` is a callable, then it is called with two\n              arguments, `self` and `input_features`, and its return value is\n              returned by this method.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X)",
+          "documentation": {
+            "description": "Transform X using the inverse function.\n\n        Parameters\n        ----------\n        X : {array-like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `inverse_func` can handle\n            Input array.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `inverse_func` can handle"
+              },
+              "Input": {
+                "type": "array.",
+                "description": "Returns\n-------"
+              },
+              "X_out": {
+                "type": "array",
+                "description": "like, shape (n_samples, n_features)"
+              },
+              "Transformed": {
+                "type": "input.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_out : array-like, shape (n_samples, n_features)\n            Transformed input.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Transform X using the forward function.\n\n        Parameters\n        ----------\n        X : {array-like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `func` can handle\n            Input array.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse-matrix} of shape (n_samples, n_features)                 if `validate=True` else any object that `func` can handle"
+              },
+              "Input": {
+                "type": "array.",
+                "description": "Returns\n-------"
+              },
+              "X_out": {
+                "type": "array",
+                "description": "like, shape (n_samples, n_features)"
+              },
+              "Transformed": {
+                "type": "input.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_out : array-like, shape (n_samples, n_features)\n            Transformed input.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "HasMethods",
+      "documentation": {
+        "description": "Constraint representing objects that expose specific methods.\n\n    It is useful for parameters following a protocol and where we don't want to impose\n    an affiliation to a specific module or class.",
+        "parameters": {
+          "methods": {
+            "type": "str or list of str",
+            "description": ""
+          },
+          "The": {
+            "type": "method(s) that the object is expected to expose.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "is_satisfied_by",
+          "signature": "is_satisfied_by(self, val)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hidden",
+      "documentation": {
+        "description": "Class encapsulating a constraint not meant to be exposed to the user.",
+        "parameters": {
+          "constraint": {
+            "type": "str or _Constraint instance",
+            "description": ""
+          },
+          "The": {
+            "type": "constraint to be used internally.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "MetadataRouter",
+      "documentation": {
+        "description": "Stores and handles metadata routing for a router object.\n\n    This class is used by router objects to store and handle metadata routing.\n    Routing information is stored as a dictionary of the form ``{\"object_name\":\n    RouteMappingPair(method_mapping, routing_info)}``, where ``method_mapping``\n    is an instance of :class:`~sklearn.utils.metadata_routing.MethodMapping` and\n    ``routing_info`` is either a\n    :class:`~sklearn.utils.metadata_routing.MetadataRequest` or a\n    :class:`~sklearn.utils.metadata_routing.MetadataRouter` instance.\n\n    .. versionadded:: 1.3",
+        "parameters": {
+          "owner": {
+            "type": "str",
+            "description": ""
+          },
+          "The": {
+            "type": "name of the object to which these requests belong.",
+            "description": ""
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add",
+          "signature": "add(self, *, method_mapping, **objs)",
+          "documentation": {
+            "description": "Add named objects with their corresponding method mapping.\n\n        Parameters\n        ----------\n        method_mapping : MethodMapping\n            The mapping between the child and the parent's methods.\n\n        **objs : dict\n            A dictionary of objects from which metadata is extracted by calling\n            :func:`~sklearn.utils.metadata_routing.get_routing_for_object` on them.",
+            "parameters": {
+              "method_mapping": {
+                "type": "MethodMapping",
+                "description": ""
+              },
+              "The": {
+                "type": "mapping between the child and the parent's methods.",
+                "description": "**objs : dict"
+              },
+              "A": {
+                "type": "dictionary of objects from which metadata is extracted by calling",
+                "description": ":func:`~sklearn.utils.metadata_routing.get_routing_for_object` on them.\nReturns\n-------"
+              },
+              "self": {
+                "type": "MetadataRouter",
+                "description": ""
+              },
+              "Returns": {
+                "type": "`self`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MetadataRouter",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "add_self_request",
+          "signature": "add_self_request(self, obj)",
+          "documentation": {
+            "description": "Add `self` (as a consumer) to the routing.\n\n        This method is used if the router is also a consumer, and hence the\n        router itself needs to be included in the routing. The passed object\n        can be an estimator or a\n        :class:`~sklearn.utils.metadata_routing.MetadataRequest`.\n\n        A router should add itself using this method instead of `add` since it\n        should be treated differently than the other objects to which metadata\n        is routed by the router.\n\n        Parameters\n        ----------\n        obj : object\n            This is typically the router instance, i.e. `self` in a\n            ``get_metadata_routing()`` implementation. It can also be a\n            ``MetadataRequest`` instance.",
+            "parameters": {
+              "obj": {
+                "type": "object",
+                "description": ""
+              },
+              "This": {
+                "type": "is typically the router instance, i.e. `self` in a",
+                "description": "``get_metadata_routing()`` implementation. It can also be a\n``MetadataRequest`` instance.\nReturns\n-------"
+              },
+              "self": {
+                "type": "MetadataRouter",
+                "description": ""
+              },
+              "Returns": {
+                "type": "`self`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MetadataRouter",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "consumes",
+          "signature": "consumes(self, method, params)",
+          "documentation": {
+            "description": "Check whether the given parameters are consumed by the given method.\n\n        .. versionadded:: 1.4\n\n        Parameters\n        ----------\n        method : str\n            The name of the method to check.\n\n        params : iterable of str\n            An iterable of parameters to check.",
+            "parameters": {
+              "method": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method to check.",
+                "description": ""
+              },
+              "params": {
+                "type": "iterable of str",
+                "description": ""
+              },
+              "An": {
+                "type": "iterable of parameters to check.",
+                "description": "Returns\n-------"
+              },
+              "consumed": {
+                "type": "set of str",
+                "description": ""
+              },
+              "A": {
+                "type": "set of parameters which are consumed by the given method.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        consumed : set of str\n            A set of parameters which are consumed by the given method.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "route_params",
+          "signature": "route_params(self, *, caller, params)",
+          "documentation": {
+            "description": "Return the input parameters requested by child objects.\n\n        The output of this method is a :class:`~sklearn.utils.Bunch`, which includes the\n        metadata for all methods of each child object that is used in the router's\n        `caller` method.\n\n        If the router is also a consumer, it also checks for warnings of\n        `self`'s/consumer's requested metadata.\n\n        Parameters\n        ----------\n        caller : str\n            The name of the method for which the parameters are requested and\n            routed. If called inside the :term:`fit` method of a router, it\n            would be `\"fit\"`.\n\n        params : dict\n            A dictionary of provided metadata.",
+            "parameters": {
+              "caller": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method for which the parameters are requested and",
+                "description": "routed. If called inside the :term:`fit` method of a router, it"
+              },
+              "would": {
+                "type": "be `\"fit\"`.",
+                "description": ""
+              },
+              "params": {
+                "type": "Bunch",
+                "description": ""
+              },
+              "A": {
+                "type": "class:`~sklearn.utils.Bunch` of the form",
+                "description": "``{\"object_name\": {\"method_name\": {params: value}}}`` which can be"
+              },
+              "used": {
+                "type": "to pass the required metadata to corresponding methods or",
+                "description": ""
+              },
+              "corresponding": {
+                "type": "child objects.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : Bunch\n            A :class:`~sklearn.utils.Bunch` of the form\n            ``{\"object_name\": {\"method_name\": {params: value}}}`` which can be\n            used to pass the required metadata to corresponding methods or\n            corresponding child objects.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "validate_metadata",
+          "signature": "validate_metadata(self, *, method, params)",
+          "documentation": {
+            "description": "Validate given metadata for a method.\n\n        This raises a ``TypeError`` if some of the passed metadata are not\n        understood by child objects.",
+            "parameters": {
+              "method": {
+                "type": "str",
+                "description": ""
+              },
+              "The": {
+                "type": "name of the method for which the parameters are requested and",
+                "description": "routed. If called inside the :term:`fit` method of a router, it"
+              },
+              "would": {
+                "type": "be `\"fit\"`.",
+                "description": ""
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "A": {
+                "type": "dictionary of provided metadata.",
+                "description": ""
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MethodMapping",
+      "documentation": {
+        "description": "Stores the mapping between caller and callee methods for a router.\n\n    This class is primarily used in a ``get_metadata_routing()`` of a router\n    object when defining the mapping between the router's methods and a sub-object (a\n    sub-estimator or a scorer).\n\n    Iterating through an instance of this class yields\n    ``MethodPair(caller, callee)`` instances.\n\n    .. versionadded:: 1.3",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "add",
+          "signature": "add(self, *, caller, callee)",
+          "documentation": {
+            "description": "Add a method mapping.\n\n        Parameters\n        ----------\n\n        caller : str\n            Parent estimator's method name in which the ``callee`` is called.\n\n        callee : str\n            Child object's method name. This method is called in ``caller``.",
+            "parameters": {
+              "caller": {
+                "type": "str",
+                "description": ""
+              },
+              "Parent": {
+                "type": "estimator's method name in which the ``callee`` is called.",
+                "description": ""
+              },
+              "callee": {
+                "type": "str",
+                "description": ""
+              },
+              "Child": {
+                "type": "object's method name. This method is called in ``caller``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "MethodMapping",
+                "description": ""
+              },
+              "Returns": {
+                "type": "self.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : MethodMapping",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "NotFittedError",
+      "documentation": {
+        "description": "Exception class to raise if estimator is used before fitting.\n\n    This class inherits from both ValueError and AttributeError to help with\n    exception handling and backward compatibility.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> from sklearn.svm import LinearSVC\n    >>> from sklearn.exceptions import NotFittedError\n    >>> try:\n    ...     LinearSVC().predict([[1, 2], [2, 3], [3, 4]])\n    ... except NotFittedError as e:\n    ...     print(repr(e))\n    NotFittedError(\"This LinearSVC instance is not fitted yet. Call 'fit' with\n    appropriate arguments before using this estimator.\"...)\n\n    .. versionchanged:: 0.18\n       Moved from sklearn.utils.validation."
+      },
+      "methods": [
+        {
+          "name": "add_note",
+          "signature": "add_note(note)",
+          "documentation": {
+            "description": "Exception.add_note(note) --\n    add a note to the exception",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "with_traceback",
+          "signature": "with_traceback(tb)",
+          "documentation": {
+            "description": "Exception.with_traceback(tb) --\n    set self.__traceback__ to tb and return self.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Parallel",
+      "documentation": {
+        "description": "Tweak of :class:`joblib.Parallel` that propagates the scikit-learn configuration.\n\n    This subclass of :class:`joblib.Parallel` ensures that the active configuration\n    (thread-local) of scikit-learn is propagated to the parallel workers for the\n    duration of the execution of the parallel tasks.\n\n    The API does not change and you can refer to :class:`joblib.Parallel`\n    documentation for more details.\n\n    .. versionadded:: 1.3",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "debug",
+          "signature": "debug(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dispatch_next",
+          "signature": "dispatch_next(self)",
+          "documentation": {
+            "description": "Dispatch more data for parallel processing\n\n        This method is meant to be called concurrently by the multiprocessing\n        callback. We rely on the thread-safety of dispatch_one_batch to protect\n        against concurrent consumption of the unprotected iterator.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dispatch_one_batch",
+          "signature": "dispatch_one_batch(self, iterator)",
+          "documentation": {
+            "description": "Prefetch the tasks for the next batch and dispatch them.\n\n        The effective size of the batch is computed here.\n        If there are no more jobs to dispatch, return False, else return True.\n\n        The iterator consumption and dispatching is protected by the same\n        lock so calling this function should be thread safe.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "format",
+          "signature": "format(self, obj, indent=0)",
+          "documentation": {
+            "description": "Return the formatted representation of the object.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "info",
+          "signature": "info(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "print_progress",
+          "signature": "print_progress(self)",
+          "documentation": {
+            "description": "Display the process of the parallel execution only a fraction\n           of time, controlled by self.verbose.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "warn",
+          "signature": "warn(self, msg)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pipeline",
+      "documentation": {
+        "description": "A sequence of data transformers with an optional final predictor.\n\n    `Pipeline` allows you to sequentially apply a list of transformers to\n    preprocess the data and, if desired, conclude the sequence with a final\n    :term:`predictor` for predictive modeling.\n\n    Intermediate steps of the pipeline must be transformers, that is, they\n    must implement `fit` and `transform` methods.\n    The final :term:`estimator` only needs to implement `fit`.\n    The transformers in the pipeline can be cached using ``memory`` argument.\n\n    The purpose of the pipeline is to assemble several steps that can be\n    cross-validated together while setting different parameters. For this, it\n    enables setting parameters of the various steps using their names and the\n    parameter name separated by a `'__'`, as in the example below. A step's\n    estimator may be replaced entirely by setting the parameter with its name\n    to another estimator, or a transformer removed by setting it to\n    `'passthrough'` or `None`.\n\n    For an example use case of `Pipeline` combined with\n    :class:`~sklearn.model_selection.GridSearchCV`, refer to\n    :ref:`sphx_glr_auto_examples_compose_plot_compare_reduction.py`. The",
+        "parameters": {
+          "steps": {
+            "type": "list of tuples",
+            "description": ""
+          },
+          "List": {
+            "type": "of (name of step, estimator) tuples that are to be chained in",
+            "description": ""
+          },
+          "sequential": {
+            "type": "order. To be compatible with the scikit-learn API, all steps",
+            "description": ""
+          },
+          "must": {
+            "type": "define `fit`. All non-last steps must also define `transform`. See",
+            "description": ":ref:`Combining Estimators <combining_estimators>` for more details."
+          },
+          "transform_input": {
+            "type": "list of str, default=None",
+            "description": ""
+          },
+          "The": {
+            "type": "classes labels. Only exist if the last step of the pipeline is a",
+            "description": "classifier."
+          },
+          "pipeline": {
+            "type": "cannot be inspected directly. Use the attribute ``named_steps``",
+            "description": ""
+          },
+          "This": {
+            "type": "enables transforming some input arguments to ``fit`` (other than ``X``)",
+            "description": ""
+          },
+          "to": {
+            "type": "be transformed by the steps of the pipeline up to the step which requires",
+            "description": "them. Requirement is defined via :ref:`metadata routing <metadata_routing>`."
+          },
+          "For": {
+            "type": "instance, this can be used to pass a validation set through the pipeline.",
+            "description": ""
+          },
+          "You": {
+            "type": "can only set this if metadata routing is enabled, which you",
+            "description": ""
+          },
+          "can": {
+            "type": "enable using ``sklearn.set_config(enable_metadata_routing=True)``.",
+            "description": ".. versionadded:: 1.6"
+          },
+          "memory": {
+            "type": "str or object with the joblib.Memory interface, default=None",
+            "description": ""
+          },
+          "Used": {
+            "type": "to cache the fitted transformers of the pipeline. The last step",
+            "description": ""
+          },
+          "will": {
+            "type": "never be cached, even if it is a transformer. By default, no",
+            "description": ""
+          },
+          "caching": {
+            "type": "directory. Enabling caching triggers a clone of the transformers",
+            "description": ""
+          },
+          "before": {
+            "type": "fitting. Therefore, the transformer instance given to the",
+            "description": ""
+          },
+          "or": {
+            "type": "``steps`` to inspect estimators within the pipeline. Caching the",
+            "description": ""
+          },
+          "transformers": {
+            "type": "is advantageous when fitting is time consuming. See",
+            "description": ":ref:`sphx_glr_auto_examples_neighbors_plot_caching_nearest_neighbors.py`"
+          },
+          "for": {
+            "type": "an example on how to enable caching.",
+            "description": ""
+          },
+          "verbose": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "If": {
+            "type": "True, the time elapsed while fitting each step will be printed as it",
+            "description": ""
+          },
+          "is": {
+            "type": "completed.",
+            "description": "Attributes\n----------"
+          },
+          "named_steps": {
+            "type": ":class:`~sklearn.utils.Bunch`",
+            "description": "Dictionary-like object, with the following attributes.\nRead-only attribute to access any step parameter by user given name."
+          },
+          "Keys": {
+            "type": "are step names and values are steps parameters.",
+            "description": ""
+          },
+          "classes_": {
+            "type": "ndarray of shape (n_classes,)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "underlying": {
+            "type": "estimator exposes such an attribute when fit.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "when": {
+            "type": "fit.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Only defined if the",
+            "description": ""
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "make_pipeline": {
+            "type": "Convenience function for simplified pipeline construction.",
+            "description": "Examples\n--------\n>>> from sklearn.svm import SVC\n>>> from sklearn.preprocessing import StandardScaler\n>>> from sklearn.datasets import make_classification\n>>> from sklearn.model_selection import train_test_split\n>>> from sklearn.pipeline import Pipeline\n>>> X, y = make_classification(random_state=0)\n>>> X_train, X_test, y_train, y_test = train_test_split(X, y,\n...                                                     random_state=0)\n>>> pipe = Pipeline([('scaler', StandardScaler()), ('svc', SVC())])\n>>> # The pipeline can be used as any other estimator\n>>> # and avoids leaking the test set into the train set\n>>> pipe.fit(X_train, y_train).score(X_test, y_test)\n0.88\n>>> # An estimator's parameter can be set using '__' syntax\n>>> pipe.set_params(svc__C=10).fit(X_train, y_train).score(X_test, y_test)\n0.76"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    make_pipeline : Convenience function for simplified pipeline construction.\n\n    Examples\n    --------\n    >>> from sklearn.svm import SVC\n    >>> from sklearn.preprocessing import StandardScaler\n    >>> from sklearn.datasets import make_classification\n    >>> from sklearn.model_selection import train_test_split\n    >>> from sklearn.pipeline import Pipeline\n    >>> X, y = make_classification(random_state=0)\n    >>> X_train, X_test, y_train, y_test = train_test_split(X, y,\n    ...                                                     random_state=0)\n    >>> pipe = Pipeline([('scaler', StandardScaler()), ('svc', SVC())])\n    >>> # The pipeline can be used as any other estimator\n    >>> # and avoids leaking the test set into the train set\n    >>> pipe.fit(X_train, y_train).score(X_test, y_test)\n    0.88\n    >>> # An estimator's parameter can be set using '__' syntax\n    >>> pipe.set_params(svc__C=10).fit(X_train, y_train).score(X_test, y_test)\n    0.76",
+        "notes": "",
+        "examples": ":ref:`sphx_glr_auto_examples_compose_plot_digits_pipe.py` shows how\n    to grid search on a pipeline using `'__'` as a separator in the parameter names.\n\n    Read more in the :ref:`User Guide <pipeline>`.\n\n    .. versionadded:: 0.5\n\n    Parameters\n    ----------\n    steps : list of tuples\n        List of (name of step, estimator) tuples that are to be chained in\n        sequential order. To be compatible with the scikit-learn API, all steps\n        must define `fit`. All non-last steps must also define `transform`. See\n        :ref:`Combining Estimators <combining_estimators>` for more details.\n\n    transform_input : list of str, default=None\n        The names of the :term:`metadata` parameters that should be transformed by the\n        pipeline before passing it to the step consuming it.\n\n        This enables transforming some input arguments to ``fit`` (other than ``X``)\n        to be transformed by the steps of the pipeline up to the step which requires\n        them. Requirement is defined via :ref:`metadata routing <metadata_routing>`.\n        For instance, this can be used to pass a validation set through the pipeline.\n\n        You can only set this if metadata routing is enabled, which you\n        can enable using ``sklearn.set_config(enable_metadata_routing=True)``.\n\n        .. versionadded:: 1.6\n\n    memory : str or object with the joblib.Memory interface, default=None\n        Used to cache the fitted transformers of the pipeline. The last step\n        will never be cached, even if it is a transformer. By default, no\n        caching is performed. If a string is given, it is the path to the\n        caching directory. Enabling caching triggers a clone of the transformers\n        before fitting. Therefore, the transformer instance given to the\n        pipeline cannot be inspected directly. Use the attribute ``named_steps``\n        or ``steps`` to inspect estimators within the pipeline. Caching the\n        transformers is advantageous when fitting is time consuming. See\n        :ref:`sphx_glr_auto_examples_neighbors_plot_caching_nearest_neighbors.py`\n        for an example on how to enable caching.\n\n    verbose : bool, default=False\n        If True, the time elapsed while fitting each step will be printed as it\n        is completed.\n\n    Attributes\n    ----------\n    named_steps : :class:`~sklearn.utils.Bunch`\n        Dictionary-like object, with the following attributes.\n        Read-only attribute to access any step parameter by user given name.\n        Keys are step names and values are steps parameters.\n\n    classes_ : ndarray of shape (n_classes,)\n        The classes labels. Only exist if the last step of the pipeline is a\n        classifier.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`. Only defined if the\n        underlying first estimator in `steps` exposes such an attribute\n        when fit.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Only defined if the\n        underlying estimator exposes such an attribute when fit.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    make_pipeline : Convenience function for simplified pipeline construction.\n\n    Examples\n    --------\n    >>> from sklearn.svm import SVC\n    >>> from sklearn.preprocessing import StandardScaler\n    >>> from sklearn.datasets import make_classification\n    >>> from sklearn.model_selection import train_test_split\n    >>> from sklearn.pipeline import Pipeline\n    >>> X, y = make_classification(random_state=0)\n    >>> X_train, X_test, y_train, y_test = train_test_split(X, y,\n    ...                                                     random_state=0)\n    >>> pipe = Pipeline([('scaler', StandardScaler()), ('svc', SVC())])\n    >>> # The pipeline can be used as any other estimator\n    >>> # and avoids leaking the test set into the train set\n    >>> pipe.fit(X_train, y_train).score(X_test, y_test)\n    0.88\n    >>> # An estimator's parameter can be set using '__' syntax\n    >>> pipe.set_params(svc__C=10).fit(X_train, y_train).score(X_test, y_test)\n    0.76"
+      },
+      "methods": [
+        {
+          "name": "decision_function",
+          "signature": "decision_function(self, X, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `decision_function` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `decision_function` method. Only valid if the final estimator\n        implements `decision_function`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.\n\n        **params : dict of string -> object\n            Parameters requested and accepted by steps. Each step must have\n            requested certain metadata for these parameters to be forwarded to\n            them.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of string -> object"
+              }
+            },
+            "returns": "-------\n        y_score : ndarray of shape (n_samples, n_classes)\n            Result of calling `decision_function` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None, **params)",
+          "documentation": {
+            "description": "Fit the model.\n\n        Fit all the transformers one after the other and sequentially transform the\n        data. Finally, fit the transformed data using the final estimator.\n\n        Parameters\n        ----------\n        X : iterable\n            Training data. Must fulfill input requirements of first step of the\n            pipeline.\n\n        y : iterable, default=None\n            Training targets. Must fulfill label requirements for all steps of\n            the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters passed to the\n              ``fit`` method of each step, where each parameter name is prefixed such\n              that parameter ``p`` for step ``s`` has key ``s__p``.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True` is set via\n                :func:`~sklearn.set_config`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Training": {
+                "type": "targets. Must fulfill label requirements for all steps of",
+                "description": ""
+              },
+              "y": {
+                "type": "iterable, default=None",
+                "description": ""
+              },
+              "the": {
+                "type": "pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters passed to the\n``fit`` method of each step, where each parameter name is prefixed such"
+              },
+              "that": {
+                "type": "parameter ``p`` for step ``s`` has key ``s__p``.",
+                "description": "- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        self : object\n            Pipeline with fitted steps.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_predict",
+          "signature": "fit_predict(self, X, y=None, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `fit_predict` with the final estimator.\n\n        Call `fit_transform` of each transformer in the pipeline. The\n        transformed data are finally passed to the final estimator that calls\n        `fit_predict` method. Only valid if the final estimator implements\n        `fit_predict`.\n\n        Parameters\n        ----------\n        X : iterable\n            Training data. Must fulfill input requirements of first step of\n            the pipeline.\n\n        y : iterable, default=None\n            Training targets. Must fulfill label requirements for all steps\n            of the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters to the\n              ``predict`` called at the end of all transformations in the pipeline.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionadded:: 0.20\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Training": {
+                "type": "targets. Must fulfill label requirements for all steps",
+                "description": ""
+              },
+              "the": {
+                "type": "pipeline.",
+                "description": ""
+              },
+              "y": {
+                "type": "iterable, default=None",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters to the\n``predict`` called at the end of all transformations in the pipeline.\n- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionadded:: 0.20\n.. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        y_pred : ndarray\n            Result of calling `fit_predict` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that while this may be used to return uncertainties from some\n            models with ``return_std`` or ``return_cov``, uncertainties that are\n            generated by the transformations in the pipeline are not propagated\n            to the final estimator.\n\n        Returns\n        -------\n        y_pred : ndarray\n            Result of calling `fit_predict` on the final estimator.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **params)",
+          "documentation": {
+            "description": "Fit the model and transform with the final estimator.\n\n        Fit all the transformers one after the other and sequentially transform\n        the data. Only valid if the final estimator either implements\n        `fit_transform` or `fit` and `transform`.\n\n        Parameters\n        ----------\n        X : iterable\n            Training data. Must fulfill input requirements of first step of the\n            pipeline.\n\n        y : iterable, default=None\n            Training targets. Must fulfill label requirements for all steps of\n            the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters passed to the\n              ``fit`` method of each step, where each parameter name is prefixed such\n              that parameter ``p`` for step ``s`` has key ``s__p``.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Training": {
+                "type": "targets. Must fulfill label requirements for all steps of",
+                "description": ""
+              },
+              "y": {
+                "type": "iterable, default=None",
+                "description": ""
+              },
+              "the": {
+                "type": "pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters passed to the\n``fit`` method of each step, where each parameter name is prefixed such"
+              },
+              "that": {
+                "type": "parameter ``p`` for step ``s`` has key ``s__p``.",
+                "description": "- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        Xt : ndarray of shape (n_samples, n_transformed_features)\n            Transformed samples.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Transform input features using the pipeline.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input features.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "features.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRouter\n            A :class:`~sklearn.utils.metadata_routing.MetadataRouter` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "mapping of string to any",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "the parameters given in the constructor as well as the\n        estimators contained within the `steps` of the `Pipeline`.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X=None, *, Xt=None, **params)",
+          "documentation": {
+            "description": "Apply `inverse_transform` for each step in a reverse order.\n\n        All estimators in the pipeline must support `inverse_transform`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_transformed_features)\n            Data samples, where ``n_samples`` is the number of samples and\n            ``n_features`` is the number of features. Must fulfill\n            input requirements of last step of pipeline's\n            ``inverse_transform`` method.\n\n        Xt : array-like of shape (n_samples, n_transformed_features)\n            Data samples, where ``n_samples`` is the number of samples and\n            ``n_features`` is the number of features. Must fulfill\n            input requirements of last step of pipeline's\n            ``inverse_transform`` method.\n\n            .. deprecated:: 1.5\n                `Xt` was deprecated in 1.5 and will be removed in 1.7. Use `X` instead.\n\n        **params : dict of str -> object\n            Parameters requested and accepted by steps. Each step must have\n            requested certain metadata for these parameters to be forwarded to\n            them.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_transformed_features)"
+              },
+              "Data": {
+                "type": "samples, where ``n_samples`` is the number of samples and",
+                "description": "``n_features`` is the number of features. Must fulfill"
+              },
+              "input": {
+                "type": "requirements of last step of pipeline's",
+                "description": "``inverse_transform`` method.\n.. deprecated:: 1.5\n`Xt` was deprecated in 1.5 and will be removed in 1.7. Use `X` instead.\n**params : dict of str -> object"
+              },
+              "Xt": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_transformed_features)"
+              }
+            },
+            "returns": "-------\n        Xt : ndarray of shape (n_samples, n_features)\n            Inverse transformed data, that is, data in the original feature\n            space.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict",
+          "signature": "predict(self, X, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `predict` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls `predict`\n        method. Only valid if the final estimator implements `predict`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters to the\n              ``predict`` called at the end of all transformations in the pipeline.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionadded:: 0.20\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True` is set via\n                :func:`~sklearn.set_config`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters to the\n``predict`` called at the end of all transformations in the pipeline.\n- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionadded:: 0.20\n.. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        y_pred : ndarray\n            Result of calling `predict` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that while this may be used to return uncertainties from some\n            models with ``return_std`` or ``return_cov``, uncertainties that are\n            generated by the transformations in the pipeline are not propagated\n            to the final estimator.\n\n        Returns\n        -------\n        y_pred : ndarray\n            Result of calling `predict` on the final estimator.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_log_proba",
+          "signature": "predict_log_proba(self, X, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `predict_log_proba` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `predict_log_proba` method. Only valid if the final estimator\n        implements `predict_log_proba`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters to the\n              `predict_log_proba` called at the end of all transformations in the\n              pipeline.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionadded:: 0.20\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters to the\n`predict_log_proba` called at the end of all transformations in the\npipeline.\n- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionadded:: 0.20\n.. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        y_log_proba : ndarray of shape (n_samples, n_classes)\n            Result of calling `predict_log_proba` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "predict_proba",
+          "signature": "predict_proba(self, X, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `predict_proba` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `predict_proba` method. Only valid if the final estimator implements\n        `predict_proba`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.\n\n        **params : dict of str -> object\n            - If `enable_metadata_routing=False` (default): Parameters to the\n              `predict_proba` called at the end of all transformations in the pipeline.\n\n            - If `enable_metadata_routing=True`: Parameters requested and accepted by\n              steps. Each step must have requested certain metadata for these parameters\n              to be forwarded to them.\n\n            .. versionadded:: 0.20\n\n            .. versionchanged:: 1.4\n                Parameters are now passed to the ``transform`` method of the\n                intermediate steps as well, if requested, and if\n                `enable_metadata_routing=True`.\n\n            See :ref:`Metadata Routing User Guide <metadata_routing>` for more\n            details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of str -> object\n- If `enable_metadata_routing=False` (default): Parameters to the\n`predict_proba` called at the end of all transformations in the pipeline.\n- If `enable_metadata_routing=True`: Parameters requested and accepted by\nsteps. Each step must have requested certain metadata for these parameters"
+              },
+              "to": {
+                "type": "be forwarded to them.",
+                "description": ".. versionadded:: 0.20\n.. versionchanged:: 1.4"
+              }
+            },
+            "returns": "-------\n        y_proba : ndarray of shape (n_samples, n_classes)\n            Result of calling `predict_proba` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score",
+          "signature": "score(self, X, y=None, sample_weight=None, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `score` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `score` method. Only valid if the final estimator implements `score`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.\n\n        y : iterable, default=None\n            Targets used for scoring. Must fulfill label requirements for all\n            steps of the pipeline.\n\n        sample_weight : array-like, default=None\n            If not None, this argument is passed as ``sample_weight`` keyword\n            argument to the ``score`` method of the final estimator.\n\n        **params : dict of str -> object\n            Parameters requested and accepted by steps. Each step must have\n            requested certain metadata for these parameters to be forwarded to\n            them.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": ""
+              },
+              "y": {
+                "type": "iterable, default=None",
+                "description": ""
+              },
+              "Targets": {
+                "type": "used for scoring. Must fulfill label requirements for all",
+                "description": ""
+              },
+              "steps": {
+                "type": "of the pipeline.",
+                "description": ""
+              },
+              "sample_weight": {
+                "type": "array",
+                "description": "like, default=None"
+              },
+              "If": {
+                "type": "not None, this argument is passed as ``sample_weight`` keyword",
+                "description": ""
+              },
+              "argument": {
+                "type": "to the ``score`` method of the final estimator.",
+                "description": "**params : dict of str -> object"
+              }
+            },
+            "returns": "-------\n        score : float\n            Result of calling `score` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "score_samples",
+          "signature": "score_samples(self, X)",
+          "documentation": {
+            "description": "Transform the data, and apply `score_samples` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `score_samples` method. Only valid if the final estimator implements\n        `score_samples`.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to predict on. Must fulfill input requirements of first step\n            of the pipeline.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to predict on. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "Returns\n-------"
+              },
+              "y_score": {
+                "type": "ndarray of shape (n_samples,)",
+                "description": ""
+              },
+              "Result": {
+                "type": "of calling `score_samples` on the final estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        y_score : ndarray of shape (n_samples,)\n            Result of calling `score_samples` on the final estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set the output container when `\"transform\"` and `\"fit_transform\"` are called.\n\n        Calling `set_output` will set the output of all estimators in `steps`.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **kwargs)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        Valid parameter keys can be listed with ``get_params()``. Note that\n        you can directly set the parameters of the estimators contained in\n        `steps`.\n\n        Parameters\n        ----------\n        **kwargs : dict\n            Parameters of this estimator or parameters of estimators contained\n            in `steps`. Parameters of the steps may be set using its name and\n            the parameter name separated by a '__'.",
+            "parameters": {},
+            "returns": "-------\n        self : object\n            Pipeline class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_score_request",
+          "signature": "set_score_request(self: sklearn.pipeline.Pipeline, *, sample_weight: Union[bool, NoneType, str] = '$UNCHANGED$') -> sklearn.pipeline.Pipeline",
+          "documentation": {
+            "description": "Request metadata passed to the ``score`` method.",
+            "parameters": {
+              "sample_weight": {
+                "type": "str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED",
+                "description": ""
+              },
+              "Metadata": {
+                "type": "routing for ``sample_weight`` parameter in ``score``.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "updated object.",
+                "description": ""
+              },
+              "and": {
+                "type": "not others.",
+                "description": ".. versionadded:: 1.3\n.. note::"
+              },
+              "This": {
+                "type": "method is only relevant if this estimator is used as a",
+                "description": "sub-estimator of a meta-estimator, e.g. used inside a\n:class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect."
+              }
+            },
+            "returns": "-------\n        self : object\n            The updated object.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that this method is only relevant if\n        ``enable_metadata_routing=True`` (see :func:`sklearn.set_config`).\n        Please see :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.\n\n        The options for each parameter are:\n\n        - ``True``: metadata is requested, and passed to ``score`` if provided. The request is ignored if metadata is not provided.\n\n        - ``False``: metadata is not requested and the meta-estimator will not pass it to ``score``.\n\n        - ``None``: metadata is not requested, and the meta-estimator will raise an error if the user provides it.\n\n        - ``str``: metadata should be passed to the meta-estimator with this given alias instead of the original name.\n\n        The default (``sklearn.utils.metadata_routing.UNCHANGED``) retains the\n        existing request. This allows you to change the request for some\n        parameters and not others.\n\n        .. versionadded:: 1.3\n\n        .. note::\n            This method is only relevant if this estimator is used as a\n            sub-estimator of a meta-estimator, e.g. used inside a\n            :class:`~sklearn.pipeline.Pipeline`. Otherwise it has no effect.\n\n        Parameters\n        ----------\n        sample_weight : str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED\n            Metadata routing for ``sample_weight`` parameter in ``score``.\n\n        Returns\n        -------\n        self : object\n            The updated object.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X, **params)",
+          "documentation": {
+            "description": "Transform the data, and apply `transform` with the final estimator.\n\n        Call `transform` of each transformer in the pipeline. The transformed\n        data are finally passed to the final estimator that calls\n        `transform` method. Only valid if the final estimator\n        implements `transform`.\n\n        This also works where final estimator is `None` in which case all prior\n        transformations are applied.\n\n        Parameters\n        ----------\n        X : iterable\n            Data to transform. Must fulfill input requirements of first step\n            of the pipeline.\n\n        **params : dict of str -> object\n            Parameters requested and accepted by steps. Each step must have\n            requested certain metadata for these parameters to be forwarded to\n            them.\n\n            .. versionadded:: 1.4\n                Only available if `enable_metadata_routing=True`. See\n                :ref:`Metadata Routing User Guide <metadata_routing>` for more\n                details.",
+            "parameters": {
+              "X": {
+                "type": "iterable",
+                "description": ""
+              },
+              "Data": {
+                "type": "to transform. Must fulfill input requirements of first step",
+                "description": ""
+              },
+              "of": {
+                "type": "the pipeline.",
+                "description": "**params : dict of str -> object"
+              }
+            },
+            "returns": "-------\n        Xt : ndarray of shape (n_samples, n_transformed_features)\n            Transformed data.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "TransformerMixin",
+      "documentation": {
+        "description": "Mixin class for all transformers in scikit-learn.\n\n    This mixin defines the following functionality:\n\n    - a `fit_transform` method that delegates to `fit` and `transform`;\n    - a `set_output` method to output `X` as a specific container type.\n\n    If :term:`get_feature_names_out` is defined, then :class:`BaseEstimator` will\n    automatically wrap `transform` and `fit_transform` to follow the `set_output`\n    API. See the :ref:`developer_api_set_output` for details.\n\n    :class:`OneToOneFeatureMixin` and\n    :class:`ClassNamePrefixFeaturesOutMixin` are helpful mixins for\n    defining :term:`get_feature_names_out`.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.base import BaseEstimator, TransformerMixin\n    >>> class MyTransformer(TransformerMixin, BaseEstimator):\n    ...     def __init__(self, *, param=1):\n    ...         self.param = param\n    ...     def fit(self, X, y=None):\n    ...         return self\n    ...     def transform(self, X):\n    ...         return np.full(shape=len(X), fill_value=self.param)\n    >>> transformer = MyTransformer()\n    >>> X = [[1, 2], [2, 3], [3, 4]]\n    >>> transformer.fit_transform(X)\n    array([1, 1, 1])"
+      },
+      "methods": [
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit to data, then transform it.\n\n        Fits transformer to `X` and `y` with optional parameters `fit_params`\n        and returns a transformed version of `X`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input samples.\n\n        y :  array-like of shape (n_samples,) or (n_samples, n_outputs),                 default=None\n            Target values (None for unsupervised transformations).\n\n        **fit_params : dict\n            Additional fit parameters.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs),                 default=None"
+              },
+              "Target": {
+                "type": "values (None for unsupervised transformations).",
+                "description": "**fit_params : dict"
+              },
+              "Additional": {
+                "type": "fit parameters.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray array of shape (n_samples, n_features_new)",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "array.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray array of shape (n_samples, n_features_new)\n            Transformed array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "chain",
+      "documentation": {
+        "description": "chain(*iterables) --> chain object",
+        "parameters": {},
+        "returns": "a chain object whose .__next__() method returns elements from the\nfirst iterable until it is exhausted, then elements from the next\niterable, until all of the iterables are exhausted.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "from_iterable",
+          "signature": "from_iterable(iterable, /)",
+          "documentation": {
+            "description": "Alternative chain() constructor taking a single iterable argument that evaluates lazily.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "defaultdict",
+      "documentation": {
+        "description": "defaultdict(default_factory=None, /, [...]) --> dict with default factory\n\nThe default factory is called without arguments to produce\na new value when a key is not present, in __getitem__ only.\nA defaultdict compares equal to a dict with the same items.\nAll remaining arguments are treated the same as if they were\npassed to the dict constructor, including keyword arguments.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "clear",
+          "signature": "clear()",
+          "documentation": {
+            "description": "D.clear() -> None.  Remove all items from D.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy()",
+          "documentation": {
+            "description": "D.copy() -> a shallow copy of D.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fromkeys",
+          "signature": "fromkeys(iterable, value=None, /)",
+          "documentation": {
+            "description": "Create a new dictionary with keys from iterable and values set to value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get",
+          "signature": "get(self, key, default=None, /)",
+          "documentation": {
+            "description": "Return the value for key if key is in the dictionary, else default.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "items",
+          "signature": "items()",
+          "documentation": {
+            "description": "D.items() -> a set-like object providing a view on D's items",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "keys",
+          "signature": "keys()",
+          "documentation": {
+            "description": "D.keys() -> a set-like object providing a view on D's keys",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "pop",
+          "signature": "pop(k[,d])",
+          "documentation": {
+            "description": "D.pop(k[,d]) -> v, remove specified key and return the corresponding value.\n\nIf the key is not found, return the default if given; otherwise,\nraise a KeyError.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "popitem",
+          "signature": "popitem(self, /)",
+          "documentation": {
+            "description": "Remove and return a (key, value) pair as a 2-tuple.\n\nPairs are returned in LIFO (last-in, first-out) order.",
+            "parameters": {},
+            "returns": "",
+            "raises": "KeyError if the dict is empty.",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setdefault",
+          "signature": "setdefault(self, key, default=None, /)",
+          "documentation": {
+            "description": "Insert key with a value of default if key is not in the dictionary.",
+            "parameters": {},
+            "returns": "the value for key if key is in the dictionary, else default.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "update",
+          "signature": "update([E, ]**F)",
+          "documentation": {
+            "description": "D.update([E, ]**F) -> None.  Update D from dict/iterable E and F.\nIf E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]\nIf E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v\nIn either case, this is followed by: for k in F:  D[k] = F[k]",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "values",
+          "signature": "values()",
+          "documentation": {
+            "description": "D.values() -> an object providing a view on D's values",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "islice",
+      "documentation": {
+        "description": "islice(iterable, stop) --> islice object\nislice(iterable, start, stop[, step]) --> islice object",
+        "parameters": {},
+        "returns": "an iterator whose next() method returns selected values from an\niterable.  If start is specified, will skip all preceding elements;\notherwise, start defaults to zero.  Step defaults to one.  If\nspecified as another value, step determines how many values are\nskipped between successive calls.  Works like a slice() on a list\nbut returns an iterator.",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    }
+  ]
+}

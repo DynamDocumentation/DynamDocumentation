@@ -1,0 +1,5 @@
+{
+  "description": "Topical documentation\n=====================\n\nThe following topics are available:\n\n- constants\n- ufuncs\n\nYou can view them by\n\n>>> help(np.doc.TOPIC)                                      #doctest: +SKIP",
+  "functions": [],
+  "classes": []
+}

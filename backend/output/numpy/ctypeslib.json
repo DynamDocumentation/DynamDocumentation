@@ -1,0 +1,1875 @@
+{
+  "description": "============================\n``ctypes`` Utility Functions\n============================\n\nSee Also\n--------\nload_library : Load a C library.\nndpointer : Array restype/argtype with verification.\nas_ctypes : Create a ctypes array from an ndarray.\nas_array : Create an ndarray from a ctypes array.\n\nReferences\n----------\n.. [1] \"SciPy Cookbook: ctypes\", https://scipy-cookbook.readthedocs.io/items/Ctypes.html\n\nExamples\n--------\nLoad the C library:\n\n>>> _lib = np.ctypeslib.load_library('libmystuff', '.')     #doctest: +SKIP\n\nOur result type, an ndarray that must be of type double, be 1-dimensional\nand is C-contiguous in memory:\n\n>>> array_1d_double = np.ctypeslib.ndpointer(\n...                          dtype=np.double,\n...                          ndim=1, flags='CONTIGUOUS')    #doctest: +SKIP\n\nOur C-function typically takes an array and updates its values\nin-place.  For example::\n\n    void foo_func(double* x, int length)\n    {\n        int i;\n        for (i = 0; i < length; i++) {\n            x[i] = i*i;\n        }\n    }\n\nWe wrap it using:\n\n>>> _lib.foo_func.restype = None                      #doctest: +SKIP\n>>> _lib.foo_func.argtypes = [array_1d_double, c_int] #doctest: +SKIP\n\nThen, we're ready to call ``foo_func``:\n\n>>> out = np.empty(15, dtype=np.double)\n>>> _lib.foo_func(out, len(out))                #doctest: +SKIP",
+  "functions": [
+    {
+      "name": "as_array",
+      "signature": "as_array(obj, shape=None)",
+      "documentation": {
+        "description": "Create a numpy array from a ctypes array or POINTER.\n\n        The numpy array shares the memory with the ctypes object.\n\n        The shape parameter must be given if converting from a ctypes POINTER.\n        The shape parameter is ignored if converting from a ctypes array",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "as_ctypes",
+      "signature": "as_ctypes(obj)",
+      "documentation": {
+        "description": "Create and return a ctypes object from a numpy array.  Actually\n        anything that exposes the __array_interface__ is accepted.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "as_ctypes_type",
+      "signature": "as_ctypes_type(dtype)",
+      "documentation": {
+        "description": "Convert a dtype into a ctypes type.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "asarray",
+      "signature": "asarray(a, dtype=None, order=None, *, like=None)",
+      "documentation": {
+        "description": "asarray(a, dtype=None, order=None, *, like=None)\n\n    Convert the input to an array.",
+        "parameters": {
+          "dtype": {
+            "type": "data-type",
+            "description": "By default, the data-type is inferred from the input data."
+          },
+          "order": {
+            "type": "{'C'",
+            "description": ", 'F', 'A', 'K'}, optional\n        Memory layout.  'A' and 'K' depend on the order of input array a.\n        'C' row-major (C-style),\n        'F' column-major (Fortran-style) memory representation.\n        'A' (any) means 'F' if `a` is Fortran contiguous, 'C' otherwise\n        'K' (keep) preserve input order\n        Defaults to 'K'."
+          },
+          "like": {
+            "type": "array_like",
+            "description": "Reference object to allow the creation of arrays which are not\n        NumPy arrays. If an array-like passed in as ``like`` supports\n        the ``__array_function__`` protocol, the result will be defined\n        by it. In this case, it ensures the creation of an array object\n        compatible with that passed in via this argument.\n\n        .. versionadded:: 1.20.0"
+          },
+          "ascontiguousarray": {
+            "type": "Convert input to a contiguous array.",
+            "description": ""
+          },
+          "asfarray": {
+            "type": "Convert input to a floating point ndarray.",
+            "description": ""
+          },
+          "asfortranarray": {
+            "type": "Convert input to an ndarray with column-major",
+            "description": "memory order."
+          },
+          "asarray_chkfinite": {
+            "type": "Similar function which checks input for NaNs and Infs.",
+            "description": ""
+          },
+          "fromiter": {
+            "type": "Create an array from an iterator.",
+            "description": ""
+          },
+          "fromfunction": {
+            "type": "Construct an array by executing a function on grid",
+            "description": "positions."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "frombuffer",
+      "signature": "frombuffer(buffer, dtype=float, count=-1, offset=0, *, like=None)",
+      "documentation": {
+        "description": "frombuffer(buffer, dtype=float, count=-1, offset=0, *, like=None)\n\n    Interpret a buffer as a 1-dimensional array.",
+        "parameters": {
+          "dtype": {
+            "type": "data-type",
+            "description": "Data-type of the returned array; default: float."
+          },
+          "count": {
+            "type": "int",
+            "description": "Number of items to read. ``-1`` means all data in the buffer."
+          },
+          "offset": {
+            "type": "int",
+            "description": "Start reading the buffer from this offset (in bytes); default: 0."
+          },
+          "like": {
+            "type": "array_like",
+            "description": "Reference object to allow the creation of arrays which are not\n        NumPy arrays. If an array-like passed in as ``like`` supports\n        the ``__array_function__`` protocol, the result will be defined\n        by it. In this case, it ensures the creation of an array object\n        compatible with that passed in via this argument.\n\n        .. versionadded:: 1.20.0"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "load_library",
+      "signature": "load_library(libname, loader_path)",
+      "documentation": {
+        "description": "It is possible to load a library using\n\n        >>> lib = ctypes.cdll[<full_path_name>] # doctest: +SKIP\n\n        But there are cross-platform considerations, such as library file extensions,\n        plus the fact Windows will just load the first library it finds with that name.\n        NumPy supplies the load_library function as a convenience.\n\n        .. versionchanged:: 1.20.0\n            Allow libname and loader_path to take any\n            :term:`python:path-like object`.",
+        "parameters": {
+          "loader_path": {
+            "type": "path-like",
+            "description": "Where the library can be found."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    },
+    {
+      "name": "ndpointer",
+      "signature": "ndpointer(dtype=None, ndim=None, shape=None, flags=None)",
+      "documentation": {
+        "description": "Array-checking restype/argtypes.\n\n    An ndpointer instance is used to describe an ndarray in restypes\n    and argtypes specifications.  This approach is more flexible than\n    using, for example, ``POINTER(c_double)``, since several restrictions\n    can be specified, which are verified upon calling the ctypes function.\n    These include data type, number of dimensions, shape and flags.  If a\n    given array does not satisfy the specified restrictions,\n    a ``TypeError`` is raised.",
+        "parameters": {
+          "ndim": {
+            "type": "int",
+            "description": "Number of array dimensions."
+          },
+          "shape": {
+            "type": "tuple of ints",
+            "description": "Array shape."
+          },
+          "flags": {
+            "type": "str or tuple of str",
+            "description": "Array flags; may be one or more of:\n\n          - C_CONTIGUOUS / C / CONTIGUOUS\n          - F_CONTIGUOUS / F / FORTRAN\n          - OWNDATA / O\n          - WRITEABLE / W\n          - ALIGNED / A\n          - WRITEBACKIFCOPY / X"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      }
+    }
+  ],
+  "classes": [
+    {
+      "name": "c_intp",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "flagsobj",
+      "documentation": {
+        "description": "",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": []
+    },
+    {
+      "name": "integer",
+      "documentation": {
+        "description": "Abstract base class of all integer scalar types.",
+        "parameters": {},
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "all",
+          "signature": "all(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.all`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "any",
+          "signature": "any(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.any`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argmax",
+          "signature": "argmax(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.argmax`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argmin",
+          "signature": "argmin(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.argmin`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argsort",
+          "signature": "argsort(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.argsort`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "astype",
+          "signature": "astype(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.astype`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "byteswap",
+          "signature": "byteswap(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.byteswap`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "choose",
+          "signature": "choose(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.choose`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "clip",
+          "signature": "clip(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.clip`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "compress",
+          "signature": "compress(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.compress`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conj",
+          "signature": "conj(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conjugate",
+          "signature": "conjugate(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.conjugate`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.copy`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cumprod",
+          "signature": "cumprod(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.cumprod`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cumsum",
+          "signature": "cumsum(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.cumsum`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "diagonal",
+          "signature": "diagonal(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.diagonal`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dump",
+          "signature": "dump(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.dump`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dumps",
+          "signature": "dumps(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.dumps`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fill",
+          "signature": "fill(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.fill`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "flatten",
+          "signature": "flatten(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.flatten`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "getfield",
+          "signature": "getfield(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.getfield`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "is_integer",
+          "signature": "is_integer()",
+          "documentation": {
+            "description": "integer.is_integer() -> bool\n\n    Return ``True`` if the number is finite with integral value.\n\n    .. versionadded:: 1.22",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ">>> np.int64(-2).is_integer()\n    True\n    >>> np.uint32(5).is_integer()\n    True"
+          }
+        },
+        {
+          "name": "item",
+          "signature": "item(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.item`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "itemset",
+          "signature": "itemset(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.itemset`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "max",
+          "signature": "max(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.max`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "mean",
+          "signature": "mean(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.mean`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "min",
+          "signature": "min(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.min`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(new_order='S', /)",
+          "documentation": {
+            "description": "newbyteorder(new_order='S', /)\n\n    Return a new `dtype` with a different byte order.\n\n    Changes are also made in all fields and sub-arrays of the data type.\n\n    The `new_order` code can be any from the following:\n\n    * 'S' - swap dtype from current to opposite endian\n    * {'<', 'little'} - little endian\n    * {'>', 'big'} - big endian\n    * {'=', 'native'} - native order\n    * {'|', 'I'} - ignore (no change to byte order)",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nonzero",
+          "signature": "nonzero(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.nonzero`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "prod",
+          "signature": "prod(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.prod`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "ptp",
+          "signature": "ptp(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.ptp`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "put",
+          "signature": "put(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.put`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "ravel",
+          "signature": "ravel(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.ravel`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "repeat",
+          "signature": "repeat(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.repeat`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reshape",
+          "signature": "reshape(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.reshape`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resize",
+          "signature": "resize(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.resize`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "round",
+          "signature": "round(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.round`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "searchsorted",
+          "signature": "searchsorted(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.searchsorted`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setfield",
+          "signature": "setfield(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.setfield`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setflags",
+          "signature": "setflags(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.setflags`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sort",
+          "signature": "sort(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.sort`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "squeeze",
+          "signature": "squeeze(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.squeeze`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "std",
+          "signature": "std(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.std`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sum",
+          "signature": "sum(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.sum`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "swapaxes",
+          "signature": "swapaxes(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.swapaxes`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "take",
+          "signature": "take(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.take`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tobytes",
+          "signature": "tobytes(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tofile",
+          "signature": "tofile(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.tofile`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tolist",
+          "signature": "tolist(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.tolist`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tostring",
+          "signature": "tostring(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.tostring`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "trace",
+          "signature": "trace(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.trace`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transpose",
+          "signature": "transpose(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.transpose`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "var",
+          "signature": "var(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.var`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "view",
+          "signature": "view(...)",
+          "documentation": {
+            "description": "Scalar method identical to the corresponding array attribute.\n\n    Please see `ndarray.view`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "ndarray",
+      "documentation": {
+        "description": "ndarray(shape, dtype=float, buffer=None, offset=0,\n            strides=None, order=None)\n\n    An array object represents a multidimensional, homogeneous array\n    of fixed-size items.  An associated data-type object describes the\n    format of each element in the array (its byte-order, how many bytes it\n    occupies in memory, whether it is an integer, a floating point number,\n    or something else, etc.)\n\n    Arrays should be constructed using `array`, `zeros` or `empty` (refer\n    to the See Also section below).  The parameters given here refer to\n    a low-level method (`ndarray(...)`) for instantiating an array.\n\n    For more information, refer to the `numpy` module and examine the\n    methods and attributes of an array.",
+        "parameters": {
+          "shape": {
+            "type": "tuple of ints",
+            "description": "Shape of the array."
+          },
+          "dtype": {
+            "type": "Create a data-type.",
+            "description": "numpy.typing.NDArray : An ndarray alias :term:`generic <generic type>`\n                           w.r.t. its `dtype.type <numpy.dtype.type>`."
+          },
+          "buffer": {
+            "type": "object exposing buffer interface",
+            "description": "Used to fill the array with data."
+          },
+          "offset": {
+            "type": "int",
+            "description": "Offset of array data in buffer."
+          },
+          "strides": {
+            "type": "tuple of ints",
+            "description": "The step-size required to move from one element to the next in\n        memory. For example, a contiguous ``(3, 4)`` array of type\n        ``int16`` in C-order has strides ``(8, 2)``.  This implies that\n        to move from element to element in memory requires jumps of 2 bytes.\n        To move from row-to-row, one needs to jump 8 bytes at a time\n        (``2 * 4``)."
+          },
+          "order": {
+            "type": "{'C'",
+            "description": ", 'F'}, optional\n        Row-major (C-style) or column-major (Fortran-style) order.\n\n    Attributes\n    ----------"
+          },
+          "T": {
+            "type": "ndarray",
+            "description": "Transpose of the array."
+          },
+          "data": {
+            "type": "buffer",
+            "description": "The array's elements, in memory."
+          },
+          "flags": {
+            "type": "dict",
+            "description": "Dictionary containing information related to memory use, e.g.,\n        'C_CONTIGUOUS', 'OWNDATA', 'WRITEABLE', etc."
+          },
+          "flat": {
+            "type": "numpy.flatiter object",
+            "description": "Flattened version of the array as an iterator.  The iterator\n        allows assignments, e.g., ``x.flat = 3`` (See `ndarray.flat` for\n        assignment examples; TODO)."
+          },
+          "imag": {
+            "type": "ndarray",
+            "description": "Imaginary part of the array."
+          },
+          "real": {
+            "type": "ndarray",
+            "description": "Real part of the array."
+          },
+          "size": {
+            "type": "int",
+            "description": "Number of elements in the array."
+          },
+          "itemsize": {
+            "type": "int",
+            "description": "The memory use of each array element in bytes."
+          },
+          "nbytes": {
+            "type": "int",
+            "description": "The total number of bytes required to store the array data,\n        i.e., ``itemsize * size``."
+          },
+          "ndim": {
+            "type": "int",
+            "description": "The array's number of dimensions."
+          },
+          "ctypes": {
+            "type": "ctypes object",
+            "description": "Class containing properties of the array needed for interaction\n        with ctypes."
+          },
+          "base": {
+            "type": "ndarray",
+            "description": "If the array is a view into another array, that array is its `base`\n        (unless that array is also a view).  The `base` array is where the\n        array data is actually stored."
+          },
+          "zeros": {
+            "type": "Create an array",
+            "description": ", each element of which is zero."
+          },
+          "empty": {
+            "type": "Create an array",
+            "description": ", but leave its allocated memory unchanged (i.e.,\n            it contains \"garbage\")."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "",
+        "notes": "",
+        "examples": ""
+      },
+      "methods": [
+        {
+          "name": "all",
+          "signature": "all(axis=None, out=None, keepdims=False, *, where=True)",
+          "documentation": {
+            "description": "a.all(axis=None, out=None, keepdims=False, *, where=True)\n\n    Returns True if all elements evaluate to True.\n\n    Refer to `numpy.all` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.all : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "any",
+          "signature": "any(axis=None, out=None, keepdims=False, *, where=True)",
+          "documentation": {
+            "description": "a.any(axis=None, out=None, keepdims=False, *, where=True)\n\n    Returns True if any of the elements of `a` evaluate to True.\n\n    Refer to `numpy.any` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.any : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argmax",
+          "signature": "argmax(axis=None, out=None, *, keepdims=False)",
+          "documentation": {
+            "description": "a.argmax(axis=None, out=None, *, keepdims=False)\n\n    Return indices of the maximum values along the given axis.\n\n    Refer to `numpy.argmax` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.argmax : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argmin",
+          "signature": "argmin(axis=None, out=None, *, keepdims=False)",
+          "documentation": {
+            "description": "a.argmin(axis=None, out=None, *, keepdims=False)\n\n    Return indices of the minimum values along the given axis.\n\n    Refer to `numpy.argmin` for detailed documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.argmin : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argpartition",
+          "signature": "argpartition(kth, axis=-1, kind='introselect', order=None)",
+          "documentation": {
+            "description": "a.argpartition(kth, axis=-1, kind='introselect', order=None)\n\n    Returns the indices that would partition this array.\n\n    Refer to `numpy.argpartition` for full documentation.\n\n    .. versionadded:: 1.8.0",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.argpartition : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "argsort",
+          "signature": "argsort(axis=-1, kind=None, order=None)",
+          "documentation": {
+            "description": "a.argsort(axis=-1, kind=None, order=None)\n\n    Returns the indices that would sort this array.\n\n    Refer to `numpy.argsort` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.argsort : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "astype",
+          "signature": "astype(dtype, order='K', casting='unsafe', subok=True, copy=True)",
+          "documentation": {
+            "description": "a.astype(dtype, order='K', casting='unsafe', subok=True, copy=True)\n\n    Copy of the array, cast to a specified type.",
+            "parameters": {
+              "order": {
+                "type": "{'C'",
+                "description": ", 'F', 'A', 'K'}, optional\n        Controls the memory layout order of the result.\n        'C' means C order, 'F' means Fortran order, 'A'\n        means 'F' order if all the arrays are Fortran contiguous,\n        'C' order otherwise, and 'K' means as close to the\n        order the array elements appear in memory as possible.\n        Default is 'K'."
+              },
+              "casting": {
+                "type": "{'no'",
+                "description": ", 'equiv', 'safe', 'same_kind', 'unsafe'}, optional\n        Controls what kind of data casting may occur. Defaults to 'unsafe'\n        for backwards compatibility.\n\n          * 'no' means the data types should not be cast at all.\n          * 'equiv' means only byte-order changes are allowed.\n          * 'safe' means only casts which can preserve values are allowed.\n          * 'same_kind' means only safe casts or casts within a kind,\n            like float64 to float32, are allowed.\n          * 'unsafe' means any data conversions may be done."
+              },
+              "subok": {
+                "type": "bool",
+                "description": "If True, then sub-classes will be passed-through (default), otherwise\n        the returned array will be forced to be a base-class array."
+              },
+              "copy": {
+                "type": "bool",
+                "description": "By default, astype always returns a newly allocated array. If this\n        is set to false, and the `dtype`, `order`, and `subok`\n        requirements are satisfied, the input array is returned instead\n        of a copy."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "byteswap",
+          "signature": "byteswap(inplace=False)",
+          "documentation": {
+            "description": "a.byteswap(inplace=False)\n\n    Swap the bytes of the array elements\n\n    Toggle between low-endian and big-endian data representation by\n    returning a byteswapped array, optionally swapped in-place.\n    Arrays of byte-strings are not swapped. The real and imaginary\n    parts of a complex number are swapped individually.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "choose",
+          "signature": "choose(choices, out=None, mode='raise')",
+          "documentation": {
+            "description": "a.choose(choices, out=None, mode='raise')\n\n    Use an index array to construct a new array from a set of choices.\n\n    Refer to `numpy.choose` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.choose : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "clip",
+          "signature": "clip(min=None, max=None, out=None, **kwargs)",
+          "documentation": {
+            "description": "a.clip(min=None, max=None, out=None, **kwargs)\n\n    Return an array whose values are limited to ``[min, max]``.\n    One of max or min must be given.\n\n    Refer to `numpy.clip` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.clip : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "compress",
+          "signature": "compress(condition, axis=None, out=None)",
+          "documentation": {
+            "description": "a.compress(condition, axis=None, out=None)\n\n    Return selected slices of this array along given axis.\n\n    Refer to `numpy.compress` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.compress : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conj",
+          "signature": "conj()",
+          "documentation": {
+            "description": "a.conj()\n\n    Complex-conjugate all elements.\n\n    Refer to `numpy.conjugate` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.conjugate : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "conjugate",
+          "signature": "conjugate()",
+          "documentation": {
+            "description": "a.conjugate()\n\n    Return the complex conjugate, element-wise.\n\n    Refer to `numpy.conjugate` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.conjugate : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "copy",
+          "signature": "copy(order='C')",
+          "documentation": {
+            "description": "a.copy(order='C')\n\n    Return a copy of the array.",
+            "parameters": {
+              "function": {
+                "type": "func:`numpy.copy` is similar",
+                "description": ", but it defaults to using order 'K',\n    and will not pass sub-classes through by default."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cumprod",
+          "signature": "cumprod(axis=None, dtype=None, out=None)",
+          "documentation": {
+            "description": "a.cumprod(axis=None, dtype=None, out=None)\n\n    Return the cumulative product of the elements along the given axis.\n\n    Refer to `numpy.cumprod` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.cumprod : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "cumsum",
+          "signature": "cumsum(axis=None, dtype=None, out=None)",
+          "documentation": {
+            "description": "a.cumsum(axis=None, dtype=None, out=None)\n\n    Return the cumulative sum of the elements along the given axis.\n\n    Refer to `numpy.cumsum` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.cumsum : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "diagonal",
+          "signature": "diagonal(offset=0, axis1=0, axis2=1)",
+          "documentation": {
+            "description": "a.diagonal(offset=0, axis1=0, axis2=1)\n\n    Return specified diagonals. In NumPy 1.9 the returned array is a\n    read-only view instead of a copy as in previous NumPy versions.  In\n    a future version the read-only restriction will be removed.\n\n    Refer to :func:`numpy.diagonal` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.diagonal : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dot",
+          "signature": "dot(...)",
+          "documentation": {
+            "description": "",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dump",
+          "signature": "dump(file)",
+          "documentation": {
+            "description": "a.dump(file)\n\n    Dump a pickle of the array to the specified file.\n    The array can be read back with pickle.load or numpy.load.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "dumps",
+          "signature": "dumps()",
+          "documentation": {
+            "description": "a.dumps()\n\n    Returns the pickle of the array as a string.\n    pickle.loads will convert the string back to an array.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fill",
+          "signature": "fill(value)",
+          "documentation": {
+            "description": "a.fill(value)\n\n    Fill the array with a scalar value.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "flatten",
+          "signature": "flatten(order='C')",
+          "documentation": {
+            "description": "a.flatten(order='C')\n\n    Return a copy of the array collapsed into one dimension.",
+            "parameters": {
+              "flat": {
+                "type": "A 1-D flat iterator over the array.",
+                "description": ""
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "getfield",
+          "signature": "getfield(dtype, offset=0)",
+          "documentation": {
+            "description": "a.getfield(dtype, offset=0)\n\n    Returns a field of the given array as a certain type.\n\n    A field is a view of the array data with a given data-type. The values in\n    the view are determined by the given type and the offset into the current\n    array in bytes. The offset needs to be such that the view dtype fits in the\n    array dtype; for example an array of dtype complex128 has 16-byte elements.\n    If taking a view with a 32-bit integer (4 bytes), the offset needs to be\n    between 0 and 12 bytes.",
+            "parameters": {
+              "offset": {
+                "type": "int",
+                "description": "Number of bytes to skip before beginning the element view."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "item",
+          "signature": "item(*args)",
+          "documentation": {
+            "description": "a.item(*args)\n\n    Copy an element of an array to a standard Python scalar and return it.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "itemset",
+          "signature": "itemset(*args)",
+          "documentation": {
+            "description": "a.itemset(*args)\n\n    Insert scalar into an array (scalar is cast to array's dtype, if possible)\n\n    There must be at least 1 argument, and define the last argument\n    as *item*.  Then, ``a.itemset(*args)`` is equivalent to but faster\n    than ``a[args] = item``.  The item should be a scalar value and `args`\n    must select a single item in the array `a`.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "max",
+          "signature": "max(axis=None, out=None, keepdims=False, initial=<no value>, where=True)",
+          "documentation": {
+            "description": "a.max(axis=None, out=None, keepdims=False, initial=<no value>, where=True)\n\n    Return the maximum along a given axis.\n\n    Refer to `numpy.amax` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.amax : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "mean",
+          "signature": "mean(axis=None, dtype=None, out=None, keepdims=False, *, where=True)",
+          "documentation": {
+            "description": "a.mean(axis=None, dtype=None, out=None, keepdims=False, *, where=True)\n\n    Returns the average of the array elements along given axis.\n\n    Refer to `numpy.mean` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.mean : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "min",
+          "signature": "min(axis=None, out=None, keepdims=False, initial=<no value>, where=True)",
+          "documentation": {
+            "description": "a.min(axis=None, out=None, keepdims=False, initial=<no value>, where=True)\n\n    Return the minimum along a given axis.\n\n    Refer to `numpy.amin` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.amin : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "newbyteorder",
+          "signature": "newbyteorder(new_order='S', /)",
+          "documentation": {
+            "description": "arr.newbyteorder(new_order='S', /)\n\n    Return the array with the same data viewed with a different byte order.\n\n    Equivalent to::\n\n        arr.view(arr.dtype.newbytorder(new_order))\n\n    Changes are also made in all fields and sub-arrays of the array data\n    type.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "nonzero",
+          "signature": "nonzero()",
+          "documentation": {
+            "description": "a.nonzero()\n\n    Return the indices of the elements that are non-zero.\n\n    Refer to `numpy.nonzero` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.nonzero : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "partition",
+          "signature": "partition(kth, axis=-1, kind='introselect', order=None)",
+          "documentation": {
+            "description": "a.partition(kth, axis=-1, kind='introselect', order=None)\n\n    Rearranges the elements in the array in such a way that the value of the\n    element in kth position is in the position it would be in a sorted array.\n    All elements smaller than the kth element are moved before this element and\n    all equal or greater are moved behind it. The ordering of the elements in\n    the two partitions is undefined.\n\n    .. versionadded:: 1.8.0",
+            "parameters": {
+              "axis": {
+                "type": "int",
+                "description": "Axis along which to sort. Default is -1, which means sort along the\n        last axis."
+              },
+              "kind": {
+                "type": "{'introselect'}",
+                "description": "Selection algorithm. Default is 'introselect'."
+              },
+              "order": {
+                "type": "str or list of str",
+                "description": "When `a` is an array with fields defined, this argument specifies\n        which fields to compare first, second, etc. A single field can\n        be specified as a string, and not all fields need to be specified,\n        but unspecified fields will still be used, in the order in which\n        they come up in the dtype, to break ties."
+              },
+              "argpartition": {
+                "type": "Indirect partition.",
+                "description": ""
+              },
+              "sort": {
+                "type": "Full sort.",
+                "description": ""
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "prod",
+          "signature": "prod(axis=None, dtype=None, out=None, keepdims=False, initial=1, where=True)",
+          "documentation": {
+            "description": "a.prod(axis=None, dtype=None, out=None, keepdims=False, initial=1, where=True)\n\n    Return the product of the array elements over the given axis\n\n    Refer to `numpy.prod` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.prod : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "ptp",
+          "signature": "ptp(axis=None, out=None, keepdims=False)",
+          "documentation": {
+            "description": "a.ptp(axis=None, out=None, keepdims=False)\n\n    Peak to peak (maximum - minimum) value along a given axis.\n\n    Refer to `numpy.ptp` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.ptp : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "put",
+          "signature": "put(indices, values, mode='raise')",
+          "documentation": {
+            "description": "a.put(indices, values, mode='raise')\n\n    Set ``a.flat[n] = values[n]`` for all `n` in indices.\n\n    Refer to `numpy.put` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.put : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "ravel",
+          "signature": "ravel([order])",
+          "documentation": {
+            "description": "a.ravel([order])\n\n    Return a flattened array.\n\n    Refer to `numpy.ravel` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.ravel : equivalent function\n\n    ndarray.flat : a flat iterator on the array.",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "repeat",
+          "signature": "repeat(repeats, axis=None)",
+          "documentation": {
+            "description": "a.repeat(repeats, axis=None)\n\n    Repeat elements of an array.\n\n    Refer to `numpy.repeat` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.repeat : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "reshape",
+          "signature": "reshape(shape, order='C')",
+          "documentation": {
+            "description": "a.reshape(shape, order='C')\n\n    Returns an array containing the same data with a new shape.\n\n    Refer to `numpy.reshape` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "Unlike the free function `numpy.reshape`, this method on `ndarray` allows\n    the elements of the shape parameter to be passed in as separate arguments.\n    For example, ``a.reshape(10, 11)`` is equivalent to\n    ``a.reshape((10, 11))``.",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "resize",
+          "signature": "resize(new_shape, refcheck=True)",
+          "documentation": {
+            "description": "a.resize(new_shape, refcheck=True)\n\n    Change shape and size of array in-place.",
+            "parameters": {
+              "refcheck": {
+                "type": "bool",
+                "description": "If False, reference count will not be checked. Default is True."
+              },
+              "ValueError": {
+                "type": "cannot resize an array that references or is referenced ...",
+                "description": "Unless `refcheck` is False:\n\n    >>> a.resize((1, 1), refcheck=False)\n    >>> a\n    array([[0]])\n    >>> c\n    array([[0]])"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "round",
+          "signature": "round(decimals=0, out=None)",
+          "documentation": {
+            "description": "a.round(decimals=0, out=None)\n\n    Return `a` with each element rounded to the given number of decimals.\n\n    Refer to `numpy.around` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.around : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "searchsorted",
+          "signature": "searchsorted(v, side='left', sorter=None)",
+          "documentation": {
+            "description": "a.searchsorted(v, side='left', sorter=None)\n\n    Find indices where elements of v should be inserted in a to maintain order.\n\n    For full documentation, see `numpy.searchsorted`",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.searchsorted : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setfield",
+          "signature": "setfield(val, dtype, offset=0)",
+          "documentation": {
+            "description": "a.setfield(val, dtype, offset=0)\n\n    Put a value into a specified place in a field defined by a data-type.\n\n    Place `val` into `a`'s field defined by `dtype` and beginning `offset`\n    bytes into the field.",
+            "parameters": {
+              "dtype": {
+                "type": "dtype object",
+                "description": "Data-type of the field in which to place `val`."
+              },
+              "offset": {
+                "type": "int",
+                "description": "The number of bytes into the field at which to place `val`."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "setflags",
+          "signature": "setflags(write=None, align=None, uic=None)",
+          "documentation": {
+            "description": "a.setflags(write=None, align=None, uic=None)\n\n    Set array flags WRITEABLE, ALIGNED, WRITEBACKIFCOPY,\n    respectively.\n\n    These Boolean-valued flags affect how numpy interprets the memory\n    area used by `a` (see Notes below). The ALIGNED flag can only\n    be set to True if the data is actually aligned according to the type.\n    The WRITEBACKIFCOPY and flag can never be set\n    to True. The flag WRITEABLE can only be set to True if the array owns its\n    own memory, or the ultimate owner of the memory exposes a writeable buffer\n    interface, or is a string. (The exception for string is made so that\n    unpickling can be done without copying memory.)",
+            "parameters": {
+              "align": {
+                "type": "bool",
+                "description": "Describes whether or not `a` is aligned properly for its type."
+              },
+              "uic": {
+                "type": "bool",
+                "description": "Describes whether or not `a` is a copy of another \"base\" array."
+              },
+              "C_CONTIGUOUS": {
+                "type": "True",
+                "description": ""
+              },
+              "F_CONTIGUOUS": {
+                "type": "False",
+                "description": ""
+              },
+              "OWNDATA": {
+                "type": "True",
+                "description": ""
+              },
+              "WRITEABLE": {
+                "type": "False",
+                "description": ""
+              },
+              "ALIGNED": {
+                "type": "False",
+                "description": ""
+              },
+              "WRITEBACKIFCOPY": {
+                "type": "False",
+                "description": ">>> y.setflags(uic=1)\n    Traceback (most recent call last):\n      File \"<stdin>\", line 1, in <module>"
+              },
+              "ValueError": {
+                "type": "cannot set WRITEBACKIFCOPY flag to True",
+                "description": ""
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sort",
+          "signature": "sort(axis=-1, kind=None, order=None)",
+          "documentation": {
+            "description": "a.sort(axis=-1, kind=None, order=None)\n\n    Sort an array in-place. Refer to `numpy.sort` for full documentation.",
+            "parameters": {
+              "kind": {
+                "type": "{'quicksort'",
+                "description": ", 'mergesort', 'heapsort', 'stable'}, optional\n        Sorting algorithm. The default is 'quicksort'. Note that both 'stable'\n        and 'mergesort' use timsort under the covers and, in general, the\n        actual implementation will vary with datatype. The 'mergesort' option\n        is retained for backwards compatibility.\n\n        .. versionchanged:: 1.15.0\n           The 'stable' option was added."
+              },
+              "order": {
+                "type": "str or list of str",
+                "description": "When `a` is an array with fields defined, this argument specifies\n        which fields to compare first, second, etc.  A single field can\n        be specified as a string, and not all fields need be specified,\n        but unspecified fields will still be used, in the order in which\n        they come up in the dtype, to break ties."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "squeeze",
+          "signature": "squeeze(axis=None)",
+          "documentation": {
+            "description": "a.squeeze(axis=None)\n\n    Remove axes of length one from `a`.\n\n    Refer to `numpy.squeeze` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.squeeze : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "std",
+          "signature": "std(axis=None, dtype=None, out=None, ddof=0, keepdims=False, *, where=True)",
+          "documentation": {
+            "description": "a.std(axis=None, dtype=None, out=None, ddof=0, keepdims=False, *, where=True)\n\n    Returns the standard deviation of the array elements along given axis.\n\n    Refer to `numpy.std` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.std : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "sum",
+          "signature": "sum(axis=None, dtype=None, out=None, keepdims=False, initial=0, where=True)",
+          "documentation": {
+            "description": "a.sum(axis=None, dtype=None, out=None, keepdims=False, initial=0, where=True)\n\n    Return the sum of the array elements over the given axis.\n\n    Refer to `numpy.sum` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.sum : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "swapaxes",
+          "signature": "swapaxes(axis1, axis2)",
+          "documentation": {
+            "description": "a.swapaxes(axis1, axis2)\n\n    Return a view of the array with `axis1` and `axis2` interchanged.\n\n    Refer to `numpy.swapaxes` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.swapaxes : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "take",
+          "signature": "take(indices, axis=None, out=None, mode='raise')",
+          "documentation": {
+            "description": "a.take(indices, axis=None, out=None, mode='raise')\n\n    Return an array formed from the elements of `a` at the given indices.\n\n    Refer to `numpy.take` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.take : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tobytes",
+          "signature": "tobytes(order='C')",
+          "documentation": {
+            "description": "a.tobytes(order='C')\n\n    Construct Python bytes containing the raw data bytes in the array.\n\n    Constructs Python bytes showing a copy of the raw contents of\n    data memory. The bytes object is produced in C-order by default.\n    This behavior is controlled by the ``order`` parameter.\n\n    .. versionadded:: 1.9.0",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tofile",
+          "signature": "tofile(fid, sep=\"\", format=\"%s\")",
+          "documentation": {
+            "description": "a.tofile(fid, sep=\"\", format=\"%s\")\n\n    Write array to a file as text or binary (default).\n\n    Data is always written in 'C' order, independent of the order of `a`.\n    The data produced by this method can be recovered using the function\n    fromfile().",
+            "parameters": {
+              "sep": {
+                "type": "str",
+                "description": "Separator between array items for text output.\n        If \"\" (empty), a binary file is written, equivalent to\n        ``file.write(a.tobytes())``."
+              },
+              "format": {
+                "type": "str",
+                "description": "Format string for text file output.\n        Each entry in the array is formatted to text by first converting\n        it to the closest Python type, and then using \"format\" % item."
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tolist",
+          "signature": "tolist()",
+          "documentation": {
+            "description": "a.tolist()\n\n    Return the array as an ``a.ndim``-levels deep nested list of Python scalars.\n\n    Return a copy of the array data as a (nested) Python list.\n    Data items are converted to the nearest compatible builtin Python type, via\n    the `~numpy.ndarray.item` function.\n\n    If ``a.ndim`` is 0, then since the depth of the nested list is 0, it will\n    not be a list at all, but a simple Python scalar.",
+            "parameters": {
+              "TypeError": {
+                "type": "iteration over a 0-d array",
+                "description": ">>> a.tolist()\n    1"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "tostring",
+          "signature": "tostring(order='C')",
+          "documentation": {
+            "description": "a.tostring(order='C')\n\n    A compatibility alias for `tobytes`, with exactly the same behavior.\n\n    Despite its name, it returns `bytes` not `str`\\ s.\n\n    .. deprecated:: 1.19.0",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "trace",
+          "signature": "trace(offset=0, axis1=0, axis2=1, dtype=None, out=None)",
+          "documentation": {
+            "description": "a.trace(offset=0, axis1=0, axis2=1, dtype=None, out=None)\n\n    Return the sum along diagonals of the array.\n\n    Refer to `numpy.trace` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.trace : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transpose",
+          "signature": "transpose(*axes)",
+          "documentation": {
+            "description": "a.transpose(*axes)\n\n    Returns a view of the array with axes transposed.\n\n    Refer to `numpy.transpose` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "var",
+          "signature": "var(axis=None, dtype=None, out=None, ddof=0, keepdims=False, *, where=True)",
+          "documentation": {
+            "description": "a.var(axis=None, dtype=None, out=None, ddof=0, keepdims=False, *, where=True)\n\n    Returns the variance of the array elements, along given axis.\n\n    Refer to `numpy.var` for full documentation.",
+            "parameters": {},
+            "returns": "",
+            "raises": "",
+            "see_also": "numpy.var : equivalent function",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "view",
+          "signature": "view([dtype][, type])",
+          "documentation": {
+            "description": "a.view([dtype][, type])\n\n    New view of array with the same data.\n\n    .. note::\n        Passing None for ``dtype`` is different from omitting the parameter,\n        since the former invokes ``dtype(None)`` which is an alias for\n        ``dtype('float_')``.",
+            "parameters": {
+              "type": {
+                "type": "Python type",
+                "description": "Type of the returned view, e.g., ndarray or matrix.  Again, omission\n        of the parameter results in type preservation."
+              },
+              "ValueError": {
+                "type": "To change to a dtype of a different size",
+                "description": ", the last axis must be contiguous\n    >>> z = y.copy()\n    >>> z.view(dtype=[('width', np.int16), ('length', np.int16)])\n    array([[(1, 3)],\n           [(4, 6)]], dtype=[('width', '<i2'), ('length', '<i2')])\n\n    However, views that change dtype are totally fine for arrays with a\n    contiguous last axis, even if the rest of the axes are not C-contiguous:\n\n    >>> x = np.arange(2 * 3 * 4, dtype=np.int8).reshape(2, 3, 4)\n    >>> x.transpose(1, 0, 2).view(np.int16)\n    array([[[ 256,  770],\n            [3340, 3854]],\n    <BLANKLINE>\n           [[1284, 1798],\n            [4368, 4882]],\n    <BLANKLINE>\n           [[2312, 2826],\n            [5396, 5910]]], dtype=int16)"
+              }
+            },
+            "returns": "",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}

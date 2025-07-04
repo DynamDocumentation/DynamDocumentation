@@ -9,31 +9,42 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.http.content.*
-
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
-
+import com.dynam.routes.LibraryRoutes
 import com.dynam.database.*
-import com.dynam.controllers.*
-import com.dynam.routes.*
 import com.dynam.models.*
 import com.dynam.enums.*
+import io.ktor.server.request.receive
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
+fun Application.configureCORS() {
+    install(CORS) {
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Patch)
+        allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
+        allowCredentials = true
+        anyHost()
+    }
+}
+
 fun Application.module() {
+    // 0) Logs
     install(CallLogging)
 
-    install(CORS) {
-        allowHost("localhost:3000")
-        allowHost("127.0.0.1:3000")
-        allowMethod(HttpMethod.Get)
-        allowHeader(HttpHeaders.ContentType)
-        allowCredentials = true
-    }
+    // 1) CORS
+    configureCORS()
 
+    // 2) Content negotiation
     install(ContentNegotiation) {
         json(Json {
             prettyPrint = true
@@ -50,15 +61,15 @@ fun Application.module() {
 
     configureDatabases()
 
-    // val navigationController = NavigationController();
-    // val classModel = ClassModel()
-    // val functionModel = FunctionModel()
-
     routing {
         singlePageApplication {
             react("../frontend/build")
         }
 
+        // Initialize library routes
+        LibraryRoutes().registerRoutes(this)
+        
+        // API routes
         route("/library") {
             get("/{libname}") {
                 try {
@@ -97,7 +108,7 @@ fun Application.module() {
                     val entity = Entity.getById(entityId) ?: throw NoSuchElementException("Entity not found with ID: $entityId")
                     
                     // Get all variables associated with this entity, grouped by type
-                    val variables = Entity.getEntityVariables(entityId)
+                    val variables = Variable.getVariablesByFunctionId(entityId)
                     
                     // Create a serializable response structure
                     @Serializable
@@ -110,7 +121,7 @@ fun Application.module() {
                     
                     val response = EntityResponse(
                         entity = entity,
-                        attributes = variables[VariableType.ATTRIBUTE] ?: emptyList(),
+                        attributes = variables[VariableType.DESCRIPTION] ?: emptyList(), // Changed from ATTRIBUTE to DESCRIPTION
                         parameters = variables[VariableType.PARAMETER] ?: emptyList(),
                         returns = variables[VariableType.RETURN] ?: emptyList()
                     )
@@ -126,6 +137,31 @@ fun Application.module() {
                         HttpStatusCode.NotFound,
                         mapOf("error" to e.message)
                     )
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        mapOf("error" to e.message)
+                    )
+                }
+            }
+        }
+
+        route("/install") {
+            post {
+                try {
+                    // Get library parameter from request body
+                    val requestBody = call.receive<Map<String, String>>()
+                    val libraryName = requestBody["library"]
+                        ?: return@post call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Parameter 'library' is required"))
+                        
+                    val installer = LibraryInstaller()
+                    val success = installer.installLibrary(libraryName)
+                    
+                    if (success) {
+                        call.respond(mapOf("status" to "success", "message" to "Biblioteca $libraryName instalada com sucesso"))
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError, mapOf("status" to "error", "message" to "Falha ao instalar biblioteca $libraryName"))
+                    }
                 } catch (e: Exception) {
                     call.respond(
                         HttpStatusCode.InternalServerError,

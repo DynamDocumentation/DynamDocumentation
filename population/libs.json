@@ -1,0 +1,21 @@
+{
+  "numpy": [
+    "numpy.polynomial",
+    "numpy.testing",
+    "numpy.version",
+    "numpy.rec",
+    "numpy.exceptions",
+    "numpy.ma",
+    "numpy.fft",
+    "numpy.char",
+    "numpy.typing",
+    "numpy",
+    "numpy.dtypes",
+    "numpy.random",
+    "numpy.emath",
+    "numpy.lib",
+    "numpy.ctypeslib",
+    "numpy.linalg",
+    "numpy.strings"
+  ]
+}

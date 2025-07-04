@@ -1,0 +1,1270 @@
+{
+  "description": "Transformers for missing value imputation.",
+  "functions": [],
+  "classes": [
+    {
+      "name": "KNNImputer",
+      "documentation": {
+        "description": "Imputation for completing missing values using k-Nearest Neighbors.\n\n    Each sample's missing values are imputed using the mean value from\n    `n_neighbors` nearest neighbors found in the training set. Two samples are\n    close if the features that neither is missing are close.\n\n    Read more in the :ref:`User Guide <knnimpute>`.\n\n    .. versionadded:: 0.22\n\n    Parameters\n    ----------\n    missing_values : int, float, str, np.nan or None, default=np.nan\n        The placeholder for the missing values. All occurrences of\n        `missing_values` will be imputed. For pandas' dataframes with\n        nullable integer dtypes with missing values, `missing_values`\n        should be set to np.nan, since `pd.NA` will be converted to np.nan.\n\n    n_neighbors : int, default=5\n        Number of neighboring samples to use for imputation.\n\n    weights : {'uniform', 'distance'} or callable, default='uniform'\n        Weight function used in prediction.  Possible values:\n\n        - 'uniform' : uniform weights. All points in each neighborhood are\n          weighted equally.\n        - 'distance' : weight points by the inverse of their distance.\n          in this case, closer neighbors of a query point will have a\n          greater influence than neighbors which are further away.\n        - callable : a user-defined function which accepts an\n          array of distances, and returns an array of the same shape\n          containing the weights.\n\n    metric : {'nan_euclidean'} or callable, default='nan_euclidean'\n        Distance metric for searching neighbors. Possible values:\n\n        - 'nan_euclidean'\n        - callable : a user-defined function which conforms to the definition\n          of ``func_metric(x, y, *, missing_values=np.nan)``. `x` and `y`\n          corresponds to a row (i.e. 1-D arrays) of `X` and `Y`, respectively.\n          The callable should returns a scalar distance value.\n\n    copy : bool, default=True\n        If True, a copy of X will be created. If False, imputation will\n        be done in-place whenever possible.\n\n    add_indicator : bool, default=False\n        If True, a :class:`MissingIndicator` transform will stack onto the\n        output of the imputer's transform. This allows a predictive estimator\n        to account for missingness despite imputation. If a feature has no\n        missing values at fit/train time, the feature won't appear on the\n        missing indicator even if there are missing values at transform/test\n        time.\n\n    keep_empty_features : bool, default=False\n        If True, features that consist exclusively of missing values when\n        `fit` is called are returned in results when `transform` is called.\n        The imputed value is always `0`.\n\n        .. versionadded:: 1.2\n\n    Attributes\n    ----------\n    indicator_ : :class:`~sklearn.impute.MissingIndicator`\n        Indicator used to add binary indicators for missing values.\n        ``None`` if add_indicator is False.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    SimpleImputer : Univariate imputer for completing missing values\n        with simple strategies.\n    IterativeImputer : Multivariate imputer that estimates values to impute for\n        each feature with missing values from all the others.\n\n    References\n    ----------\n    * `Olga Troyanskaya, Michael Cantor, Gavin Sherlock, Pat Brown, Trevor\n      Hastie, Robert Tibshirani, David Botstein and Russ B. Altman, Missing\n      value estimation methods for DNA microarrays, BIOINFORMATICS Vol. 17\n      no. 6, 2001 Pages 520-525.\n      <https://academic.oup.com/bioinformatics/article/17/6/520/272365>`_",
+        "parameters": {
+          "missing_values": {
+            "type": "int, float, str, np.nan or None, default=np.nan",
+            "description": ""
+          },
+          "The": {
+            "type": "imputed value is always `0`.",
+            "description": ".. versionadded:: 1.2\nAttributes\n----------"
+          },
+          "nullable": {
+            "type": "integer dtypes with missing values, `missing_values`",
+            "description": ""
+          },
+          "should": {
+            "type": "be set to np.nan, since `pd.NA` will be converted to np.nan.",
+            "description": ""
+          },
+          "n_neighbors": {
+            "type": "int, default=5",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "weights": {
+            "type": "{'uniform', 'distance'} or callable, default='uniform'",
+            "description": ""
+          },
+          "Weight": {
+            "type": "function used in prediction.  Possible values:",
+            "description": "- 'uniform' : uniform weights. All points in each neighborhood are"
+          },
+          "weighted": {
+            "type": "equally.",
+            "description": "- 'distance' : weight points by the inverse of their distance."
+          },
+          "in": {
+            "type": "this case, closer neighbors of a query point will have a",
+            "description": ""
+          },
+          "greater": {
+            "type": "influence than neighbors which are further away.",
+            "description": "- callable : a user-defined function which accepts an"
+          },
+          "array": {
+            "type": "of distances, and returns an array of the same shape",
+            "description": ""
+          },
+          "containing": {
+            "type": "the weights.",
+            "description": ""
+          },
+          "metric": {
+            "type": "{'nan_euclidean'} or callable, default='nan_euclidean'",
+            "description": ""
+          },
+          "Distance": {
+            "type": "metric for searching neighbors. Possible values:",
+            "description": "- 'nan_euclidean'\n- callable : a user-defined function which conforms to the definition"
+          },
+          "of": {
+            "type": "``func_metric(x, y, *, missing_values=np.nan)``. `x` and `y`",
+            "description": ""
+          },
+          "corresponds": {
+            "type": "to a row (i.e. 1-D arrays) of `X` and `Y`, respectively.",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "True, features that consist exclusively of missing values when",
+            "description": "`fit` is called are returned in results when `transform` is called."
+          },
+          "be": {
+            "type": "done in-place whenever possible.",
+            "description": ""
+          },
+          "add_indicator": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "output": {
+            "type": "of the imputer's transform. This allows a predictive estimator",
+            "description": ""
+          },
+          "to": {
+            "type": "account for missingness despite imputation. If a feature has no",
+            "description": ""
+          },
+          "missing": {
+            "type": "indicator even if there are missing values at transform/test",
+            "description": "time."
+          },
+          "keep_empty_features": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "indicator_": {
+            "type": ":class:`~sklearn.impute.MissingIndicator`",
+            "description": ""
+          },
+          "Indicator": {
+            "type": "used to add binary indicators for missing values.",
+            "description": "``None`` if add_indicator is False."
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "SimpleImputer": {
+            "type": "Univariate imputer for completing missing values",
+            "description": ""
+          },
+          "with": {
+            "type": "simple strategies.",
+            "description": ""
+          },
+          "IterativeImputer": {
+            "type": "Multivariate imputer that estimates values to impute for",
+            "description": ""
+          },
+          "each": {
+            "type": "feature with missing values from all the others.",
+            "description": "References\n----------\n* `Olga Troyanskaya, Michael Cantor, Gavin Sherlock, Pat Brown, Trevor\nHastie, Robert Tibshirani, David Botstein and Russ B. Altman, Missing"
+          },
+          "value": {
+            "type": "estimation methods for DNA microarrays, BIOINFORMATICS Vol. 17",
+            "description": "no. 6, 2001 Pages 520-525.\n<https://academic.oup.com/bioinformatics/article/17/6/520/272365>`_\nExamples\n--------\n>>> import numpy as np\n>>> from sklearn.impute import KNNImputer\n>>> X = [[1, 2, np.nan], [3, 4, 3], [np.nan, 6, 5], [8, 8, 7]]\n>>> imputer = KNNImputer(n_neighbors=2)\n>>> imputer.fit_transform(X)\narray([[1. , 2. , 4. ],\n[3. , 4. , 3. ],\n[5.5, 6. , 5. ],\n[8. , 8. , 7. ]])"
+          },
+          "For": {
+            "type": "a more detailed example see",
+            "description": ":ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    SimpleImputer : Univariate imputer for completing missing values\n        with simple strategies.\n    IterativeImputer : Multivariate imputer that estimates values to impute for\n        each feature with missing values from all the others.\n\n    References\n    ----------\n    * `Olga Troyanskaya, Michael Cantor, Gavin Sherlock, Pat Brown, Trevor\n      Hastie, Robert Tibshirani, David Botstein and Russ B. Altman, Missing\n      value estimation methods for DNA microarrays, BIOINFORMATICS Vol. 17\n      no. 6, 2001 Pages 520-525.\n      <https://academic.oup.com/bioinformatics/article/17/6/520/272365>`_\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.impute import KNNImputer\n    >>> X = [[1, 2, np.nan], [3, 4, 3], [np.nan, 6, 5], [8, 8, 7]]\n    >>> imputer = KNNImputer(n_neighbors=2)\n    >>> imputer.fit_transform(X)\n    array([[1. , 2. , 4. ],\n           [3. , 4. , 3. ],\n           [5.5, 6. , 5. ],\n           [8. , 8. , 7. ]])\n\n    For a more detailed example see\n    :ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`.",
+        "notes": "",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.impute import KNNImputer\n    >>> X = [[1, 2, np.nan], [3, 4, 3], [np.nan, 6, 5], [8, 8, 7]]\n    >>> imputer = KNNImputer(n_neighbors=2)\n    >>> imputer.fit_transform(X)\n    array([[1. , 2. , 4. ],\n           [3. , 4. , 3. ],\n           [5.5, 6. , 5. ],\n           [8. , 8. , 7. ]])\n\n    For a more detailed example see\n    :ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the imputer on X.\n\n        Parameters\n        ----------\n        X : array-like shape of (n_samples, n_features)\n            Input data, where `n_samples` is the number of samples and\n            `n_features` is the number of features.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like shape of (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of features."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "The": {
+                "type": "fitted `KNNImputer` class instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            The fitted `KNNImputer` class instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit to data, then transform it.\n\n        Fits transformer to `X` and `y` with optional parameters `fit_params`\n        and returns a transformed version of `X`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input samples.\n\n        y :  array-like of shape (n_samples,) or (n_samples, n_outputs),                 default=None\n            Target values (None for unsupervised transformations).\n\n        **fit_params : dict\n            Additional fit parameters.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs),                 default=None"
+              },
+              "Target": {
+                "type": "values (None for unsupervised transformations).",
+                "description": "**fit_params : dict"
+              },
+              "Additional": {
+                "type": "fit parameters.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray array of shape (n_samples, n_features_new)",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "array.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray array of shape (n_samples, n_features_new)\n            Transformed array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input features.\n\n            - If `input_features` is `None`, then `feature_names_in_` is\n              used as feature names in. If `feature_names_in_` is not defined,\n              then the following input feature names are generated:\n              `[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n            - If `input_features` is an array-like, then `input_features` must\n              match `feature_names_in_` if `feature_names_in_` is defined.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "features.",
+                "description": "- If `input_features` is `None`, then `feature_names_in_` is"
+              },
+              "used": {
+                "type": "as feature names in. If `feature_names_in_` is not defined,",
+                "description": ""
+              },
+              "then": {
+                "type": "the following input feature names are generated:",
+                "description": "`[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n- If `input_features` is an array-like, then `input_features` must"
+              },
+              "match": {
+                "type": "`feature_names_in_` if `feature_names_in_` is defined.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Impute all missing values in X.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            The input data to complete.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_output_features)"
+              },
+              "The": {
+                "type": "imputed dataset. `n_output_features` is the number of features",
+                "description": ""
+              },
+              "that": {
+                "type": "is not always missing during `fit`.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X : array-like of shape (n_samples, n_output_features)\n            The imputed dataset. `n_output_features` is the number of features\n            that is not always missing during `fit`.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "MissingIndicator",
+      "documentation": {
+        "description": "Binary indicators for missing values.\n\n    Note that this component typically should not be used in a vanilla\n    :class:`~sklearn.pipeline.Pipeline` consisting of transformers and a\n    classifier, but rather could be added using a\n    :class:`~sklearn.pipeline.FeatureUnion` or\n    :class:`~sklearn.compose.ColumnTransformer`.\n\n    Read more in the :ref:`User Guide <impute>`.\n\n    .. versionadded:: 0.20\n\n    Parameters\n    ----------\n    missing_values : int, float, str, np.nan or None, default=np.nan\n        The placeholder for the missing values. All occurrences of\n        `missing_values` will be imputed. For pandas' dataframes with\n        nullable integer dtypes with missing values, `missing_values`\n        should be set to `np.nan`, since `pd.NA` will be converted to `np.nan`.\n\n    features : {'missing-only', 'all'}, default='missing-only'\n        Whether the imputer mask should represent all or a subset of\n        features.\n\n        - If `'missing-only'` (default), the imputer mask will only represent\n          features containing missing values during fit time.\n        - If `'all'`, the imputer mask will represent all features.\n\n    sparse : bool or 'auto', default='auto'\n        Whether the imputer mask format should be sparse or dense.\n\n        - If `'auto'` (default), the imputer mask will be of same type as\n          input.\n        - If `True`, the imputer mask will be a sparse matrix.\n        - If `False`, the imputer mask will be a numpy array.\n\n    error_on_new : bool, default=True\n        If `True`, :meth:`transform` will raise an error when there are\n        features with missing values that have no missing values in\n        :meth:`fit`. This is applicable only when `features='missing-only'`.\n\n    Attributes\n    ----------\n    features_ : ndarray of shape (n_missing_features,) or (n_features,)\n        The features indices which will be returned when calling\n        :meth:`transform`. They are computed during :meth:`fit`. If\n        `features='all'`, `features_` is equal to `range(n_features)`.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    SimpleImputer : Univariate imputation of missing values.\n    IterativeImputer : Multivariate imputation of missing values.",
+        "parameters": {
+          "missing_values": {
+            "type": "int, float, str, np.nan or None, default=np.nan",
+            "description": ""
+          },
+          "The": {
+            "type": "features indices which will be returned when calling",
+            "description": ":meth:`transform`. They are computed during :meth:`fit`. If\n`features='all'`, `features_` is equal to `range(n_features)`."
+          },
+          "nullable": {
+            "type": "integer dtypes with missing values, `missing_values`",
+            "description": ""
+          },
+          "should": {
+            "type": "be set to `np.nan`, since `pd.NA` will be converted to `np.nan`.",
+            "description": ""
+          },
+          "features": {
+            "type": "with missing values that have no missing values in",
+            "description": ":meth:`fit`. This is applicable only when `features='missing-only'`.\nAttributes\n----------"
+          },
+          "Whether": {
+            "type": "the imputer mask format should be sparse or dense.",
+            "description": "- If `'auto'` (default), the imputer mask will be of same type as\ninput.\n- If `True`, the imputer mask will be a sparse matrix.\n- If `False`, the imputer mask will be a numpy array."
+          },
+          "sparse": {
+            "type": "bool or 'auto', default='auto'",
+            "description": ""
+          },
+          "error_on_new": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "If": {
+            "type": "`True`, :meth:`transform` will raise an error when there are",
+            "description": ""
+          },
+          "features_": {
+            "type": "ndarray of shape (n_missing_features,) or (n_features,)",
+            "description": ""
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "SimpleImputer": {
+            "type": "Univariate imputation of missing values.",
+            "description": ""
+          },
+          "IterativeImputer": {
+            "type": "Multivariate imputation of missing values.",
+            "description": "Examples\n--------\n>>> import numpy as np\n>>> from sklearn.impute import MissingIndicator\n>>> X1 = np.array([[np.nan, 1, 3],\n...                [4, 0, np.nan],\n...                [8, 1, 0]])\n>>> X2 = np.array([[5, 1, np.nan],\n...                [np.nan, 2, 3],\n...                [2, 4, 0]])\n>>> indicator = MissingIndicator()\n>>> indicator.fit(X1)"
+          },
+          "MissingIndicator": {
+            "type": "",
+            "description": ">>> X2_tr = indicator.transform(X2)\n>>> X2_tr\narray([[False,  True],\n[ True, False],\n[False, False]])"
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    SimpleImputer : Univariate imputation of missing values.\n    IterativeImputer : Multivariate imputation of missing values.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.impute import MissingIndicator\n    >>> X1 = np.array([[np.nan, 1, 3],\n    ...                [4, 0, np.nan],\n    ...                [8, 1, 0]])\n    >>> X2 = np.array([[5, 1, np.nan],\n    ...                [np.nan, 2, 3],\n    ...                [2, 4, 0]])\n    >>> indicator = MissingIndicator()\n    >>> indicator.fit(X1)\n    MissingIndicator()\n    >>> X2_tr = indicator.transform(X2)\n    >>> X2_tr\n    array([[False,  True],\n           [ True, False],\n           [False, False]])",
+        "notes": "that this component typically should not be used in a vanilla\n    :class:`~sklearn.pipeline.Pipeline` consisting of transformers and a\n    classifier, but rather could be added using a\n    :class:`~sklearn.pipeline.FeatureUnion` or\n    :class:`~sklearn.compose.ColumnTransformer`.\n\n    Read more in the :ref:`User Guide <impute>`.\n\n    .. versionadded:: 0.20\n\n    Parameters\n    ----------\n    missing_values : int, float, str, np.nan or None, default=np.nan\n        The placeholder for the missing values. All occurrences of\n        `missing_values` will be imputed. For pandas' dataframes with\n        nullable integer dtypes with missing values, `missing_values`\n        should be set to `np.nan`, since `pd.NA` will be converted to `np.nan`.\n\n    features : {'missing-only', 'all'}, default='missing-only'\n        Whether the imputer mask should represent all or a subset of\n        features.\n\n        - If `'missing-only'` (default), the imputer mask will only represent\n          features containing missing values during fit time.\n        - If `'all'`, the imputer mask will represent all features.\n\n    sparse : bool or 'auto', default='auto'\n        Whether the imputer mask format should be sparse or dense.\n\n        - If `'auto'` (default), the imputer mask will be of same type as\n          input.\n        - If `True`, the imputer mask will be a sparse matrix.\n        - If `False`, the imputer mask will be a numpy array.\n\n    error_on_new : bool, default=True\n        If `True`, :meth:`transform` will raise an error when there are\n        features with missing values that have no missing values in\n        :meth:`fit`. This is applicable only when `features='missing-only'`.\n\n    Attributes\n    ----------\n    features_ : ndarray of shape (n_missing_features,) or (n_features,)\n        The features indices which will be returned when calling\n        :meth:`transform`. They are computed during :meth:`fit`. If\n        `features='all'`, `features_` is equal to `range(n_features)`.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    SimpleImputer : Univariate imputation of missing values.\n    IterativeImputer : Multivariate imputation of missing values.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.impute import MissingIndicator\n    >>> X1 = np.array([[np.nan, 1, 3],\n    ...                [4, 0, np.nan],\n    ...                [8, 1, 0]])\n    >>> X2 = np.array([[5, 1, np.nan],\n    ...                [np.nan, 2, 3],\n    ...                [2, 4, 0]])\n    >>> indicator = MissingIndicator()\n    >>> indicator.fit(X1)\n    MissingIndicator()\n    >>> X2_tr = indicator.transform(X2)\n    >>> X2_tr\n    array([[False,  True],\n           [ True, False],\n           [False, False]])",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.impute import MissingIndicator\n    >>> X1 = np.array([[np.nan, 1, 3],\n    ...                [4, 0, np.nan],\n    ...                [8, 1, 0]])\n    >>> X2 = np.array([[5, 1, np.nan],\n    ...                [np.nan, 2, 3],\n    ...                [2, 4, 0]])\n    >>> indicator = MissingIndicator()\n    >>> indicator.fit(X1)\n    MissingIndicator()\n    >>> X2_tr = indicator.transform(X2)\n    >>> X2_tr\n    array([[False,  True],\n           [ True, False],\n           [False, False]])"
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the transformer on `X`.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            Input data, where `n_samples` is the number of samples and\n            `n_features` is the number of features.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of features."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None)",
+          "documentation": {
+            "description": "Generate missing values indicator for `X`.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            The input data to complete.\n\n        y : Ignored\n            Not used, present for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)"
+              },
+              "The": {
+                "type": "missing indicator for input data. The data type of `Xt`",
+                "description": ""
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "Xt": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples, n_features)         or (n_samples, n_features_with_missing)",
+                "description": ""
+              },
+              "will": {
+                "type": "be boolean.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Xt : {ndarray, sparse matrix} of shape (n_samples, n_features)         or (n_samples, n_features_with_missing)\n            The missing indicator for input data. The data type of `Xt`\n            will be boolean.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input features.\n\n            - If `input_features` is `None`, then `feature_names_in_` is\n              used as feature names in. If `feature_names_in_` is not defined,\n              then the following input feature names are generated:\n              `[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n            - If `input_features` is an array-like, then `input_features` must\n              match `feature_names_in_` if `feature_names_in_` is defined.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "features.",
+                "description": "- If `input_features` is `None`, then `feature_names_in_` is"
+              },
+              "used": {
+                "type": "as feature names in. If `feature_names_in_` is not defined,",
+                "description": ""
+              },
+              "then": {
+                "type": "the following input feature names are generated:",
+                "description": "`[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n- If `input_features` is an array-like, then `input_features` must"
+              },
+              "match": {
+                "type": "`feature_names_in_` if `feature_names_in_` is defined.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Generate missing values indicator for `X`.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix} of shape (n_samples, n_features)\n            The input data to complete.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix} of shape (n_samples, n_features)"
+              },
+              "The": {
+                "type": "missing indicator for input data. The data type of `Xt`",
+                "description": ""
+              },
+              "Xt": {
+                "type": "{ndarray, sparse matrix} of shape (n_samples, n_features)         or (n_samples, n_features_with_missing)",
+                "description": ""
+              },
+              "will": {
+                "type": "be boolean.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        Xt : {ndarray, sparse matrix} of shape (n_samples, n_features)         or (n_samples, n_features_with_missing)\n            The missing indicator for input data. The data type of `Xt`\n            will be boolean.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "SimpleImputer",
+      "documentation": {
+        "description": "Univariate imputer for completing missing values with simple strategies.\n\n    Replace missing values using a descriptive statistic (e.g. mean, median, or\n    most frequent) along each column, or using a constant value.\n\n    Read more in the :ref:`User Guide <impute>`.\n\n    .. versionadded:: 0.20\n       `SimpleImputer` replaces the previous `sklearn.preprocessing.Imputer`\n       estimator which is now removed.\n\n    Parameters\n    ----------\n    missing_values : int, float, str, np.nan, None or pandas.NA, default=np.nan\n        The placeholder for the missing values. All occurrences of\n        `missing_values` will be imputed. For pandas' dataframes with\n        nullable integer dtypes with missing values, `missing_values`\n        can be set to either `np.nan` or `pd.NA`.\n\n    strategy : str or Callable, default='mean'\n        The imputation strategy.\n\n        - If \"mean\", then replace missing values using the mean along\n          each column. Can only be used with numeric data.\n        - If \"median\", then replace missing values using the median along\n          each column. Can only be used with numeric data.\n        - If \"most_frequent\", then replace missing using the most frequent\n          value along each column. Can be used with strings or numeric data.\n          If there is more than one such value, only the smallest is returned.\n        - If \"constant\", then replace missing values with fill_value. Can be\n          used with strings or numeric data.\n        - If an instance of Callable, then replace missing values using the\n          scalar statistic returned by running the callable over a dense 1d\n          array containing non-missing values of each column.\n\n        .. versionadded:: 0.20\n           strategy=\"constant\" for fixed value imputation.\n\n        .. versionadded:: 1.5\n           strategy=callable for custom value imputation.\n\n    fill_value : str or numerical value, default=None\n        When strategy == \"constant\", `fill_value` is used to replace all\n        occurrences of missing_values. For string or object data types,\n        `fill_value` must be a string.\n        If `None`, `fill_value` will be 0 when imputing numerical\n        data and \"missing_value\" for strings or object data types.\n\n    copy : bool, default=True\n        If True, a copy of X will be created. If False, imputation will\n        be done in-place whenever possible. Note that, in the following cases,\n        a new copy will always be made, even if `copy=False`:\n\n        - If `X` is not an array of floating values;\n        - If `X` is encoded as a CSR matrix;\n        - If `add_indicator=True`.\n\n    add_indicator : bool, default=False\n        If True, a :class:`MissingIndicator` transform will stack onto output\n        of the imputer's transform. This allows a predictive estimator\n        to account for missingness despite imputation. If a feature has no\n        missing values at fit/train time, the feature won't appear on\n        the missing indicator even if there are missing values at\n        transform/test time.\n\n    keep_empty_features : bool, default=False\n        If True, features that consist exclusively of missing values when\n        `fit` is called are returned in results when `transform` is called.\n        The imputed value is always `0` except when `strategy=\"constant\"`\n        in which case `fill_value` will be used instead.\n\n        .. versionadded:: 1.2\n\n        .. versionchanged:: 1.6\n            Currently, when `keep_empty_feature=False` and `strategy=\"constant\"`,\n            empty features are not dropped. This behaviour will change in version\n            1.8. Set `keep_empty_feature=True` to preserve this behaviour.\n\n    Attributes\n    ----------\n    statistics_ : array of shape (n_features,)\n        The imputation fill value for each feature.\n        Computing statistics can result in `np.nan` values.\n        During :meth:`transform`, features corresponding to `np.nan`\n        statistics will be discarded.\n\n    indicator_ : :class:`~sklearn.impute.MissingIndicator`\n        Indicator used to add binary indicators for missing values.\n        `None` if `add_indicator=False`.\n\n    n_features_in_ : int\n        Number of features seen during :term:`fit`.\n\n        .. versionadded:: 0.24\n\n    feature_names_in_ : ndarray of shape (`n_features_in_`,)\n        Names of features seen during :term:`fit`. Defined only when `X`\n        has feature names that are all strings.\n\n        .. versionadded:: 1.0\n\n    See Also\n    --------\n    IterativeImputer : Multivariate imputer that estimates values to impute for\n        each feature with missing values from all the others.\n    KNNImputer : Multivariate imputer that estimates missing features using\n        nearest samples.\n\n    Notes\n    -----\n    Columns which only contained missing values at :meth:`fit` are discarded\n    upon :meth:`transform` if strategy is not `\"constant\"`.\n\n    In a prediction context, simple imputation usually performs poorly when\n    associated with a weak learner. However, with a powerful learner, it can\n    lead to as good or better performance than complex imputation such as\n    :class:`~sklearn.impute.IterativeImputer` or :class:`~sklearn.impute.KNNImputer`.",
+        "parameters": {
+          "missing_values": {
+            "type": "int, float, str, np.nan, None or pandas.NA, default=np.nan",
+            "description": ""
+          },
+          "The": {
+            "type": "imputation fill value for each feature.",
+            "description": ""
+          },
+          "nullable": {
+            "type": "integer dtypes with missing values, `missing_values`",
+            "description": ""
+          },
+          "can": {
+            "type": "be set to either `np.nan` or `pd.NA`.",
+            "description": ""
+          },
+          "strategy": {
+            "type": "str or Callable, default='mean'",
+            "description": ""
+          },
+          "each": {
+            "type": "feature with missing values from all the others.",
+            "description": ""
+          },
+          "value": {
+            "type": "along each column. Can be used with strings or numeric data.",
+            "description": ""
+          },
+          "If": {
+            "type": "True, features that consist exclusively of missing values when",
+            "description": "`fit` is called are returned in results when `transform` is called."
+          },
+          "used": {
+            "type": "with strings or numeric data.",
+            "description": "- If an instance of Callable, then replace missing values using the"
+          },
+          "scalar": {
+            "type": "statistic returned by running the callable over a dense 1d",
+            "description": ""
+          },
+          "array": {
+            "type": "containing non-missing values of each column.",
+            "description": ".. versionadded:: 0.20\nstrategy=\"constant\" for fixed value imputation.\n.. versionadded:: 1.5\nstrategy=callable for custom value imputation."
+          },
+          "fill_value": {
+            "type": "str or numerical value, default=None",
+            "description": ""
+          },
+          "When": {
+            "type": "strategy == \"constant\", `fill_value` is used to replace all",
+            "description": ""
+          },
+          "occurrences": {
+            "type": "of missing_values. For string or object data types,",
+            "description": "`fill_value` must be a string."
+          },
+          "data": {
+            "type": "and \"missing_value\" for strings or object data types.",
+            "description": ""
+          },
+          "copy": {
+            "type": "bool, default=True",
+            "description": ""
+          },
+          "be": {
+            "type": "done in-place whenever possible. Note that, in the following cases,",
+            "description": ""
+          },
+          "a": {
+            "type": "new copy will always be made, even if `copy=False`:",
+            "description": "- If `X` is not an array of floating values;\n- If `X` is encoded as a CSR matrix;\n- If `add_indicator=True`."
+          },
+          "add_indicator": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "of": {
+            "type": "the imputer's transform. This allows a predictive estimator",
+            "description": ""
+          },
+          "to": {
+            "type": "account for missingness despite imputation. If a feature has no",
+            "description": ""
+          },
+          "missing": {
+            "type": "values at fit/train time, the feature won't appear on",
+            "description": ""
+          },
+          "the": {
+            "type": "missing indicator even if there are missing values at",
+            "description": "transform/test time."
+          },
+          "keep_empty_features": {
+            "type": "bool, default=False",
+            "description": ""
+          },
+          "in": {
+            "type": "which case `fill_value` will be used instead.",
+            "description": ".. versionadded:: 1.2\n.. versionchanged:: 1.6\nCurrently, when `keep_empty_feature=False` and `strategy=\"constant\"`,"
+          },
+          "empty": {
+            "type": "features are not dropped. This behaviour will change in version",
+            "description": "1.8. Set `keep_empty_feature=True` to preserve this behaviour.\nAttributes\n----------"
+          },
+          "statistics_": {
+            "type": "array of shape (n_features,)",
+            "description": ""
+          },
+          "Computing": {
+            "type": "statistics can result in `np.nan` values.",
+            "description": ""
+          },
+          "During": {
+            "type": "meth:`transform`, features corresponding to `np.nan`",
+            "description": ""
+          },
+          "statistics": {
+            "type": "will be discarded.",
+            "description": ""
+          },
+          "indicator_": {
+            "type": ":class:`~sklearn.impute.MissingIndicator`",
+            "description": ""
+          },
+          "Indicator": {
+            "type": "used to add binary indicators for missing values.",
+            "description": "`None` if `add_indicator=False`."
+          },
+          "n_features_in_": {
+            "type": "int",
+            "description": ""
+          },
+          "Number": {
+            "type": "of features seen during :term:`fit`.",
+            "description": ".. versionadded:: 0.24"
+          },
+          "feature_names_in_": {
+            "type": "ndarray of shape (`n_features_in_`,)",
+            "description": ""
+          },
+          "Names": {
+            "type": "of features seen during :term:`fit`. Defined only when `X`",
+            "description": ""
+          },
+          "has": {
+            "type": "feature names that are all strings.",
+            "description": ".. versionadded:: 1.0"
+          },
+          "See": {
+            "type": "Also",
+            "description": "--------"
+          },
+          "IterativeImputer": {
+            "type": "Multivariate imputer that estimates values to impute for",
+            "description": ""
+          },
+          "KNNImputer": {
+            "type": "Multivariate imputer that estimates missing features using",
+            "description": ""
+          },
+          "nearest": {
+            "type": "samples.",
+            "description": "Notes\n-----"
+          },
+          "Columns": {
+            "type": "which only contained missing values at :meth:`fit` are discarded",
+            "description": ""
+          },
+          "upon": {
+            "type": "meth:`transform` if strategy is not `\"constant\"`.",
+            "description": ""
+          },
+          "In": {
+            "type": "a prediction context, simple imputation usually performs poorly when",
+            "description": ""
+          },
+          "associated": {
+            "type": "with a weak learner. However, with a powerful learner, it can",
+            "description": ""
+          },
+          "lead": {
+            "type": "to as good or better performance than complex imputation such as",
+            "description": ":class:`~sklearn.impute.IterativeImputer` or :class:`~sklearn.impute.KNNImputer`.\nExamples\n--------\n>>> import numpy as np\n>>> from sklearn.impute import SimpleImputer\n>>> imp_mean = SimpleImputer(missing_values=np.nan, strategy='mean')\n>>> imp_mean.fit([[7, 2, 3], [4, np.nan, 6], [10, 5, 9]])"
+          },
+          "SimpleImputer": {
+            "type": "",
+            "description": ">>> X = [[np.nan, 2, 3], [4, np.nan, 6], [10, np.nan, 9]]\n>>> print(imp_mean.transform(X))\n[[ 7.   2.   3. ]\n[ 4.   3.5  6. ]\n[10.   3.5  9. ]]"
+          },
+          "For": {
+            "type": "a more detailed example see",
+            "description": ":ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`."
+          }
+        },
+        "returns": "",
+        "raises": "",
+        "see_also": "--------\n    IterativeImputer : Multivariate imputer that estimates values to impute for\n        each feature with missing values from all the others.\n    KNNImputer : Multivariate imputer that estimates missing features using\n        nearest samples.\n\n    Notes\n    -----\n    Columns which only contained missing values at :meth:`fit` are discarded\n    upon :meth:`transform` if strategy is not `\"constant\"`.\n\n    In a prediction context, simple imputation usually performs poorly when\n    associated with a weak learner. However, with a powerful learner, it can\n    lead to as good or better performance than complex imputation such as\n    :class:`~sklearn.impute.IterativeImputer` or :class:`~sklearn.impute.KNNImputer`.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.impute import SimpleImputer\n    >>> imp_mean = SimpleImputer(missing_values=np.nan, strategy='mean')\n    >>> imp_mean.fit([[7, 2, 3], [4, np.nan, 6], [10, 5, 9]])\n    SimpleImputer()\n    >>> X = [[np.nan, 2, 3], [4, np.nan, 6], [10, np.nan, 9]]\n    >>> print(imp_mean.transform(X))\n    [[ 7.   2.   3. ]\n     [ 4.   3.5  6. ]\n     [10.   3.5  9. ]]\n\n    For a more detailed example see\n    :ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`.",
+        "notes": "-----\n    Columns which only contained missing values at :meth:`fit` are discarded\n    upon :meth:`transform` if strategy is not `\"constant\"`.\n\n    In a prediction context, simple imputation usually performs poorly when\n    associated with a weak learner. However, with a powerful learner, it can\n    lead to as good or better performance than complex imputation such as\n    :class:`~sklearn.impute.IterativeImputer` or :class:`~sklearn.impute.KNNImputer`.\n\n    Examples\n    --------\n    >>> import numpy as np\n    >>> from sklearn.impute import SimpleImputer\n    >>> imp_mean = SimpleImputer(missing_values=np.nan, strategy='mean')\n    >>> imp_mean.fit([[7, 2, 3], [4, np.nan, 6], [10, 5, 9]])\n    SimpleImputer()\n    >>> X = [[np.nan, 2, 3], [4, np.nan, 6], [10, np.nan, 9]]\n    >>> print(imp_mean.transform(X))\n    [[ 7.   2.   3. ]\n     [ 4.   3.5  6. ]\n     [10.   3.5  9. ]]\n\n    For a more detailed example see\n    :ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`.",
+        "examples": "--------\n    >>> import numpy as np\n    >>> from sklearn.impute import SimpleImputer\n    >>> imp_mean = SimpleImputer(missing_values=np.nan, strategy='mean')\n    >>> imp_mean.fit([[7, 2, 3], [4, np.nan, 6], [10, 5, 9]])\n    SimpleImputer()\n    >>> X = [[np.nan, 2, 3], [4, np.nan, 6], [10, np.nan, 9]]\n    >>> print(imp_mean.transform(X))\n    [[ 7.   2.   3. ]\n     [ 4.   3.5  6. ]\n     [10.   3.5  9. ]]\n\n    For a more detailed example see\n    :ref:`sphx_glr_auto_examples_impute_plot_missing_values.py`."
+      },
+      "methods": [
+        {
+          "name": "fit",
+          "signature": "fit(self, X, y=None)",
+          "documentation": {
+            "description": "Fit the imputer on `X`.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix}, shape (n_samples, n_features)\n            Input data, where `n_samples` is the number of samples and\n            `n_features` is the number of features.\n\n        y : Ignored\n            Not used, present here for API consistency by convention.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix}, shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "data, where `n_samples` is the number of samples and",
+                "description": "`n_features` is the number of features."
+              },
+              "y": {
+                "type": "Ignored",
+                "description": ""
+              },
+              "Not": {
+                "type": "used, present here for API consistency by convention.",
+                "description": "Returns\n-------"
+              },
+              "self": {
+                "type": "object",
+                "description": ""
+              },
+              "Fitted": {
+                "type": "estimator.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : object\n            Fitted estimator.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "fit_transform",
+          "signature": "fit_transform(self, X, y=None, **fit_params)",
+          "documentation": {
+            "description": "Fit to data, then transform it.\n\n        Fits transformer to `X` and `y` with optional parameters `fit_params`\n        and returns a transformed version of `X`.\n\n        Parameters\n        ----------\n        X : array-like of shape (n_samples, n_features)\n            Input samples.\n\n        y :  array-like of shape (n_samples,) or (n_samples, n_outputs),                 default=None\n            Target values (None for unsupervised transformations).\n\n        **fit_params : dict\n            Additional fit parameters.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape (n_samples, n_features)"
+              },
+              "Input": {
+                "type": "samples.",
+                "description": ""
+              },
+              "y": {
+                "type": "array",
+                "description": "like of shape (n_samples,) or (n_samples, n_outputs),                 default=None"
+              },
+              "Target": {
+                "type": "values (None for unsupervised transformations).",
+                "description": "**fit_params : dict"
+              },
+              "Additional": {
+                "type": "fit parameters.",
+                "description": "Returns\n-------"
+              },
+              "X_new": {
+                "type": "ndarray array of shape (n_samples, n_features_new)",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "array.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_new : ndarray array of shape (n_samples, n_features_new)\n            Transformed array.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_feature_names_out",
+          "signature": "get_feature_names_out(self, input_features=None)",
+          "documentation": {
+            "description": "Get output feature names for transformation.\n\n        Parameters\n        ----------\n        input_features : array-like of str or None, default=None\n            Input features.\n\n            - If `input_features` is `None`, then `feature_names_in_` is\n              used as feature names in. If `feature_names_in_` is not defined,\n              then the following input feature names are generated:\n              `[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n            - If `input_features` is an array-like, then `input_features` must\n              match `feature_names_in_` if `feature_names_in_` is defined.",
+            "parameters": {
+              "input_features": {
+                "type": "array",
+                "description": "like of str or None, default=None"
+              },
+              "Input": {
+                "type": "features.",
+                "description": "- If `input_features` is `None`, then `feature_names_in_` is"
+              },
+              "used": {
+                "type": "as feature names in. If `feature_names_in_` is not defined,",
+                "description": ""
+              },
+              "then": {
+                "type": "the following input feature names are generated:",
+                "description": "`[\"x0\", \"x1\", ..., \"x(n_features_in_ - 1)\"]`.\n- If `input_features` is an array-like, then `input_features` must"
+              },
+              "match": {
+                "type": "`feature_names_in_` if `feature_names_in_` is defined.",
+                "description": "Returns\n-------"
+              },
+              "feature_names_out": {
+                "type": "ndarray of str objects",
+                "description": ""
+              },
+              "Transformed": {
+                "type": "feature names.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        feature_names_out : ndarray of str objects\n            Transformed feature names.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_metadata_routing",
+          "signature": "get_metadata_routing(self)",
+          "documentation": {
+            "description": "Get metadata routing of this object.\n\n        Please check :ref:`User Guide <metadata_routing>` on how the routing\n        mechanism works.",
+            "parameters": {},
+            "returns": "-------\n        routing : MetadataRequest\n            A :class:`~sklearn.utils.metadata_routing.MetadataRequest` encapsulating\n            routing information.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "get_params",
+          "signature": "get_params(self, deep=True)",
+          "documentation": {
+            "description": "Get parameters for this estimator.\n\n        Parameters\n        ----------\n        deep : bool, default=True\n            If True, will return the parameters for this estimator and\n            contained subobjects that are estimators.",
+            "parameters": {
+              "deep": {
+                "type": "bool, default=True",
+                "description": ""
+              },
+              "If": {
+                "type": "True, will return the parameters for this estimator and",
+                "description": ""
+              },
+              "contained": {
+                "type": "subobjects that are estimators.",
+                "description": "Returns\n-------"
+              },
+              "params": {
+                "type": "dict",
+                "description": ""
+              },
+              "Parameter": {
+                "type": "names mapped to their values.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        params : dict\n            Parameter names mapped to their values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "inverse_transform",
+          "signature": "inverse_transform(self, X)",
+          "documentation": {
+            "description": "Convert the data back to the original representation.\n\n        Inverts the `transform` operation performed on an array.\n        This operation can only be performed after :class:`SimpleImputer` is\n        instantiated with `add_indicator=True`.",
+            "parameters": {
+              "X": {
+                "type": "array",
+                "description": "like of shape                 (n_samples, n_features + n_features_missing_indicator)"
+              },
+              "The": {
+                "type": "original `X` with missing values as it was prior",
+                "description": ""
+              },
+              "an": {
+                "type": "augmented array of imputed data and the missing indicator mask.",
+                "description": "Returns\n-------"
+              },
+              "X_original": {
+                "type": "ndarray of shape (n_samples, n_features)",
+                "description": ""
+              },
+              "to": {
+                "type": "imputation.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        X_original : ndarray of shape (n_samples, n_features)\n            The original `X` with missing values as it was prior\n            to imputation.",
+            "raises": "",
+            "see_also": "",
+            "notes": "that `inverse_transform` can only invert the transform in\n        features that have binary indicators for missing values. If a feature\n        has no missing values at `fit` time, the feature won't have a binary\n        indicator, and the imputation done at `transform` time won't be\n        inverted.\n\n        .. versionadded:: 0.24\n\n        Parameters\n        ----------\n        X : array-like of shape                 (n_samples, n_features + n_features_missing_indicator)\n            The imputed data to be reverted to original data. It has to be\n            an augmented array of imputed data and the missing indicator mask.\n\n        Returns\n        -------\n        X_original : ndarray of shape (n_samples, n_features)\n            The original `X` with missing values as it was prior\n            to imputation.",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_output",
+          "signature": "set_output(self, *, transform=None)",
+          "documentation": {
+            "description": "Set output container.\n\n        See :ref:`sphx_glr_auto_examples_miscellaneous_plot_set_output.py`\n        for an example on how to use the API.\n\n        Parameters\n        ----------\n        transform : {\"default\", \"pandas\", \"polars\"}, default=None\n            Configure output of `transform` and `fit_transform`.\n\n            - `\"default\"`: Default output format of a transformer\n            - `\"pandas\"`: DataFrame output\n            - `\"polars\"`: Polars output\n            - `None`: Transform configuration is unchanged\n\n            .. versionadded:: 1.4\n                `\"polars\"` option was added.",
+            "parameters": {
+              "transform": {
+                "type": "{\"default\", \"pandas\", \"polars\"}, default=None",
+                "description": ""
+              },
+              "Configure": {
+                "type": "output of `transform` and `fit_transform`.",
+                "description": "- `\"default\"`: Default output format of a transformer\n- `\"pandas\"`: DataFrame output\n- `\"polars\"`: Polars output\n- `None`: Transform configuration is unchanged\n.. versionadded:: 1.4\n`\"polars\"` option was added.\nReturns\n-------"
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "set_params",
+          "signature": "set_params(self, **params)",
+          "documentation": {
+            "description": "Set the parameters of this estimator.\n\n        The method works on simple estimators as well as on nested objects\n        (such as :class:`~sklearn.pipeline.Pipeline`). The latter have\n        parameters of the form ``<component>__<parameter>`` so that it's\n        possible to update each component of a nested object.\n\n        Parameters\n        ----------\n        **params : dict\n            Estimator parameters.",
+            "parameters": {
+              "Estimator": {
+                "type": "instance.",
+                "description": ""
+              },
+              "self": {
+                "type": "estimator instance",
+                "description": ""
+              },
+              "of": {
+                "type": "the form ``<component>__<parameter>`` so that it's",
+                "description": ""
+              },
+              "possible": {
+                "type": "to update each component of a nested object.",
+                "description": ""
+              }
+            },
+            "returns": "-------\n        self : estimator instance\n            Estimator instance.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        },
+        {
+          "name": "transform",
+          "signature": "transform(self, X)",
+          "documentation": {
+            "description": "Impute all missing values in `X`.\n\n        Parameters\n        ----------\n        X : {array-like, sparse matrix}, shape (n_samples, n_features)\n            The input data to complete.",
+            "parameters": {
+              "X": {
+                "type": "{array",
+                "description": "like, sparse matrix}, shape (n_samples, n_features)"
+              },
+              "The": {
+                "type": "input data to complete.",
+                "description": "Returns\n-------"
+              },
+              "X_imputed": {
+                "type": "{ndarray, sparse matrix} of shape                 (n_samples, n_features_out)",
+                "description": "`X` with imputed values."
+              }
+            },
+            "returns": "-------\n        X_imputed : {ndarray, sparse matrix} of shape                 (n_samples, n_features_out)\n            `X` with imputed values.",
+            "raises": "",
+            "see_also": "",
+            "notes": "",
+            "examples": ""
+          }
+        }
+      ]
+    }
+  ]
+}
