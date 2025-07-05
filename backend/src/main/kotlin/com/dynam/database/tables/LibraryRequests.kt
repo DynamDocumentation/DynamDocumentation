@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.*
 
 object LibraryRequests: Table() {
     val id = integer("id").autoIncrement()
-    val name = varchar("name", 255)
+    val name = text("name")
     val accepted = bool("accepted")
 
     override val primaryKey: PrimaryKey

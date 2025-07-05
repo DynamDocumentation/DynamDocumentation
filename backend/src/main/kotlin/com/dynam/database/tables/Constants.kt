@@ -6,8 +6,8 @@ import com.dynam.database.tables.Entities
 
 object Constants: Table() {
     val id = integer("id").autoIncrement()
-    val name = varchar("name", 255)
-    val value = varchar("default_value", 255)
+    val name = text("name")
+    val value = text("default_value")
     val entityId = reference("entity_id", Entities.id)
 
     override val primaryKey: PrimaryKey

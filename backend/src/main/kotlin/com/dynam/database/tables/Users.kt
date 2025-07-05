@@ -4,9 +4,9 @@ import org.jetbrains.exposed.sql.*
 
 object Users: Table() {
     val id = integer("id").autoIncrement()
-    val username = varchar("username", 50).uniqueIndex()
-    val email = varchar("email", 100).uniqueIndex()
-    val passwordHash = varchar("password_hash", 255)
+    val username = text("username").uniqueIndex()
+    val email = text("email").uniqueIndex()
+    val passwordHash = text("password_hash")
     val createdAt = long("created_at")
     val lastLogin = long("last_login").nullable()
 

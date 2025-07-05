@@ -10,8 +10,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Variable(
     val id: Int,
-    val entityId: Int,
+    val classId: Int?,
+    val functionId: Int?,
     val type: VariableType,
     val name: String,
-    val description: String
+    val dataType: String?,
+    val description: String?,
+    val defaultValue: String?
 )

@@ -86,19 +86,46 @@ class EntityRepository {
     }
     
     /**
-     * Get variables associated with an entity, grouped by type
+     * Get variables associated with a class entity, grouped by type
      */
-    suspend fun getEntityVariables(entityId: Int): Map<VariableType, List<Variable>> = dbQuery {
-        // Get all variables for this entity
+    suspend fun getClassVariables(classId: Int): Map<VariableType, List<Variable>> = dbQuery {
+        // Get all variables for this class
         val variables = Variables.selectAll()
-            .where { Variables.entityId eq entityId }
+            .where { Variables.classId eq classId }
             .map { 
                 Variable(
                     id = it[Variables.id],
-                    entityId = it[Variables.entityId],
+                    classId = it[Variables.classId],
+                    functionId = it[Variables.functionId],
                     type = it[Variables.type],
                     name = it[Variables.name],
-                    description = it[Variables.description]
+                    dataType = it[Variables.dataType],
+                    description = it[Variables.description],
+                    defaultValue = it[Variables.defaultValue]
+                )
+            }
+        
+        // Group variables by their type
+        variables.groupBy { it.type }
+    }
+    
+    /**
+     * Get variables associated with a function entity, grouped by type
+     */
+    suspend fun getFunctionVariables(functionId: Int): Map<VariableType, List<Variable>> = dbQuery {
+        // Get all variables for this function
+        val variables = Variables.selectAll()
+            .where { Variables.functionId eq functionId }
+            .map { 
+                Variable(
+                    id = it[Variables.id],
+                    classId = it[Variables.classId],
+                    functionId = it[Variables.functionId],
+                    type = it[Variables.type],
+                    name = it[Variables.name],
+                    dataType = it[Variables.dataType],
+                    description = it[Variables.description],
+                    defaultValue = it[Variables.defaultValue]
                 )
             }
         
@@ -123,5 +150,27 @@ class EntityRepository {
         } get Entities.id
         
         Entity(id, type, name, description, namespaceId)
+    }
+    
+    /**
+     * Get or create an entity representing a namespace
+     * 
+     * @param namespaceName The name of the namespace
+     * @param namespaceId The ID of the namespace
+     * @param description The description for the namespace entity
+     * @return The existing or newly created entity
+     */
+    suspend fun getOrCreateNamespaceEntity(namespaceName: String, namespaceId: Int, description: String): Entity {
+        // Check if an entity with this name already exists for the namespace
+        val existingEntities = getByNamespaceAndType(namespaceId, EntityType.CLASS)
+        val existingEntity = existingEntities.find { it.name == namespaceName }
+        
+        // Return existing entity or create new one
+        return existingEntity ?: create(
+            type = EntityType.CLASS,
+            name = namespaceName,
+            description = description,
+            namespaceId = namespaceId
+        )
     }
 }

@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.*
 
 object Namespaces: Table() {
     val id = integer("id").autoIncrement()
-    val name = varchar("name", 255)
+    val name = text("name")
 
     override val primaryKey: PrimaryKey
         get() = PrimaryKey(id)

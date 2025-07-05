@@ -60,6 +60,23 @@ class NamespaceRepository {
     }
     
     /**
+     * Get all unique library names (first component of each namespace)
+     * 
+     * @return List of unique library names
+     */
+    suspend fun getAllLibraryNames(): List<String> = dbQuery {
+        // Select all namespaces and extract the first component of each namespace name
+        val allNamespaces = Namespaces.selectAll().map { it[Namespaces.name] }
+        
+        // Extract the first component of each namespace (before the first dot)
+        allNamespaces
+            .map { namespace -> namespace.split('.').firstOrNull() ?: namespace }
+            .filter { it.isNotEmpty() }
+            .distinct()
+            .sorted()
+    }
+    
+    /**
      * Create a new namespace
      */
     suspend fun create(name: String): Namespace = dbQuery {
@@ -68,5 +85,15 @@ class NamespaceRepository {
         } get Namespaces.id
         
         Namespace(id, name)
+    }
+    
+    /**
+     * Get an existing namespace by name or create a new one if it doesn't exist
+     * 
+     * @param name The name of the namespace
+     * @return The existing or newly created namespace
+     */
+    suspend fun getOrCreate(name: String): Namespace {
+        return getByName(name) ?: create(name)
     }
 }
