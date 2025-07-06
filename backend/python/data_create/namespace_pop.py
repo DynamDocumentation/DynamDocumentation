@@ -11,7 +11,7 @@ config = {
     "database": "dynam"
 }
 
-def populate_namespaces_from_output(output_dir="output"):
+def populate_namespaces_from_output(output_dir="output", specific_library=None):
     try:
         conn = mariadb.connect(**config)
         cur = conn.cursor()
@@ -23,7 +23,10 @@ def populate_namespaces_from_output(output_dir="output"):
             print(f"Pasta '{base_path}' não encontrada.")
             return
 
-        for folder in os.listdir(base_path):
+        # If a specific library is provided, only process that library
+        folders = [specific_library] if specific_library else os.listdir(base_path)
+        
+        for folder in folders:
             folder_path = os.path.join(base_path, folder)
             index_path = os.path.join(folder_path, "index.json")
             if os.path.isdir(folder_path) and os.path.isfile(index_path):

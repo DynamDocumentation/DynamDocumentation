@@ -18,31 +18,56 @@ config = {
     "database": "dynam"
 }
 
-def populate_variables(output_dir="../output"):
+def populate_variables(output_dir="../output", specific_library=None):
     """
     Populate Variables table with parameters from classes and functions.
+    
+    Parameters:
+    -----------
+    output_dir : str
+        Path to the output directory containing the JSON files
+    specific_library : str, optional
+        If specified, only process variables for this library
     """
     try:
         conn = mariadb.connect(**config)
         cur = conn.cursor()
         print("Successfully connected to MariaDB database")
         
-        # Get all classes and their namespaces
-        cur.execute("""
-            SELECT c.id, c.name, n.name 
-            FROM Classes c 
-            JOIN Namespaces n ON c.namespace_id = n.id
-        """)
+        # Get classes and their namespaces, filtered by library if specified
+        if specific_library:
+            cur.execute("""
+                SELECT c.id, c.name, n.name 
+                FROM Classes c 
+                JOIN Namespaces n ON c.namespace_id = n.id
+                WHERE n.name LIKE ?
+            """, (f"{specific_library}%",))
+        else:
+            cur.execute("""
+                SELECT c.id, c.name, n.name 
+                FROM Classes c 
+                JOIN Namespaces n ON c.namespace_id = n.id
+            """)
         classes = cur.fetchall()
         
-        # Get all functions and their parent info (either class or namespace)
-        cur.execute("""
-            SELECT f.id, f.name, f.parent_class_id, c.name, n.name, f.parent_namespace_id, n2.name
-            FROM Functions f
-            LEFT JOIN Classes c ON f.parent_class_id = c.id
-            LEFT JOIN Namespaces n ON c.namespace_id = n.id
-            LEFT JOIN Namespaces n2 ON f.parent_namespace_id = n2.id
-        """)
+        # Get functions and their parent info (either class or namespace), filtered by library if specified
+        if specific_library:
+            cur.execute("""
+                SELECT f.id, f.name, f.parent_class_id, c.name, n.name, f.parent_namespace_id, n2.name
+                FROM Functions f
+                LEFT JOIN Classes c ON f.parent_class_id = c.id
+                LEFT JOIN Namespaces n ON c.namespace_id = n.id
+                LEFT JOIN Namespaces n2 ON f.parent_namespace_id = n2.id
+                WHERE (n.name LIKE ? OR n2.name LIKE ?)
+            """, (f"{specific_library}%", f"{specific_library}%"))
+        else:
+            cur.execute("""
+                SELECT f.id, f.name, f.parent_class_id, c.name, n.name, f.parent_namespace_id, n2.name
+                FROM Functions f
+                LEFT JOIN Classes c ON f.parent_class_id = c.id
+                LEFT JOIN Namespaces n ON c.namespace_id = n.id
+                LEFT JOIN Namespaces n2 ON f.parent_namespace_id = n2.id
+            """)
         functions = cur.fetchall()
         
         # Process class parameters

@@ -23,7 +23,12 @@ class LibraryRequestRepository {
      * Get all library requests from the database
      */
     suspend fun getAll(): List<LibraryRequest> = dbQuery {
-        LibraryRequests.selectAll().map { fromRow(it) }
+        try {
+            LibraryRequests.selectAll().map { fromRow(it) }
+        } catch (e: Exception) {
+            println("Error fetching library requests: ${e.message}")
+            emptyList()
+        }
     }
     
     /**
@@ -40,10 +45,15 @@ class LibraryRequestRepository {
      * Get a library request by its name
      */
     suspend fun getByName(name: String): LibraryRequest? = dbQuery {
-        LibraryRequests.selectAll()
-            .where { LibraryRequests.name eq name }
-            .map { fromRow(it) }
-            .singleOrNull()
+        try {
+            LibraryRequests.selectAll()
+                .where { LibraryRequests.name eq name }
+                .map { fromRow(it) }
+                .singleOrNull()
+        } catch (e: Exception) {
+            println("Error fetching library request by name: ${e.message}")
+            null
+        }
     }
     
     /**

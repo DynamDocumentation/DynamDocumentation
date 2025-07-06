@@ -11,7 +11,7 @@ config = {
     "database": "dynam"
 }
 
-def populate_entities_from_namespaces(output_dir="../output"):
+def populate_entities_from_namespaces(output_dir="../output", specific_library=None):
     """
     Populate Classes and Functions tables based on namespace entries.
     
@@ -19,14 +19,25 @@ def populate_entities_from_namespaces(output_dir="../output"):
     2. For each namespace, finds the corresponding JSON file
     3. Extracts classes and functions
     4. Inserts them into the database with proper relationships
+    
+    Parameters:
+    -----------
+    output_dir : str
+        Path to the output directory containing the JSON files
+    specific_library : str, optional
+        If specified, only process namespaces for this library
     """
     try:
         conn = mariadb.connect(**config)
         cur = conn.cursor()
         print("Successfully connected to MariaDB database")
         
-        # Get all namespaces from the database
-        cur.execute("SELECT id, name FROM Namespaces")
+        # Get namespaces from the database, filtered by library if specified
+        if specific_library:
+            cur.execute("SELECT id, name FROM Namespaces WHERE name LIKE ?", (f"{specific_library}%",))
+        else:
+            cur.execute("SELECT id, name FROM Namespaces")
+            
         namespaces = cur.fetchall()
         
         # Process each namespace

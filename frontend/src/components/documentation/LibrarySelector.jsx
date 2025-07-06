@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
     Dialog, DialogTitle, DialogContent, DialogActions, 
     List, ListItemButton, ListItemText, 
@@ -10,7 +10,7 @@ import axios from 'axios';
 
 // Dialog for selecting libraries, namespaces, and functions
 const LibrarySelector = ({ open, onClose, onSelect }) => {
-    const [libraries] = useState(['numpy', 'seaborn', 'matplotlib']);
+    const [libraries, setLibraries] = useState([]);
     const [selectedLibrary, setSelectedLibrary] = useState(null);
     const [namespaces, setNamespaces] = useState([]);
     const [selectedNamespace, setSelectedNamespace] = useState(null);
@@ -20,6 +20,39 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
     const [error, setError] = useState(null);
     const [step, setStep] = useState(1); // 1: Libraries, 2: Namespaces, 3: Functions/Classes
     
+    // Fetch libraries when dialog opens
+    useEffect(() => {
+        if (open) {
+            loadLibraries();
+        }
+    }, [open]);
+    
+    // Fetch libraries from backend
+    const loadLibraries = async () => {
+        setLoading(true);
+        setError(null);
+        
+        try {
+            // Make API call to backend to get all available libraries
+            const response = await axios.get('/library');
+            
+            if (response.data && response.data.libraries && Array.isArray(response.data.libraries)) {
+                setLibraries(response.data.libraries);
+            } else {
+                console.warn("Unexpected data format received from server, using fallback data");
+                // Fallback to hardcoded libraries if response format is unexpected
+                setLibraries(['numpy', 'seaborn', 'matplotlib']);
+            }
+        } catch (error) {
+            console.error("Error fetching libraries:", error);
+            setError("Failed to load libraries. Using fallback data.");
+            // Fallback to hardcoded libraries if API call fails
+            setLibraries(['numpy', 'seaborn', 'matplotlib']);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
     // Fetch namespaces from backend
     const loadNamespaces = async (library) => {
         setLoading(true);
@@ -28,6 +61,8 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
         try {
             // Make API call to backend to get the namespaces for the selected library
             const response = await axios.get(`/library/${library}`);
+            
+            console.log("Namespace response data:", JSON.stringify(response.data, null, 2));
             
             if (response.data && Array.isArray(response.data)) {
                 // Process the response to extract namespaces
@@ -99,10 +134,12 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
                     signature: cls.signature || "", // Ensure signature exists
                     // Create docstring structure for compatibility with hardcoded data
                     docstring: {
-                        description: "", // Will be loaded in detail view
-                        parameters: {},   // Will be loaded in detail view
-                        returns: ""       // Will be loaded in detail view
-                    }
+                        description: cls.description || "", // Use description from backend
+                        parameters: cls.parameters || {},   // Parameters will be loaded in detail view
+                        returns: cls.returnType || ""       // Use returnType from backend
+                    },
+                    // Add example if available
+                    example: cls.example || ""
                 }));
                 
                 const processedFunctions = namespace.functions.map(func => ({
@@ -110,10 +147,15 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
                     signature: func.signature || "", // Ensure signature exists
                     // Create docstring structure for compatibility with hardcoded data
                     docstring: {
-                        description: "", // Will be loaded in detail view
-                        parameters: {},   // Will be loaded in detail view
-                        returns: ""       // Will be loaded in detail view
-                    }
+                        description: func.description || "", // Use description from backend
+                        parameters: func.parameters || {},   // Parameters will be loaded in detail view
+                        returns: func.returnType || "",      // Use returnType from backend
+                        examples: func.example || ""         // Use example from backend
+                    },
+                    // Add direct properties for API compatibility
+                    description: func.description || "",
+                    returnType: func.returnType || "",
+                    example: func.example || ""
                 }));
                 
                 console.log("Processed classes:", processedClasses);
@@ -261,20 +303,67 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
         console.log("Selected entity:", entity);
         console.log("Entity type:", type);
         
-        // Check if entity has docstring property, if not, create a simple one
+        // Ensure docstring is properly formatted
         if (!entity.docstring) {
             entity.docstring = {
                 description: entity.description || "",
                 parameters: {},
-                returns: entity.returns || ""
+                returns: entity.returnType || entity.returns || "",
+                examples: entity.example || ""
             };
         }
         
+        // Create mock parameters if we don't have real ones yet
+        // These will be replaced by real data when the entity details are loaded
+        let mockParameters = [];
+        if (entity.signature) {
+            // Extract parameter names from signature if available
+            const signatureMatch = entity.signature.match(/\(([^)]*)\)/);
+            if (signatureMatch && signatureMatch[1]) {
+                const paramString = signatureMatch[1].trim();
+                if (paramString) {
+                    mockParameters = paramString.split(',').map((param, index) => {
+                        const paramParts = param.trim().split('=');
+                        const paramName = paramParts[0].trim();
+                        const defaultValue = paramParts.length > 1 ? paramParts[1].trim() : null;
+                        
+                        return {
+                            id: `param-${index}`,
+                            name: paramName,
+                            dataType: '',
+                            description: 'Parameter details will be loaded',
+                            defaultValue: defaultValue
+                        };
+                    });
+                }
+            }
+        }
+        
+        // Create a comprehensive entity object with all needed fields
         const fullEntity = {
             ...entity,
             library: selectedLibrary,
             namespace: selectedNamespace.name,
-            type: type // 'class' or 'function'
+            type: type, // 'class' or 'function'
+            
+            // Add these fields explicitly to ensure they exist
+            id: entity.id,
+            name: entity.name,
+            signature: entity.signature || "",
+            description: entity.description || entity.docstring?.description || "",
+            returnType: entity.returnType || entity.docstring?.returns || "",
+            
+            // Add parameters both at the root level and in docstring for compatibility
+            parameters: entity.parameters || mockParameters,
+            
+            // This format works better with the DocContent component
+            docstring: {
+                ...entity.docstring,
+                description: entity.description || entity.docstring?.description || "",
+                parameters: entity.parameters || entity.docstring?.parameters || mockParameters,
+                returns: entity.returnType || entity.docstring?.returns || "",
+                examples: entity.example || entity.docstring?.examples || ""
+            }
         };
         
         console.log("Passing to parent:", fullEntity);
@@ -364,8 +453,7 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
                                                     onClick={() => handleEntitySelect(cls, 'class')}
                                                 >
                                                     <ListItemText 
-                                                        primary={cls.name} 
-                                                        secondary={cls.signature || ''}
+                                                        primary={cls.name}
                                                     />
                                                 </ListItemButton>
                                             ))}
@@ -383,8 +471,7 @@ const LibrarySelector = ({ open, onClose, onSelect }) => {
                                                     onClick={() => handleEntitySelect(func, 'function')}
                                                 >
                                                     <ListItemText 
-                                                        primary={func.name} 
-                                                        secondary={func.signature || ''} 
+                                                        primary={func.name}
                                                     />
                                                 </ListItemButton>
                                             ))}

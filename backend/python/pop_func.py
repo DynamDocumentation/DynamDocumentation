@@ -2,170 +2,33 @@ import inspect
 import importlib
 import json
 import os
+import warnings
 from typing import Dict, List
+
+# Import the improved functions from pop_general
+from pop_general import (get_function_signature, parse_numpy_tensorflow_style, 
+                        extract_functions, extract_classes, extract_methods)
+
+# Suprimir avisos para evitar ruído na saída
+warnings.filterwarnings("ignore")
 
 # Criar diretório de saída se não existir
 OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "output"))
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def get_function_signature(func) -> str:
-    """Extrai a assinatura da função no formato 'nome(arg1, arg2, ...)'."""
-    try:
-        sig = inspect.signature(func)
-        return f"{func.__name__}{sig}"
-    except (ValueError, TypeError):
-        return f"{func.__name__}(...)"  # Fallback para funções em C
-
 def parse_docstring(doc: str) -> dict:
     """
     Parse a estilo NumPy/Sphinx no docstring, segmentando em seções
     como 'Parameters', 'Returns', etc.
+    
+    Esta função agora utiliza a implementação mais robusta de
+    parse_numpy_tensorflow_style da pop_general.py
     """
-    import re
+    # Como estamos trabalhando com scikit-learn, usamos o parser de NumPy/TensorFlow 
+    # que funciona bem para documentação no estilo scikit-learn
+    return parse_numpy_tensorflow_style(doc)
 
-    if not doc:
-        return {}
-
-    known_sections = [
-        "Parameters",
-        "Returns",
-        "Raises",
-        "See Also",
-        "Notes",
-        "Examples"
-    ]
-
-    result = {
-        "description": "",
-        "parameters": {},
-        "returns": "",
-        "raises": "",
-        "see_also": "",
-        "notes": "",
-        "examples": ""
-    }
-
-    lines = doc.split('\n')
-    current_section = "description"
-    param_name = None
-    param_desc = []
-
-    def finalize_param():
-        nonlocal param_name, param_desc
-        if param_name:
-            if param_name not in result["parameters"]:
-                result["parameters"][param_name] = {
-                    "type": "",
-                    "description": ""
-                }
-            current = result["parameters"][param_name]["description"]
-            joined = (current + "\n" + "\n".join(param_desc)).strip()
-            result["parameters"][param_name]["description"] = joined
-        param_name = None
-        param_desc = []
-
-    i = 0
-    while i < len(lines):
-        line = lines[i].rstrip()
-
-        # Se seção reconhecida
-        if line in known_sections:
-            if current_section == "parameters":
-                finalize_param()
-            current_section = line.lower()
-            if i + 1 < len(lines) and re.match(r'^-+\s*$', lines[i+1]):
-                i += 2
-                continue
-            else:
-                i += 1
-                continue
-
-        # Processa a seção atual
-        if current_section == "description":
-            result["description"] += line + "\n"
-
-        elif current_section == "parameters":
-            param_match = re.match(r'^(\S+)\s*:\s*(.*)', line)
-            if param_match:
-                finalize_param()
-                param_name = param_match.group(1)
-                param_type = param_match.group(2)
-                result["parameters"][param_name] = {
-                    "type": param_type.strip(),
-                    "description": ""
-                }
-            else:
-                if param_name:
-                    param_desc.append(line)
-
-        elif current_section == "returns":
-            result["returns"] += line + "\n"
-
-        elif current_section == "raises":
-            result["raises"] += line + "\n"
-
-        elif current_section == "see also":
-            result["see_also"] += line + "\n"
-
-        elif current_section == "notes":
-            result["notes"] += line + "\n"
-
-        elif current_section == "examples":
-            result["examples"] += line + "\n"
-
-        i += 1
-
-    if current_section == "parameters":
-        finalize_param()
-
-    for key, value in result.items():
-        if isinstance(value, str):
-            result[key] = value.strip()
-
-    return result
-
-def extract_functions(module) -> List[Dict]:
-    """Extrai todas as funções públicas do módulo com docstrings parseados."""
-    functions = []
-    for name in dir(module):
-        if name.startswith('_'):
-            continue
-
-        obj = getattr(module, name)
-        if callable(obj):
-            doc = inspect.getdoc(obj) or ""
-            functions.append({
-                "name": name,
-                "signature": get_function_signature(obj),
-                "docstring": parse_docstring(doc)
-            })
-    return sorted(functions, key=lambda x: x["name"])
-
-def extract_classes(module) -> List[Dict]:
-    """Extrai todas as classes públicas do módulo e seus métodos."""
-    classes = []
-    for name, obj in inspect.getmembers(module, inspect.isclass):
-        if name.startswith('_'):
-            continue
-
-        class_info = {
-            "name": name,
-            "docstring": parse_docstring(inspect.getdoc(obj) or ""),
-            "methods": []
-        }
-        # Extrai métodos
-        for meth_name, meth_obj in inspect.getmembers(obj, callable):
-            if meth_name.startswith('_'):
-                continue
-            method_doc = inspect.getdoc(meth_obj) or ""
-            class_info["methods"].append({
-                "name": meth_name,
-                "signature": get_function_signature(meth_obj),
-                "docstring": parse_docstring(method_doc)
-            })
-        classes.append(class_info)
-
-    return sorted(classes, key=lambda x: x["name"])
+# These functions are now imported from pop_general and use "docstring" consistently
 
 def extract_constants(module) -> List[Dict]:
     """Extrai variáveis públicas que sejam maiúsculas (possivelmente 'constantes')."""
@@ -195,10 +58,14 @@ def extract_module_api(module_name: str) -> Dict:
     except ImportError as e:
         return {"error": str(e)}
 
+    # Usando as funções importadas de pop_general que já usam o campo "docstring"
+    functions = extract_functions(module, module_name)
+    classes = extract_classes(module, module_name)
+    
     return {
         "description": inspect.getdoc(module) or "",
-        "functions": extract_functions(module),
-        "classes": extract_classes(module),
+        "functions": functions,
+        "classes": classes,
         "constants": extract_constants(module)
     }
 
@@ -218,6 +85,9 @@ if __name__ == "__main__":
         'sklearn.pipeline'
     }
 
+    # Lista para rastrear todos os módulos processados
+    processed_modules = []
+    
     # Extrai e salva para cada módulo
     for targ in TARGET_MODULES:
         sklearn_api = extract_module_api(targ)
@@ -227,10 +97,31 @@ if __name__ == "__main__":
         os.makedirs(lib_output_dir, exist_ok=True)
         
         # Salva o arquivo JSON no diretório de saída
-        filename = f'{targ.replace(".", "_")}.json'
+        filename = f'{targ.split(".")[-1]}.json'
         output_path = os.path.join(lib_output_dir, filename)
         
         with open(output_path, 'w') as f:
             json.dump(sklearn_api, f, indent=2)
+            
+        # Adicionar ao registro de módulos processados
+        processed_modules.append({
+            "name": targ,
+            "file": filename
+        })
+    
+    # Criar arquivo index.json
+    # O arquivo modules precisa conter uma lista de strings com os nomes dos módulos
+    # para ser compatível com namespace_pop.py
+    module_names = [module["name"] for module in processed_modules]
+    
+    index = {
+        "library": "sklearn",
+        "modules": module_names
+    }
+    
+    index_path = os.path.join(lib_output_dir, "index.json")
+    with open(index_path, 'w') as f:
+        json.dump(index, f, indent=2)
 
     print(f"\n✅ JSONs de cada submódulo do sklearn foram gerados com sucesso em {lib_output_dir}!")
+    print(f"✅ Arquivo index.json criado em {index_path}")

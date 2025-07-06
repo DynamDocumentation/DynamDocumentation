@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Box, Typography, Paper, CircularProgress, Alert } from "@mui/material";
 import axios from 'axios';
 
@@ -8,15 +8,8 @@ const DocContent = ({ content }) => {
     const [error, setError] = useState(null);
     const [entityDetails, setEntityDetails] = useState(null);
     
-    useEffect(() => {
-        // If content has an id, fetch the entity details from the API
-        if (content && content.id) {
-            console.log("Content passed to DocContent:", content);
-            fetchEntityDetails(content.id);
-        }
-    }, [content]);
-    
-    const fetchEntityDetails = async (entityId) => {
+    // Define fetchEntityDetails first with useCallback
+    const fetchEntityDetails = useCallback(async (entityId) => {
         setLoading(true);
         setError(null);
         
@@ -33,11 +26,20 @@ const DocContent = ({ content }) => {
             }
         } catch (error) {
             console.error("Error fetching entity details:", error);
-            setError(`Failed to load details for ${content.name}.`);
+            setError(`Failed to load details for ${content?.name || "entity"}.`);
         } finally {
             setLoading(false);
         }
-    };
+    }, [content?.name]); // Safer way to access content.name
+    
+    // Then use it in useEffect
+    useEffect(() => {
+        // If content has an id, fetch the entity details from the API
+        if (content && content.id) {
+            console.log("Content passed to DocContent:", content);
+            fetchEntityDetails(content.id);
+        }
+    }, [content, fetchEntityDetails]);
     
     // For debugging - log what's being used to display
     useEffect(() => {
@@ -50,9 +52,8 @@ const DocContent = ({ content }) => {
     
     if (!content) return null;
     
-    // If we have entity details from the API, use those
-    // Otherwise, fall back to the content prop (which might have hardcoded data)
-    const displayData = entityDetails || content;
+    // Note: We're using entityDetails or content directly in each function below,
+    // so we don't need a separate displayData variable
     
     // Format parameters from the API response
     const formatParameters = () => {
@@ -64,35 +65,50 @@ const DocContent = ({ content }) => {
             return entityDetails.parameters.map(param => (
                 <Box key={param.id || param.name} sx={{ mb: 1 }}>
                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                        <code>{param.name}</code> {param.type ? `(${param.type})` : ''}
+                        <code>{param.name}</code> {param.dataType ? `(${param.dataType})` : ''}
                     </Typography>
                     <Typography variant="body2" sx={{ ml: 2 }}>
-                        {param.value}
+                        {param.description || param.defaultValue || ''}
                     </Typography>
                 </Box>
             ));
-        } else if (content.docstring?.parameters) {
+        } else if (content.docstring?.parameters && typeof content.docstring.parameters === 'object') {
             console.log("Using docstring parameters:", content.docstring.parameters);
-            // Fallback to using docstring parameters
-            return Object.entries(content.docstring.parameters).map(([name, param]) => (
-                <Box key={name} sx={{ mb: 1 }}>
-                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                        <code>{name}</code> {param.type ? `(${param.type})` : ''}
-                    </Typography>
-                    <Typography variant="body2" sx={{ ml: 2 }}>
-                        {param.description}
-                    </Typography>
-                </Box>
-            ));
+            
+            // Handle parameters object (either array or map)
+            if (Array.isArray(content.docstring.parameters)) {
+                return content.docstring.parameters.map(param => (
+                    <Box key={param.id || param.name} sx={{ mb: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                            <code>{param.name}</code> {param.dataType ? `(${param.dataType})` : ''}
+                        </Typography>
+                        <Typography variant="body2" sx={{ ml: 2 }}>
+                            {param.description || param.defaultValue || ''}
+                        </Typography>
+                    </Box>
+                ));
+            } else {
+                // Handle parameters as object map
+                return Object.entries(content.docstring.parameters).map(([name, param]) => (
+                    <Box key={name} sx={{ mb: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                            <code>{name}</code> {param.type ? `(${param.type})` : ''}
+                        </Typography>
+                        <Typography variant="body2" sx={{ ml: 2 }}>
+                            {param.description}
+                        </Typography>
+                    </Box>
+                ));
+            }
         } else if (content.parameters && Array.isArray(content.parameters)) {
             console.log("Using content parameters array:", content.parameters);
             return content.parameters.map(param => (
                 <Box key={param.id || param.name} sx={{ mb: 1 }}>
                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                        <code>{param.name}</code> {param.type ? `(${param.type})` : ''}
+                        <code>{param.name}</code> {param.dataType || param.type ? `(${param.dataType || param.type})` : ''}
                     </Typography>
                     <Typography variant="body2" sx={{ ml: 2 }}>
-                        {param.description || param.value || ''}
+                        {param.description || param.defaultValue || ''}
                     </Typography>
                 </Box>
             ));
@@ -171,7 +187,10 @@ const DocContent = ({ content }) => {
                     
                     {/* Parameters section - Only show if parameters exist */}
                     {(entityDetails?.parameters?.length > 0 || 
-                      Object.keys(content.docstring?.parameters || {}).length > 0) && (
+                      (content.docstring?.parameters && 
+                        ((Array.isArray(content.docstring.parameters) && content.docstring.parameters.length > 0) ||
+                        Object.keys(content.docstring.parameters || {}).length > 0)) ||
+                      (content.parameters && Array.isArray(content.parameters) && content.parameters.length > 0)) && (
                         <Box sx={{ mb: 2 }}>
                             <Typography variant="subtitle1">Parâmetros:</Typography>
                             {formatParameters()}
@@ -188,8 +207,8 @@ const DocContent = ({ content }) => {
                         </Box>
                     )}
                     
-                    {/* Examples section - still using docstring data */}
-                    {content.docstring?.examples && (
+                    {/* Examples section - check multiple sources */}
+                    {(content.docstring?.examples || content.example) && (
                         <Box sx={{ mb: 2 }}>
                             <Typography variant="subtitle1">Exemplos:</Typography>
                             <Paper 
@@ -202,7 +221,7 @@ const DocContent = ({ content }) => {
                                 }}
                             >
                                 <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                                    {content.docstring.examples}
+                                    {content.docstring?.examples || content.example}
                                 </Typography>
                             </Paper>
                         </Box>

@@ -32,21 +32,23 @@ fun Application.configureDatabases() {
             if (refreshTables) {
                 // Only drop tables if explicitly requested
                 // Dropping in correct order to respect foreign key constraints
+                SchemaUtils.drop(Users)
                 SchemaUtils.drop(ProcessedFiles)
                 SchemaUtils.drop(Variables)
                 SchemaUtils.drop(Constants)
                 SchemaUtils.drop(Functions)
                 SchemaUtils.drop(Classes)
                 SchemaUtils.drop(Entities)  // Add Entities table in the drop sequence
+                SchemaUtils.drop(LibraryRequests)  // Drop LibraryRequests table
                 SchemaUtils.drop(Namespaces)
                 
                 // Create tables in order
-                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles)
+                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
                 println("Database tables recreated successfully")
                 logger.info("Database tables recreated successfully")
             } else {
                 // Just create tables if they don't exist
-                SchemaUtils.createMissingTablesAndColumns(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles)
+                SchemaUtils.createMissingTablesAndColumns(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
                 println("Database tables verified/created successfully")
                 logger.info("Database tables verified/created successfully")
             }
@@ -62,7 +64,7 @@ fun Application.configureDatabases() {
         try {
             val db = configureSQLiteConnection("jdbc:sqlite:kls_database.db")
             transaction(db) {
-                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles)
+                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
                 logger.info("Database tables created with SQLite fallback")
             }
             // Use Python scripts to populate the fallback SQLite database
