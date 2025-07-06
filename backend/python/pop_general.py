@@ -156,12 +156,41 @@ def parse_torch_docstring(doc: str) -> Dict[str, Any]:
     
     return result
 
+import textwrap
+
+def dedent_doc(text: str) -> str:
+    """
+    Remove all leading indentation from each line in a multi-line string.
+    
+    This is more aggressive than textwrap.dedent - it removes ALL leading
+    whitespace from every line, ensuring no line has leading spaces or tabs.
+    """
+    if not text:
+        return text
+        
+    lines = text.split('\n')
+    result = []
+    
+    for line in lines:
+        # Keep empty lines as-is
+        if not line.strip():
+            result.append('')
+            continue
+            
+        # Remove ALL leading whitespace from each non-empty line
+        result.append(line.strip())
+    
+    return '\n'.join(result)
+
 def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
     """
     Parser for NumPy/TensorFlow/scikit-learn style docstrings.
     
     This function specifically targets scikit-learn's format with 
     indentation-based parameter blocks and section headers with dashes.
+    
+    Removes common leading indentation from all text fields for better
+    display in frontend interfaces.
     """
     if not doc:
         return {
@@ -190,7 +219,7 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
     
     if params_match:
         # Description is everything before the Parameters section
-        result["description"] = doc[:params_match.start()].strip()
+        result["description"] = dedent_doc(doc[:params_match.start()].strip())
         
         # Now let's extract all section blocks
         sections = re.split(r'\n\s*([A-Za-z][A-Za-z\s]*)\s*\n\s*[-]+\s*\n', doc[params_match.start():])
@@ -215,7 +244,7 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                             if current_param:
                                 result["parameters"][current_param] = {
                                     "type": current_type,
-                                    "description": '\n'.join(current_desc).strip()
+                                    "description": dedent_doc('\n'.join(current_desc).strip())
                                 }
                             
                             # Start a new parameter
@@ -231,18 +260,18 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                     if current_param:
                         result["parameters"][current_param] = {
                             "type": current_type,
-                            "description": '\n'.join(current_desc).strip()
+                            "description": dedent_doc('\n'.join(current_desc).strip())
                         }
                 else:
                     # For non-parameter sections, just store the whole text
                     result_key = current_section.lower().replace(' ', '_')
-                    result[result_key] = section.strip()
+                    result[result_key] = dedent_doc(section.strip())
             else:
                 # This is a section header
                 current_section = section
     else:
         # No Parameters section found, the entire text is the description
-        result["description"] = doc.strip()
+        result["description"] = dedent_doc(doc.strip())
         
         # Try to find other sections with different format (Google style)
         for section_name, pattern in [
@@ -270,7 +299,7 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                             if current_param:
                                 result["parameters"][current_param] = {
                                     "type": "",
-                                    "description": '\n'.join(current_desc).strip()
+                                    "description": dedent_doc('\n'.join(current_desc).strip())
                                 }
                             
                             parts = line.split(':', 1)
@@ -287,17 +316,17 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                     if current_param:
                         result["parameters"][current_param] = {
                             "type": "",
-                            "description": '\n'.join(current_desc).strip()
+                            "description": dedent_doc('\n'.join(current_desc).strip())
                         }
                 else:
                     # For other sections, just store the text
-                    result[section_name] = match.group(1).strip()
+                    result[section_name] = dedent_doc(match.group(1).strip())
     
     # Final cleanup: if description section contains a Parameters section, truncate it
     if result["description"]:
         param_start = re.search(r'\n\s*Parameters\s*\n\s*[-]+\s*\n', result["description"])
         if param_start:
-            result["description"] = result["description"][:param_start.start()].strip()
+            result["description"] = dedent_doc(result["description"][:param_start.start()].strip())
     
     # If we detected Parameters in the description but failed to parse them properly, try one more time
     if not result["parameters"]:
@@ -327,7 +356,7 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                     
                     result["parameters"][param_name] = {
                         "type": param_type,
-                        "description": param_desc
+                        "description": dedent_doc(param_desc)
                     }
     
     return result
