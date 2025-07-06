@@ -5,14 +5,7 @@ import com.dynam.database.tables.Classes
 import com.dynam.dtos.table.Class
 import org.jetbrains.exposed.sql.*
 
-/**
- * Repository for Class-related database operations.
- * This class handles all database access for Class objects.
- */
 class ClassRepository {
-    /**
-     * Convert a database row to a Class object
-     */
     private fun fromRow(row: ResultRow) = Class(
         id = row[Classes.id],
         namespaceId = row[Classes.namespaceId],
@@ -23,16 +16,10 @@ class ClassRepository {
         example = row[Classes.example]
     )
     
-    /**
-     * Get all classes from the database
-     */
     suspend fun getAll(): List<Class> = dbQuery {
         Classes.selectAll().map { fromRow(it) }
     }
     
-    /**
-     * Get a class by its ID
-     */
     suspend fun getById(id: Int): Class? = dbQuery {
         Classes.selectAll()
             .where { Classes.id eq id }
@@ -40,18 +27,12 @@ class ClassRepository {
             .singleOrNull()
     }
 
-    /**
-     * Get all classes in a namespace
-     */
     suspend fun getByNamespace(namespaceId: Int): List<Class> = dbQuery {
         Classes.selectAll()
             .where { Classes.namespaceId eq namespaceId }
             .map { fromRow(it) }
     }
     
-    /**
-     * Get classes by library name (using namespace pattern matching)
-     */
     suspend fun getByLibrary(libraryName: String): List<Class> = dbQuery {
         val pattern = "%${libraryName.lowercase()}%"
         
