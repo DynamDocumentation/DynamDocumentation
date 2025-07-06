@@ -12,6 +12,9 @@ import Admin from "./pages/Admin";
 import Register from "./pages/Register";
 import LibraryRequest from "./pages/LibraryRequest";
 
+// Authentication Components
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -38,7 +41,11 @@ function App() {
             <Route path="/" element={<Welcome />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/library-requests" element={<LibraryRequest />} />
+            <Route path="/library-requests" element={
+              <ProtectedRoute>
+                <LibraryRequest />
+              </ProtectedRoute>
+            } />
           </Route>
         </Routes>
       </Router>

@@ -129,7 +129,23 @@ export default function LibraryRequest() {
   };
 
   useEffect(() => {
-    // Call the fetch function when component mounts
+    // Check if user is authenticated
+    if (!getAuthToken()) {
+      // User is not authenticated, redirect to login page
+      setNotification({
+        open: true,
+        message: 'Você precisa estar autenticado para acessar esta página.',
+        severity: 'error'
+      });
+      
+      // Redirect to login after a short delay
+      setTimeout(() => {
+        navigate('/admin');
+      }, 1500);
+      return;
+    }
+    
+    // User is authenticated, fetch library requests
     fetchLibraryRequests();
   }, []); // Empty dependency array means this runs once on component mount
 

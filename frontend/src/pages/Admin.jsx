@@ -70,9 +70,9 @@ export default function Admin() {
             setSuccess(true);
             setShowError(false);
             
-            // Redirect to home page after short delay
+            // Redirect to library requisition list after short delay
             setTimeout(() => {
-              navigate('/');
+              navigate('/library-requests');
             }, 1500);
           }
         }
@@ -134,7 +134,7 @@ export default function Admin() {
         
         {success && (
           <Alert severity="success" sx={{ width: '100%', mb: 2 }}>
-            Login successful! Redirecting...
+            Login bem-sucedido! Redirecionando...
           </Alert>
         )}
         
