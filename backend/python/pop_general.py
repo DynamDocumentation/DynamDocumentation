@@ -158,7 +158,10 @@ def parse_torch_docstring(doc: str) -> Dict[str, Any]:
 
 def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
     """
-    Parser para docstrings no estilo NumPy/TensorFlow.
+    Parser for NumPy/TensorFlow/scikit-learn style docstrings.
+    
+    This function specifically targets scikit-learn's format with 
+    indentation-based parameter blocks and section headers with dashes.
     """
     if not doc:
         return {
@@ -181,55 +184,173 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
         "examples": ""
     }
     
-    # Divide a docstring por seções
-    sections = re.split(r'\n\s*(?:Parameters|Returns|Raises|See Also|Notes|Examples)\s*\n\s*-+\s*\n', doc)
+    # First step: extract the description part (everything before Parameters section)
+    # Look for the first section header
+    params_match = re.search(r'\n\s*Parameters\s*\n\s*[-]+\s*\n', doc)
     
-    if sections:
-        result["description"] = sections[0].strip()
+    if params_match:
+        # Description is everything before the Parameters section
+        result["description"] = doc[:params_match.start()].strip()
+        
+        # Now let's extract all section blocks
+        sections = re.split(r'\n\s*([A-Za-z][A-Za-z\s]*)\s*\n\s*[-]+\s*\n', doc[params_match.start():])
+        
+        # Process the extracted sections
+        current_section = None
+        for i, section in enumerate(sections):
+            if i % 2 == 0 and current_section:
+                # This is section content
+                if current_section == "Parameters":
+                    # Parse parameters - this is special handling for scikit-learn style
+                    lines = section.split('\n')
+                    current_param = None
+                    current_type = ""
+                    current_desc = []
+                    
+                    for line in lines:
+                        # Check for parameter definition (not indented, has colon)
+                        param_match = re.match(r'^([a-zA-Z0-9_]+)\s*:\s*(.*)$', line.strip())
+                        if param_match:
+                            # If we were processing a previous parameter, save it
+                            if current_param:
+                                result["parameters"][current_param] = {
+                                    "type": current_type,
+                                    "description": '\n'.join(current_desc).strip()
+                                }
+                            
+                            # Start a new parameter
+                            current_param = param_match.group(1)
+                            current_type = param_match.group(2)
+                            current_desc = []
+                        elif line.strip() and current_param:
+                            # This is a continuation of the description (indented)
+                            if line.startswith('    '):  # Indented line
+                                current_desc.append(line.strip())
+                    
+                    # Don't forget the last parameter
+                    if current_param:
+                        result["parameters"][current_param] = {
+                            "type": current_type,
+                            "description": '\n'.join(current_desc).strip()
+                        }
+                else:
+                    # For non-parameter sections, just store the whole text
+                    result_key = current_section.lower().replace(' ', '_')
+                    result[result_key] = section.strip()
+            else:
+                # This is a section header
+                current_section = section
+    else:
+        # No Parameters section found, the entire text is the description
+        result["description"] = doc.strip()
+        
+        # Try to find other sections with different format (Google style)
+        for section_name, pattern in [
+            ("parameters", r'Parameters\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
+            ("returns", r'Returns\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
+            ("raises", r'Raises\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
+            ("see_also", r'See Also\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
+            ("notes", r'Notes\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
+            ("examples", r'Examples\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)')
+        ]:
+            match = re.search(pattern, doc, re.DOTALL)
+            if match:
+                if section_name == "parameters":
+                    # Process parameters
+                    param_text = match.group(1)
+                    lines = param_text.split('\n')
+                    current_param = None
+                    current_desc = []
+                    
+                    for line in lines:
+                        if not line.strip():
+                            continue
+                            
+                        if line.lstrip() == line:  # Not indented - new parameter
+                            if current_param:
+                                result["parameters"][current_param] = {
+                                    "type": "",
+                                    "description": '\n'.join(current_desc).strip()
+                                }
+                            
+                            parts = line.split(':', 1)
+                            if len(parts) > 1:
+                                current_param = parts[0].strip()
+                                current_desc = [parts[1].strip()]
+                            else:
+                                current_param = line.strip()
+                                current_desc = []
+                        else:  # Indented - continuation of description
+                            current_desc.append(line.strip())
+                    
+                    # Don't forget the last parameter
+                    if current_param:
+                        result["parameters"][current_param] = {
+                            "type": "",
+                            "description": '\n'.join(current_desc).strip()
+                        }
+                else:
+                    # For other sections, just store the text
+                    result[section_name] = match.group(1).strip()
     
-    # Identifica seções específicas
-    for i, section_content in enumerate(sections[1:], 1):
-        # Determina qual seção estamos processando
-        section_header_match = re.search(r'\n\s*(Parameters|Returns|Raises|See Also|Notes|Examples)\s*\n\s*-+\s*\n', 
-                                          doc[:doc.find(section_content)])
-        if not section_header_match:
-            continue
-        
-        section_name = section_header_match.group(1)
-        
-        if section_name == "Parameters":
-            # Processa parâmetros no estilo NumPy
-            param_blocks = re.split(r'\n\s*(?=[a-zA-Z0-9_]+\s*:)', section_content)
+    # Final cleanup: if description section contains a Parameters section, truncate it
+    if result["description"]:
+        param_start = re.search(r'\n\s*Parameters\s*\n\s*[-]+\s*\n', result["description"])
+        if param_start:
+            result["description"] = result["description"][:param_start.start()].strip()
+    
+    # If we detected Parameters in the description but failed to parse them properly, try one more time
+    if not result["parameters"]:
+        params_match = re.search(r'Parameters\s*\n\s*[-]+\s*\n(.*?)(?:\n\s*[A-Z][a-z]+\s*\n\s*[-]+\s*\n|\Z)', doc, re.DOTALL)
+        if params_match:
+            param_section = params_match.group(1)
+            param_blocks = re.split(r'\n(?=\S)', param_section)
+            
             for block in param_blocks:
-                if not block.strip():
+                lines = block.split('\n')
+                if not lines:
                     continue
+                    
+                # First line contains the parameter name and type
+                first_line = lines[0].strip()
+                param_match = re.match(r'^([a-zA-Z0-9_]+)\s*:\s*(.*)$', first_line)
                 
-                # Match parameter name and type
-                param_match = re.match(r'([a-zA-Z0-9_]+)\s*:\s*([^,\n]+)(?:,\s*optional)?(?:,\s*default=.+)?', block)
                 if param_match:
-                    param_name = param_match.group(1).strip()
-                    param_type = param_match.group(2).strip()
-                    param_desc = re.sub(r'^[a-zA-Z0-9_]+\s*:\s*[^,\n]+(?:,\s*optional)?(?:,\s*default=.+)?\s*', '', block, 1).strip()
+                    param_name = param_match.group(1)
+                    param_type = param_match.group(2)
+                    
+                    # Remaining lines are the description
+                    if len(lines) > 1:
+                        param_desc = '\n'.join(line.strip() for line in lines[1:] if line.strip())
+                    else:
+                        param_desc = ""
                     
                     result["parameters"][param_name] = {
                         "type": param_type,
                         "description": param_desc
                     }
-        
-        elif section_name == "Returns":
-            result["returns"] = section_content.strip()
-        elif section_name == "Raises":
-            result["raises"] = section_content.strip()
-        elif section_name == "See Also":
-            result["see_also"] = section_content.strip()
-        elif section_name == "Notes":
-            result["notes"] = section_content.strip()
-        elif section_name == "Examples":
-            result["examples"] = section_content.strip()
     
-    # Se não encontrou seções NumPy-style, tenta Google-style
-    if not result["parameters"] and not result["returns"]:
-        # Args/Parameters (Google style)
+    return result
+    
+    # Extract other sections
+    for section_name, section_key in [
+        ("Returns", "returns"),
+        ("Raises", "raises"),
+        ("See Also", "see_also"),
+        ("Notes", "notes"),
+        ("Examples", "examples")
+    ]:
+        for pattern in [
+            fr'{section_name}\s*\n\s*[-]+\s*\n(.*?)(?=\n\s*[A-Z][a-z]+\s*\n\s*[-]+\s*\n|\Z)',
+            fr'{section_name}\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'
+        ]:
+            match = re.search(pattern, doc, re.DOTALL)
+            if match:
+                result[section_key] = match.group(1).strip()
+                break
+    
+    # If we still don't have parameters, try Google-style parsing as fallback
+    if not result["parameters"]:
         args_match = re.search(r'(?:Args|Arguments|Parameters):\s*\n(.*?)(?:\n\s*(?:Returns|Raises|Examples|Notes):|$)', doc, re.DOTALL)
         if args_match:
             args_text = args_match.group(1)
@@ -242,20 +363,25 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                 if not line:
                     continue
                 
-                # Formatos comuns no Google style
+                # Match parameter definition lines
                 param_match = re.match(r'^([a-zA-Z0-9_]+)(?:\s*\(([^)]*)\))?(?:\s*:)?\s*(.*)$', line)
                 if param_match:
+                    # Save previous parameter if exists
                     if current_param:
                         result["parameters"][current_param] = {
                             "type": current_type.strip(),
                             "description": "\n".join(current_desc).strip()
                         }
+                    
+                    # Start new parameter
                     current_param = param_match.group(1)
                     current_type = param_match.group(2) or ""
                     current_desc = [param_match.group(3) or ""]
                 elif current_param:
+                    # Continue with previous parameter description
                     current_desc.append(line)
             
+            # Save last parameter
             if current_param:
                 result["parameters"][current_param] = {
                     "type": current_type.strip(),
@@ -587,6 +713,10 @@ def parse_generic_docstring(doc: str) -> Dict[str, Any]:
     
     return result
 
+def is_sklearn_module(module_name: str) -> bool:
+    """Verifica se estamos processando o scikit-learn."""
+    return module_name == "sklearn" or module_name.startswith("sklearn.")
+
 def parse_docstring(doc: Optional[str], module_name: str) -> dict:
     """
     Decide o parser com base na biblioteca, com fallback para parser genérico.
@@ -609,7 +739,8 @@ def parse_docstring(doc: Optional[str], module_name: str) -> dict:
         return parse_jax_docstring(doc)
     elif is_requests_module(module_name):
         return parse_requests_docstring(doc)
-    elif is_numpy_module(module_name) or is_tensorflow_module(module_name):
+    elif is_numpy_module(module_name) or is_tensorflow_module(module_name) or is_sklearn_module(module_name):
+        # Use the improved NumPy style parser for scikit-learn too since they use the same docstring format
         return parse_numpy_tensorflow_style(doc)
     else:
         # Parser genérico para outras bibliotecas
