@@ -1,15 +1,20 @@
 package com.dynam.config
 
+import com.dynam.dtos.table.User
+import com.dynam.repositories.UserRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.security.MessageDigest
+import java.util.Base64
 import java.util.concurrent.TimeUnit
 
 import com.dynam.database.tables.*
@@ -46,6 +51,9 @@ fun Application.configureDatabases() {
                 SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
                 println("Database tables recreated successfully")
                 logger.info("Database tables recreated successfully")
+                
+                // Create default admin user
+                createDefaultAdminUser(logger)
             } else {
                 // Just create tables if they don't exist
                 SchemaUtils.createMissingTablesAndColumns(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
@@ -58,6 +66,11 @@ fun Application.configureDatabases() {
         if (refreshTables) {
             populateDatabaseWithPythonScripts(logger)
         }
+        
+        // Create default admin user
+        if (refreshTables) {
+            createDefaultAdminUser(logger)
+        }
     } catch (e: Exception) {
         logger.error("Error initializing database: ${e.message}", e)
         // Usando SQLite como fallback
@@ -67,6 +80,9 @@ fun Application.configureDatabases() {
                 SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
                 logger.info("Database tables created with SQLite fallback")
             }
+            
+            // Create default admin user in SQLite as well
+            createDefaultAdminUser(logger)
             // Use Python scripts to populate the fallback SQLite database
             if (refreshTables) {
                 populateDatabaseWithPythonScripts(logger)
@@ -198,4 +214,52 @@ private fun configureSQLiteConnection(jdbcURL: String): Database {
  */
 suspend fun <T> dbQuery(block: suspend ()->T): T {
     return newSuspendedTransaction(Dispatchers.IO) { block() }
+}
+
+/**
+ * Creates a default admin user if no admin user exists.
+ * The default admin user has email 'admin' and password 'admin'.
+ */
+private fun createDefaultAdminUser(logger: org.slf4j.Logger) {
+    try {
+        // Use the same password hashing function as in UserRoutes
+        fun hashPassword(password: String): String {
+            val bytes = MessageDigest.getInstance("SHA-256").digest(password.toByteArray())
+            return Base64.getEncoder().encodeToString(bytes)
+        }
+        
+        val userRepository = UserRepository()
+        
+        // We need to use runBlocking because all repository methods are suspending
+        runBlocking {
+            // Check if admin user already exists using the repository
+            val existingAdmin = userRepository.getByEmail("admin")
+            
+            if (existingAdmin == null) {
+                // Create the admin user using the repository
+                val adminUser = User(
+                    username = "admin",
+                    email = "admin"
+                )
+                
+                // Hash the password using the same algorithm as in UserRoutes
+                val passwordHash = hashPassword("admin")
+                
+                val createdUser = userRepository.create(adminUser, passwordHash)
+                if (createdUser != null) {
+                    logger.info("Created default admin user with email: 'admin' and password: 'admin'")
+                    println("Created default admin user with email: 'admin' and password: 'admin'")
+                } else {
+                    logger.error("Failed to create default admin user")
+                    println("Failed to create default admin user")
+                }
+            } else {
+                logger.info("Default admin user already exists, skipping creation")
+                println("Default admin user already exists, skipping creation")
+            }
+        }
+    } catch (e: Exception) {
+        logger.error("Error creating default admin user: ${e.message}", e)
+        println("Error creating default admin user: ${e.message}")
+    }
 }
