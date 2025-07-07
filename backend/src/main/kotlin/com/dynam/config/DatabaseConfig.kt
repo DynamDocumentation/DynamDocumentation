@@ -40,15 +40,13 @@ fun Application.configureDatabases() {
                 SchemaUtils.drop(Users)
                 SchemaUtils.drop(ProcessedFiles)
                 SchemaUtils.drop(Variables)
-                SchemaUtils.drop(Constants)
                 SchemaUtils.drop(Functions)
                 SchemaUtils.drop(Classes)
-                SchemaUtils.drop(Entities)  // Add Entities table in the drop sequence
                 SchemaUtils.drop(LibraryRequests)  // Drop LibraryRequests table
                 SchemaUtils.drop(Namespaces)
                 
                 // Create tables in order
-                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
+                SchemaUtils.create(Namespaces, Classes, Functions, Variables, ProcessedFiles, LibraryRequests, Users)
                 println("Database tables recreated successfully")
                 logger.info("Database tables recreated successfully")
                 
@@ -56,7 +54,7 @@ fun Application.configureDatabases() {
                 createDefaultAdminUser(logger)
             } else {
                 // Just create tables if they don't exist
-                SchemaUtils.createMissingTablesAndColumns(Namespaces, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
+                SchemaUtils.createMissingTablesAndColumns(Namespaces, Classes, Functions, Variables, ProcessedFiles, LibraryRequests, Users)
                 println("Database tables verified/created successfully")
                 logger.info("Database tables verified/created successfully")
             }
@@ -77,7 +75,7 @@ fun Application.configureDatabases() {
         try {
             val db = configureSQLiteConnection("jdbc:sqlite:kls_database.db")
             transaction(db) {
-                SchemaUtils.create(Namespaces, Entities, Classes, Functions, Variables, Constants, ProcessedFiles, LibraryRequests, Users)
+                SchemaUtils.create(Namespaces, Classes, Functions, Variables, ProcessedFiles, LibraryRequests, Users)
                 logger.info("Database tables created with SQLite fallback")
             }
             

@@ -2,7 +2,6 @@ package com.dynam.database.tables
 
 import org.jetbrains.exposed.sql.*
 import com.dynam.enums.VariableType
-import com.dynam.database.tables.Entities
 import com.dynam.database.tables.Classes
 import com.dynam.database.tables.Functions
 

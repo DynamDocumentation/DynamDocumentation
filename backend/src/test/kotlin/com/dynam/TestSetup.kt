@@ -36,11 +36,9 @@ abstract class DatabaseTest {
             // Create all tables in the proper order to respect foreign key constraints
             SchemaUtils.create(
                 Namespaces,
-                Entities,
                 Classes,
                 Functions,
                 Variables,
-                Constants,
                 ProcessedFiles,
                 LibraryRequests,
                 Users
@@ -56,11 +54,9 @@ abstract class DatabaseTest {
                 Users,
                 LibraryRequests,
                 ProcessedFiles,
-                Constants,
                 Variables,
                 Functions,
                 Classes,
-                Entities,
                 Namespaces
             )
         }
