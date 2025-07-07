@@ -1,39 +1,64 @@
-# documentation
+# Backend - DynamDocumentation
 
-This project was created using the [Ktor Project Generator](https://start.ktor.io).
+Este diretório contém o backend do projeto DynamDocumentation, incluindo serviços em Kotlin e scripts/utilitários em Python.
 
-Here are some useful links to get you started:
+## Banco de Dados
+O backend utiliza um banco de dados MariaDB. É necessário que exista uma instância do MariaDB acessível com:
+- Nome do banco: `dynam`
+- Usuário: `root` (ou outro configurado no projeto)
+- Senha: `1234`
 
-- [Ktor Documentation](https://ktor.io/docs/home.html)
-- [Ktor GitHub page](https://github.com/ktorio/ktor)
-- The [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). You'll need to [request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up) to join.
+Certifique-se de que o banco esteja criado e acessível antes de executar o backend.
 
-## Features
+## Estrutura
+- `build.gradle.kts`, `settings.gradle.kts`: Configuração do projeto Kotlin.
+- `python/`: Scripts e módulos Python para manipulação de dados e testes.
+- `output/`: Dados e arquivos auxiliares.
 
-Here's a list of features included in this project:
+## Como Executar
 
-| Name                                               | Description                                                 |
-| ----------------------------------------------------|------------------------------------------------------------- |
-| [Routing](https://start.ktor.io/p/routing-default) | Allows to define structured routes and associated handlers. |
+### Backend Kotlin
+1. Entre na pasta `backend/`.
+2. Execute:
+   ```sh
+   ./gradlew run
+   ```
 
-## Building & Running
+### Scripts Python
+1. Entre na pasta `backend/python/`.
+2. Instale as dependências (se necessário):
+   ```sh
+   pip install -r requirements.txt
+   ```
+3. Execute os scripts conforme necessário.
 
-To build or run the project, use one of the following tasks:
+## Como Rodar os Testes Python
+Para executar os testes automatizados do backend (Python):
 
-| Task                          | Description                                                          |
-| -------------------------------|---------------------------------------------------------------------- |
-| `./gradlew test`              | Run the tests                                                        |
-| `./gradlew build`             | Build everything                                                     |
-| `buildFatJar`                 | Build an executable JAR of the server with all dependencies included |
-| `buildImage`                  | Build the docker image to use with the fat JAR                       |
-| `publishImageToLocalRegistry` | Publish the docker image locally                                     |
-| `run`                         | Run the server                                                       |
-| `runDocker`                   | Run using the local docker image                                     |
+1. Entre na pasta dos scripts Python:
+   ```sh
+   cd backend/python
+   ```
+2. Execute o comando abaixo para rodar todos os testes com detalhes:
+   ```sh
+   pytest -v
+   ```
 
-If the server starts successfully, you'll see the following output:
-
+Se preferir, pode rodar apenas um arquivo de teste específico:
+```sh
+pytest -v tests/nome_do_arquivo.py
 ```
-2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
-2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
-```
 
+## Como Rodar os Testes Kotlin
+Para executar os testes automatizados do backend Kotlin:
+
+1. Entre na pasta `backend/`:
+   ```sh
+   cd backend
+   ```
+2. Execute o comando:
+   ```sh
+   ./gradlew test
+   ```
+
+Os relatórios de teste serão gerados em `backend/build/reports/tests/test/index.html`.

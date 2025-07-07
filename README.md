@@ -1,38 +1,18 @@
 # DynamDocumentation
 
-Esse projeto busca facilitar a leitura de documentações de diversos projetos e bibliotecas de diversas linguagens. Colocando todas essas documentações dentro de um único site.
+DynamDocumentation é um sistema para documentação dinâmica de bibliotecas e APIs, integrando uma interface web moderna e um backend robusto.
 
-Poderemos escolher a linguagem que queremos visualizar, as bibliotecas dessas linguagem e, em seguida, as classes e funções dessa biblioteca.
+## Visão Geral
+O objetivo do projeto é facilitar a consulta, organização e atualização de informações sobre bibliotecas e APIs, centralizando dados de diferentes fontes em um único sistema acessível.
 
-# O que usaremos
-- ReactJS
-- Ktor
-- MariaDB
+## Tecnologias Utilizadas
+- **Frontend:** React, Material UI (MUI)
+- **Backend:** Kotlin (Ktor), Python
+- **Banco de Dados:** MariaDB
 
-# Requistos
-## ReactJS
-+ Install Node.js version 18.3 or higher
+## Estrutura do Projeto
+- `frontend/`: Interface web para interação com o sistema.
+- `backend/`: Lógica de negócio, API, scripts e processamento de dados.
+- `images/`: Diagramas e imagens ilustrativas do projeto.
 
-
-## Ktor
-+ JDK 8+ installed
-+ Gradle or Maven for dependency management
-
-## MariaDB
-No requirements
-
-
-# Diagramas de Classe
-
-## Diagrama Simples
-![simples](./images/simple.png)
-
-## Digrama Completo
-![completo](./images/DiagramaCompleto.png)
-
-## Ciclos
-
-### Ciclo 1
-- Planejar o tamanho do projeto (quanto vai cobrir)
-- Criar um projeto Ktor e ReactJS, e fazer a integração
-- Diagrama de Classes 🚀🌌✅
+Para instruções detalhadas de uso, execução e testes, consulte os arquivos README em cada subdiretório.
