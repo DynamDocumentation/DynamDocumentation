@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.UUID
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
@@ -16,24 +17,21 @@ import kotlin.test.BeforeTest
  * This ensures tests never touch the production database.
  */
 abstract class DatabaseTest {
+    private lateinit var dataSource: HikariDataSource
     protected lateinit var db: Database
-    private var dataSource: HikariDataSource? = null
 
     @BeforeTest
-    fun setup() {
-        // Use HikariCP to keep the in-memory SQLite DB alive and shared
+    fun setupDatabase() {
+        val uniqueDbName = "testdb_" + UUID.randomUUID().toString().replace("-", "")
         val config = HikariConfig().apply {
-            jdbcUrl = "jdbc:sqlite:file:testdb?mode=memory&cache=shared"
+            jdbcUrl = "jdbc:sqlite:file:$uniqueDbName?mode=memory&cache=shared"
             driverClassName = "org.sqlite.JDBC"
-            maximumPoolSize = 1 // Only one connection needed for tests
+            maximumPoolSize = 1
             isAutoCommit = false
         }
         dataSource = HikariDataSource(config)
-        db = Database.connect(dataSource!!)
-
-        // Create all tables needed for testing
+        db = Database.connect(dataSource)
         transaction(db) {
-            // Create all tables in the proper order to respect foreign key constraints
             SchemaUtils.create(
                 Namespaces,
                 Classes,
@@ -46,27 +44,15 @@ abstract class DatabaseTest {
         }
     }
 
-    @AfterTest
-    fun tearDown() {
-        transaction(db) {
-            // Drop tables in reverse order to respect foreign key constraints
-            SchemaUtils.drop(
-                Users,
-                LibraryRequests,
-                ProcessedFiles,
-                Variables,
-                Functions,
-                Classes,
-                Namespaces
-            )
-        }
-        dataSource?.close()
-    }
-
     /**
      * Helper function to run coroutine tests
      */
     fun <T> runTest(block: suspend () -> T): T {
         return runBlocking { block() }
+    }
+
+    @AfterTest
+    fun tearDown() {
+        dataSource.close()
     }
 }
