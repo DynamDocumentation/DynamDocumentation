@@ -4,24 +4,15 @@ import com.dynam.config.dbQuery
 import com.dynam.database.tables.LibraryRequests
 import com.dynam.dtos.table.LibraryRequest
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
-/**
- * Repository for LibraryRequest-related database operations.
- * This class handles all database access for LibraryRequest objects.
- */
 class LibraryRequestRepository {
-    /**
-     * Convert a database row to a LibraryRequest object
-     */
     private fun fromRow(row: ResultRow) = LibraryRequest(
         id = row[LibraryRequests.id],
         name = row[LibraryRequests.name],
         accepted = row[LibraryRequests.accepted]
     )
     
-    /**
-     * Get all library requests from the database
-     */
     suspend fun getAll(): List<LibraryRequest> = dbQuery {
         try {
             LibraryRequests.selectAll().map { fromRow(it) }
@@ -31,9 +22,6 @@ class LibraryRequestRepository {
         }
     }
     
-    /**
-     * Get a library request by its ID
-     */
     suspend fun getById(id: Int): LibraryRequest? = dbQuery {
         LibraryRequests.selectAll()
             .where { LibraryRequests.id eq id }
@@ -41,9 +29,6 @@ class LibraryRequestRepository {
             .singleOrNull()
     }
     
-    /**
-     * Get a library request by its name
-     */
     suspend fun getByName(name: String): LibraryRequest? = dbQuery {
         try {
             LibraryRequests.selectAll()
@@ -56,30 +41,28 @@ class LibraryRequestRepository {
         }
     }
     
-    /**
-     * Get all accepted or pending library requests
-     */
     suspend fun getByAcceptedStatus(accepted: Boolean): List<LibraryRequest> = dbQuery {
         LibraryRequests.selectAll()
             .where { LibraryRequests.accepted eq accepted }
             .map { fromRow(it) }
     }
     
-    /**
-     * Create a new library request
-     */
     suspend fun create(name: String): LibraryRequest = dbQuery {
+        // Check for existing request before inserting
+        val existing = LibraryRequests.selectAll()
+            .where { LibraryRequests.name eq name }
+            .singleOrNull()
+        if (existing != null) {
+            throw IllegalStateException("A request for this library already exists")
+        }
         val id = LibraryRequests.insert {
             it[LibraryRequests.name] = name
-            it[LibraryRequests.accepted] = false // Default to not accepted
+            it[LibraryRequests.accepted] = false
         } get LibraryRequests.id
         
         LibraryRequest(id, name, false)
     }
     
-    /**
-     * Update the acceptance status of a library request
-     */
     suspend fun updateAcceptanceStatus(id: Int, accepted: Boolean): Boolean = dbQuery {
         val updatedRows = LibraryRequests.update({ LibraryRequests.id eq id }) {
             it[LibraryRequests.accepted] = accepted
@@ -87,11 +70,8 @@ class LibraryRequestRepository {
         updatedRows > 0
     }
     
-    // /**
-    //  * Delete a library request
-    //  */
-    // suspend fun delete(id: Int): Boolean = dbQuery {
-    //     val deletedRows = LibraryRequests.deleteWhere { LibraryRequests.id eq id }
-    //     deletedRows > 0
-    // }
+    suspend fun delete(id: Int): Boolean = dbQuery {
+        val deletedRows = LibraryRequests.deleteWhere { LibraryRequests.id eq id }
+        deletedRows > 0
+    }
 }

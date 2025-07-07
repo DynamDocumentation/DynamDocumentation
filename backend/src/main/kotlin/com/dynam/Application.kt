@@ -18,11 +18,12 @@ import com.dynam.routes.UserRoutes
 import com.dynam.database.*
 import com.dynam.config.configureCORS
 import com.dynam.config.configureDatabases
+import org.jetbrains.exposed.sql.Database
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.module() {
+fun Application.module(testDb: Database? = null) {
     // 0) Logs
     install(CallLogging)
 
@@ -38,13 +39,16 @@ fun Application.module() {
     }
 
     install(StatusPages) {
+        exception<kotlinx.serialization.SerializationException> { call, cause ->
+            call.respond(HttpStatusCode.BadRequest, "Invalid or missing fields: ${cause.localizedMessage}")
+        }
         exception<Throwable> { call, cause ->
             call.respond(HttpStatusCode.InternalServerError, cause.localizedMessage)
         }
     }
-
-    configureDatabases()
-
+    if (testDb == null) {
+        configureDatabases()
+    }
     routing {
         // Static content (React frontend)
         StaticRoutes().registerRoutes(this)

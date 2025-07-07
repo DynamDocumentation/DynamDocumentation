@@ -5,29 +5,16 @@ import com.dynam.database.tables.Namespaces
 import com.dynam.dtos.table.Namespace
 import org.jetbrains.exposed.sql.*
 
-/**
- * Repository for Namespace-related database operations.
- * This class handles all database access for Namespace objects.
- */
 class NamespaceRepository {
-    /**
-     * Convert a database row to a Namespace object
-     */
     private fun fromRow(row: ResultRow) = Namespace(
         id = row[Namespaces.id],
         name = row[Namespaces.name]
     )
     
-    /**
-     * Get all namespaces from the database
-     */
     suspend fun getAll(): List<Namespace> = dbQuery {
         Namespaces.selectAll().map { fromRow(it) }
     }
     
-    /**
-     * Get a namespace by its ID
-     */
     suspend fun getById(id: Int): Namespace? = dbQuery {
         Namespaces.selectAll()
             .where { Namespaces.id eq id }
@@ -35,9 +22,6 @@ class NamespaceRepository {
             .singleOrNull()
     }
     
-    /**
-     * Get a namespace by its name
-     */
     suspend fun getByName(name: String): Namespace? = dbQuery {
         Namespaces.selectAll()
             .where { Namespaces.name eq name }
@@ -45,30 +29,15 @@ class NamespaceRepository {
             .singleOrNull()
     }
     
-    /**
-     * Get all namespaces for a specific library
-     * 
-     * @param libraryName The name of the library
-     * @return List of namespaces related to the library
-     */
     suspend fun getByLibrary(libraryName: String): List<Namespace> = dbQuery {
-        // In this implementation, we're assuming the library name is contained in the namespace name
-        // You might need to adjust this based on your actual data structure
         Namespaces.selectAll()
             .where { Namespaces.name.lowerCase() like "%${libraryName.lowercase()}%" }
             .map { fromRow(it) }
     }
     
-    /**
-     * Get all unique library names (first component of each namespace)
-     * 
-     * @return List of unique library names
-     */
     suspend fun getAllLibraryNames(): List<String> = dbQuery {
-        // Select all namespaces and extract the first component of each namespace name
         val allNamespaces = Namespaces.selectAll().map { it[Namespaces.name] }
         
-        // Extract the first component of each namespace (before the first dot)
         allNamespaces
             .map { namespace -> namespace.split('.').firstOrNull() ?: namespace }
             .filter { it.isNotEmpty() }
@@ -76,9 +45,6 @@ class NamespaceRepository {
             .sorted()
     }
     
-    /**
-     * Create a new namespace
-     */
     suspend fun create(name: String): Namespace = dbQuery {
         val id = Namespaces.insert {
             it[Namespaces.name] = name
@@ -87,12 +53,6 @@ class NamespaceRepository {
         Namespace(id, name)
     }
     
-    /**
-     * Get an existing namespace by name or create a new one if it doesn't exist
-     * 
-     * @param name The name of the namespace
-     * @return The existing or newly created namespace
-     */
     suspend fun getOrCreate(name: String): Namespace {
         return getByName(name) ?: create(name)
     }

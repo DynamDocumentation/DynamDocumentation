@@ -12,12 +12,18 @@ const DocContent = ({ content }) => {
     const fetchEntityDetails = useCallback(async (entityId) => {
         setLoading(true);
         setError(null);
-        
         try {
-            // Make API call to backend to get the entity details
-            const response = await axios.get(`/entity/${entityId}`);
+            // Use the type field to determine the correct endpoint
+            let url;
+            if (content.type === "class") {
+                url = `/class/${entityId}`;
+            } else if (content.type === "function") {
+                url = `/function/${entityId}`;
+            } else {
+                throw new Error("Unknown entity type");
+            }
+            const response = await axios.get(url);
             console.log("API Response for entity details:", response.data);
-            
             if (response.data && response.data.entity) {
                 setEntityDetails(response.data);
             } else {
@@ -30,7 +36,7 @@ const DocContent = ({ content }) => {
         } finally {
             setLoading(false);
         }
-    }, [content?.name]); // Safer way to access content.name
+    }, [content?.name, content?.type]); // Add content.type to dependencies
     
     // Then use it in useEffect
     useEffect(() => {
