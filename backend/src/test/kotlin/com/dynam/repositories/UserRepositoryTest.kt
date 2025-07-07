@@ -19,7 +19,7 @@ class UserRepositoryTest : DatabaseTest() {
         val user = User(null, "alice", "alice@example.com", createdAt = Instant.now().epochSecond, lastLogin = Instant.now().epochSecond)
         val created = repo.create(user, "hash1")
         assertNotNull(created)
-        val found = repo.getById(created.id!!)
+        val found = repo.getById(requireNotNull(created.id))
         assertNotNull(found)
         assertEquals("alice", found.username)
     }
@@ -59,11 +59,10 @@ class UserRepositoryTest : DatabaseTest() {
         val user = User(null, "frank", "frank@example.com", createdAt = Instant.now().epochSecond, lastLogin = Instant.now().epochSecond)
         val created = repo.create(user, "hash6")
         assertNotNull(created)
-        val before = repo.getById(created.id!!)?.lastLogin ?: 0L
+        val before = repo.getById(requireNotNull(created.id))?.lastLogin ?: 0L
         Thread.sleep(1000) // ensure time changes
-        val updated = repo.updateLastLogin(created.id!!)
-        assertTrue(updated)
-        val after = repo.getById(created.id!!)?.lastLogin ?: 0L
+        val updated = repo.updateLastLogin(requireNotNull(created.id))
+        val after = repo.getById(requireNotNull(created.id))?.lastLogin ?: 0L
         assertTrue(after > before)
     }
 
@@ -72,9 +71,9 @@ class UserRepositoryTest : DatabaseTest() {
         val user = User(null, "grace", "grace@example.com", createdAt = Instant.now().epochSecond, lastLogin = Instant.now().epochSecond)
         val created = repo.create(user, "hash7")
         assertNotNull(created)
-        val deleted = repo.delete(created.id!!)
+        val deleted = repo.delete(requireNotNull(created.id))
         assertTrue(deleted)
-        val found = repo.getById(created.id!!)
+        val found = repo.getById(requireNotNull(created.id))
         assertNull(found)
     }
 

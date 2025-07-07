@@ -48,6 +48,13 @@ class LibraryRequestRepository {
     }
     
     suspend fun create(name: String): LibraryRequest = dbQuery {
+        // Check for existing request before inserting
+        val existing = LibraryRequests.selectAll()
+            .where { LibraryRequests.name eq name }
+            .singleOrNull()
+        if (existing != null) {
+            throw IllegalStateException("A request for this library already exists")
+        }
         val id = LibraryRequests.insert {
             it[LibraryRequests.name] = name
             it[LibraryRequests.accepted] = false

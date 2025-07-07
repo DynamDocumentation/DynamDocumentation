@@ -97,7 +97,7 @@ class VariableRepositoryTest : DatabaseTest() {
     @Test
     fun testUpdate() = runTest {
         val created = repo.create(classId = classId, type = VariableType.PARAMETER, name = "toUpdate", dataType = "Int")
-        val updated = repo.update(created.id!!, name = "updatedName", dataType = "String")
+        val updated = repo.update(created.id, name = "updatedName", dataType = "String")
         assertTrue(updated)
         val found = repo.getById(created.id!!)
         assertNotNull(found)
@@ -108,7 +108,7 @@ class VariableRepositoryTest : DatabaseTest() {
     @Test
     fun testDelete() = runTest {
         val created = repo.create(classId = classId, type = VariableType.PARAMETER, name = "toDelete")
-        val deleted = repo.delete(created.id!!)
+        val deleted = repo.delete(created.id)
         assertTrue(deleted)
         val found = repo.getById(created.id!!)
         assertNull(found)

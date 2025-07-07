@@ -39,7 +39,6 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:0.50.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.50.1")
     implementation("org.jetbrains.exposed:exposed-java-time:0.50.1")
-    
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.3")
     implementation("org.xerial:sqlite-jdbc:3.43.0.0")  // Add SQLite dependency
     implementation("io.insert-koin:koin-ktor:4.0.4")
@@ -47,6 +46,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-core:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
@@ -56,6 +57,23 @@ tasks.test {
     useJUnitPlatform()
     // Prevent parallel test execution to avoid SQLite database locking
     maxParallelForks = 1
+    finalizedBy("cleanTestDb")
+}
+
+tasks.register("cleanTestDb") {
+    group = "verification"
+    description = "Deletes the test_shared.db and related files after all tests."
+    doLast {
+        listOf(
+            "test_shared.db",
+            "test_shared.db-journal",
+            "test_shared.db-journal.backup",
+            "test_shared.db.backup"
+        ).forEach { fname ->
+            val file = file(fname)
+            if (file.exists()) file.delete()
+        }
+    }
 }
 
 testing {

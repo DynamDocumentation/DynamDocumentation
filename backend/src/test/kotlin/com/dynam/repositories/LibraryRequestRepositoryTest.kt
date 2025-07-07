@@ -27,7 +27,7 @@ class LibraryRequestRepositoryTest : DatabaseTest() {
         val created = repo.create("scipy")
         val found = repo.getByName("scipy")
         assertNotNull(found)
-        assertEquals(created.id, found!!.id)
+        assertEquals(created.id, found.id)
     }
 
     @Test
