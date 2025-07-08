@@ -10,28 +10,19 @@ const DocumentationPanel = ({ panel, panels, onSplit, onClose, onAddContent }) =
         <Box 
             sx={{ 
                 flex: 1,
-                // Simpler breakpoint-based sizing
-                // Width properties
                 width: {
-                    xs: '100%',  // Full width on small screens (vertical layout)
-                    sm: '100%',  // Full width on small screens (vertical layout)
-                    md: panels.length > 1 ? 
-                        `${100 / Math.min(panels.length, 3)}%` : 
-                        '100%',  // Proportional width on medium+ screens (horizontal layout)
+                    xs: '100%',
+                    sm: '100%',
+                    md: '100%', // Always 100% width for column layout
+                    lg: panels.length > 1 ? `${100 / Math.min(panels.length, 3)}%` : '100%', // Only split horizontally on large screens
                 },
-                minWidth: {
-                    md: panels.length > 1 ? '280px' : '100%', // Minimum width on horizontal layout
-                },
-                maxWidth: {
-                    xs: '100%',  // Full width on small screens
-                    sm: '100%',  // Full width on small screens
-                    md: panels.length > 2 ? '33.33%' : 'unset', // Limit width on horizontal layout
-                },
-                // Height properties
+                // Remove minWidth and maxWidth for xs, sm, md
+                minWidth: undefined,
+                maxWidth: undefined,
                 height: {
-                    xs: panels.length > 1 ? '500px' : '100%', // Fixed height on small screens
-                    sm: panels.length > 1 ? '500px' : '100%', // Fixed height on small screens
-                    md: '100%', // Full height on horizontal layout
+                    xs: panels.length > 1 ? '500px' : '100%',
+                    sm: panels.length > 1 ? '500px' : '100%',
+                    md: '100%',
                 },
                 padding: 1,
                 position: 'relative'

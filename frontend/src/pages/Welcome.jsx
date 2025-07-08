@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Box } from "@mui/material";
 import DocumentationPanel from "../components/documentation/DocumentationPanel";
 
@@ -7,15 +7,14 @@ export default function Welcome() {
     const [panels, setPanels] = useState([
         { id: 1, content: null }
     ]);
-    
-    let nextId = 2;
+    const nextId = useRef(2);
 
     // Function to add a new panel next to the current panel
     const handleSplit = (panelId) => {
         // Add a new panel to the right of the selected panel
         const panelIndex = panels.findIndex(panel => panel.id === panelId);
         if (panelIndex !== -1) {
-            const newPanel = { id: nextId++, content: null };
+            const newPanel = { id: nextId.current++, content: null };
             const newPanels = [...panels];
             newPanels.splice(panelIndex + 1, 0, newPanel);
             setPanels(newPanels);
@@ -64,9 +63,8 @@ export default function Welcome() {
                     display: 'flex',
                     // Use Material UI breakpoints for responsive layout
                     flexDirection: {
-                        xs: 'column', // Mobile devices - vertical layout
-                        sm: 'column', // Small screens - vertical layout
-                        md: 'row',    // Medium screens and up - horizontal layout
+                        md: 'column',    // Medium screens and up - horizontal layout
+                        lg: 'row'
                     },
                     padding: '0.5px', /* 0.5 on each side, matching the card mx of 0.5 */
                     // Improved scrollbar styling
