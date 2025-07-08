@@ -72,6 +72,7 @@ def extract_module_api(module_name: str) -> Dict:
 if __name__ == "__main__":
     # Altere esta lista de módulos conforme necessário:
     TARGET_MODULES = {
+        'seaborn',
         'sklearn',
         'sklearn.linear_model',
         'sklearn.tree',

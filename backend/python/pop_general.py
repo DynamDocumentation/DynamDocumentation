@@ -37,6 +37,10 @@ def is_seaborn_module(module_name: str) -> bool:
     """Verifica se estamos processando o Seaborn."""
     return module_name == "seaborn" or module_name.startswith("seaborn.")
 
+def is_sklearn_module(module_name: str) -> bool:
+    """Verifica se estamos processando o scikit-learn ou Seaborn."""
+    return module_name.startswith('sklearn') or module_name.startswith('seaborn')
+
 def get_function_signature(func, library_type: str = "") -> str:
     """
     Tenta extrair assinatura, mesmo para funções geradas em C/Cython.
@@ -185,12 +189,7 @@ def dedent_doc(text: str) -> str:
 def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
     """
     Parser for NumPy/TensorFlow/scikit-learn style docstrings.
-    
-    This function specifically targets scikit-learn's format with 
-    indentation-based parameter blocks and section headers with dashes.
-    
-    Removes common leading indentation from all text fields for better
-    display in frontend interfaces.
+    Uses a very robust regex to truncate at the first section header (Parameters, Returns, etc.) or Sphinx directive, regardless of formatting, whitespace, or underlines.
     """
     if not doc:
         return {
@@ -202,7 +201,7 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
             "notes": "",
             "examples": ""
         }
-    
+
     result = {
         "description": "",
         "parameters": {},
@@ -212,68 +211,104 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
         "notes": "",
         "examples": ""
     }
-    
-    # First step: extract the description part (everything before Parameters section)
-    # Look for the first section header
+
+    section_headers = [
+        "Parameters", "Returns", "Yields", "Raises", "Warns", "See Also", "Notes", "Examples", "Attributes", "Methods", "References", "Warnings", "Deprecated", "Versionadded", "Versionchanged", "Other Parameters"
+    ]
+    sphinx_directives = [
+        ".. note::", ".. warning::", ".. versionadded::", ".. versionchanged::", ".. deprecated::", ".. seealso::", ".. rubric::", ".. admonition::"
+    ]
+    # Build a regex pattern for all section headers and Sphinx directives
+    # Match: any number of blank lines, header, optional colon, optional blank lines, optional underline
+    header_pattern = r"(?im)^(\s*\n)*((%s)\s*:?\s*(\n\s*[-=~`']{3,}\s*)?\n)" % '|'.join([re.escape(h) for h in section_headers])
+    directive_pattern = r"(?im)^(\s*\n)*((%s)\s*)" % '|'.join([re.escape(d) for d in sphinx_directives])
+    # Find the earliest match
+    match1 = re.search(header_pattern, doc)
+    match2 = re.search(directive_pattern, doc)
+    cut = None
+    if match1 and match2:
+        cut = min(match1.start(), match2.start())
+    elif match1:
+        cut = match1.start()
+    elif match2:
+        cut = match2.start()
+    if cut is not None and cut > 0:
+        summary = doc[:cut]
+    else:
+        summary = doc
+    result["description"] = dedent_doc(summary.strip())
+
+    # DEBUG: Print the first 1000 characters before truncation
+    sys.stderr.write("[DEBUG] Description before truncation:\n" + result["description"][:1000].replace("\n", "\\n") + "\n")
+    sys.stderr.flush()
+
+    split_patterns = [
+        r"^\s*Parameters\s*\n[-=~`']{3,}\n",
+        r"^\s*Returns\s*\n[-=~`']{3,}\n",
+        r"^\s*Yields\s*\n[-=~`']{3,}\n",
+        r"^\s*Raises\s*\n[-=~`']{3,}\n",
+        r"^\s*Warns\s*\n[-=~`']{3,}\n",
+        r"^\s*See Also\s*\n[-=~`']{3,}\n",
+        r"^\s*Notes\s*\n[-=~`']{3,}\n",
+        r"^\s*Examples\s*\n[-=~`']{3,}\n",
+        r"^\s*Attributes\s*\n[-=~`']{3,}\n",
+        r"^\s*Methods\s*\n[-=~`']{3,}\n",
+        r"^\s*References\s*\n[-=~`']{3,}\n",
+        r"^\s*Warnings\s*\n[-=~`']{3,}\n",
+        r"^\s*Deprecated\s*\n[-=~`']{3,}\n",
+        r"^\s*Other Parameters\s*\n[-=~`']{3,}\n",
+        r"^[ \t]*\.\. [a-zA-Z]+::.*$"  # Sphinx directive, allow for any indentation
+    ]
+    earliest = None
+    for pat in split_patterns:
+        m = re.search(pat, result["description"], re.MULTILINE)
+        if m:
+            if earliest is None or m.start() < earliest:
+                earliest = m.start()
+    if earliest is not None and earliest > 0:
+        result["description"] = result["description"][:earliest].strip()
+
+    # DEBUG: Print the first 1000 characters after truncation
+    sys.stderr.write("[DEBUG] Description after truncation:\n" + result["description"][:1000].replace("\n", "\\n") + "\n")
+    sys.stderr.flush()
+    # Args/Parameters
     params_match = re.search(r'\n\s*Parameters\s*\n\s*[-]+\s*\n', doc)
-    
     if params_match:
-        # Description is everything before the Parameters section
-        result["description"] = dedent_doc(doc[:params_match.start()].strip())
-        
-        # Now let's extract all section blocks
         sections = re.split(r'\n\s*([A-Za-z][A-Za-z\s]*)\s*\n\s*[-]+\s*\n', doc[params_match.start():])
-        
-        # Process the extracted sections
         current_section = None
         for i, section in enumerate(sections):
             if i % 2 == 0 and current_section:
-                # This is section content
                 if current_section == "Parameters":
-                    # Parse parameters - this is special handling for scikit-learn style
                     lines = section.split('\n')
                     current_param = None
                     current_type = ""
                     current_desc = []
-                    
                     for line in lines:
-                        # Check for parameter definition (not indented, has colon)
                         param_match = re.match(r'^([a-zA-Z0-9_]+)\s*:\s*(.*)$', line.strip())
                         if param_match:
-                            # If we were processing a previous parameter, save it
                             if current_param:
                                 result["parameters"][current_param] = {
                                     "type": current_type,
                                     "description": dedent_doc('\n'.join(current_desc).strip())
                                 }
-                            
-                            # Start a new parameter
                             current_param = param_match.group(1)
                             current_type = param_match.group(2)
                             current_desc = []
                         elif line.strip() and current_param:
-                            # This is a continuation of the description (indented)
-                            if line.startswith('    '):  # Indented line
+                            if line.startswith('    '):
                                 current_desc.append(line.strip())
-                    
-                    # Don't forget the last parameter
                     if current_param:
                         result["parameters"][current_param] = {
                             "type": current_type,
                             "description": dedent_doc('\n'.join(current_desc).strip())
                         }
                 else:
-                    # For non-parameter sections, just store the whole text
                     result_key = current_section.lower().replace(' ', '_')
                     result[result_key] = dedent_doc(section.strip())
             else:
-                # This is a section header
                 current_section = section
     else:
-        # No Parameters section found, the entire text is the description
-        result["description"] = dedent_doc(doc.strip())
-        
-        # Try to find other sections with different format (Google style)
+        # Tente encontrar outras seções com formato diferente (estilo Google)
         for section_name, pattern in [
             ("parameters", r'Parameters\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
             ("returns", r'Returns\s*:(.*?)(?=\n\s*[A-Z][a-z]+\s*:|\Z)'),
@@ -285,23 +320,19 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
             match = re.search(pattern, doc, re.DOTALL)
             if match:
                 if section_name == "parameters":
-                    # Process parameters
                     param_text = match.group(1)
                     lines = param_text.split('\n')
                     current_param = None
                     current_desc = []
-                    
                     for line in lines:
                         if not line.strip():
                             continue
-                            
-                        if line.lstrip() == line:  # Not indented - new parameter
+                        if line.lstrip() == line:
                             if current_param:
                                 result["parameters"][current_param] = {
                                     "type": "",
                                     "description": dedent_doc('\n'.join(current_desc).strip())
                                 }
-                            
                             parts = line.split(':', 1)
                             if len(parts) > 1:
                                 current_param = parts[0].strip()
@@ -309,56 +340,42 @@ def parse_numpy_tensorflow_style(doc: str) -> Dict[str, Any]:
                             else:
                                 current_param = line.strip()
                                 current_desc = []
-                        else:  # Indented - continuation of description
+                        else:
                             current_desc.append(line.strip())
-                    
-                    # Don't forget the last parameter
                     if current_param:
                         result["parameters"][current_param] = {
                             "type": "",
                             "description": dedent_doc('\n'.join(current_desc).strip())
                         }
                 else:
-                    # For other sections, just store the text
                     result[section_name] = dedent_doc(match.group(1).strip())
-    
-    # Final cleanup: if description section contains a Parameters section, truncate it
+    # Limpeza final: se a seção de descrição contiver uma seção de Parâmetros, trunque-a
     if result["description"]:
         param_start = re.search(r'\n\s*Parameters\s*\n\s*[-]+\s*\n', result["description"])
         if param_start:
             result["description"] = dedent_doc(result["description"][:param_start.start()].strip())
-    
-    # If we detected Parameters in the description but failed to parse them properly, try one more time
     if not result["parameters"]:
         params_match = re.search(r'Parameters\s*\n\s*[-]+\s*\n(.*?)(?:\n\s*[A-Z][a-z]+\s*\n\s*[-]+\s*\n|\Z)', doc, re.DOTALL)
         if params_match:
             param_section = params_match.group(1)
             param_blocks = re.split(r'\n(?=\S)', param_section)
-            
             for block in param_blocks:
                 lines = block.split('\n')
                 if not lines:
                     continue
-                    
-                # First line contains the parameter name and type
                 first_line = lines[0].strip()
                 param_match = re.match(r'^([a-zA-Z0-9_]+)\s*:\s*(.*)$', first_line)
-                
                 if param_match:
                     param_name = param_match.group(1)
                     param_type = param_match.group(2)
-                    
-                    # Remaining lines are the description
                     if len(lines) > 1:
                         param_desc = '\n'.join(line.strip() for line in lines[1:] if line.strip())
                     else:
                         param_desc = ""
-                    
                     result["parameters"][param_name] = {
                         "type": param_type,
                         "description": dedent_doc(param_desc)
                     }
-    
     return result
     
     # Extract other sections
@@ -593,7 +610,7 @@ def parse_requests_docstring(doc: str) -> Dict[str, Any]:
         result["returns"] = f"{result['returns']} (tipo: {rtype_match.group(1).strip()})"
     
     # Raises
-    raises_match = re.search(r':raises:\s*(.*?)(?=\n\s*:(?:param|return|returns|rtype)|$)', doc, re.DOTALL)
+    raises_match = re.search(r':raises:\s*(.*?)(?=\n\s*:(?:param|return|returns|raises|rtype)|$)', doc, re.DOTALL)
     if raises_match:
         result["raises"] = raises_match.group(1).strip()
     
@@ -742,11 +759,10 @@ def parse_generic_docstring(doc: str) -> Dict[str, Any]:
     
     return result
 
-def is_sklearn_module(module_name: str) -> bool:
-    """Verifica se estamos processando o scikit-learn."""
-    return module_name == "sklearn" or module_name.startswith("sklearn.")
-
 def parse_docstring(doc: Optional[str], module_name: str) -> dict:
+    import sys
+    sys.stderr.write(f"[DEBUG] parse_docstring called for module: {module_name}\n")
+    sys.stderr.flush()
     """
     Decide o parser com base na biblioteca, com fallback para parser genérico.
     """
@@ -763,16 +779,19 @@ def parse_docstring(doc: Optional[str], module_name: str) -> dict:
     
     # Escolhe o parser especializado com base no módulo
     if is_torch_module(module_name):
+        sys.stderr.write("[DEBUG] Using parse_torch_docstring\n"); sys.stderr.flush()
         return parse_torch_docstring(doc)
     elif is_jax_module(module_name):
+        sys.stderr.write("[DEBUG] Using parse_jax_docstring\n"); sys.stderr.flush()
         return parse_jax_docstring(doc)
     elif is_requests_module(module_name):
+        sys.stderr.write("[DEBUG] Using parse_requests_docstring\n"); sys.stderr.flush()
         return parse_requests_docstring(doc)
     elif is_numpy_module(module_name) or is_tensorflow_module(module_name) or is_sklearn_module(module_name):
-        # Use the improved NumPy style parser for scikit-learn too since they use the same docstring format
+        sys.stderr.write("[DEBUG] Using parse_numpy_tensorflow_style\n"); sys.stderr.flush()
         return parse_numpy_tensorflow_style(doc)
     else:
-        # Parser genérico para outras bibliotecas
+        sys.stderr.write("[DEBUG] Using parse_generic_docstring\n"); sys.stderr.flush()
         return parse_generic_docstring(doc)
 
 def safe_extract(module, name):
