@@ -1,6 +1,5 @@
 package com.dynam.database.tables
 
-import com.dynam.enums.EntityType
 import com.dynam.enums.VariableType
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
