@@ -49,24 +49,31 @@ export default function Welcome() {
         <Box 
             sx={{ 
                 width: '100%',
-                height: '100%',
+                height: '100dvh',
                 display: 'flex',
                 flexDirection: 'column',
-                overflow: 'auto' /* Allow scrolling */
+                overflow: 'hidden',
+                minHeight: 0,
+                boxSizing: 'border-box',
+                padding: 0,
+                margin: 0
             }}
         >
             <Box 
                 sx={{ 
                     width: '100%', 
-                    height: '100%',
-                    overflow: 'auto',
+                    height: '100%', // Fill parent
+                    overflow: 'hidden',
                     display: 'flex',
-                    // Use Material UI breakpoints for responsive layout
+                    flex: 1,
+                    minHeight: 0,
+                    boxSizing: 'border-box',
+                    padding: 0,
+                    margin: 0,
                     flexDirection: {
-                        md: 'column',    // Medium screens and up - horizontal layout
+                        md: 'column',
                         lg: 'row'
                     },
-                    padding: '0.5px', /* 0.5 on each side, matching the card mx of 0.5 */
                     // Improved scrollbar styling
                     '&::-webkit-scrollbar': {
                         height: '8px',

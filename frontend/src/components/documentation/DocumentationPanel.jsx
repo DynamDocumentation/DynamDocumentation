@@ -6,6 +6,15 @@ import DocContent from "./DocContent";
 import PanelSelector from "./PanelSelector";
 
 const DocumentationPanel = ({ panel, panels, onSplit, onClose, onAddContent }) => {
+    // Calculate dynamic height for column mode (up to 3 panels)
+    const isColumn = typeof window !== 'undefined' && window.innerWidth < 1200; // lg breakpoint
+    const panelCount = Math.min(panels.length, 3);
+    const dynamicHeight = panels.length === 1
+        ? '100vh'
+        : isColumn
+            ? `calc(100vh / ${panelCount})`
+            : '100%';
+
     return (
         <Box 
             sx={{ 
@@ -13,17 +22,11 @@ const DocumentationPanel = ({ panel, panels, onSplit, onClose, onAddContent }) =
                 width: {
                     xs: '100%',
                     sm: '100%',
-                    md: '100%', // Always 100% width for column layout
-                    lg: panels.length > 1 ? `${100 / Math.min(panels.length, 3)}%` : '100%', // Only split horizontally on large screens
-                },
-                // Remove minWidth and maxWidth for xs, sm, md
-                minWidth: undefined,
-                maxWidth: undefined,
-                height: {
-                    xs: panels.length > 1 ? '500px' : '100%',
-                    sm: panels.length > 1 ? '500px' : '100%',
                     md: '100%',
+                    lg: panels.length > 1 ? `${100 / panelCount}%` : '100%',
                 },
+                height: dynamicHeight,
+                minHeight: 0,
                 padding: 1,
                 position: 'relative'
             }}
