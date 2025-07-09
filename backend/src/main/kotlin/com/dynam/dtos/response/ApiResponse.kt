@@ -1,4 +1,4 @@
-package com.dynam.dtos
+package com.dynam.dtos.response
 
 import kotlinx.serialization.Serializable
 

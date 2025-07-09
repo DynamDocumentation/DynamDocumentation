@@ -10,28 +10,13 @@ import com.dynam.repositories.VariableRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
-import kotlinx.serialization.Serializable
+import com.dynam.dtos.response.ClassResponse
+import com.dynam.dtos.response.FunctionResponse
 
 class EntityController {
     private val classRepository = ClassRepository()
     private val functionRepository = FunctionRepository()
     private val variableRepository = VariableRepository()
-
-    @Serializable
-    data class ClassResponse(
-        val entity: Class,
-        val attributes: List<Variable>,
-        val parameters: List<Variable>,
-        val returns: List<Variable>
-    )
-
-    @Serializable
-    data class FunctionResponse(
-        val entity: Function,
-        val attributes: List<Variable>,
-        val parameters: List<Variable>,
-        val returns: List<Variable>
-    )
 
     suspend fun getClassById(call: ApplicationCall) {
         try {

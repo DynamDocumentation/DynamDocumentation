@@ -2,7 +2,7 @@ package com.dynam.controllers
 
 import com.dynam.repositories.LibraryRequestRepository
 import com.dynam.repositories.UserRepository
-import com.dynam.dtos.ApiResponses
+import com.dynam.dtos.response.ApiResponses
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
